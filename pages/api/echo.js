@@ -7,6 +7,7 @@ export default async function echo(req, res) {
 
     const data = await addon.addonFDTD.getFDTD_2D(condition);
     console.log("ISOKKKK KKSD KSL:DK S:LKD")
+     console.log(Object.keys(data));
     res.status(200);
     res.json({
       dataX: data.dataX,
