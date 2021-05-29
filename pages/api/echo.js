@@ -15,6 +15,7 @@ export default async function echo(req, res) {
       row: data.row,
       col: data.col,
     }));
+    console.log("asdasd sadasd");
   } else if (req.query.type == "3D") {
     const { lambda, beamsize, n1 } = req.query;
     const condition = [+lambda, +beamsize, +n1];
