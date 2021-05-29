@@ -35,7 +35,7 @@ export async function getServerSideProps(context) {
     props: {
       title: "ВОЛНОВАЯ ОПТИКА",
       labName: "Выберите лабораторную",
-      isOk: data.isOK,
+      isOK: data.isOK,
     },
   };
 }
