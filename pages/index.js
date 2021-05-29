@@ -19,7 +19,8 @@ export default function Index({
 
 export async function getServerSideProps(context) {
   const response = await fetch(
-    process.env.API_URL +
+   // process.env.API_URL +
+    "https://nextjs-fdtd.vercel.app/" +
       "api/echo?" +
       new URLSearchParams({
         type: "main",
