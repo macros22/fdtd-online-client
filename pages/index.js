@@ -14,15 +14,15 @@ export default function Index({
   return (
     <React.Fragment>
       <MainLayout labName={labName} title={title} />
-      <div>{"isOK: " + isOK}</div>
+      <div>{"isOK working: " + isOK}</div>
     </React.Fragment>
   );
 }
 
 export async function getServerSideProps(context) {
   const response = await fetch(
-   // process.env.API_URL +
-    "https://nextjs-fdtd.vercel.app/" +
+    process.env.API_URL +
+    // "https://nextjs-fdtd.vercel.app/" +
       "api/echo?" +
       new URLSearchParams({
         type: "main",
