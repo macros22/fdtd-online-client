@@ -170,7 +170,7 @@ export default function Lab2({
 }
 
 export async function getServerSideProps(context) {
-  let data = {};
+
   const conditions = context.query.slug;
 
   if (conditions.length >= 3) {
@@ -193,7 +193,7 @@ export async function getServerSideProps(context) {
       }
     );
 
-    data = await response.json();
+    const data = await response.json();
     console.log("data fecthing")
     return {
       props: {
@@ -208,11 +208,12 @@ export async function getServerSideProps(context) {
     };
   }
 
+ 
   return {
     props: {
       title: "ВОЛНОВАЯ ОПТИКА",
       labName: "ПРОСТРАНСТВЕННО-ВРЕМЕННАЯ СТРУКТУРА ЭЛЕКТРОМАГНИТНЫХ ИМПУЛЬСОВ",
-      data,
+      data : {},
     },
   };
 }
