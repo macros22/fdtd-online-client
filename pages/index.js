@@ -6,10 +6,10 @@ require("url").URLSearchParams;
 export default function Index({
   title,
   labName,
-  isOk = false
+  isOk
 }) {
 
-  console.log(isOk);
+  console.log("isOK: " + isOk);
 
   return (
     <React.Fragment>
