@@ -185,12 +185,7 @@ export async function getServerSideProps(context) {
           n1,
           type: "2D",
         }),
-      {
-        headers: {
-          Accept: "application/json, text/plain, */*",
-          "User-Agent": "*",
-        },
-      }
+    
     );
   console.log("data fecthingasd adasdasdas dasda");
   console.log(response); 
