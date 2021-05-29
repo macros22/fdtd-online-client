@@ -43,7 +43,7 @@ export default function Lab2({
   lambdaServer = 1,
   beamsizeServer = 3,
   n1Server = 1,
-  eachStepNum,
+  eachNumStep = 25,
 }) {
   const classes = useStyles();
 
@@ -166,7 +166,7 @@ export default function Lab2({
             </Button>
             <TextField
               label="Номер шага"
-              value={step * eachStepNum}
+              value={step * eachNumStep}
               InputProps={{
                 readOnly: true,
               }}
@@ -193,7 +193,7 @@ export default function Lab2({
                   <Typography className={classes.title} variant="h6">
                     Напряж. магн. поля Hy
                   </Typography>
-                  <Paper>
+                  
                     <HeatMap
                       minVal={minHy}
                       maxVal={maxHy}
@@ -201,13 +201,13 @@ export default function Lab2({
                       dataY={dataY[step]}
                       dataVal={dataHy[step]}
                     />
-                  </Paper>
+                  
                 </Grid>
                 <Grid item>
                   <Typography className={classes.title} variant="h6">
                     Напряж. магн. поля Hx
                   </Typography>
-                  <Paper>
+                 
                     <HeatMap
                       minVal={minHx}
                       maxVal={maxHx}
@@ -215,13 +215,13 @@ export default function Lab2({
                       dataY={dataY[step]}
                       dataVal={dataHx[step]}
                     />
-                  </Paper>
+                  
                 </Grid>
                 <Grid item>
                   <Typography className={classes.title} variant="h6">
                     Плотность энергии
                   </Typography>
-                  <Paper>
+                 
                     <HeatMap
                       minVal={minEnergy}
                       maxVal={maxEnergy}
@@ -229,7 +229,7 @@ export default function Lab2({
                       dataY={dataY[step]}
                       dataVal={dataEnergy[step]}
                     />
-                  </Paper>
+                  
                 </Grid>
               </>
             )}
@@ -258,7 +258,7 @@ export async function getServerSideProps(context) {
         })
     );
     data = await response.json();
-
+   // console.log(data.eachNumStep);
     return {
       props: {
         title: "ВОЛНОВАЯ ОПТИКА",
@@ -267,6 +267,7 @@ export async function getServerSideProps(context) {
         lambdaServer: lambda,
         beamsizeServer: beamsize,
         n1Server: n1,
+     //   eachNumStep: +data.eachNumStep,
       },
     };
   }

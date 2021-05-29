@@ -30,7 +30,7 @@ export default async function echo(req, res) {
        dataEnergy: data.dataEnergy,
        row: data.row,
        col: data.col,
-       eachStepNum: data.eachStepNum,
+       eachNumStep: data.eachNumStep,
      });
   }
  

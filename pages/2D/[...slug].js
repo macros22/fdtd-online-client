@@ -46,7 +46,7 @@ export default function Lab2({
   labName,
   data,
   lambdaServer = 1,
-  tauServer = 3,
+  tauServer = 10,
   n1Server = 1,
 }) {
   const classes = useStyles();
@@ -79,7 +79,6 @@ export default function Lab2({
       setPause(false);
       setSimulation(true);
     }
-    console.log("dataChanged")
   }, [data]);
 
   useEffect(() => {
@@ -99,7 +98,7 @@ export default function Lab2({
           setStep((step) => step + 1);
         }else{
           setSimulation(false)}
-      }, 100);
+      }, 25);
       return () => clearInterval(interval);
     }
   }, [dataChart, simulation, pause]);

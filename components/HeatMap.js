@@ -9,7 +9,7 @@ export const HeatMap = ({
   dataX = [],
   dataY = [],
   dataVal = [],
-  width = 270,
+  width = 295,
   height = 300,
 }) => {
   let data = [];
@@ -18,7 +18,7 @@ export const HeatMap = ({
   const canvasBrushRef = useRef(null);
   const canvasGradientRef = useRef(null);
 
-  let brushSize = 2.5;
+  let brushSize = 2.2;
   let brushBlurSize = 4;
   let radius = brushSize + brushBlurSize;
   let diametr = radius * 2;
