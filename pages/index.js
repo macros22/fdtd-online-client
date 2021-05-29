@@ -28,6 +28,7 @@ export async function getServerSideProps(context) {
       })
   );
   const data = await response.json();
+  console.log(data);
   return {
     props: {
       title: "ВОЛНОВАЯ ОПТИКА",
