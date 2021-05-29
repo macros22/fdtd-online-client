@@ -4,8 +4,12 @@ import { MainLayout } from "../components/MainLayout.js";
 
 export default function Index({
   title,
-  labName
+  labName,
+  isOk = false
 }) {
+
+  console.log(isOk);
+
   return (
     <React.Fragment>
       <MainLayout labName={labName} title={title} />
@@ -14,11 +18,19 @@ export default function Index({
 }
 
 export async function getServerSideProps(context) {
-
+  const response = await fetch(
+    process.env.API_URL +
+      "api/echo?" +
+      new URLSearchParams({
+        type: "main",
+      })
+  );
+  const data = await response.json();
   return {
     props: {
       title: "ВОЛНОВАЯ ОПТИКА",
       labName: "Выберите лабораторную",
+      isOk: data.isOk,
     },
   };
 }
