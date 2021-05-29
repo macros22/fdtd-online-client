@@ -177,8 +177,7 @@ export async function getServerSideProps(context) {
     const [lambda, tau, n1] = [...conditions];
 
     const response = await fetch(
-      //process.env.API_URL +
-      "https://nextjs-fdtd.vercel.app/"+
+      process.env.API_URL +
         "api/echo?" +
         new URLSearchParams({
           lambda,
