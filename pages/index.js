@@ -1,7 +1,8 @@
 import React from "react";
 
 import { MainLayout } from "../components/MainLayout.js";
-
+require("url").URL;
+require("url").URLSearchParams;
 export default function Index({
   title,
   labName,
