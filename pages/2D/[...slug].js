@@ -184,7 +184,13 @@ export async function getServerSideProps(context) {
           tau,
           n1,
           type: "2D",
-        })
+        }),
+      {
+        headers: {
+          Accept: "application/json, text/plain, */*",
+          "User-Agent": "*",
+        },
+      }
     );
 
     data = await response.json();
