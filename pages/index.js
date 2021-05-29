@@ -6,15 +6,15 @@ require("url").URLSearchParams;
 export default function Index({
   title,
   labName,
-  isOk
+  isOK
 }) {
 
-  console.log("isOK: " + isOk);
+  console.log("isOK: " + isOK);
 
   return (
     <React.Fragment>
       <MainLayout labName={labName} title={title} />
-      <div>{"isOK: " + isOk}</div>
+      <div>{"isOK: " + isOK}</div>
     </React.Fragment>
   );
 }
@@ -35,7 +35,7 @@ export async function getServerSideProps(context) {
     props: {
       title: "ВОЛНОВАЯ ОПТИКА",
       labName: "Выберите лабораторную",
-      isOk: data.isOk,
+      isOk: data.isOK,
     },
   };
 }
