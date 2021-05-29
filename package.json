@@ -1,0 +1,24 @@
+{
+  "name": "nextjs",
+  "version": "1.0.0",
+  "dependencies": {
+    "@devexpress/dx-react-chart": "^2.7.5",
+    "@devexpress/dx-react-chart-material-ui": "^2.7.5",
+    "@devexpress/dx-react-core": "^2.7.5",
+    "@material-ui/core": "latest",
+    "@material-ui/icons": "latest",
+    "clsx": "latest",
+    "markdown-to-jsx": "^7.1.2",
+    "napi-physics-modeling-oop": "^1.2.2",
+    "next": "latest",
+    "nextjs-progressbar": "^0.0.9",
+    "prop-types": "latest",
+    "react": "latest",
+    "react-dom": "latest"
+  },
+  "scripts": {
+    "dev": "next",
+    "build": "next build",
+    "start": "next start"
+  }
+}
