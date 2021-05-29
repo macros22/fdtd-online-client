@@ -14,6 +14,7 @@ export default function Index({
   return (
     <React.Fragment>
       <MainLayout labName={labName} title={title} />
+      <div>{"isOK: " + isOk}</div>
     </React.Fragment>
   );
 }
