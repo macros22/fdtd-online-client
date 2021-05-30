@@ -98,7 +98,7 @@ export default function Lab2({
           setStep((step) => step + 1);
         }else{
           setSimulation(false)}
-      }, 150);
+      }, 220);
       return () => clearInterval(interval);
     }
   }, [dataChart, simulation, pause]);
