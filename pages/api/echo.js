@@ -8,14 +8,16 @@ export default async function echo(req, res) {
     const data = await addon.addonFDTD.getFDTD_2D(condition);
     console.log("ISOKKKK KKSD KSL:DK S:LKD")
      console.log(data);
-    res.status(200).json(
-      {
-        dataX: data.dataX,
-        dataY: data.dataY,
-        row: data.row,
-        col: data.col,
-      }
-    );
+    res.status(200).json({
+      // dataX: data.dataX,
+      // dataY: data.dataY,
+      // row: data.row,
+      // col: data.col,
+      dataX: [[2,3],[2,3]],
+      dataY: [[2,3],[2,3]],
+      row: 2,
+      col: 2,
+    });
     console.log("asdasd sadasd");
   } else if (req.query.type == "3D") {
     const { lambda, beamsize, n1 } = req.query;
