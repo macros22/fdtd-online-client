@@ -115,7 +115,7 @@ export default function Lab2({
         if (step < (row-1)) {
           setStep((s) => s + 1);
         }
-      }, 300);
+      }, 250);
       return () => clearInterval(interval);
     }
   }, [simulation, step, row, pause]);
@@ -166,7 +166,7 @@ export default function Lab2({
             </Button>
             <TextField
               label="Номер шага"
-              value={step * eachNumStep + eachNumStep}
+              value={step * eachNumStep}
               InputProps={{
                 readOnly: true,
               }}
@@ -193,40 +193,43 @@ export default function Lab2({
                   <Typography className={classes.title} variant="h6">
                     Напряж. магн. поля Hy
                   </Typography>
-
-                  <HeatMap
-                    minVal={minHy}
-                    maxVal={maxHy}
-                    dataX={dataX[step]}
-                    dataY={dataY[step]}
-                    dataVal={dataHy[step]}
-                  />
+                  
+                    <HeatMap
+                      minVal={minHy}
+                      maxVal={maxHy}
+                      dataX={dataX[step]}
+                      dataY={dataY[step]}
+                      dataVal={dataHy[step]}
+                    />
+                  
                 </Grid>
                 <Grid item>
                   <Typography className={classes.title} variant="h6">
                     Напряж. магн. поля Hx
                   </Typography>
-
-                  <HeatMap
-                    minVal={minHx}
-                    maxVal={maxHx}
-                    dataX={dataX[step]}
-                    dataY={dataY[step]}
-                    dataVal={dataHx[step]}
-                  />
+                 
+                    <HeatMap
+                      minVal={minHx}
+                      maxVal={maxHx}
+                      dataX={dataX[step]}
+                      dataY={dataY[step]}
+                      dataVal={dataHx[step]}
+                    />
+                  
                 </Grid>
                 <Grid item>
                   <Typography className={classes.title} variant="h6">
                     Плотность энергии
                   </Typography>
-
-                  <HeatMap
-                    minVal={minEnergy}
-                    maxVal={maxEnergy}
-                    dataX={dataX[step]}
-                    dataY={dataY[step]}
-                    dataVal={dataEnergy[step]}
-                  />
+                 
+                    <HeatMap
+                      minVal={minEnergy}
+                      maxVal={maxEnergy}
+                      dataX={dataX[step]}
+                      dataY={dataY[step]}
+                      dataVal={dataEnergy[step]}
+                    />
+                  
                 </Grid>
               </>
             )}
