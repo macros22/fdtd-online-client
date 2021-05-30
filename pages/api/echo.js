@@ -9,19 +9,24 @@ export default async function echo(req, res) {
     console.log("----------------------------")
   
     const dataX2 = [];
+    const dataY2 = [];
     for(let i = 0; i < data.dataX.length; i+= 10)
+    {
       dataX2.push(data.dataX[i]);
+      dataY2.push(data.dataY[i]);
+    }
+      
 
     console.log(dataX2);
     res.status(200).json({
-       dataX2,
-      // dataY: data.dataY,
-      // row: data.row,
-      // col: data.col,
-      dataX: [[2,3],[2,3]],
-      dataY: [[2,3],[2,3]],
-      row: 2,
-      col: 2,
+      dataY: data.dataY2,
+      dataX: data.dataX2,
+      row: data.row / 10,
+      col: data.col / 10,
+      // dataX: [[2,3],[2,3]],
+      // dataY: [[2,3],[2,3]],
+      // row: 2,
+      // col: 2,
     });
     console.log("=========================");
   } else if (req.query.type == "3D") {
