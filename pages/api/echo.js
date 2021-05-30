@@ -6,8 +6,8 @@ export default async function echo(req, res) {
     const condition = [+lambda, +tau, +n1];
 
     const data = await addon.addonFDTD.getFDTD_2D(condition);
-    console.log("ISOKKKK KKSD KSL:DK S:LKD")
-     console.log(data);
+    console.log("----------------------------")
+     console.log(data.dataX.length);
     res.status(200).json({
       // dataX: data.dataX,
       // dataY: data.dataY,
@@ -18,7 +18,7 @@ export default async function echo(req, res) {
       row: 2,
       col: 2,
     });
-    console.log("asdasd sadasd");
+    console.log("=========================");
   } else if (req.query.type == "3D") {
     const { lambda, beamsize, n1 } = req.query;
     const condition = [+lambda, +beamsize, +n1];
