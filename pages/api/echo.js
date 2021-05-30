@@ -17,12 +17,14 @@ export default async function echo(req, res) {
     }
       
 
-    console.log(dataX2);
+    console.log(dataX2.length);
+    console.log(data.row / 10);
+    
     res.status(200).json({
       dataY: data.dataY2,
       dataX: data.dataX2,
       row: data.row / 10,
-      col: data.col / 10,
+      col: data.col,
       // dataX: [[2,3],[2,3]],
       // dataY: [[2,3],[2,3]],
       // row: 2,
