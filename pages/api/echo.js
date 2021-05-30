@@ -9,12 +9,12 @@ export default async function echo(req, res) {
     console.log("ISOKKKK KKSD KSL:DK S:LKD")
      console.log(data);
     res.status(200).json(
-      JSON.stringify({
+      {
         dataX: data.dataX,
         dataY: data.dataY,
         row: data.row,
         col: data.col,
-      })
+      }
     );
     console.log("asdasd sadasd");
   } else if (req.query.type == "3D") {
@@ -35,9 +35,15 @@ export default async function echo(req, res) {
       eachNumStep: data.eachNumStep,
     });
   } else if (req.query.type == "main") {
+
+    const data = [];
+    data.length = 1e5;
+    data.fill(5);
+
     res.status(200);
     res.json({
-      isOK: true
+      isOK: true,
+      data
     });
   }
 }
