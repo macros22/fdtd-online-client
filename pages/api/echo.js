@@ -6,48 +6,67 @@ export default async function echo(req, res) {
     const condition = [+lambda, +tau, +n1];
 
     const data = await addon.addonFDTD.getFDTD_2D(condition);
-    const dataX2 = [];
-    const dataY2 = [];
+    const dataX = [];
+    const dataY = [];
 
     for(let i = 0; i < data.dataX.length; i+= 10)
     {
-      dataX2.push(data.dataX[i]);
-      dataY2.push(data.dataY[i]);
+      dataX.push(data.dataX[i]);
+      dataY.push(data.dataY[i]);
     }
 
     res.status(200).json({
-      dataY: dataY2,
-      dataX: dataX2,
-      row: data.row / 10,
+      dataX,
+      dataY,
+      row: dataX.length,
       col: data.col,
     });
   } else if (req.query.type == "3D") {
     const { lambda, beamsize, n1 } = req.query;
     const condition = [+lambda, +beamsize, +n1];
 
+    const dataX = [];
+    const dataY = [];
+    const dataEz = [];
+    const dataHy = [];
+    const dataHx = [];
+    const dataEnergy = [];
+
+    for (let i = 0; i < data.dataX.length; i += 10) {
+      dataX.push(data.dataX[i]);
+      dataY.push(data.dataY[i]);
+      dataEz.push(data.dataEz[i]);
+      dataHy.push(data.dataHy[i]);
+      dataHx.push(data.dataHx[i]);
+      dataEnergy.push(data.dataEnergy[i]);
+    }
+
     const data = await addon.addonFDTD.getFDTD_3D(condition);
     res.status(200);
     res.json({
-      dataX: data.dataX,
-      dataY: data.dataY,
-      dataEz: data.dataEz,
-      dataHy: data.dataHy,
-      dataHx: data.dataHx,
-      dataEnergy: data.dataEnergy,
-      row: data.row,
+      // dataX: data.dataX,
+      // dataY: data.dataY,
+      // dataEz: data.dataEz,
+      // dataHy: data.dataHy,
+      // dataHx: data.dataHx,
+      // dataEnergy: data.dataEnergy,
+      // row: data.row,
+      dataX,
+      dataY,
+      dataEz,
+      dataHy,
+      dataHx,
+      dataEnergy,
+      row: dataX.length,
       col: data.col,
       eachNumStep: data.eachNumStep,
     });
   } else if (req.query.type == "main") {
 
-    const data = [];
-    data.length = 1e5;
-    data.fill(5);
 
     res.status(200);
     res.json({
       isOK: true,
-      data
     });
   }
 }

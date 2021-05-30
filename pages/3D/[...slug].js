@@ -258,7 +258,6 @@ export async function getServerSideProps(context) {
         })
     );
     data = await response.json();
-   // console.log(data.eachNumStep);
     return {
       props: {
         title: "ВОЛНОВАЯ ОПТИКА",
@@ -267,7 +266,7 @@ export async function getServerSideProps(context) {
         lambdaServer: lambda,
         beamsizeServer: beamsize,
         n1Server: n1,
-     //   eachNumStep: +data.eachNumStep,
+        eachNumStep: +data.eachNumStep,
       },
     };
   }

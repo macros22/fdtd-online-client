@@ -23,21 +23,17 @@ export default function Index({
 export async function getServerSideProps(context) {
   const response = await fetch(
     process.env.API_URL +
-    // "https://nextjs-fdtd.vercel.app/" +
       "api/echo?" +
       new URLSearchParams({
         type: "main",
       })
   );
   const data = await response.json();
- // console.log(data);
-  console.log("sdasd ");
   return {
     props: {
       title: "ВОЛНОВАЯ ОПТИКА",
       labName: "Выберите лабораторную",
       isOK: data.isOK,
-      data: data.data
     },
   };
 }
