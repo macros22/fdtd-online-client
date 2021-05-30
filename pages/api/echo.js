@@ -33,7 +33,7 @@ export default async function echo(req, res) {
     const dataEnergy = [];
 
   const data = await addon.addonFDTD.getFDTD_3D(condition);
-    for (let i = 0; i < data.dataX.length; i += 5) {
+    for (let i = 0; i < data.dataX.length; i += 3) {
       dataX.push(data.dataX[i]);
       dataY.push(data.dataY[i]);
       dataEz.push(data.dataEz[i]);
@@ -60,7 +60,7 @@ export default async function echo(req, res) {
       dataEnergy,
       row: dataX.length,
       col: data.col,
-      eachNumStep: data.eachNumStep*5,
+      eachNumStep: data.eachNumStep*3,
     });
   } else if (req.query.type == "main") {
 

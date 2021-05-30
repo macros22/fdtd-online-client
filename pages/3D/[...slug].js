@@ -115,7 +115,7 @@ export default function Lab2({
         if (step < row - 1) {
           setStep((s) => s + 1);
         }
-      }, 200);
+      }, 100);
       return () => clearInterval(interval);
     }
   }, [simulation, step, row, pause]);
