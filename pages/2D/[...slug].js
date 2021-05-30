@@ -86,7 +86,7 @@ export default function Lab2({
     if (simulation && !pause && Object.keys(data).length) {
       let tmpDataChart;
       const interval = setInterval(() => {
-        if (step < row) {
+        if (step < (row-1)) {
           tmpDataChart = [];
           for (let j = 0; j < col; j++) {
             tmpDataChart.push({
@@ -192,11 +192,10 @@ export async function getServerSideProps(context) {
       //   },
       // }
     );
-  console.log("data fecthingasd adasdasdas dasda");
+
   
     const data = await response.json();
-    console.log(data); 
-  console.log("data fecthingasd adasdasdas dasda");  
+  
     return {
       props: {
         title: "ВОЛНОВАЯ ОПТИКА",

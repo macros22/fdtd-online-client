@@ -5,15 +5,13 @@ require("url").URL;
 require("url").URLSearchParams;
 export default function Index({
   title,
-  labName,
-  isOK
+  labName
 }) {
 
  
   return (
     <React.Fragment>
       <MainLayout labName={labName} title={title} />
-      <div>{"isOK working: " + isOK}</div>
     </React.Fragment>
   );
 }
