@@ -7,9 +7,11 @@ export default async function echo(req, res) {
 
     const data = await addon.addonFDTD.getFDTD_2D(condition);
     console.log("----------------------------")
-     console.log(data.dataX);
+  
+     const dataX2 = data.dataX.map((el, i) => {if((i % 10) == 0) return el})
+        console.log(data.dataX2);
     res.status(200).json({
-       dataX2: data.dataX,
+       dataX2,
       // dataY: data.dataY,
       // row: data.row,
       // col: data.col,
