@@ -12,7 +12,7 @@ export default async function echo(req, res) {
     for(let i = 0; i < data.dataX.length; i+= 10)
       dataX2.push(data.dataX[i]);
 
-    console.log(data.dataX2);
+    console.log(dataX2);
     res.status(200).json({
        dataX2,
       // dataY: data.dataY,
