@@ -17,7 +17,7 @@ export default async function echo(req, res) {
     }
       
 
-    console.log(dataX2.length);
+    console.log(dataX2);
     console.log(data.row / 10);
     
     res.status(200).json({
