@@ -9,7 +9,7 @@ export default async function echo(req, res) {
     console.log("----------------------------")
   
     const dataX2 = [];
-    for(i = 0; i <= data.dataX.length; i+= 10)
+    for(const i = 0; i < data.dataX.length; i+= 10)
       dataX2.push(data.dataX[i]);
 
     console.log(data.dataX2);
