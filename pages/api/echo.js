@@ -31,7 +31,8 @@ export default async function echo(req, res) {
     const dataHy = [];
     const dataHx = [];
     const dataEnergy = [];
-
+    
+  const data = await addon.addonFDTD.getFDTD_3D(condition);
     for (let i = 0; i < data.dataX.length; i += 10) {
       dataX.push(data.dataX[i]);
       dataY.push(data.dataY[i]);
@@ -41,7 +42,7 @@ export default async function echo(req, res) {
       dataEnergy.push(data.dataEnergy[i]);
     }
 
-    const data = await addon.addonFDTD.getFDTD_3D(condition);
+    
     res.status(200);
     res.json({
       // dataX: data.dataX,
