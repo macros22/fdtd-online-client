@@ -98,7 +98,7 @@ export default function Lab2({
           setStep((step) => step + 1);
         }else{
           setSimulation(false)}
-      }, 25);
+      }, 100);
       return () => clearInterval(interval);
     }
   }, [dataChart, simulation, pause]);
@@ -149,7 +149,7 @@ export default function Lab2({
             </Button>
             <TextField
               label="Номер шага"
-              value={step}
+              value={step*10}
               InputProps={{
                 readOnly: true,
               }}
