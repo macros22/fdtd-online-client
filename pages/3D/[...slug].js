@@ -112,10 +112,10 @@ export default function Lab2({
   useEffect(() => {
     if (simulation && !pause && Object.keys(data).length) {
       const interval = setInterval(() => {
-        if (step < row - 1) {
+        if (step < row) {
           setStep((s) => s + 1);
         }
-      }, 100);
+      }, 200);
       return () => clearInterval(interval);
     }
   }, [simulation, step, row, pause]);
