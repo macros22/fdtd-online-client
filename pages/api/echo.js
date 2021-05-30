@@ -10,20 +10,18 @@ export default async function echo(req, res) {
   
     const dataX2 = [];
     const dataY2 = [];
-    for(let i = 0; i < data.dataX.length; i+= 10)
+    for(let i = 0; i < data.dataX.length; i+= 5)
     {
       dataX2.push(data.dataX[i]);
       dataY2.push(data.dataY[i]);
     }
-      
 
-    console.log(dataX2);
-    console.log(data.row / 10);
-    
+
+
     res.status(200).json({
       dataY: dataY2,
       dataX: dataX2,
-      row: data.row / 10,
+      row: data.row / 5,
       col: data.col,
       // dataX: [[2,3],[2,3]],
       // dataY: [[2,3],[2,3]],
