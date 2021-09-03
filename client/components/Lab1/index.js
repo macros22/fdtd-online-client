@@ -9,6 +9,7 @@ import {
 } from "@devexpress/dx-react-chart-material-ui";
 
 import Grid from "@material-ui/core/Grid";
+import axios from "axios";
 
 import { Button, TextField, Typography } from "@material-ui/core";
 
@@ -49,6 +50,8 @@ export default function Lab1({
 
     const [data, setData] = useState({});
 
+
+
     const [tau, setTau] = useState(tauServer);
     const [lambda, setLambda] = useState(lambdaServer);
     const [n1, setN1] = useState(n1Server);
@@ -65,6 +68,39 @@ export default function Lab1({
     const [col, setCol] = useState(null);
 
 
+    const [messages, setMessages] = useState({});
+    const [value, setValue] = useState('');
+
+
+    useEffect(() => {
+        subscribe()
+    }, [])
+
+    const subscribe = async () => {
+        const eventSource = new EventSource(`http://localhost:5000/connect`)
+        eventSource.onmessage = function (event) {
+            const message = JSON.parse(event.data);
+            console.log(message)
+            setMessages(message);
+        }
+    }
+
+    const sendConditions = async () => {
+
+            await axios.post('http://localhost:5000/nextLayer', {
+                lambda,
+                tau,
+                n1,
+                reload: false,
+                type: "2D",
+            })
+
+
+    }
+
+
+
+
     async function fetchData() {
         const [lambda, tau, n1] = [1,10,1];
 
@@ -76,6 +112,7 @@ export default function Lab1({
                 lambda,
                 tau,
                 n1,
+                reload: false,
                 type: "2D",
             })
 
@@ -155,6 +192,7 @@ export default function Lab1({
 
     return (
         <React.Fragment>
+            <div>{JSON.stringify(messages)}</div>
                 <div className={classes.root}>
                     <Grid container justify="space-between">
                         <TextField
@@ -189,7 +227,8 @@ export default function Lab1({
                             onClick={async (e) => {
                                 e.preventDefault();
                                 console.log('before')
-                                await fetchData();
+                                //await fetchData();
+                                sendConditions();
                                 console.log('after')
                             }}
                             variant="contained"

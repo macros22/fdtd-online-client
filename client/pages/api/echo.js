@@ -3,20 +3,25 @@ import addon from 'napi-physics-modeling-oop';
 // import { NextApiRequest, NextApiResponse } from 'next'
 
 export default async function echo(req, res) {
+
+  console.log(addon)
+
   if (req.query.type == "2D") {
 
     console.log(req.url);
-    const { lambda, tau, n1 } = req.query;
+    const { lambda, tau, n1, reloadStr } = req.query;
     const condition = [+lambda, +tau, +n1];
+    const reload = false;
 
-    let data = await addon.addonFDTD.getFDTD_2D(condition);
-    for(let i = 0; i <= 150; ++i){
-      data = await addon.addonFDTD.getFDTD_2D(condition);
-    }
+
+    let data = await addon.getFDTD_2D(condition, reload);
+    console.log(data)
+    // for(let i = 0; i <= 30; ++i){
+    //   data = await addon.getFDTD_2D(condition, reload);
+    // }
 
     // let dataX = data.dataX;
     // let dataY = data.dataY;
-
 
     res.status(200).json({
       dataX: data.dataX,
@@ -35,7 +40,7 @@ export default async function echo(req, res) {
     const dataHx = [];
     const dataEnergy = [];
 
-    const data = await addon.addonFDTD.getFDTD_3D(condition);
+    const data = await addongetFDTD_3D(condition);
     for (let i = 0; i < data.dataX.length; i += 5) {
       dataX.push(data.dataX[i]);
       dataY.push(data.dataY[i]);
