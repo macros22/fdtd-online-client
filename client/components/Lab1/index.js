@@ -11,7 +11,8 @@ import {
 import Grid from "@material-ui/core/Grid";
 import axios from "axios";
 
-import { Button, TextField, Typography } from "@material-ui/core";
+import { Button, TextField } from "@material-ui/core";
+import Paper from "@material-ui/core/Paper";
 
 
 // tutorial for fetching on client side
@@ -70,17 +71,6 @@ export default function Lab1({
         eventSource.onmessage = function (event) {
             let {dataX, dataY, row, col} = JSON.parse(event.data);
 
-
-            // col = Math.random() * (10 - 5) + 5;
-            // dataX = [];
-            // dataY = [];
-            //
-            // for(let i = 0; i < col; ++i){
-            //     dataX[i] = i;
-            //     dataY[i] = Math.random() * (100 - 10) + 10;
-            // }
-
-
             setStep(0);
             setPause(false);
             setSimulation(true);
@@ -92,7 +82,6 @@ export default function Lab1({
                     value: dataY[j],
                 });
             }
-            console.log(tmpDataChart)
             setDataChart(tmpDataChart);
             setStep((step) => step + 1);
 
@@ -100,7 +89,6 @@ export default function Lab1({
     }
 
     const sendConditions = async () => {
-
             await axios.post('http://localhost:5000/nextLayer', {
                 lambda,
                 tau,
@@ -108,78 +96,7 @@ export default function Lab1({
                 reload: false,
                 type: "2D",
             })
-
-
     }
-
-
-
-
-    // async function fetchData() {
-    //     const [lambda, tau, n1] = [1,10,1];
-    //
-    //     const response = await fetch(
-    //         // process.env.API_URL+
-    //         "http://localhost:3000/" +
-    //         "api/echo?" +
-    //         new URLSearchParams({
-    //             lambda,
-    //             tau,
-    //             n1,
-    //             reload: false,
-    //             type: "2D",
-    //         })
-    //
-    //     );
-    //     const data = await response.json();
-    //     setData(data);
-    //
-    //     setDataX(data.dataX);
-    //     setDataY(data.dataY);
-    //     setRow(data.row);
-    //     setCol(data.col);
-    //
-    //     setStep(0);
-    //     setPause(false);
-    //     setSimulation(true);
-    //
-    //     let tmpDataChart = [];
-    //     for (let j = 0; j < data.col; j++) {
-    //         tmpDataChart.push({
-    //             argument: data.dataX[j],
-    //             value: data.dataY[j],
-    //         });
-    //     }
-    //     console.log(tmpDataChart)
-    //     setDataChart(tmpDataChart);
-    //     setStep((step) => step + 1);
-    //
-    // }
-
-
-    // useEffect(() => {
-    //
-    //     if (simulation && !pause && Object.keys(data).length) {
-    //         let tmpDataChart;
-    //         // const interval = setInterval(() => {
-    //
-    //                 tmpDataChart = [];
-    //                 for (let j = 0; j < col; j++) {
-    //                     tmpDataChart.push({
-    //                         argument: dataX[j],
-    //                         value: dataY[j],
-    //                     });
-    //                 }
-    //                 setDataChart(tmpDataChart);
-    //                 setStep((step) => step + 1);
-    //
-    //         // }, 220);
-    //        // return () => clearInterval(interval);
-    //     }
-    // }, [dataChart, simulation, pause, data]);
-
-
-
 
     // useEffect(() => {
     //
@@ -207,6 +124,7 @@ export default function Lab1({
     return (
         <React.Fragment>
                 <div className={classes.root}>
+                    <Paper>
                     <Grid container justify="space-between">
                         <TextField
                             value={lambda}
@@ -228,7 +146,6 @@ export default function Lab1({
                         />
                         <Button
                             onClick={(e) => {
-                                //  e.preventDefault();
                                 if (simulation) setPause((pause) => !pause);
                             }}
                             variant="contained"
@@ -239,10 +156,7 @@ export default function Lab1({
                         <Button
                             onClick={async (e) => {
                                 e.preventDefault();
-                                console.log('before')
-                                //await fetchData();
                                 sendConditions();
-                                console.log('after')
                             }}
                             variant="contained"
                             color="primary"
@@ -257,16 +171,14 @@ export default function Lab1({
                             }}
                         />
                     </Grid>
-                    <div>asdasdasd</div>
-                    <div>asdasdasasdasdd</div>
-                    \<div>asdasdasd</div>
-                    <div>
+                    </Paper>
+                    <Paper>
                         <Chart data={dataChart}>
                             <ArgumentAxis />
                             <ValueAxis />
                             <LineSeries valueField="value" argumentField="argument" />
                         </Chart>
-                    </div>
+                    </Paper>
                 </div>
         </React.Fragment>
     );

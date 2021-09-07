@@ -1,15 +1,10 @@
 const express = require('express');
 const cors = require('cors');
 const EventEmitter = require('events')
-
-
-
 const addon = require('napi-physics-modeling-oop');
 
 const PORT = 5000;
-
 const emitter = new EventEmitter();
-
 const app = express()
 
 app.use(cors())
@@ -30,19 +25,11 @@ app.get('/connect', (req, res) => {
                 row,
                 col
             })} \n\n`);
-
     })
-
-
 })
 
 app.post('/nextLayer', ((req, res) => {
     const { lambda, tau, n1, reload, type} = req.body;
-   // console.log(lambda, tau, n1);
-
-   // emitter.emit('newData', {lambda, tau, n1})
-
-
 
     intervalData(lambda, tau, n1, reload, type);
 
@@ -58,14 +45,12 @@ const intervalData = async (lambda, tau, n1, reload, type) => {
         const condition = [+lambda, +tau, +n1];
         const reload = false;
 
-
         data = await addon.getFDTD_2D(condition, reload);
-         console.log("data: ", data)
+        emitter.emit('newData', data);
 
-
-        for(let i = 0; i <= 300; ++i){
-          data = await addon.getFDTD_2D(condition, reload);
-        }
+        // for(let i = 0; i <= 300; ++i){
+        //   data = await addon.getFDTD_2D(condition, reload);
+        // }
         //
         // data = {
         //     dataX : [0, 2, 5],
@@ -76,41 +61,16 @@ const intervalData = async (lambda, tau, n1, reload, type) => {
 
      //   emitter.emit('newData', data);
 
-
-
-
-        // let dataX = data.dataX;
-        // let dataY = data.dataY;
-
-        // res.status(200).json({
-        //     dataX: data.dataX,
-        //     dataY: data.dataY,
-        //     row: data.row,
-        //     col: data.col,
-        // });
-
-
-
         setInterval(async () => {
-           // const obj = { message: Math.random(), id: Math.random() };
-            //data = await addon.getFDTD_2D(condition, reload);
-
-            col = Math.random() * (100 - 50) + 50;
-            let dataX = [];
-            let dataY = [];
-
-            for(i = 0; i < col; ++i){
-                dataX[i] = i;
-                dataY[i] = Math.random() * (100 - 10) + 10;
-            }
+            data = await addon.getFDTD_2D(condition, reload);
             data = {
-                dataX,
-                dataY ,
+                dataX: data.dataX,
+                dataY: data.dataY,
                 row: 1,
-                col}
+                col: data.col}
 
             emitter.emit('newData', data);
-        }, 3000)
+        }, 50)
 
 
     }
