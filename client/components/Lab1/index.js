@@ -48,9 +48,6 @@ export default function Lab1({
                              }) {
     const classes = useStyles();
 
-    const [data, setData] = useState({});
-
-
 
     const [tau, setTau] = useState(tauServer);
     const [lambda, setLambda] = useState(lambdaServer);
@@ -61,15 +58,7 @@ export default function Lab1({
     const [pause, setPause] = useState(false);
 
     const [dataChart, setDataChart] = useState([]);
-    const [dataX, setDataX] = useState(null);
-    const [dataY, setDataY] = useState(null);
 
-    const [row, setRow] = useState(null);
-    const [col, setCol] = useState(null);
-
-
-    const [messages, setMessages] = useState({});
-    const [value, setValue] = useState('');
 
 
     useEffect(() => {
@@ -79,9 +68,34 @@ export default function Lab1({
     const subscribe = async () => {
         const eventSource = new EventSource(`http://localhost:5000/connect`)
         eventSource.onmessage = function (event) {
-            const message = JSON.parse(event.data);
-            console.log(message)
-            setMessages(message);
+            let {dataX, dataY, row, col} = JSON.parse(event.data);
+
+
+            col = Math.random() * (10 - 5) + 5;
+            dataX = [];
+            dataY = [];
+
+            for(let i = 0; i < col; ++i){
+                dataX[i] = i;
+                dataY[i] = Math.random() * (100 - 10) + 10;
+            }
+
+
+            setStep(0);
+            setPause(false);
+            setSimulation(true);
+
+            let tmpDataChart = [];
+            for (let j = 0; j < col; j++) {
+                tmpDataChart.push({
+                    argument: dataX[j],
+                    value: dataY[j],
+                });
+            }
+            console.log(tmpDataChart)
+            setDataChart(tmpDataChart);
+            setStep((step) => step + 1);
+
         }
     }
 
@@ -101,46 +115,46 @@ export default function Lab1({
 
 
 
-    async function fetchData() {
-        const [lambda, tau, n1] = [1,10,1];
-
-        const response = await fetch(
-            // process.env.API_URL+
-            "http://localhost:3000/" +
-            "api/echo?" +
-            new URLSearchParams({
-                lambda,
-                tau,
-                n1,
-                reload: false,
-                type: "2D",
-            })
-
-        );
-        const data = await response.json();
-        setData(data);
-
-        setDataX(data.dataX);
-        setDataY(data.dataY);
-        setRow(data.row);
-        setCol(data.col);
-
-        setStep(0);
-        setPause(false);
-        setSimulation(true);
-
-        let tmpDataChart = [];
-        for (let j = 0; j < data.col; j++) {
-            tmpDataChart.push({
-                argument: data.dataX[j],
-                value: data.dataY[j],
-            });
-        }
-        console.log(tmpDataChart)
-        setDataChart(tmpDataChart);
-        setStep((step) => step + 1);
-
-    }
+    // async function fetchData() {
+    //     const [lambda, tau, n1] = [1,10,1];
+    //
+    //     const response = await fetch(
+    //         // process.env.API_URL+
+    //         "http://localhost:3000/" +
+    //         "api/echo?" +
+    //         new URLSearchParams({
+    //             lambda,
+    //             tau,
+    //             n1,
+    //             reload: false,
+    //             type: "2D",
+    //         })
+    //
+    //     );
+    //     const data = await response.json();
+    //     setData(data);
+    //
+    //     setDataX(data.dataX);
+    //     setDataY(data.dataY);
+    //     setRow(data.row);
+    //     setCol(data.col);
+    //
+    //     setStep(0);
+    //     setPause(false);
+    //     setSimulation(true);
+    //
+    //     let tmpDataChart = [];
+    //     for (let j = 0; j < data.col; j++) {
+    //         tmpDataChart.push({
+    //             argument: data.dataX[j],
+    //             value: data.dataY[j],
+    //         });
+    //     }
+    //     console.log(tmpDataChart)
+    //     setDataChart(tmpDataChart);
+    //     setStep((step) => step + 1);
+    //
+    // }
 
 
     // useEffect(() => {
@@ -192,7 +206,6 @@ export default function Lab1({
 
     return (
         <React.Fragment>
-            <div>{JSON.stringify(messages)}</div>
                 <div className={classes.root}>
                     <Grid container justify="space-between">
                         <TextField
@@ -244,7 +257,9 @@ export default function Lab1({
                             }}
                         />
                     </Grid>
-
+                    <div>asdasdasd</div>
+                    <div>asdasdasasdasdd</div>
+                    \<div>asdasdasd</div>
                     <div>
                         <Chart data={dataChart}>
                             <ArgumentAxis />
