@@ -71,14 +71,14 @@ export default function Lab1({
             let {dataX, dataY, row, col} = JSON.parse(event.data);
 
 
-            col = Math.random() * (10 - 5) + 5;
-            dataX = [];
-            dataY = [];
-
-            for(let i = 0; i < col; ++i){
-                dataX[i] = i;
-                dataY[i] = Math.random() * (100 - 10) + 10;
-            }
+            // col = Math.random() * (10 - 5) + 5;
+            // dataX = [];
+            // dataY = [];
+            //
+            // for(let i = 0; i < col; ++i){
+            //     dataX[i] = i;
+            //     dataY[i] = Math.random() * (100 - 10) + 10;
+            // }
 
 
             setStep(0);
