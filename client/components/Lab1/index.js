@@ -79,9 +79,9 @@ export default function Lab1( ) {
         setSimulation(true);
 
         eventSource.onmessage = function (event) {
-            let {dataX, dataY, row, col} = JSON.parse(event.data);
+            let {dataX, dataY, step, col} = JSON.parse(event.data);
 
-            setStep(0);
+            setStep(step || 0);
 
 
             let tmpDataChart = [];
@@ -98,6 +98,7 @@ export default function Lab1( ) {
     }
 
     const sendConditions = async (reload = true) => {
+        setPause(false);
             await axios.post('http://localhost:5000/nextLayer', {
                 lambda,
                 tau,
@@ -164,7 +165,7 @@ export default function Lab1( ) {
                         </Button>
                         <TextField
                             label="Номер шага"
-                            value={step*10}
+                            value={step}
                             InputProps={{
                                 readOnly: true,
                             }}

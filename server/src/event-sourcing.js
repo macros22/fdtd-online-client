@@ -20,11 +20,12 @@ app.get('/connect', (req, res) => {
         'Cache-Control': 'no-cache',
     })
     console.log("connected")
-    emitter.on('newData', ({dataX, dataY, row, col}) => {
+    emitter.on('newData', ({dataX, dataY, step, row, col}) => {
         res.write(`data: ${JSON.stringify(
             {
                 dataX,
                 dataY,
+                step,
                 row,
                 col
             })} \n\n`);
@@ -75,6 +76,7 @@ const newInterval = async ( condition, reload = true) => {
         data = {
             dataX: data.dataX,
             dataY: data.dataY,
+            step: data.currentTick,
             row: 1,
             col: data.col}
 
