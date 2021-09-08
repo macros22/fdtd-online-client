@@ -10,6 +10,9 @@ const app = express()
 app.use(cors())
 app.use(express.json())
 
+
+let intervalId = null;
+
 app.get('/connect', (req, res) => {
     res.writeHead(200, {
         'Connection': 'keep-alive',
@@ -26,43 +29,46 @@ app.get('/connect', (req, res) => {
                 col
             })} \n\n`);
     })
+
+    req.on("close", function() {
+
+        // Breaks the interval loop on client disconnected
+        if(intervalId) {
+            clearInterval(intervalId);
+            console.log('App closed. Interval cleared');
+        }
+
+    });
 })
 
 app.post('/nextLayer', ((req, res) => {
-    const { lambda, tau, n1, reload, type} = req.body;
+    const { lambda, tau, n1, reload, type } = req.body;
 
-    intervalData(lambda, tau, n1, reload, type);
+    startIntervalData(lambda, tau, n1, reload, type);
 
     res.status(200)
     res.json({ lambda, tau, n1 })
 }))
 
-const intervalData = async (lambda, tau, n1, reload, type) => {
-    let data = {};
+
+const startIntervalData = async ( lambda, tau, n1, reload, type ) => {
 
     if (type == "2D") {
 
         const condition = [+lambda, +tau, +n1];
-        const reload = false;
+        const reload = true;
 
-        data = await addon.getFDTD_2D(condition, reload);
+        let data = await addon.getFDTD_2D(condition, reload);
         emitter.emit('newData', data);
 
-        // for(let i = 0; i <= 300; ++i){
-        //   data = await addon.getFDTD_2D(condition, reload);
-        // }
-        //
-        // data = {
-        //     dataX : [0, 2, 5],
-        //     dataY : [2, 1, 8],
-        //     row: 1,
-        //     col: 3}
+        // Closing previous interval.
+        if(intervalId) {
+            clearInterval(intervalId);
+            console.log('Interval cleared');
+        }
 
-
-     //   emitter.emit('newData', data);
-
-        setInterval(async () => {
-            data = await addon.getFDTD_2D(condition, reload);
+        intervalId = setInterval(async () => {
+            data = await addon.getFDTD_2D(condition, false);
             data = {
                 dataX: data.dataX,
                 dataY: data.dataY,
@@ -70,11 +76,10 @@ const intervalData = async (lambda, tau, n1, reload, type) => {
                 col: data.col}
 
             emitter.emit('newData', data);
-        }, 50)
+        }, 100)
 
 
     }
 }
-
 
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`))

@@ -49,7 +49,6 @@ export default function Lab1({
                              }) {
     const classes = useStyles();
 
-
     const [tau, setTau] = useState(tauServer);
     const [lambda, setLambda] = useState(lambdaServer);
     const [n1, setN1] = useState(n1Server);
@@ -61,13 +60,21 @@ export default function Lab1({
     const [dataChart, setDataChart] = useState([]);
 
 
-
     useEffect(() => {
-        subscribe()
+        subscribe();
     }, [])
 
     const subscribe = async () => {
-        const eventSource = new EventSource(`http://localhost:5000/connect`)
+        const eventSource = new EventSource(`http://localhost:5000/connect`);
+
+        eventSource.onopen = function(e) {
+            console.log("Event: open");
+        };
+
+        eventSource.onerror = function(e) {
+            console.log("Event: error");
+        };
+
         eventSource.onmessage = function (event) {
             let {dataX, dataY, row, col} = JSON.parse(event.data);
 
