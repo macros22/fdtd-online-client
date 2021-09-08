@@ -31,7 +31,8 @@ const useStyles = makeStyles((theme) => ({
         width: "100%",
     },
     paper: {
-        marginTop: "1rem",
+        margin: "1rem",
+        padding: "1rem",
     },
     title: {
         padding: theme.spacing(2),
@@ -41,17 +42,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-
-export default function Lab1({
-                                 lambdaServer = 1,
-                                 tauServer = 10,
-                                 n1Server = 1,
-                             }) {
+export default function Lab1( ) {
     const classes = useStyles();
 
-    const [tau, setTau] = useState(tauServer);
-    const [lambda, setLambda] = useState(lambdaServer);
-    const [n1, setN1] = useState(n1Server);
+    const [tau, setTau] = useState(10);
+    const [lambda, setLambda] = useState(1);
+    const [n1, setN1] = useState(1);
 
     const [step, setStep] = useState(0);
     const [simulation, setSimulation] = useState(false);
@@ -60,9 +56,12 @@ export default function Lab1({
     const [dataChart, setDataChart] = useState([]);
 
 
+
+
     useEffect(() => {
         subscribe();
     }, [])
+
 
     const subscribe = async () => {
         const eventSource = new EventSource(`http://localhost:5000/connect`);
@@ -75,12 +74,15 @@ export default function Lab1({
             console.log("Event: error");
         };
 
+
+        setPause(false);
+        setSimulation(true);
+
         eventSource.onmessage = function (event) {
             let {dataX, dataY, row, col} = JSON.parse(event.data);
 
             setStep(0);
-            setPause(false);
-            setSimulation(true);
+
 
             let tmpDataChart = [];
             for (let j = 0; j < col; j++) {
@@ -95,43 +97,24 @@ export default function Lab1({
         }
     }
 
-    const sendConditions = async () => {
+    const sendConditions = async (reload = true) => {
             await axios.post('http://localhost:5000/nextLayer', {
                 lambda,
                 tau,
                 n1,
-                reload: false,
+                reload,
                 type: "2D",
             })
     }
 
-    // useEffect(() => {
-    //
-    //     if (simulation && !pause && Object.keys(data).length) {
-    //         let tmpDataChart;
-    //         const interval = setInterval(() => {
-    //             if (step < (row-1)) {
-    //                 tmpDataChart = [];
-    //                 for (let j = 0; j < col; j++) {
-    //                     tmpDataChart.push({
-    //                         argument: dataX[step][j],
-    //                         value: dataY[step][j],
-    //                     });
-    //                 }
-    //                 setDataChart(tmpDataChart);
-    //                 setStep((step) => step + 1);
-    //             }else{
-    //                 setSimulation(false)}
-    //         }, 220);
-    //         return () => clearInterval(interval);
-    //     }
-    // }, [dataChart, simulation, pause]);
-
+    const pauseDataReceiving = async () => {
+        await axios.get('http://localhost:5000/pause/lab1');
+    }
 
     return (
         <React.Fragment>
                 <div className={classes.root}>
-                    <Paper>
+                    <Paper className={classes.paper}>
                     <Grid container justify="space-between">
                         <TextField
                             value={lambda}
@@ -152,8 +135,17 @@ export default function Lab1({
                             onChange={(e) => setTau(e.target.value)}
                         />
                         <Button
-                            onClick={(e) => {
-                                if (simulation) setPause((pause) => !pause);
+                            onClick={async (e) => {
+                                e.preventDefault();
+                                if (simulation){
+                                    if(!pause) {
+                                        pauseDataReceiving();
+                                    }else {
+                                        sendConditions(false);
+                                    }
+                                    setPause((pause) => !pause);
+                                }
+                                console.log("paused")
                             }}
                             variant="contained"
                             color="primary"
@@ -163,7 +155,7 @@ export default function Lab1({
                         <Button
                             onClick={async (e) => {
                                 e.preventDefault();
-                                sendConditions();
+                                await sendConditions();
                             }}
                             variant="contained"
                             color="primary"
@@ -179,7 +171,7 @@ export default function Lab1({
                         />
                     </Grid>
                     </Paper>
-                    <Paper>
+                    <Paper className={classes.paper}>
                         <Chart data={dataChart}>
                             <ArgumentAxis />
                             <ValueAxis />

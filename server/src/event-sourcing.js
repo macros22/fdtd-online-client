@@ -42,43 +42,56 @@ app.get('/connect', (req, res) => {
 })
 
 app.post('/nextLayer', ((req, res) => {
-    const { lambda, tau, n1, reload, type } = req.body;
+    let { lambda, tau, n1, reload, type } = req.body;
 
-    startIntervalData(lambda, tau, n1, reload, type);
+    startSendingData(lambda, tau, n1, reload, type);
 
     res.status(200)
     res.json({ lambda, tau, n1 })
 }))
 
+app.get('/pause/lab1', ((req, res) => {
+    stopInterval();
+    res.status(200);
+    res.json({ message: "Data sending paused" });
+}))
 
-const startIntervalData = async ( lambda, tau, n1, reload, type ) => {
+
+
+const stopInterval = () => {
+    if( intervalId ) {
+        clearInterval(intervalId);
+        console.log('Interval cleared');
+    }
+}
+
+const newInterval = async ( condition, reload = true) => {
+
+    let data = await addon.getFDTD_2D(condition, reload);
+    emitter.emit('newData', data);
+
+    intervalId = setInterval(async () => {
+        data = await addon.getFDTD_2D(condition, false);
+        data = {
+            dataX: data.dataX,
+            dataY: data.dataY,
+            row: 1,
+            col: data.col}
+
+        emitter.emit('newData', data);
+    }, 100)
+}
+
+const startSendingData = async ( lambda, tau, n1, reload, type ) => {
 
     if (type == "2D") {
 
         const condition = [+lambda, +tau, +n1];
-        const reload = true;
-
-        let data = await addon.getFDTD_2D(condition, reload);
-        emitter.emit('newData', data);
+        //const reload = true;
 
         // Closing previous interval.
-        if(intervalId) {
-            clearInterval(intervalId);
-            console.log('Interval cleared');
-        }
-
-        intervalId = setInterval(async () => {
-            data = await addon.getFDTD_2D(condition, false);
-            data = {
-                dataX: data.dataX,
-                dataY: data.dataY,
-                row: 1,
-                col: data.col}
-
-            emitter.emit('newData', data);
-        }, 100)
-
-
+        stopInterval();
+        newInterval(condition, reload);
     }
 }
 
