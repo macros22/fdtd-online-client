@@ -59,7 +59,7 @@ export default function Lab1() {
     };
 
     setPause(false);
-    setSimulation(true);
+
 
     eventSource.onmessage = function (event) {
       let { dataX, dataY, step, col } = JSON.parse(event.data);
@@ -74,12 +74,10 @@ export default function Lab1() {
         });
       }
       setDataChart(tmpDataChart);
-      setStep((step) => step + 1);
     };
   };
 
   const sendConditions = (reload = true) => {
-    setPause(false);
     (async function () {
       await axios.post('http://localhost:5000/nextLayer', {
         lambda,
@@ -123,15 +121,15 @@ export default function Lab1() {
             <Button
               onClick={async (e) => {
                 e.preventDefault();
-                if (simulation) {
                   if (!pause) {
                     pauseDataReceiving();
                   } else {
                     sendConditions(false);
                   }
                   setPause((pause) => !pause);
-                }
+
               }}
+              disabled={!simulation}
               variant="contained"
               color="primary"
             >
@@ -141,6 +139,7 @@ export default function Lab1() {
               onClick={(e) => {
                 e.preventDefault();
                 sendConditions();
+                setSimulation(true);
               }}
               variant="contained"
               color="primary"
