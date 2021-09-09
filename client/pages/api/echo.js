@@ -3,19 +3,16 @@ import addon from 'napi-physics-modeling-oop';
 // import { NextApiRequest, NextApiResponse } from 'next'
 
 export default async function echo(req, res) {
+  console.log(addon);
 
-  console.log(addon)
-
-  if (req.query.type == "2D") {
-
+  if (req.query.type == '2D') {
     console.log(req.url);
     const { lambda, tau, n1, reloadStr } = req.query;
     const condition = [+lambda, +tau, +n1];
     const reload = false;
 
-
     let data = await addon.getFDTD_2D(condition, reload);
-    console.log(data)
+    console.log(data);
     // for(let i = 0; i <= 30; ++i){
     //   data = await addon.getFDTD_2D(condition, reload);
     // }
@@ -29,7 +26,7 @@ export default async function echo(req, res) {
       row: data.row,
       col: data.col,
     });
-  } else if (req.query.type == "3D") {
+  } else if (req.query.type == '3D') {
     const { lambda, beamsize, n1 } = req.query;
     const condition = [+lambda, +beamsize, +n1];
 
@@ -50,7 +47,6 @@ export default async function echo(req, res) {
       dataEnergy.push(data.dataEnergy[i]);
     }
 
-
     res.status(200);
     res.json({
       // dataX: data.dataX,
@@ -68,11 +64,9 @@ export default async function echo(req, res) {
       dataEnergy,
       row: dataX.length,
       col: data.col,
-      eachNumStep: data.eachNumStep*5,
+      eachNumStep: data.eachNumStep * 5,
     });
-  } else if (req.query.type == "main") {
-
-
+  } else if (req.query.type == 'main') {
     res.status(200);
     res.json({
       isOK: true,

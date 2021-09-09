@@ -72,7 +72,6 @@ export default function Lab2({
   const [minEnergy, setMinEnergy] = useState(null);
   const [row, setRow] = useState(null);
 
-
   async function fetchData() {
     const [lambda, beamsize, n1] = [1, 3, 1];
 
@@ -87,7 +86,6 @@ export default function Lab2({
         })
     );
     setData(await response.json());
-
   }
 
   useEffect(() => {

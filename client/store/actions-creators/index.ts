@@ -1,5 +1,8 @@
-import * as aLLWordsActionCreators from './allWords';
+/*
+ import * as aLLWordsActionCreators from './allWords';
 
-export default {
-  ...aLLWordsActionCreators,
-};
+ export default {
+   ...aLLWordsActionCreators,
+ };
+*/
+

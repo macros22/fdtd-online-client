@@ -6,7 +6,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import { CacheProvider, EmotionCache } from '@emotion/react';
 import theme from 'src/theme';
 import createEmotionCache from 'src/createEmotionCache';
-import { wrapper } from 'store';
+// import { wrapper } from 'store';
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
@@ -17,10 +17,10 @@ interface MyAppProps extends AppProps {
 
 function MyApp(props: MyAppProps) {
   //emotionCache = clientSideEmotionCache,
-  const { Component,  pageProps } = props;
+  const { Component, pageProps } = props;
   return (
     <>
-    {/*<CacheProvider value={emotionCache}>*/}
+      {/*<CacheProvider value={emotionCache}>*/}
       <Head>
         <title>Eng</title>
         <meta name="viewport" content="initial-scale=1, width=device-width" />
@@ -30,9 +30,10 @@ function MyApp(props: MyAppProps) {
         <CssBaseline />
         <Component {...pageProps} />
       </ThemeProvider>
-    {/*</CacheProvider>*/}
+      {/*</CacheProvider>*/}
     </>
   );
 }
 
-export default wrapper.withRedux(MyApp);
+export default MyApp;
+// export default wrapper.withRedux(MyApp);

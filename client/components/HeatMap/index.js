@@ -1,17 +1,17 @@
 //http://zhangwenli.com/blog/2015/06/12/drawing-heatmap-with-html-canvas/
 //https://github.com/mourner/simpleheat/blob/86af1384db714ab32626ed25aeb396fd0869d56d/simpleheat.js
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef } from 'react';
 
 export const HeatMap = ({
-                          minVal,
-                          maxVal,
-                          dataX = [],
-                          dataY = [],
-                          dataVal = [],
-                          width = 295,
-                          height = 300,
-                        }) => {
+  minVal,
+  maxVal,
+  dataX = [],
+  dataY = [],
+  dataVal = [],
+  width = 295,
+  height = 300,
+}) => {
   let data = [];
 
   const canvasRef = useRef(null);
@@ -25,11 +25,7 @@ export const HeatMap = ({
 
   if (dataX.length == 0) {
     for (let i = 0; i < 10000; ++i) {
-      data.push([
-        Math.random() * width,
-        Math.random() * height,
-        Math.random() * 0.3,
-      ]);
+      data.push([Math.random() * width, Math.random() * height, Math.random() * 0.3]);
     }
   } else {
     for (let i = 0; i < dataX.length; ++i) {
@@ -47,21 +43,21 @@ export const HeatMap = ({
   useEffect(() => {
     //creating main canvas
     let canvas = canvasRef.current;
-    let ctx = canvas.getContext("2d");
+    let ctx = canvas.getContext('2d');
     canvas.width = width;
     canvas.height = height;
 
     //creating brush canvas
     const brushCanvas = canvasBrushRef.current;
-    const brushContext = brushCanvas.getContext("2d");
+    const brushContext = brushCanvas.getContext('2d');
     brushCanvas.width = diametr;
     brushCanvas.height = diametr;
 
     brushContext.shadowOffsetX = diametr;
     brushContext.shadowBlur = brushBlurSize;
-    brushContext.shadowColor = "black";
+    brushContext.shadowColor = 'black';
 
-    brushContext.fillStyle = "#000000";
+    brushContext.fillStyle = '#000000';
     brushContext.beginPath();
     brushContext.arc(-radius, radius, brushSize, 0, Math.PI * 2, true);
     brushContext.closePath();
@@ -72,12 +68,12 @@ export const HeatMap = ({
     let canvasGradient = canvasGradientRef.current;
     canvasGradient.width = 1;
     canvasGradient.height = levels;
-    let contextGradient = canvasGradient.getContext("2d");
+    let contextGradient = canvasGradient.getContext('2d');
 
     const gradientColors = {
-      0: "blue",
+      0: 'blue',
       //  0.5: "green",
-      1.0: "blue",
+      1.0: 'blue',
     };
 
     //draw data
@@ -139,8 +135,8 @@ export const HeatMap = ({
 
   return (
     <React.Fragment>
-      <canvas style={{ display: "none" }} ref={canvasBrushRef} />
-      <canvas style={{ display: "none" }} ref={canvasGradientRef} />
+      <canvas style={{ display: 'none' }} ref={canvasBrushRef} />
+      <canvas style={{ display: 'none' }} ref={canvasGradientRef} />
       <canvas ref={canvasRef} />
     </React.Fragment>
   );
