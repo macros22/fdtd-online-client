@@ -9,6 +9,8 @@ import MenuIcon from '@material-ui/icons/Menu';
 import { useStyles } from './navbar.styled';
 import { Categories } from 'components';
 
+const WAVE_OPTICS_NAME = 'ВОЛНОВАЯ ОПТИКА';
+
 export default function Navbar() {
   const classes = useStyles();
   return (
@@ -24,7 +26,7 @@ export default function Navbar() {
             <MenuIcon />
           </IconButton>
           <Typography className={classes.title} variant="h5" noWrap>
-            Wave Optics
+            {WAVE_OPTICS_NAME}
           </Typography>
         </Toolbar>
       </AppBar>

@@ -1,4 +1,4 @@
 export type DataChartType = {
-  argument: number,
-  value: number,
+  argument: number;
+  value: number;
 }[];

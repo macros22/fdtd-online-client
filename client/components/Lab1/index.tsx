@@ -1,38 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-
 import { ArgumentAxis, ValueAxis, Chart, LineSeries } from '@devexpress/dx-react-chart-material-ui';
-
 import Grid from '@material-ui/core/Grid';
 import axios from 'axios';
-
 import { Button, TextField } from '@material-ui/core';
 import Paper from '@material-ui/core/Paper';
-
+import {
+  CONTINUE,
+  IMPULSE_TIME_NAME,
+  PAUSE,
+  REFRACTIVE_INDEX_NAME,
+  STEP_NUMBER,
+  WAVE_LENGTH_NAME,
+} from 'names/lab1.name';
+import classes from './lab1.module.scss';
 import { DataChartType } from 'types/lab1';
 
-const useStyles = makeStyles(() => ({
-  root: {
-    flexGrow: 1,
-    width: '100%',
-    marginTop: '1rem',
-  },
-  condition: {
-    width: '100%',
-  },
-  paper: {
-    margin: '1rem',
-    padding: '1rem',
-  },
-  title: {
-    textAlign: 'center',
-    width: '100%',
-  },
-}));
-
 export default function Lab1() {
-  const classes = useStyles();
-
   const [tau, setTau] = useState<number>(10);
   const [lambda, setLambda] = useState<number>(1);
   const [n1, setN1] = useState<number>(1);
@@ -60,10 +43,8 @@ export default function Lab1() {
 
     setPause(false);
 
-
     eventSource.onmessage = function (event) {
       let { dataX, dataY, step, col } = JSON.parse(event.data);
-
       setStep(step || 0);
 
       let tmpDataChart = [];
@@ -102,38 +83,37 @@ export default function Lab1() {
           <Grid container justify="space-between">
             <TextField
               value={lambda}
-              label="Длина волны, мкм"
+              label={WAVE_LENGTH_NAME}
               variant="outlined"
               onChange={(e) => setLambda(+e.target.value)}
             />
             <TextField
-              label="Показатель преломления"
+              label={REFRACTIVE_INDEX_NAME}
               variant="outlined"
               value={n1}
               onChange={(e) => setN1(+e.target.value)}
             />
             <TextField
-              label="Длительн. импульса, фс"
+              label={IMPULSE_TIME_NAME}
               variant="outlined"
               value={tau}
               onChange={(e) => setTau(+e.target.value)}
             />
             <Button
-              onClick={async (e) => {
+              onClick={(e) => {
                 e.preventDefault();
-                  if (!pause) {
-                    pauseDataReceiving();
-                  } else {
-                    sendConditions(false);
-                  }
-                  setPause((pause) => !pause);
-
+                if (!pause) {
+                  pauseDataReceiving();
+                } else {
+                  sendConditions(false);
+                }
+                setPause((pause) => !pause);
               }}
               disabled={!simulation}
               variant="contained"
               color="primary"
             >
-              {pause ? 'Продолжить' : 'Пауза'}
+              {pause ? CONTINUE : PAUSE}
             </Button>
             <Button
               onClick={(e) => {
@@ -147,7 +127,7 @@ export default function Lab1() {
               СТАРТ
             </Button>
             <TextField
-              label="Номер шага"
+              label={STEP_NUMBER}
               value={step}
               InputProps={{
                 readOnly: true,
