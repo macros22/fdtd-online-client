@@ -4,7 +4,7 @@ import * as React from 'react';
 // import { Grid } from '@material-ui/core';
 
 import MainLayout from 'layout/MainLayout';
-import { Lab1 } from 'components';
+import { Lab2 } from 'components';
 
 // const useStyles = makeStyles({
 //   root: {
@@ -35,7 +35,7 @@ export default function Index() {
       {/*          <h1>asd</h1>*/}
       {/*        </Grid>*/}
       {/*      </Grid>*/}
-      <Lab1 />
+      <Lab2 />
     </MainLayout>
   );
 }

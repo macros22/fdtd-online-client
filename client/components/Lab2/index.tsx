@@ -1,22 +1,24 @@
 import React, { useState, useEffect } from 'react';
-import { ArgumentAxis, ValueAxis, Chart, LineSeries } from '@devexpress/dx-react-chart-material-ui';
+//import { ArgumentAxis, ValueAxis, Chart, LineSeries } from '@devexpress/dx-react-chart-material-ui';
 import Grid from '@material-ui/core/Grid';
 import axios from 'axios';
 import { Button, TextField } from '@material-ui/core';
 import Paper from '@material-ui/core/Paper';
 import {
-  CONTINUE,
-  IMPULSE_TIME_NAME,
-  PAUSE,
+  CONTINUE_NAME,
+  BEAMSIZE_NAME,
+  PAUSE_NAME,
   REFRACTIVE_INDEX_NAME,
-  STEP_NUMBER,
+  STEP_NUMBER_NAME,
   WAVE_LENGTH_NAME,
-} from 'names/lab1.name';
-import classes from './lab1.module.scss';
-import { DataChartType } from 'types/lab1';
+} from 'names/lab2.name';
+import classes from './lab2.module.scss';
+
+import { HeatMap } from 'components';
+// import { DataChartType } from 'types/lab2';
 
 export default function Lab1() {
-  const [tau, setTau] = useState<number>(10);
+  const [beamsize, setBeamsize] = useState<number>(3);
   const [lambda, setLambda] = useState<number>(1);
   const [n1, setN1] = useState<number>(1);
 
@@ -24,14 +26,49 @@ export default function Lab1() {
   const [simulation, setSimulation] = useState<boolean>(false);
   const [pause, setPause] = useState<boolean>(false);
 
-  const [dataChart, setDataChart] = useState<DataChartType>([]);
+
+  type dataType = {
+    dataX: number[];
+    dataY: number[];
+    dataEz: number[];
+    dataHx: number[];
+    dataHy: number[];
+    row: number;
+    col: number;
+    step: number;
+  } | null;
+  const [allData, setAllData] = useState<dataType>(null);
+
+
+
+  // const [dataX, setDataX] = useState<dataType>(null);
+  // const [dataY, setDataY] = useState<dataType>(null);
+  //
+  // const [dataEz, setDataEz] = useState<dataType>(null);
+  // const [maxEz, setMaxEz] = useState<dataType>(null);
+  // const [minEz, setMinEz] = useState<dataType>(null);
+
+  // const [dataHy, setDataHy] = useState<number[]>(null);
+  // const [maxHy, setMaxHy] = useState<number[]>(null);
+  // const [minHy, setMinHy] = useState<number[]>(null);
+  //
+  // const [dataHx, setDataHx] = useState<number[]>(null);
+  // const [maxHx, setMaxHx] = useState<number[]>(null);
+  // const [minHx, setMinHx] = useState<number[]>(null);
+  //
+  // const [dataEnergy, setDataEnergy] = useState<number[]>(null);
+  // const [maxEnergy, setMaxEnergy] = useState<number[]>(null);
+  // const [minEnergy, setMinEnergy] = useState<number[]>(null);
+
+
+  //const [dataChart, setDataChart] = useState<DataChartType>([]);
 
   useEffect(() => {
     subscribe();
   }, []);
 
   const subscribe = async () => {
-    const eventSource = new EventSource(`http://localhost:5000/connect/lab1`);
+    const eventSource = new EventSource(`http://localhost:5000/connect/lab2`);
 
     eventSource.onopen = function () {
       console.log('Event: open');
@@ -44,35 +81,39 @@ export default function Lab1() {
     setPause(false);
 
     eventSource.onmessage = function (event) {
-      let { dataX, dataY, step, col } = JSON.parse(event.data);
+
+      let data = JSON.parse(event.data);
+      setAllData(data)
+
+      //let { dataX, dataY, dataEz, dataHy, dataHx, dataEnergy, step, col, row} = JSON.parse(event.data);
       setStep(step || 0);
 
-      let tmpDataChart = [];
-      for (let j = 0; j < col; j++) {
-        tmpDataChart.push({
-          argument: dataX[j],
-          value: dataY[j],
-        });
-      }
-      setDataChart(tmpDataChart);
+      // let tmpDataChart = [];
+      // for (let j = 0; j < col; j++) {
+      //   tmpDataChart.push({
+      //     argument: dataX[j],
+      //     value: dataY[j],
+      //   });
+      // }
+      // setDataChart(tmpDataChart);
     };
   };
 
   const sendConditions = (reload = true) => {
     (async function () {
-      await axios.post('http://localhost:5000/nextLayer/lab1', {
+      await axios.post('http://localhost:5000/nextLayer/lab2', {
         lambda,
-        tau,
+        beamsize,
         n1,
         reload,
-        type: '2D',
+        type: '3D',
       });
     })();
   };
 
   const pauseDataReceiving = () => {
     (async function () {
-      await axios.get('http://localhost:5000/pause/lab1');
+      await axios.get('http://localhost:5000/pause/lab2');
     })();
   };
 
@@ -94,10 +135,10 @@ export default function Lab1() {
               onChange={(e) => setN1(+e.target.value)}
             />
             <TextField
-              label={IMPULSE_TIME_NAME}
+              label={BEAMSIZE_NAME}
               variant="outlined"
-              value={tau}
-              onChange={(e) => setTau(+e.target.value)}
+              value={beamsize}
+              onChange={(e) => setBeamsize(+e.target.value)}
             />
             <Button
               onClick={(e) => {
@@ -113,7 +154,7 @@ export default function Lab1() {
               variant="contained"
               color="primary"
             >
-              {pause ? CONTINUE : PAUSE}
+              {pause ? CONTINUE_NAME : PAUSE_NAME}
             </Button>
             <Button
               onClick={(e) => {
@@ -127,7 +168,7 @@ export default function Lab1() {
               СТАРТ
             </Button>
             <TextField
-              label={STEP_NUMBER}
+              label={STEP_NUMBER_NAME}
               value={step}
               InputProps={{
                 readOnly: true,
@@ -135,12 +176,15 @@ export default function Lab1() {
             />
           </Grid>
         </Paper>
+
         <Paper className={classes.paper}>
-          <Chart data={dataChart}>
-            <ArgumentAxis />
-            <ValueAxis />
-            <LineSeries valueField="value" argumentField="argument" />
-          </Chart>
+          <HeatMap
+            // minVal={minEz}
+            // maxVal={maxEz}
+            // dataX={dataX[step]}
+            // dataY={dataY[step]}
+            // dataVal={dataEz[step]}
+          />
         </Paper>
       </div>
     </React.Fragment>

@@ -3,9 +3,9 @@
 
 import React, { useEffect, useRef } from 'react';
 
-export const HeatMap = ({
-  minVal,
-  maxVal,
+const HeatMap = ({
+  minVal = 0,
+  maxVal = 1,
   dataX = [],
   dataY = [],
   dataVal = [],
@@ -141,3 +141,5 @@ export const HeatMap = ({
     </React.Fragment>
   );
 };
+
+export default HeatMap;
