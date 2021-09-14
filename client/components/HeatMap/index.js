@@ -4,7 +4,7 @@
 import React, { useEffect, useRef } from 'react';
 
 const HeatMap = ({
-  minVal = 0,
+  minVal = -1,
   maxVal = 1,
   dataX = [],
   dataY = [],

@@ -27,6 +27,8 @@ export default function Lab1() {
   const [pause, setPause] = useState<boolean>(false);
 
 
+
+
   type dataType = {
     dataX: number[];
     dataY: number[];
@@ -36,8 +38,19 @@ export default function Lab1() {
     row: number;
     col: number;
     step: number;
-  } | null;
-  const [allData, setAllData] = useState<dataType>(null);
+  } ;
+  const initAllData: dataType = {
+    dataX: [],
+    dataY: [],
+    dataEz: [],
+    dataHx: [],
+    dataHy: [],
+    row: 0,
+    col: 0,
+    step: 0,
+  }
+
+  const [allData, setAllData] = useState<dataType>(initAllData);
 
 
 
@@ -45,8 +58,8 @@ export default function Lab1() {
   // const [dataY, setDataY] = useState<dataType>(null);
   //
   // const [dataEz, setDataEz] = useState<dataType>(null);
-  // const [maxEz, setMaxEz] = useState<dataType>(null);
-  // const [minEz, setMinEz] = useState<dataType>(null);
+   const [maxEz, setMaxEz] = useState<number>(1);
+   const [minEz, setMinEz] = useState<number>(-1);
 
   // const [dataHy, setDataHy] = useState<number[]>(null);
   // const [maxHy, setMaxHy] = useState<number[]>(null);
@@ -83,10 +96,18 @@ export default function Lab1() {
     eventSource.onmessage = function (event) {
 
       let data = JSON.parse(event.data);
-      setAllData(data)
+      console.log(data);
+      // setAllData(data)
+      //
+      // //let { dataX, dataY, dataEz, dataHy, dataHx, dataEnergy, step, col, row} = JSON.parse(event.data);
+      // setStep(step || 0);
+      //
+      //
+      // setMinEz(Math.min(...data.dataEz));
+      // setMaxEz(Math.max(...data.dataEz));
 
-      //let { dataX, dataY, dataEz, dataHy, dataHx, dataEnergy, step, col, row} = JSON.parse(event.data);
-      setStep(step || 0);
+
+
 
       // let tmpDataChart = [];
       // for (let j = 0; j < col; j++) {
@@ -177,15 +198,15 @@ export default function Lab1() {
           </Grid>
         </Paper>
 
-        <Paper className={classes.paper}>
-          <HeatMap
-            // minVal={minEz}
-            // maxVal={maxEz}
-            // dataX={dataX[step]}
-            // dataY={dataY[step]}
-            // dataVal={dataEz[step]}
-          />
-        </Paper>
+        {/*<Paper className={classes.paper}>*/}
+        {/*  <HeatMap*/}
+        {/*    minVal={minEz}*/}
+        {/*    maxVal={maxEz}*/}
+        {/*    dataX={allData.dataX}*/}
+        {/*    dataY={allData.dataY}*/}
+        {/*    dataVal={allData.dataEz}*/}
+        {/*  />*/}
+        {/*</Paper>*/}
       </div>
     </React.Fragment>
   );

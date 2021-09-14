@@ -145,10 +145,12 @@ app.get('/pause/lab2', ((req, res) => {
 const newIntervalLab2 = async ( condition, reload = true) => {
 
     let data = await addon.getFDTD_3D(condition, reload);
-    emitter.emit('newDataLab2', data);
+    //emitter.emit('newDataLab2', data);
 
     intervalId = setInterval(async () => {
-        data = await addon.getFDTD_3D(condition, false);
+        for(let j = 0; j < 5; ++j){
+            data = await addon.getFDTD_3D(condition, false);
+        }
         data = {
             dataX: data.dataX,
             dataY: data.dataY,
@@ -161,7 +163,7 @@ const newIntervalLab2 = async ( condition, reload = true) => {
             col: data.col}
 
         emitter.emit('newDataLab2', data);
-    }, 500)
+    }, 2000)
 }
 
 
@@ -175,9 +177,11 @@ const startSendingData = async ( condition, reload, type ) => {
 
     }else if (type == '3D') {
 
-
+        // Closing previous interval.
+        stopInterval();
+      //  newIntervalLab2(condition, reload);
         let data = await addon.getFDTD_3D(condition, reload);
-        //console.log(data)
+        console.log(data)
         emitter.emit('newDataLab2', data);
 
         // const { lambda, beamsize, n1 } = req.query;
