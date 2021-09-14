@@ -148,7 +148,7 @@ const newIntervalLab2 = async ( condition, reload = true) => {
     //emitter.emit('newDataLab2', data);
 
     intervalId = setInterval(async () => {
-        for(let j = 0; j < 5; ++j){
+        for(let j = 0; j < 8; ++j){
             data = await addon.getFDTD_3D(condition, false);
         }
         data = {
@@ -179,43 +179,11 @@ const startSendingData = async ( condition, reload, type ) => {
 
         // Closing previous interval.
         stopInterval();
-      //  newIntervalLab2(condition, reload);
-        let data = await addon.getFDTD_3D(condition, reload);
-        console.log(data)
-        emitter.emit('newDataLab2', data);
+        newIntervalLab2(condition, reload);
+      //  let data = await addon.getFDTD_3D(condition, reload);
+      //  console.log(data)
+       // emitter.emit('newDataLab2', data);
 
-        // const { lambda, beamsize, n1 } = req.query;
-        // const condition = [+lambda, +beamsize, +n1];
-        //
-        // const dataX = [];
-        // const dataY = [];
-        // const dataEz = [];
-        // const dataHy = [];
-        // const dataHx = [];
-        // const dataEnergy = [];
-        //
-        // const data = await addongetFDTD_3D(condition);
-        // for (let i = 0; i < data.dataX.length; i += 5) {
-        //     dataX.push(data.dataX[i]);
-        //     dataY.push(data.dataY[i]);
-        //     dataEz.push(data.dataEz[i]);
-        //     dataHy.push(data.dataHy[i]);
-        //     dataHx.push(data.dataHx[i]);
-        //     dataEnergy.push(data.dataEnergy[i]);
-        // }
-        //
-        // res.status(200);
-        // res.json({
-        //
-        //     dataX,
-        //     dataY,
-        //     dataEz,
-        //     dataHy,
-        //     dataHx,
-        //     dataEnergy,
-        //     row: data.row,
-        //     col: data.col,
-        // });
     }
 }
 
