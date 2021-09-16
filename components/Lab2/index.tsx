@@ -15,6 +15,9 @@ import classes from './lab2.module.scss';
 import { HeatMap } from 'components';
 // import { DataChartType } from 'types/lab2';
 
+
+// const SERVER_URL = process.env.SERVER_URL as string;
+const SERVER_URL = 'https://protected-lowlands-53492.herokuapp.com/';
 const min = -1;
 const max =  1.1;
 
@@ -60,7 +63,7 @@ export default function Lab1() {
   }, []);
 
   const subscribe = async () => {
-    const eventSource = new EventSource(`http://localhost:5000/connect/lab2`);
+    const eventSource = new EventSource(SERVER_URL + `connect/lab2`);
 
     eventSource.onopen = function () {
       console.log('Event: open');
@@ -92,7 +95,7 @@ export default function Lab1() {
 
   const sendConditions = (reload = true) => {
     (async function () {
-      await axios.post('http://localhost:5000/nextLayer/lab2', {
+      await axios.post(SERVER_URL + 'nextLayer/lab2', {
         lambda,
         beamsize,
         n1,
@@ -104,7 +107,7 @@ export default function Lab1() {
 
   const pauseDataReceiving = () => {
     (async function () {
-      await axios.get('http://localhost:5000/pause/lab2');
+      await axios.get(SERVER_URL + 'pause/lab2');
     })();
   };
 
