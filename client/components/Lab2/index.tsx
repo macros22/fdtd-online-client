@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-//import { ArgumentAxis, ValueAxis, Chart, LineSeries } from '@devexpress/dx-react-chart-material-ui';
 import Grid from '@material-ui/core/Grid';
 import axios from 'axios';
 import { Button, TextField } from '@material-ui/core';
@@ -13,9 +12,11 @@ import {
   WAVE_LENGTH_NAME,
 } from 'names/lab2.name';
 import classes from './lab2.module.scss';
-
 import { HeatMap } from 'components';
 // import { DataChartType } from 'types/lab2';
+
+const min = -1;
+const max =  1.1;
 
 export default function Lab1() {
   const [beamsize, setBeamsize] = useState<number>(3);
@@ -35,6 +36,7 @@ export default function Lab1() {
     dataEz: number[];
     dataHx: number[];
     dataHy: number[];
+    dataEnergy: number[];
     row: number;
     col: number;
     step: number;
@@ -45,36 +47,13 @@ export default function Lab1() {
     dataEz: [],
     dataHx: [],
     dataHy: [],
+    dataEnergy: [],
     row: 0,
     col: 0,
     step: 0,
   }
 
   const [allData, setAllData] = useState<dataType>(initAllData);
-
-
-
-  // const [dataX, setDataX] = useState<dataType>(null);
-  // const [dataY, setDataY] = useState<dataType>(null);
-  //
-  // const [dataEz, setDataEz] = useState<dataType>(null);
-   const [maxEz, setMaxEz] = useState<number>(1);
-   const [minEz, setMinEz] = useState<number>(-1);
-
-  // const [dataHy, setDataHy] = useState<number[]>(null);
-  // const [maxHy, setMaxHy] = useState<number[]>(null);
-  // const [minHy, setMinHy] = useState<number[]>(null);
-  //
-  // const [dataHx, setDataHx] = useState<number[]>(null);
-  // const [maxHx, setMaxHx] = useState<number[]>(null);
-  // const [minHx, setMinHx] = useState<number[]>(null);
-  //
-  // const [dataEnergy, setDataEnergy] = useState<number[]>(null);
-  // const [maxEnergy, setMaxEnergy] = useState<number[]>(null);
-  // const [minEnergy, setMinEnergy] = useState<number[]>(null);
-
-
-  //const [dataChart, setDataChart] = useState<DataChartType>([]);
 
   useEffect(() => {
     subscribe();
@@ -95,28 +74,19 @@ export default function Lab1() {
 
     eventSource.onmessage = function (event) {
 
-      let data = JSON.parse(event.data);
-      console.log(data);
-      // setAllData(data)
-      //
-      // //let { dataX, dataY, dataEz, dataHy, dataHx, dataEnergy, step, col, row} = JSON.parse(event.data);
-      // setStep(step || 0);
-      //
-      //
-      // setMinEz(Math.min(...data.dataEz));
-      // setMaxEz(Math.max(...data.dataEz));
+       let data = JSON.parse(event.data);
+       //console.log(data)
+       setAllData(data)
 
+       setStep(data.step || 0);
 
+       console.log(Math.min(...data.dataEnergy));
+       console.log(Math.max(...data.dataEnergy));
+      //  // setMinEz(Math.min(...data.dataEz));
+      //  // setMaxEz(Math.max(...data.dataEz));
+      // setMinEz(-1);
+      // setMaxEz(1.1);
 
-
-      // let tmpDataChart = [];
-      // for (let j = 0; j < col; j++) {
-      //   tmpDataChart.push({
-      //     argument: dataX[j],
-      //     value: dataY[j],
-      //   });
-      // }
-      // setDataChart(tmpDataChart);
     };
   };
 
@@ -198,15 +168,44 @@ export default function Lab1() {
           </Grid>
         </Paper>
 
-        {/*<Paper className={classes.paper}>*/}
-        {/*  <HeatMap*/}
-        {/*    minVal={minEz}*/}
-        {/*    maxVal={maxEz}*/}
-        {/*    dataX={allData.dataX}*/}
-        {/*    dataY={allData.dataY}*/}
-        {/*    dataVal={allData.dataEz}*/}
-        {/*  />*/}
-        {/*</Paper>*/}
+        <Paper className={classes.paper}>
+          <Grid container spacing={2} justify="space-between">
+            <Grid item>
+          <HeatMap
+            minVal={min}
+            maxVal={max}
+            dataX={allData.dataX}
+            dataY={allData.dataY}
+            dataVal={allData.dataEz}
+          />
+            </Grid>
+
+<Grid item>
+          <HeatMap
+            minVal={min}
+            maxVal={max}
+            dataX={allData.dataX}
+            dataY={allData.dataY}
+            dataVal={allData.dataHy}
+          /></Grid>
+<Grid item>
+          <HeatMap
+            minVal={-0.1}
+            maxVal={0.1}
+            dataX={allData.dataX}
+            dataY={allData.dataY}
+            dataVal={allData.dataHx}
+          /></Grid>
+<Grid item>
+          <HeatMap
+            minVal={min}
+            maxVal={max}
+            dataX={allData.dataX}
+            dataY={allData.dataY}
+            dataVal={allData.dataEnergy}
+          /></Grid>
+          </Grid>
+        </Paper>
       </div>
     </React.Fragment>
   );
