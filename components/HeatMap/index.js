@@ -23,21 +23,20 @@ const HeatMap = ({
   let radius = brushSize + brushBlurSize;
   let diametr = radius * 2;
 
-
   if (dataX.length == 0) {
     for (let i = 0; i < 10000; ++i) {
       data.push([Math.random() * width, Math.random() * height, Math.random() * 0.3]);
     }
   } else {
-     // console.log(minVal,maxVal)
+    // console.log(minVal,maxVal)
     for (let i = 0; i < dataX.length; ++i) {
-       // console.log(dataVal[i] + Math.abs(minVal)) / (maxVal + Math.abs(minVal));
+      // console.log(dataVal[i] + Math.abs(minVal)) / (maxVal + Math.abs(minVal));
       // console.log(dataX[i],dataY[i],dataVal[i])
-        data.push([
-          (dataX[i] * width) / 400,
-          (dataY[i] * height) / 400,
-          (dataVal[i] + Math.abs(minVal)) / (maxVal + Math.abs(minVal)),
-        ]);
+      data.push([
+        (dataX[i] * width) / 400,
+        (dataY[i] * height) / 400,
+        (dataVal[i] + Math.abs(minVal)) / (maxVal + Math.abs(minVal)),
+      ]);
     }
   }
 

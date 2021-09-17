@@ -14,8 +14,10 @@ import {
 } from 'names/lab1.name';
 import classes from './lab1.module.scss';
 import { DataChartType } from 'types/lab1';
+import { SERVER_URL } from 'constants/url';
+import MainLayout from 'layout/MainLayout';
 
-export default function Lab1() {
+export default function Index() {
   const [tau, setTau] = useState<number>(10);
   const [lambda, setLambda] = useState<number>(1);
   const [n1, setN1] = useState<number>(1);
@@ -31,7 +33,7 @@ export default function Lab1() {
   }, []);
 
   const subscribe = async () => {
-    const eventSource = new EventSource(`http://localhost:5000/connect/lab1`);
+    const eventSource = new EventSource(SERVER_URL + `connect/lab1`);
 
     eventSource.onopen = function () {
       console.log('Event: open');
@@ -60,7 +62,7 @@ export default function Lab1() {
 
   const sendConditions = (reload = true) => {
     (async function () {
-      await axios.post('http://localhost:5000/nextLayer/lab1', {
+      await axios.post(SERVER_URL + 'nextLayer/lab1', {
         lambda,
         tau,
         n1,
@@ -72,15 +74,14 @@ export default function Lab1() {
 
   const pauseDataReceiving = () => {
     (async function () {
-      await axios.get('http://localhost:5000/pause/lab1');
+      await axios.get(SERVER_URL + 'pause/lab1');
     })();
   };
-
   return (
-    <React.Fragment>
+    <MainLayout title={'Wave optics | Lab 1'}>
       <div className={classes.root}>
         <Paper className={classes.paper}>
-          <Grid container justify="space-between">
+          <Grid container justifyContent="space-between">
             <TextField
               value={lambda}
               label={WAVE_LENGTH_NAME}
@@ -143,6 +144,6 @@ export default function Lab1() {
           </Chart>
         </Paper>
       </div>
-    </React.Fragment>
+    </MainLayout>
   );
 }

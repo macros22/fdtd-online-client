@@ -14,12 +14,10 @@ import {
 import classes from './lab2.module.scss';
 import { HeatMap } from 'components';
 // import { DataChartType } from 'types/lab2';
+import { SERVER_URL } from 'constants/url';
 
-
-// const SERVER_URL = process.env.SERVER_URL as string;
-const SERVER_URL = 'https://protected-lowlands-53492.herokuapp.com/';
 const min = -1;
-const max =  1.1;
+const max = 1.1;
 
 export default function Lab1() {
   const [beamsize, setBeamsize] = useState<number>(3);
@@ -29,9 +27,6 @@ export default function Lab1() {
   const [step, setStep] = useState<number>(0);
   const [simulation, setSimulation] = useState<boolean>(false);
   const [pause, setPause] = useState<boolean>(false);
-
-
-
 
   type dataType = {
     dataX: number[];
@@ -43,7 +38,7 @@ export default function Lab1() {
     row: number;
     col: number;
     step: number;
-  } ;
+  };
   const initAllData: dataType = {
     dataX: [],
     dataY: [],
@@ -54,7 +49,7 @@ export default function Lab1() {
     row: 0,
     col: 0,
     step: 0,
-  }
+  };
 
   const [allData, setAllData] = useState<dataType>(initAllData);
 
@@ -76,20 +71,18 @@ export default function Lab1() {
     setPause(false);
 
     eventSource.onmessage = function (event) {
+      let data = JSON.parse(event.data);
+      //console.log(data)
+      setAllData(data);
 
-       let data = JSON.parse(event.data);
-       //console.log(data)
-       setAllData(data)
+      setStep(data.step || 0);
 
-       setStep(data.step || 0);
-
-       console.log(Math.min(...data.dataEnergy));
-       console.log(Math.max(...data.dataEnergy));
+      console.log(Math.min(...data.dataEnergy));
+      console.log(Math.max(...data.dataEnergy));
       //  // setMinEz(Math.min(...data.dataEz));
       //  // setMaxEz(Math.max(...data.dataEz));
       // setMinEz(-1);
       // setMaxEz(1.1);
-
     };
   };
 
@@ -174,39 +167,42 @@ export default function Lab1() {
         <Paper className={classes.paper}>
           <Grid container spacing={2} justify="space-between">
             <Grid item>
-          <HeatMap
-            minVal={min}
-            maxVal={max}
-            dataX={allData.dataX}
-            dataY={allData.dataY}
-            dataVal={allData.dataEz}
-          />
+              <HeatMap
+                minVal={min}
+                maxVal={max}
+                dataX={allData.dataX}
+                dataY={allData.dataY}
+                dataVal={allData.dataEz}
+              />
             </Grid>
 
-<Grid item>
-          <HeatMap
-            minVal={min}
-            maxVal={max}
-            dataX={allData.dataX}
-            dataY={allData.dataY}
-            dataVal={allData.dataHy}
-          /></Grid>
-<Grid item>
-          <HeatMap
-            minVal={-0.1}
-            maxVal={0.1}
-            dataX={allData.dataX}
-            dataY={allData.dataY}
-            dataVal={allData.dataHx}
-          /></Grid>
-<Grid item>
-          <HeatMap
-            minVal={min}
-            maxVal={max}
-            dataX={allData.dataX}
-            dataY={allData.dataY}
-            dataVal={allData.dataEnergy}
-          /></Grid>
+            <Grid item>
+              <HeatMap
+                minVal={min}
+                maxVal={max}
+                dataX={allData.dataX}
+                dataY={allData.dataY}
+                dataVal={allData.dataHy}
+              />
+            </Grid>
+            <Grid item>
+              <HeatMap
+                minVal={-0.1}
+                maxVal={0.1}
+                dataX={allData.dataX}
+                dataY={allData.dataY}
+                dataVal={allData.dataHx}
+              />
+            </Grid>
+            <Grid item>
+              <HeatMap
+                minVal={min}
+                maxVal={max}
+                dataX={allData.dataX}
+                dataY={allData.dataY}
+                dataVal={allData.dataEnergy}
+              />
+            </Grid>
           </Grid>
         </Paper>
       </div>

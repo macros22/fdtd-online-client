@@ -3,10 +3,11 @@ import React from 'react';
 import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
 import { Grid } from '@material-ui/core';
+import { LAB_1_NAME, LAB_2_NAME } from 'names/navbar.name';
 
 const sections = [
-  { title: 'Lab #1', url: '/lab1' },
-  { title: 'Lab #2', url: '/Lab2' },
+  { title: LAB_1_NAME, url: '/lab1' },
+  { title: LAB_2_NAME, url: '/lab2' },
 ];
 
 interface Props {}
