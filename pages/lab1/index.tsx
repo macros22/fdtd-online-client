@@ -33,7 +33,7 @@ export default function Index() {
   }, []);
 
   const subscribe = async () => {
-    const eventSource = new EventSource(SERVER_URL + `connect/lab1`);
+    const eventSource = new EventSource(SERVER_URL + `lab1/connect`);
 
     eventSource.onopen = function () {
       console.log('Event: open');
@@ -62,7 +62,7 @@ export default function Index() {
 
   const sendConditions = (reload = true) => {
     (async function () {
-      await axios.post(SERVER_URL + 'nextLayer/lab1', {
+      await axios.post(SERVER_URL + 'lab1/nextLayer', {
         lambda,
         tau,
         n1,
@@ -74,7 +74,7 @@ export default function Index() {
 
   const pauseDataReceiving = () => {
     (async function () {
-      await axios.get(SERVER_URL + 'pause/lab1');
+      await axios.get(SERVER_URL + 'lab1/pause');
     })();
   };
   return (
