@@ -8,8 +8,9 @@ import MenuIcon from '@material-ui/icons/Menu';
 
 import { useStyles } from './navbar.styled';
 import { Categories } from 'components';
+import Link from "next/link";
 
-const WAVE_OPTICS_NAME = 'ВОЛНОВАЯ ОПТИКА';
+const WAVE_OPTICS_NAME = 'ФИЗИКА | ВОЛНОВАЯ ОПТИКА';
 
 export default function Navbar() {
   const classes = useStyles();
@@ -25,9 +26,11 @@ export default function Navbar() {
           >
             <MenuIcon />
           </IconButton>
-          <Typography className={classes.title} variant="h5" noWrap>
-            {WAVE_OPTICS_NAME}
-          </Typography>
+          <Link href='/'>
+            <Typography className={classes.title} variant="h5" noWrap>
+              {WAVE_OPTICS_NAME}
+            </Typography>
+          </Link>
         </Toolbar>
       </AppBar>
       <Categories />

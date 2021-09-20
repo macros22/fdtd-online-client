@@ -13,13 +13,14 @@ import {
 } from 'names/lab2.name';
 import classes from './lab2.module.scss';
 import { HeatMap } from 'components';
-// import { DataChartType } from 'types/lab2';
+
 import { SERVER_URL } from 'constants/url';
+import MainLayout from 'layout/MainLayout';
 
 const min = -1;
 const max = 1.1;
 
-export default function Lab1() {
+export default function Index() {
   const [beamsize, setBeamsize] = useState<number>(3);
   const [lambda, setLambda] = useState<number>(1);
   const [n1, setN1] = useState<number>(1);
@@ -105,7 +106,7 @@ export default function Lab1() {
   };
 
   return (
-    <React.Fragment>
+    <MainLayout title={'Wave optics | Lab 2'}>
       <div className={classes.root}>
         <Paper className={classes.paper}>
           <Grid container justify="space-between">
@@ -206,6 +207,6 @@ export default function Lab1() {
           </Grid>
         </Paper>
       </div>
-    </React.Fragment>
+    </MainLayout>
   );
 }
