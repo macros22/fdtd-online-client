@@ -1,30 +1,32 @@
 import React from 'react';
 
-import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
-import { Grid } from '@material-ui/core';
-import { LAB_1_NAME, LAB_2_NAME } from 'names/navbar.name';
+import { ButtonGroup } from "@material-ui/core";
+
+import classes from './categories.module.scss';
+import { LAB_1_NAME, LAB_2_NAME, LAB_3_NAME, LAB_4_NAME } from 'names/navbar.name';
 
 const sections = [
-  { title: LAB_1_NAME, url: '/lab1' },
-  { title: LAB_2_NAME, url: '/lab2' },
+  { title: LAB_1_NAME, url: '/lab1', isActive: 'false' },
+  { title: LAB_2_NAME, url: '/lab2', isActive: 'false' },
+  { title: LAB_3_NAME, url: '/lab3', isActive: 'false' },
+  { title: LAB_4_NAME, url: '/lab4', isActive: 'false' },
 ];
 
 interface Props {}
 const Categories: React.FC<Props> = ({}) => {
   return (
     <>
-      <Toolbar component="nav">
-        <Grid container direction="row" justifyContent="center" alignItems="center" spacing={5}>
+        <div className={classes.sections}>
           {sections.map((section) => (
-            <Grid key={section.url} item>
-              <Button href={section.url} style={{ opacity: '50%' }}>
+            <ButtonGroup key={section.title} size="small"  variant="text" aria-label="text button group">
+              <Button
+                href={section.url}>
                 {section.title}
               </Button>
-            </Grid>
+            </ButtonGroup>
           ))}
-        </Grid>
-      </Toolbar>
+        </div>
     </>
   );
 };
