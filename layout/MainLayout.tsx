@@ -22,7 +22,8 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children, title, description, k
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       <Navbar />
-      <Container maxWidth="lg">
+      {/*maxWidth="lg"*/}
+      <Container >
         <main>{children}</main>
       </Container>
     </>

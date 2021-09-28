@@ -6,6 +6,9 @@ export const useStyles = makeStyles((theme: Theme) =>
       flexGrow: 1,
       maxWidth: '100%',
     },
+    navbar: {
+      zIndex: 1,
+    },
     menuButton: {
       marginRight: theme.spacing(2),
     },

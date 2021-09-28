@@ -12,7 +12,7 @@ import {
   WAVE_LENGTH_NAME,
 } from 'names/lab2.name';
 import classes from './lab3.module.scss';
-import { HeatMap } from 'components';
+import { HeatMap, Sidebar } from 'components';
 
 import { SERVER_URL } from 'constants/url';
 import MainLayout from 'layout/MainLayout';
@@ -58,50 +58,58 @@ export default function Index() {
    // subscribe();
   }, []);
 
-  const subscribe = async () => {
-    const eventSource = new EventSource(SERVER_URL + `lab2/connect`);
-
-    eventSource.onopen = function () {
-      console.log('Event: open');
-    };
-
-    eventSource.onerror = function () {
-      console.log('Event: error');
-    };
-
-    setPause(false);
-
-    eventSource.onmessage = function (event) {
-      let data = JSON.parse(event.data);
-      setAllData(data);
-
-      setStep(data.step || 0);
-
-      console.log(Math.min(...data.dataEnergy));
-      console.log(Math.max(...data.dataEnergy));
-    };
-  };
+  // const subscribe = async () => {
+  //   const eventSource = new EventSource(SERVER_URL + `lab2/connect`);
+  //
+  //   eventSource.onopen = function () {
+  //     console.log('Event: open');
+  //   };
+  //
+  //   eventSource.onerror = function () {
+  //     console.log('Event: error');
+  //   };
+  //
+  //   setPause(false);
+  //
+  //   eventSource.onmessage = function (event) {
+  //     let data = JSON.parse(event.data);
+  //     setAllData(data);
+  //
+  //     setStep(data.step || 0);
+  //
+  //     console.log(Math.min(...data.dataEnergy));
+  //     console.log(Math.max(...data.dataEnergy));
+  //   };
+  // };
 
   const sendConditions = (reload = true) => {
-    (async function () {
-      await axios.post(SERVER_URL + 'lab2/nextLayer', {
-        lambda,
-        beamsize,
-        n1,
-        reload,
-        type: '3D',
-      });
-    })();
+    // (async function () {
+    //   await axios.post(SERVER_URL + 'lab2/nextLayer', {
+    //     lambda,
+    //     beamsize,
+    //     n1,
+    //     reload,
+    //     type: '3D',
+    //   });
+    // })();
   };
 
   const pauseDataReceiving = () => {
-    (async function () {
-      await axios.get(SERVER_URL + 'lab2/pause');
-    })();
+    // (async function () {
+    //   await axios.get(SERVER_URL + 'lab2/pause');
+    // })();
   };
 
   return (
+    <>
+      <Sidebar />
     <MainLayout title={'Wave optics | Lab 3'}>
+
+      <Grid container>
+        <Grid item>
+
+        </Grid>
+        <Grid item>
       <div className={ classes.root }>
         <TextField
           value={ lambda }
@@ -211,6 +219,10 @@ export default function Index() {
           </Grid>
         </Paper>
       </div>
+        </Grid>
+      </Grid>
     </MainLayout>
+
+      </>
   );
 }

@@ -1,8 +1,5 @@
 import React from 'react';
 
-import Button from '@material-ui/core/Button';
-import { ButtonGroup } from "@material-ui/core";
-
 import classes from './categories.module.scss';
 import { LAB_1_NAME, LAB_2_NAME, LAB_3_NAME, LAB_4_NAME } from 'names/navbar.name';
 
@@ -15,18 +12,21 @@ const sections = [
 
 interface Props {}
 const Categories: React.FC<Props> = ({}) => {
+
+  const [currentPage, setCurrentPage] = React.useState(1);
+
   return (
     <>
-        <div className={classes.sections}>
-          {sections.map((section) => (
-            <ButtonGroup key={section.title} size="small"  variant="text" aria-label="text button group">
-              <Button
-                href={section.url}>
-                {section.title}
-              </Button>
-            </ButtonGroup>
+        {/*<div className={classes.sections}>*/}
+      <ul className="nav mt-2 nav-pills nav-fill nav-justified">
+          {sections.map((section, index) => (
+              <li key={section.title} className="nav-item">
+                <a className={"nav-link" + (currentPage == index ? " active" : "")}
+                   aria-current="page"
+                   href={section.url}>{section.title}</a>
+              </li>
           ))}
-        </div>
+      </ul>
     </>
   );
 };
