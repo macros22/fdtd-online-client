@@ -102,9 +102,13 @@ export default function Index() {
 
   return (
     <>
-      <Sidebar />
-    <MainLayout title={'Wave optics | Lab 3'}>
 
+    <MainLayout title={'Wave optics | Lab 3'}>
+      <div className="d-flex bg-light align-items-stretch h-100">
+        <Sidebar>
+          <p>asdasd</p>
+          </Sidebar>
+        <div className="p-2 bd-highlight">
       <Grid container>
         <Grid item>
 
@@ -221,6 +225,8 @@ export default function Index() {
       </div>
         </Grid>
       </Grid>
+        </div>
+      </div>
     </MainLayout>
 
       </>

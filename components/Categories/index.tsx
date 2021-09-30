@@ -18,7 +18,7 @@ const Categories: React.FC<Props> = ({}) => {
   return (
     <>
         {/*<div className={classes.sections}>*/}
-      <ul className="nav mt-2 nav-pills nav-fill nav-justified">
+      <ul className="nav m-2 nav-pills nav-fill nav-justified">
           {sections.map((section, index) => (
               <li key={section.title} className="nav-item">
                 <a className={"nav-link" + (currentPage == index ? " active" : "")}

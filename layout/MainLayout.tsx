@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { Container } from '@material-ui/core';
 import Head from 'next/head';
 
 import { Navbar } from 'components';
@@ -22,10 +21,8 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children, title, description, k
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       <Navbar />
-      {/*maxWidth="lg"*/}
-      <Container >
+
         <main>{children}</main>
-      </Container>
     </>
   );
 };
