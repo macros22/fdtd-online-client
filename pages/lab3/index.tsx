@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Grid from '@material-ui/core/Grid';
 import axios from 'axios';
-import { Button, TextField } from '@material-ui/core';
 import Paper from '@material-ui/core/Paper';
 import {
   CONTINUE_NAME,
@@ -12,7 +11,7 @@ import {
   WAVE_LENGTH_NAME,
 } from 'names/lab2.name';
 import classes from './lab3.module.scss';
-import { HeatMap, Sidebar } from 'components';
+import { HeatMap, Sidebar, TextInput } from 'components';
 
 import { SERVER_URL } from 'constants/url';
 import MainLayout from 'layout/MainLayout';
@@ -106,78 +105,63 @@ export default function Index() {
     <MainLayout title={'Wave optics | Lab 3'}>
       <div className="d-flex bg-light align-items-stretch h-100">
         <Sidebar>
-          <p>asdasd</p>
+          <TextInput
+            value={ typeof lambda === 'number' ? lambda : 0 }
+            label={ WAVE_LENGTH_NAME }
+            onChange={(e) => setLambda(+e.target.value)}/>
+          <TextInput
+            label={ REFRACTIVE_INDEX_NAME }
+            value={n1}
+            onChange={(e) => setN1(+e.target.value)}
+          />
+          <TextInput
+            label={ BEAMSIZE_NAME }
+            value={ beamsize }
+            onChange={(e) => setBeamsize(+e.target.value)}
+          />
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              sendConditions();
+              setSimulation(true);
+            }}
+            type="button"
+            className={"btn btn-primary btn-lg btn-block"}
+          >
+            СТАРТ
+          </button>
+          <button
+            type="button"
+            className={"btn btn-primary btn-lg btn-block" + (simulation ? " disabled" : "")}
+            onClick={(e) => {
+              e.preventDefault();
+              if (!pause) {
+                pauseDataReceiving();
+              } else {
+                sendConditions(false);
+              }
+              setPause((pause) => !pause);
+            }}
+            >{pause ? CONTINUE_NAME : PAUSE_NAME}</button>
+
+          <TextInput
+            label={STEP_NUMBER_NAME}
+            value={step}
+            readOnly={true}
+          />
           </Sidebar>
         <div className="p-2 bd-highlight">
       <Grid container>
-        <Grid item>
 
-        </Grid>
         <Grid item>
       <div className={ classes.root }>
-        <TextField
-          value={ lambda }
-          label={ WAVE_LENGTH_NAME }
-          variant="outlined"
-        />
+
         <Paper className={ classes.condition }>
           <Grid  container
                  direction="column"
                  justifyContent="center"
                  alignItems="center">
-            <TextField
-              value={ lambda }
-              label={ WAVE_LENGTH_NAME }
-              variant="outlined"
-              onChange={(e) => setLambda(+e.target.value)}
-            />
-            <TextField
-              label={ REFRACTIVE_INDEX_NAME }
-              variant="outlined"
-              value={n1}
-              onChange={(e) => setN1(+e.target.value)}
-            />
-            <TextField
-              label={ BEAMSIZE_NAME }
-              variant="outlined"
-              value={ beamsize }
-              onChange={(e) => setBeamsize(+e.target.value)}
-            />
-            <Button
-              onClick={(e) => {
-                e.preventDefault();
-                if (!pause) {
-                  pauseDataReceiving();
-                } else {
-                  sendConditions(false);
-                }
-                setPause((pause) => !pause);
-              }}
-              disabled={!simulation}
-              variant="contained"
-              color="primary"
-            >
-              {pause ? CONTINUE_NAME : PAUSE_NAME}
-            </Button>
-            <Button
-              onClick={(e) => {
-                e.preventDefault();
-                sendConditions();
-                setSimulation(true);
-              }}
-              variant="contained"
-              color="primary"
-            >
-              СТАРТ
-            </Button>
-            <TextField
-              label={STEP_NUMBER_NAME}
-              value={step}
 
-              InputProps={{
-                readOnly: true,
-              }}
-            />
           </Grid>
         </Paper>
 

@@ -15,7 +15,7 @@ $gray: #9b9b9b;
   border: 0;
   border-bottom: 2px solid $gray;
   outline: 0;
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   color: $white;
   padding: 7px 0;
   background: transparent;
@@ -26,7 +26,7 @@ $gray: #9b9b9b;
   }
 
   &:placeholder-shown ~ .formLabel {
-    font-size: 1.3rem;
+    font-size: 1rem;
     cursor: text;
     top: 20px;
   }
@@ -37,7 +37,7 @@ $gray: #9b9b9b;
   top: 0;
   display: block;
   transition: 0.2s;
-  font-size: 1rem;
+  font-size: 0.81rem;
   color: $gray;
 }
 
@@ -47,14 +47,13 @@ $gray: #9b9b9b;
     top: 0;
     display: block;
     transition: 0.2s;
-    font-size: 1rem;
     color: $primary;
-    font-weight:700;
+    //font-weight:500;
   }
   padding-bottom: 6px;
-  font-weight: 700;
+  //font-weight: 500;
   border-width: 3px;
-  border-image: linear-gradient(to right, $primary,$secondary);
+  border-image: linear-gradient(to right, $primary,$primary);
   border-image-slice: 1;
 }
 /* reset input */
