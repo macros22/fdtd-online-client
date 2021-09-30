@@ -17,16 +17,12 @@ const Categories: React.FC<Props> = ({}) => {
 
   return (
     <>
-        {/*<div className={classes.sections}>*/}
-      <ul className="nav m-2 nav-pills nav-fill nav-justified">
-          {sections.map((section, index) => (
-              <li key={section.title} className="nav-item">
-                <a className={"nav-link" + (currentPage == index ? " active" : "")}
-                   aria-current="page"
-                   href={section.url}>{section.title}</a>
-              </li>
-          ))}
-      </ul>
+      <div className={classes.topnav}>
+        {sections.map((section, index) => (
+            <a key={section.title} className={(currentPage == index ? " active" : "")}
+               href={section.url}>{section.title}</a>
+        ))}
+      </div>
     </>
   );
 };

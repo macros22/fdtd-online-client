@@ -1,6 +1,59 @@
-.sections {
+$border-width: 3px;
+$border-color: #f1f1f1;
+$background-color: #282A35;
+//.sections {
+//  z-index: 1100;
+//  background: $background-color;
+//
+//  a {
+//    color: $border-color;
+//    border-bottom: $border-width solid transparent;
+//    transition: 0.5s;
+//
+//    &:hover {
+//      border-bottom: $border-width solid $border-color;
+//      color: $border-color;
+//    }
+//
+//   .active {
+//     border-bottom: $border-width solid $border-color;
+//     color: red;
+//    }
+//  }
+//
+//
+//  li.a.active {
+//    border-bottom: $border-width solid $border-color;
+//    color: red;
+//  }
+//
+//}
+
+
+
+/* Add a black background color to the top navigation */
+.topnav {
+
+  background-color: $background-color;
+  overflow: hidden;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 0.5rem;
+  a {
+    transition: all 0.5s;
+    color: $border-color;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+    border-bottom: $border-width solid transparent;
+
+    &:hover {
+      border-bottom: $border-width solid $border-color;
+    }
+
+    &.active {
+      border-bottom: $border-width solid $border-color;
+    }
+  }
 }
+
+

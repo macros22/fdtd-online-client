@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Grid from '@material-ui/core/Grid';
 import axios from 'axios';
-import Paper from '@material-ui/core/Paper';
 import {
   CONTINUE_NAME,
   BEAMSIZE_NAME,
@@ -11,7 +10,7 @@ import {
   WAVE_LENGTH_NAME,
 } from 'names/lab2.name';
 import classes from './lab3.module.scss';
-import { HeatMap, Sidebar, TextInput } from 'components';
+import { HeatMap, Sidebar, TextInput, Paper } from 'components';
 
 import { SERVER_URL } from 'constants/url';
 import MainLayout from 'layout/MainLayout';
@@ -101,9 +100,8 @@ export default function Index() {
 
   return (
     <>
-
     <MainLayout title={'Wave optics | Lab 3'}>
-      <div className="d-flex bg-light align-items-stretch h-100">
+      <div className="d-flex bg-light align-items-stretch mh-100">
         <Sidebar>
           <TextInput
             value={ typeof lambda === 'number' ? lambda : 0 }
@@ -119,6 +117,11 @@ export default function Index() {
             value={ beamsize }
             onChange={(e) => setBeamsize(+e.target.value)}
           />
+          <TextInput
+            label={STEP_NUMBER_NAME}
+            value={step}
+            readOnly={true}
+          />
           <button
             onClick={(e) => {
               e.preventDefault();
@@ -126,13 +129,14 @@ export default function Index() {
               setSimulation(true);
             }}
             type="button"
-            className={"btn btn-primary btn-lg btn-block"}
+            className={"btn btn-primary mt-2 " + classes.button}
           >
             СТАРТ
           </button>
           <button
             type="button"
-            className={"btn btn-primary btn-lg btn-block" + (simulation ? " disabled" : "")}
+            className={"btn btn-primary  mt-2 " + classes.button}
+            disabled={!simulation}
             onClick={(e) => {
               e.preventDefault();
               if (!pause) {
@@ -143,31 +147,17 @@ export default function Index() {
               setPause((pause) => !pause);
             }}
             >{pause ? CONTINUE_NAME : PAUSE_NAME}</button>
-
-          <TextInput
-            label={STEP_NUMBER_NAME}
-            value={step}
-            readOnly={true}
-          />
           </Sidebar>
-        <div className="p-2 bd-highlight">
+        <div className="p-4 bd-highlight">
+          <Paper>Paper shadow</Paper>
       <Grid container>
 
         <Grid item>
       <div className={ classes.root }>
-
-        <Paper className={ classes.condition }>
-          <Grid  container
-                 direction="column"
-                 justifyContent="center"
-                 alignItems="center">
-
-          </Grid>
-        </Paper>
-
-        <Paper className={classes.paper}>
           <Grid container spacing={2} justify="space-between">
+            <Paper >
             <Grid item>
+              <span className="badge badge-secondary">Ez</span>
               <HeatMap
                 minVal={min}
                 maxVal={max}
@@ -176,36 +166,45 @@ export default function Index() {
                 dataVal={allData.dataEz}
               />
             </Grid>
-
-            <Grid item>
-              <HeatMap
-                minVal={min}
-                maxVal={max}
-                dataX={allData.dataX}
-                dataY={allData.dataY}
-                dataVal={allData.dataHy}
-              />
-            </Grid>
-            <Grid item>
-              <HeatMap
-                minVal={-0.1}
-                maxVal={0.1}
-                dataX={allData.dataX}
-                dataY={allData.dataY}
-                dataVal={allData.dataHx}
-              />
-            </Grid>
-            <Grid item>
-              <HeatMap
-                minVal={min}
-                maxVal={max}
-                dataX={allData.dataX}
-                dataY={allData.dataY}
-                dataVal={allData.dataEnergy}
-              />
-            </Grid>
+              </Paper >
+            <Paper >
+              <Grid item>
+                <span className="badge badge-secondary">Hy</span>
+                <HeatMap
+                  minVal={min}
+                  maxVal={max}
+                  dataX={allData.dataX}
+                  dataY={allData.dataY}
+                  dataVal={allData.dataHy}
+                />
+              </Grid>
+            </Paper >
+            <Paper >
+              <Grid item>
+                <span className="badge badge-secondary">Hx</span>
+                <HeatMap
+                  minVal={min}
+                  maxVal={max}
+                  dataX={allData.dataX}
+                  dataY={allData.dataY}
+                  dataVal={allData.dataHx}
+                />
+              </Grid>
+            </Paper >
+            <Paper >
+              <Grid item>
+                <span className="badge badge-secondary">Energy</span>
+                <HeatMap
+                  minVal={min}
+                  maxVal={max}
+                  dataX={allData.dataX}
+                  dataY={allData.dataY}
+                  dataVal={allData.dataEnergy}
+                />
+              </Grid>
+            </Paper >
           </Grid>
-        </Paper>
+
       </div>
         </Grid>
       </Grid>

@@ -1,7 +1,7 @@
 $primary: gray;
 $secondary: white;
 $white: #000;
-$gray: #9b9b9b;
+$gray: rgba(175, 173, 173, 0.78);
 .formGroup {
   position: relative;
   padding: 15px 0 0;
@@ -20,6 +20,11 @@ $gray: #9b9b9b;
   padding: 7px 0;
   background: transparent;
   transition: border-color 0.2s;
+
+  &:hover {
+    background: #e3dfdf;
+    transition: 0.5s;
+  }
 
   &::placeholder {
     color: transparent;
@@ -41,6 +46,9 @@ $gray: #9b9b9b;
   color: $gray;
 }
 
+
+
+
 .formField:focus {
   ~ .formLabel {
     position: absolute;
@@ -48,12 +56,12 @@ $gray: #9b9b9b;
     display: block;
     transition: 0.2s;
     color: $primary;
-    //font-weight:500;
+    font-weight: 600;
   }
   padding-bottom: 6px;
   //font-weight: 500;
   border-width: 3px;
-  border-image: linear-gradient(to right, $primary,$primary);
+  //border-image: linear-gradient(to right, $primary,$primary);
   border-image-slice: 1;
 }
 /* reset input */

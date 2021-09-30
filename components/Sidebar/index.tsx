@@ -7,15 +7,9 @@ interface SidebarProps {
 
 const Sidebar: React.FC<SidebarProps> = ({ children }) => {
   return (
-    <div className={classes.sidebar + " p-2 bd-highlight"} style={{backgroundColor: "#eee"}}>
-
+    <div className={classes.sidebar + " .bg-white p-3 bd-highlight mh-100 shadow"} >
       {children}
     </div>
-    // <div className="d-flex bg-light align-items-stretch h-100">
-    //   <div className={classes.sidebar + " p-2 bd-highlight"} style={{backgroundColor: "#eee"}}>Flex item</div>
-    //   <div className="p-2 bd-highlight">Flex item</div>
-    //   <div className="p-2 bd-highlight">Third flex item</div>
-    // </div>
   );
 }
 
