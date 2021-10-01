@@ -1,8 +1,11 @@
 import { AppProps } from 'next/dist/next-server/lib/router/router';
-import '../scss/custom.scss';
+import '../styles/custom.scss';
 import Head from 'next/head';
 import React from 'react';
 // import MainLayout from "../layout/MainLayout";
+
+// configuration of custom bootstrap on next.js
+// https://www.ravsam.in/blog/setup-and-customize-bootstrap-in-nextjs/
 
 import 'bootstrap/dist/css/bootstrap.css'; // Add this line
 
