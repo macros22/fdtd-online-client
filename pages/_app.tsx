@@ -1,5 +1,5 @@
 import { AppProps } from 'next/dist/next-server/lib/router/router';
-// import '../styles/globals.css';
+import '../scss/custom.scss';
 import Head from 'next/head';
 import React from 'react';
 // import MainLayout from "../layout/MainLayout";

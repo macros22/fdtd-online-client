@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import Grid from '@material-ui/core/Grid';
 import axios from 'axios';
 import {
   CONTINUE_NAME,
@@ -10,7 +9,7 @@ import {
   WAVE_LENGTH_NAME,
 } from 'names/lab2.name';
 import classes from './lab3.module.scss';
-import { HeatMap, Sidebar, TextInput, Paper } from 'components';
+import { HeatMap, Sidebar, TextInput, Paper, CenteredBlock } from 'components';
 
 import { SERVER_URL } from 'constants/url';
 import MainLayout from 'layout/MainLayout';
@@ -150,12 +149,16 @@ export default function Index() {
           </Sidebar>
         <div className="p-4 bd-highlight">
 
-      <div className="container">
 
+
+
+      <div className="container">
         <div className="row">
           <div className="col">
             <Paper >
-              <h3><span className="badge bg-primary">Ez</span></h3>
+              <CenteredBlock>
+                <h3><span className="badge bg-primary">Ez</span></h3>
+              </CenteredBlock>
               <HeatMap
                 minVal={min}
                 maxVal={max}
@@ -168,8 +171,9 @@ export default function Index() {
 
           <div className="col">
             <Paper >
-
+              <CenteredBlock>
                 <h3><span className="badge bg-primary">Hy</span></h3>
+              </CenteredBlock>
                 <HeatMap
                   minVal={min}
                   maxVal={max}
@@ -184,8 +188,9 @@ export default function Index() {
         <div className="row">
           <div className="col">
             <Paper >
-
+              <CenteredBlock>
                 <h3><span className="badge bg-primary">Hx</span></h3>
+              </CenteredBlock>
                 <HeatMap
                   minVal={min}
                   maxVal={max}
@@ -193,12 +198,13 @@ export default function Index() {
                   dataY={allData.dataY}
                   dataVal={allData.dataHx}
                 />
-
             </Paper >
           </div>
-            <div className="col ">
+            <div className="col">
             <Paper >
+              <CenteredBlock>
                 <h3><span className="badge bg-primary">Energy</span></h3>
+                </CenteredBlock>
                 <HeatMap
                   minVal={min}
                   maxVal={max}
@@ -213,7 +219,7 @@ export default function Index() {
         </div>
       </div>
     </MainLayout>
-
       </>
   );
 }
+
