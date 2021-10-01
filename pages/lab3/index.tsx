@@ -53,49 +53,49 @@ export default function Index() {
   const [allData, setAllData] = useState<dataType>(initAllData);
 
   useEffect(() => {
-   // subscribe();
+   subscribe();
   }, []);
 
-  // const subscribe = async () => {
-  //   const eventSource = new EventSource(SERVER_URL + `lab2/connect`);
-  //
-  //   eventSource.onopen = function () {
-  //     console.log('Event: open');
-  //   };
-  //
-  //   eventSource.onerror = function () {
-  //     console.log('Event: error');
-  //   };
-  //
-  //   setPause(false);
-  //
-  //   eventSource.onmessage = function (event) {
-  //     let data = JSON.parse(event.data);
-  //     setAllData(data);
-  //
-  //     setStep(data.step || 0);
-  //
-  //     console.log(Math.min(...data.dataEnergy));
-  //     console.log(Math.max(...data.dataEnergy));
-  //   };
-  // };
+  const subscribe = async () => {
+    const eventSource = new EventSource(SERVER_URL + `lab2/connect`);
+
+    eventSource.onopen = function () {
+      console.log('Event: open');
+    };
+
+    eventSource.onerror = function () {
+      console.log('Event: error');
+    };
+
+    setPause(false);
+
+    eventSource.onmessage = function (event) {
+      let data = JSON.parse(event.data);
+      setAllData(data);
+
+      setStep(data.step || 0);
+
+      console.log(Math.min(...data.dataEnergy));
+      console.log(Math.max(...data.dataEnergy));
+    };
+  };
 
   const sendConditions = (reload = true) => {
-    // (async function () {
-    //   await axios.post(SERVER_URL + 'lab2/nextLayer', {
-    //     lambda,
-    //     beamsize,
-    //     n1,
-    //     reload,
-    //     type: '3D',
-    //   });
-    // })();
+    (async function () {
+      await axios.post(SERVER_URL + 'lab2/nextLayer', {
+        lambda,
+        beamsize,
+        n1,
+        reload,
+        type: '3D',
+      });
+    })();
   };
 
   const pauseDataReceiving = () => {
-    // (async function () {
-    //   await axios.get(SERVER_URL + 'lab2/pause');
-    // })();
+    (async function () {
+      await axios.get(SERVER_URL + 'lab2/pause');
+    })();
   };
 
   return (
@@ -149,15 +149,13 @@ export default function Index() {
             >{pause ? CONTINUE_NAME : PAUSE_NAME}</button>
           </Sidebar>
         <div className="p-4 bd-highlight">
-          <Paper>Paper shadow</Paper>
-      <Grid container>
 
-        <Grid item>
-      <div className={ classes.root }>
-          <Grid container spacing={2} justify="space-between">
+      <div className="container">
+
+        <div className="row">
+          <div className="col">
             <Paper >
-            <Grid item>
-              <span className="badge badge-secondary">Ez</span>
+              <h3><span className="badge bg-primary">Ez</span></h3>
               <HeatMap
                 minVal={min}
                 maxVal={max}
@@ -165,11 +163,13 @@ export default function Index() {
                 dataY={allData.dataY}
                 dataVal={allData.dataEz}
               />
-            </Grid>
-              </Paper >
+            </Paper>
+          </div>
+
+          <div className="col">
             <Paper >
-              <Grid item>
-                <span className="badge badge-secondary">Hy</span>
+
+                <h3><span className="badge bg-primary">Hy</span></h3>
                 <HeatMap
                   minVal={min}
                   maxVal={max}
@@ -177,11 +177,15 @@ export default function Index() {
                   dataY={allData.dataY}
                   dataVal={allData.dataHy}
                 />
-              </Grid>
+
             </Paper >
+        </div>
+        </div>
+        <div className="row">
+          <div className="col">
             <Paper >
-              <Grid item>
-                <span className="badge badge-secondary">Hx</span>
+
+                <h3><span className="badge bg-primary">Hx</span></h3>
                 <HeatMap
                   minVal={min}
                   maxVal={max}
@@ -189,11 +193,12 @@ export default function Index() {
                   dataY={allData.dataY}
                   dataVal={allData.dataHx}
                 />
-              </Grid>
+
             </Paper >
+          </div>
+            <div className="col ">
             <Paper >
-              <Grid item>
-                <span className="badge badge-secondary">Energy</span>
+                <h3><span className="badge bg-primary">Energy</span></h3>
                 <HeatMap
                   minVal={min}
                   maxVal={max}
@@ -201,13 +206,10 @@ export default function Index() {
                   dataY={allData.dataY}
                   dataVal={allData.dataEnergy}
                 />
-              </Grid>
-            </Paper >
-          </Grid>
-
+            </Paper>
+            </div>
+        </div>
       </div>
-        </Grid>
-      </Grid>
         </div>
       </div>
     </MainLayout>
