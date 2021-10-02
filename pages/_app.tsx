@@ -1,13 +1,14 @@
 import { AppProps } from 'next/dist/next-server/lib/router/router';
-import '../styles/custom.scss';
 import Head from 'next/head';
 import React from 'react';
 // import MainLayout from "../layout/MainLayout";
 
 // configuration of custom bootstrap on next.js
+// https://www.mikealche.com/software-development/setting-up-bootstrap-sass-on-next-js
 // https://www.ravsam.in/blog/setup-and-customize-bootstrap-in-nextjs/
 
-import 'bootstrap/dist/css/bootstrap.css'; // Add this line
+// import 'bootstrap/dist/css/bootstrap.css'; // Add this line
+import '../styles/custom.scss';
 
 function MyApp({ Component, pageProps }: AppProps): JSX.Element {
 

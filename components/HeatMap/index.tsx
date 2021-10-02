@@ -21,8 +21,8 @@ const HeatMap: React.FC<HeatMapProps> = ({
   dataX = [],
   dataY = [],
   dataVal = [],
-  width = 450,
-  height = 450,
+  width = 350,
+  height = 350,
 }) => {
   let data: PictureDataType = [];
 

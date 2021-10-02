@@ -1,12 +1,26 @@
-$theme-colors: (
-        'primary': #2e2179,
-        'secondary': #833bec,
-        'success': #1ce1ac,
-        'info': #ff7d50,
-        'warning': #ffbe0b,
-        'danger': #ff007f,
-        'light': #c0ccda,
-        'dark': #001738,
-);
+/*! `Custom` Bootstrap 5 theme */
 
-@import '/node_modules/bootstrap/scss/bootstrap.scss';
+@font-face {
+  font-family: "Roboto";
+}
+
+//https://themestr.app/
+
+$primary: #3758d7;
+$secondary:#949fa8;
+$success:#0daf61;
+$danger:#e04d5c;
+$info:#f29b4a;
+$warning:#f2c231;
+$light: #fbfdff;
+$dark:#2b3036;
+//@import "bootstrap";
+@import '../node_modules/bootstrap/scss/bootstrap.scss';
+
+// Add SASS theme customizations here..
+//html {font-size: .8rem;}
+//@include media-breakpoint-up(sm) {html {font-size: .9rem;}}
+//@include media-breakpoint-up(md) {html {font-size: .9rem;}}
+//@include media-breakpoint-up(lg) {html {font-size: 1rem;}}
+
+

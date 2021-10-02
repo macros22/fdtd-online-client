@@ -13,6 +13,7 @@ import { HeatMap, Sidebar, TextInput, Paper, CenteredBlock } from 'components';
 
 import { SERVER_URL } from 'constants/url';
 import MainLayout from 'layout/MainLayout';
+import { Button } from 'react-bootstrap';
 
 const min = -1;
 const max = 1.1;
@@ -52,7 +53,7 @@ export default function Index() {
   const [allData, setAllData] = useState<dataType>(initAllData);
 
   useEffect(() => {
-   subscribe();
+   // subscribe();
   }, []);
 
   const subscribe = async () => {
@@ -148,9 +149,6 @@ export default function Index() {
             >{pause ? CONTINUE_NAME : PAUSE_NAME}</button>
           </Sidebar>
         <div className="p-4 bd-highlight">
-
-
-
 
       <div className="container">
         <div className="row">
