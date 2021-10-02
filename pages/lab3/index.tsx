@@ -148,14 +148,16 @@ export default function Index() {
             }}
             >{pause ? CONTINUE_NAME : PAUSE_NAME}</button>
           </Sidebar>
-        <div className="p-4 bd-highlight">
 
+        <div className="p-4 bd-highlight">
+          <h3><span className="badge bg-secondary">Пространственно-временная структура электромагнитных пучков</span></h3>
       <div className="container">
         <div className="row">
           <div className="col">
             <Paper >
+              <kbd><kbd>ctrl</kbd> + <kbd>,</kbd></kbd>
               <CenteredBlock>
-                <h3><span className="badge bg-primary">Ez</span></h3>
+                <h4><span className="badge bg-primary">Напряженность электр. поля Ez</span></h4>
               </CenteredBlock>
               <HeatMap
                 minVal={min}

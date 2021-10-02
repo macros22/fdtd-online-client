@@ -1,19 +1,14 @@
 /*! `Custom` Bootstrap 5 theme */
 
-@font-face {
+
+// adding google font
+// https://johnny.am/blog/n2-adding-google-fonts-to-nextjs-project
+* {
   font-family: "Roboto";
 }
 
 //https://themestr.app/
-
-$primary: #3758d7;
-$secondary:#949fa8;
-$success:#0daf61;
-$danger:#e04d5c;
-$info:#f29b4a;
-$warning:#f2c231;
-$light: #fbfdff;
-$dark:#2b3036;
+@import './colors.scss';
 //@import "bootstrap";
 @import '../node_modules/bootstrap/scss/bootstrap.scss';
 

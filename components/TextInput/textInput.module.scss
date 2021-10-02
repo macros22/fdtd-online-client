@@ -1,6 +1,9 @@
-$primary: gray;
-$secondary: white;
-$white: #000;
+
+@import 'styles/colors.scss';
+
+//$primary: gray;
+//$secondary: white;
+//$white: #000;
 $gray: rgba(175, 173, 173, 0.78);
 .formGroup {
   position: relative;
@@ -16,7 +19,7 @@ $gray: rgba(175, 173, 173, 0.78);
   border-bottom: 2px solid $gray;
   outline: 0;
   font-size: 1.2rem;
-  color: $white;
+  color: $dark;
   padding: 7px 0;
   background: transparent;
   transition: border-color 0.2s;

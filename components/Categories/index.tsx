@@ -5,7 +5,7 @@ import { LAB_1_NAME, LAB_2_NAME, LAB_3_NAME, LAB_4_NAME } from 'names/navbar.nam
 
 const sections = [
   { title: LAB_1_NAME, url: '/lab1', isActive: 'false' },
-  { title: LAB_2_NAME, url: '/lab2', isActive: 'false' },
+  { title: LAB_2_NAME, url: '/lab2', isActive: 'true' },
   { title: LAB_3_NAME, url: '/lab3', isActive: 'false' },
   { title: LAB_4_NAME, url: '/lab4', isActive: 'false' },
 ];
