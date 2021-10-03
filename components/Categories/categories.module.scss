@@ -31,11 +31,8 @@ $background-color: $dark;
 //
 //}
 
-
-
 /* Add a black background color to the top navigation */
 .topnav {
-
   background-color: $background-color;
   overflow: hidden;
   display: flex;
@@ -57,9 +54,5 @@ $background-color: $dark;
     &:hover {
       border-bottom: $border-width solid $border-color;
     }
-
-
   }
 }
-
-

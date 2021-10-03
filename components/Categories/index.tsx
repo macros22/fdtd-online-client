@@ -12,15 +12,19 @@ const sections = [
 
 interface Props {}
 const Categories: React.FC<Props> = ({}) => {
-
   const [currentPage, setCurrentPage] = React.useState(1);
 
   return (
     <>
       <div className={classes.topnav}>
         {sections.map((section, index) => (
-            <a key={section.title} className={(currentPage == index ? " active" : "")}
-               href={section.url}>{section.title}</a>
+          <a
+            key={section.title}
+            className={currentPage == index ? ' active' : ''}
+            href={section.url}
+          >
+            {section.title}
+          </a>
         ))}
       </div>
     </>

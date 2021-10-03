@@ -11,21 +11,22 @@ import React from 'react';
 import '../styles/custom.scss';
 
 function MyApp({ Component, pageProps }: AppProps): JSX.Element {
-
   // Place this in the pages/_app.js file
   React.useEffect(() => {
-    import("bootstrap/dist/js/bootstrap");
+    import('bootstrap/dist/js/bootstrap');
   }, []);
 
-  return <>
-    <Head>
-      <title>Eng</title>
-      <meta name="viewport" content="initial-scale=1, width=device-width" />
-    </Head>
-    {/*<MainLayout title={'Wave optics'}>*/}
+  return (
+    <>
+      <Head>
+        <title>Eng</title>
+        <meta name="viewport" content="initial-scale=1, width=device-width" />
+      </Head>
+      {/*<MainLayout title={'Wave optics'}>*/}
       <Component {...pageProps} />
-    {/*</MainLayout>*/}
-  </>;
+      {/*</MainLayout>*/}
+    </>
+  );
 }
 
 export default MyApp;

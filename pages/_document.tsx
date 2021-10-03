@@ -1,7 +1,14 @@
-import Document, { Html, Head, Main, NextScript, DocumentContext, DocumentInitialProps } from 'next/document';
+import Document, {
+  Html,
+  Head,
+  Main,
+  NextScript,
+  DocumentContext,
+  DocumentInitialProps,
+} from 'next/document';
 import theme from 'src/theme';
 
-import * as React from "react";
+import * as React from 'react';
 
 class MyDocument extends Document {
   static async getInitialProps(ctx: DocumentContext): Promise<DocumentInitialProps> {
@@ -12,14 +19,14 @@ class MyDocument extends Document {
   render(): JSX.Element {
     return (
       <Html lang="en">
-                 <Head>
-                   {/* PWA primary color */}
-                   <meta name="theme-color" content={theme.palette.primary.main} />
-                   <link
-                     rel="stylesheet"
-                     href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
-                   />
-                 </Head>
+        <Head>
+          {/* PWA primary color */}
+          <meta name="theme-color" content={theme.palette.primary.main} />
+          <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+          />
+        </Head>
         <body>
           <Main />
           <NextScript />
@@ -30,18 +37,6 @@ class MyDocument extends Document {
 }
 
 export default MyDocument;
-
-
-
-
-
-
-
-
-
-
-
-
 
 // import * as React from 'react';
 // import Document, { Html, Head, Main, NextScript } from 'next/document';

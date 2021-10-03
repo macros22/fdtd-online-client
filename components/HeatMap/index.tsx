@@ -4,14 +4,14 @@
 import React, { useEffect, useRef } from 'react';
 
 type HeatMapProps = {
-  minVal: number,
-  maxVal: number,
-  dataX: number[],
-  dataY: number[],
-  dataVal:number[],
-  width?: number,
-  height?: number,
-}
+  minVal: number;
+  maxVal: number;
+  dataX: number[];
+  dataY: number[];
+  dataVal: number[];
+  width?: number;
+  height?: number;
+};
 
 type PictureDataType = Array<Array<number>>;
 
@@ -57,96 +57,96 @@ const HeatMap: React.FC<HeatMapProps> = ({
   useEffect(() => {
     //creating main canvas
     if (canvasRef.current && canvasBrushRef.current && canvasGradientRef.current) {
-        let canvas = canvasRef.current;
+      let canvas = canvasRef.current;
 
-        let ctx: CanvasRenderingContext2D | null = canvas.getContext('2d');
-        canvas.width = width;
-        canvas.height = height;
+      let ctx: CanvasRenderingContext2D | null = canvas.getContext('2d');
+      canvas.width = width;
+      canvas.height = height;
 
-        //creating brush canvas
-        const brushCanvas = canvasBrushRef.current;
-        const brushContext: CanvasRenderingContext2D | null = brushCanvas.getContext('2d');
-        brushCanvas.width = diametr;
-        brushCanvas.height = diametr;
+      //creating brush canvas
+      const brushCanvas = canvasBrushRef.current;
+      const brushContext: CanvasRenderingContext2D | null = brushCanvas.getContext('2d');
+      brushCanvas.width = diametr;
+      brushCanvas.height = diametr;
 
-        brushContext!.shadowOffsetX = diametr;
-        brushContext!.shadowBlur = brushBlurSize;
-        brushContext!.shadowColor = 'black';
+      brushContext!.shadowOffsetX = diametr;
+      brushContext!.shadowBlur = brushBlurSize;
+      brushContext!.shadowColor = 'black';
 
-        brushContext!.fillStyle = '#000000';
-        brushContext!.beginPath();
-        brushContext!.arc(-radius, radius, brushSize, 0, Math.PI * 2, true);
-        brushContext!.closePath();
-        brushContext!.fill();
+      brushContext!.fillStyle = '#000000';
+      brushContext!.beginPath();
+      brushContext!.arc(-radius, radius, brushSize, 0, Math.PI * 2, true);
+      brushContext!.closePath();
+      brushContext!.fill();
 
-        //create gradient
-        const levels = 256;
-        let canvasGradient = canvasGradientRef.current;
-        canvasGradient.width = 1;
-        canvasGradient.height = levels;
-        let contextGradient = canvasGradient.getContext('2d');
+      //create gradient
+      const levels = 256;
+      let canvasGradient = canvasGradientRef.current;
+      canvasGradient.width = 1;
+      canvasGradient.height = levels;
+      let contextGradient = canvasGradient.getContext('2d');
 
-        const gradientColors: {[key:string]: string} = {
-          0: 'blue',
-          //  0.5: "green",
-          1.0: 'blue',
-        };
+      const gradientColors: { [key: string]: string } = {
+        0: 'blue',
+        //  0.5: "green",
+        1.0: 'blue',
+      };
 
-        //draw data
-        for (let i = 0; i < data.length; ++i) {
-          const point = data[i];
-          const x = point[0];
-          const y = point[1];
-          const alpha = point[2]; // using value as alpha
+      //draw data
+      for (let i = 0; i < data.length; ++i) {
+        const point = data[i];
+        const x = point[0];
+        const y = point[1];
+        const alpha = point[2]; // using value as alpha
 
-          ctx!.globalAlpha = alpha;
+        ctx!.globalAlpha = alpha;
 
-          ctx!.drawImage(brushCanvas, x - radius, y - radius);
-        }
+        ctx!.drawImage(brushCanvas, x - radius, y - radius);
+      }
 
-        // add color to gradient stops
+      // add color to gradient stops
 
-        let gradient = contextGradient!.createLinearGradient(0, 0, 0, levels);
-        for (let pos in gradientColors) {
-          gradient.addColorStop(+pos, gradientColors[pos]);
-        }
+      let gradient = contextGradient!.createLinearGradient(0, 0, 0, levels);
+      for (let pos in gradientColors) {
+        gradient.addColorStop(+pos, gradientColors[pos]);
+      }
 
-        contextGradient!.fillStyle = gradient;
-        contextGradient!.fillRect(0, 0, canvasGradient.width, levels);
-        let gradientPixels = contextGradient!.getImageData(0, 0, 1, levels).data;
+      contextGradient!.fillStyle = gradient;
+      contextGradient!.fillRect(0, 0, canvasGradient.width, levels);
+      let gradientPixels = contextGradient!.getImageData(0, 0, 1, levels).data;
 
-        // const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-        // const grData = contextGradient.getImageData(0, 0, canvasGradient.width, levels);
-        // // Iterate through every pixel
-        // console.log(gradient[100]);
-        // for (let i = 0; i < imageData.data.length; i += 4) {
-        //   // Modify pixel data
+      // const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      // const grData = contextGradient.getImageData(0, 0, canvasGradient.width, levels);
+      // // Iterate through every pixel
+      // console.log(gradient[100]);
+      // for (let i = 0; i < imageData.data.length; i += 4) {
+      //   // Modify pixel data
 
-        // grData.data
-        //   const rand = Math.random() * levels*0.8;
-        //   imageData.data[i + 0] = 50; // R value
-        //   imageData.data[i + 1] = 20; // G value
-        //   imageData.data[i + 2] = 210; // B value
-        //   imageData.data[i + 3] = rand; // A value
-        // }
+      // grData.data
+      //   const rand = Math.random() * levels*0.8;
+      //   imageData.data[i + 0] = 50; // R value
+      //   imageData.data[i + 1] = 20; // G value
+      //   imageData.data[i + 2] = 210; // B value
+      //   imageData.data[i + 3] = rand; // A value
+      // }
 
-        // // Draw image data to the canvas
-        // ctx.putImageData(imageData, 20, 20);
+      // // Draw image data to the canvas
+      // ctx.putImageData(imageData, 20, 20);
 
-        let imageData = ctx!.getImageData(0, 0, canvas.width, canvas.height);
-        let len = imageData.data.length / 4;
-        while (len--) {
-          let id = len * 4 + 3;
-          let alpha = imageData.data[id] / levels; // why not `gradientLevels`?
+      let imageData = ctx!.getImageData(0, 0, canvas.width, canvas.height);
+      let len = imageData.data.length / 4;
+      while (len--) {
+        let id = len * 4 + 3;
+        let alpha = imageData.data[id] / levels; // why not `gradientLevels`?
 
-          let colorOffset = Math.floor(alpha * (levels - 1));
+        let colorOffset = Math.floor(alpha * (levels - 1));
 
-          imageData.data[id - 3] = gradientPixels[colorOffset * 4]; // red
-          imageData.data[id - 2] = gradientPixels[colorOffset * 4 + 1]; // green
-          imageData.data[id - 1] = gradientPixels[colorOffset * 4 + 2]; // blue
-        }
+        imageData.data[id - 3] = gradientPixels[colorOffset * 4]; // red
+        imageData.data[id - 2] = gradientPixels[colorOffset * 4 + 1]; // green
+        imageData.data[id - 1] = gradientPixels[colorOffset * 4 + 2]; // blue
+      }
 
-        ctx!.putImageData(imageData, 0, 0);
+      ctx!.putImageData(imageData, 0, 0);
     }
   }, [data]);
 

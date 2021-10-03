@@ -1,12 +1,14 @@
 import * as React from 'react';
 
 import MainLayout from 'layout/MainLayout';
-import {Sidebar} from "../components";
+import { Sidebar } from '../components';
 
 export default function Index() {
-   return <MainLayout title={'Wave optics'}>
-      <Sidebar/>
-   </MainLayout>;
+  return (
+    <MainLayout title={'Wave optics'}>
+      <Sidebar />
+    </MainLayout>
+  );
   // return (
   //   <div className="container p-3">
   //     <button className="btn btn-primary m-3">KindaCode.com</button>
@@ -43,7 +45,6 @@ export default function Index() {
   //   </div>
   // );
 }
-
 
 //    "@emotion/cache": "latest",
 //    "@emotion/react": "^11.1.4",
