@@ -1,6 +1,8 @@
-$border-width: 3px;
-$border-color: #f1f1f1;
-$background-color: #282A35;
+$border-width: 4px;
+
+@import 'styles/colors.scss';
+$border-color: $light;
+$background-color: $dark;
 //.sections {
 //  z-index: 1100;
 //  background: $background-color;
@@ -37,22 +39,26 @@ $background-color: #282A35;
   background-color: $background-color;
   overflow: hidden;
   display: flex;
+  padding: 0.35rem;
+  //box-shadow: 1rem 2rem #7a7e82;
   a {
-    transition: all 0.5s;
+    transition: all 0.4s ease-in;
     color: $border-color;
     text-align: center;
-    padding: 14px 16px;
+    padding: 8px 18px;
     text-decoration: none;
-    font-size: 17px;
+    font-size: 16px;
     border-bottom: $border-width solid transparent;
+
+    &.active {
+      border-bottom: $border-width solid $border-color;
+    }
 
     &:hover {
       border-bottom: $border-width solid $border-color;
     }
 
-    &.active {
-      border-bottom: $border-width solid $border-color;
-    }
+
   }
 }
 

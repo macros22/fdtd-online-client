@@ -1,15 +1,15 @@
 import React from 'react';
 
 import { Categories } from 'components';
-const WAVE_OPTICS_NAME = 'ФИЗИКА | ВОЛНОВАЯ ОПТИКА';
+const WAVE_OPTICS_NAME = 'ВОЛНОВАЯ ОПТИКА';
 
 export default function Navbar() {
 
     return(
       <>
-      <nav className="navbar navbar-light shadow">
+      <nav className="navbar navbar-light bg-primary p-1">
         <div className="container-fluid">
-          <a className="navbar-brand">{WAVE_OPTICS_NAME}</a>
+          <a className="navbar-brand text-light fs-5 text-uppercase">{WAVE_OPTICS_NAME}</a>
 
           {/*<form className="d-flex">*/}
           {/*  <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>*/}

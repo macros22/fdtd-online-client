@@ -30,8 +30,8 @@ const HeatMap: React.FC<HeatMapProps> = ({
   const canvasBrushRef = useRef<HTMLCanvasElement | null>(null);
   const canvasGradientRef = useRef<HTMLCanvasElement | null>(null);
 
-  let brushSize = 2.2;
-  let brushBlurSize = 4;
+  let brushSize = 2.5;
+  let brushBlurSize = 3.5;
   let radius = brushSize + brushBlurSize;
   let diametr = radius * 2;
 

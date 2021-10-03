@@ -13,12 +13,15 @@ import { HeatMap, Sidebar, TextInput, Paper, CenteredBlock } from 'components';
 
 import { SERVER_URL } from 'constants/url';
 import MainLayout from 'layout/MainLayout';
-import { Button } from 'react-bootstrap';
+// import { Button } from 'react-bootstrap';
 
 const min = -1;
 const max = 1.1;
 
 export default function Index() {
+
+  const [isWSocketConnected, setIsWSocketConnected] = React.useState<boolean>(false);
+
   const [beamsize, setBeamsize] = useState<number>(3);
   const [lambda, setLambda] = useState<number>(1);
   const [n1, setN1] = useState<number>(1);
@@ -53,18 +56,22 @@ export default function Index() {
   const [allData, setAllData] = useState<dataType>(initAllData);
 
   useEffect(() => {
-   // subscribe();
+   subscribe();
   }, []);
 
   const subscribe = async () => {
     const eventSource = new EventSource(SERVER_URL + `lab2/connect`);
 
+
+
     eventSource.onopen = function () {
       console.log('Event: open');
+      setIsWSocketConnected(true);
     };
 
     eventSource.onerror = function () {
       console.log('Event: error');
+      setIsWSocketConnected(false);
     };
 
     setPause(false);
@@ -150,12 +157,13 @@ export default function Index() {
           </Sidebar>
 
         <div className="p-4 bd-highlight">
-          <h3><span className="badge bg-secondary">Пространственно-временная структура электромагнитных пучков</span></h3>
+          <CenteredBlock>
+            <h3><span className="badge bg-info">{"Server connection: " + isWSocketConnected}</span></h3>
+            <h3><span className="badge bg-secondary">Пространственно-временная структура электромагнитных пучков</span></h3>
       <div className="container">
         <div className="row">
           <div className="col">
             <Paper >
-              <kbd><kbd>ctrl</kbd> + <kbd>,</kbd></kbd>
               <CenteredBlock>
                 <h4><span className="badge bg-primary">Напряженность электр. поля Ez</span></h4>
               </CenteredBlock>
@@ -172,7 +180,7 @@ export default function Index() {
           <div className="col">
             <Paper >
               <CenteredBlock>
-                <h3><span className="badge bg-primary">Hy</span></h3>
+                <h4><span className="badge bg-primary">Напряженность магн. поля Hy</span></h4>
               </CenteredBlock>
                 <HeatMap
                   minVal={min}
@@ -189,7 +197,7 @@ export default function Index() {
           <div className="col">
             <Paper >
               <CenteredBlock>
-                <h3><span className="badge bg-primary">Hx</span></h3>
+                <h4><span className="badge bg-primary">Напряженность магн. поля Hx</span></h4>
               </CenteredBlock>
                 <HeatMap
                   minVal={min}
@@ -203,7 +211,7 @@ export default function Index() {
             <div className="col">
             <Paper >
               <CenteredBlock>
-                <h3><span className="badge bg-primary">Energy</span></h3>
+                <h4><span className="badge bg-primary">Плотность энергии</span></h4>
                 </CenteredBlock>
                 <HeatMap
                   minVal={min}
@@ -216,6 +224,7 @@ export default function Index() {
             </div>
         </div>
       </div>
+            </CenteredBlock>
         </div>
       </div>
     </MainLayout>
