@@ -24,7 +24,8 @@ $gray: rgba(175, 173, 173, 0.78);
   transition: border-color 0.2s;
 
   &:hover {
-    background: #e3dfdf;
+    //background: #e3dfdf;
+    border-bottom: 2px solid $primary;
     transition: 0.5s;
   }
 

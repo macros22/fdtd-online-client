@@ -21,8 +21,8 @@ const HeatMap: React.FC<HeatMapProps> = ({
   dataX = [],
   dataY = [],
   dataVal = [],
-  width = 350,
-  height = 350,
+  width = 380,
+  height = 380,
 }) => {
   let data: PictureDataType = [];
 
@@ -30,8 +30,8 @@ const HeatMap: React.FC<HeatMapProps> = ({
   const canvasBrushRef = useRef<HTMLCanvasElement | null>(null);
   const canvasGradientRef = useRef<HTMLCanvasElement | null>(null);
 
-  let brushSize = 2.5;
-  let brushBlurSize = 3.5;
+  let brushSize = width / 200;
+  let brushBlurSize = brushSize * 1.3;
   let radius = brushSize + brushBlurSize;
   let diametr = radius * 2;
 

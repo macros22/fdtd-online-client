@@ -21,6 +21,8 @@ const max = 1.1;
 export default function Index() {
   const [isWSocketConnected, setIsWSocketConnected] = React.useState<boolean>(false);
 
+  const socket = React.useRef<HTMLElement | null>(null);
+
   const [beamsize, setBeamsize] = useState<number>(3);
   const [lambda, setLambda] = useState<number>(1);
   const [n1, setN1] = useState<number>(1);
@@ -55,51 +57,75 @@ export default function Index() {
   const [allData, setAllData] = useState<dataType>(initAllData);
 
   useEffect(() => {
-    subscribe();
+    connectWS();
+    return (() => {
+      // @ts-ignore
+      socket.close(1000, "работа закончена");
+    })
   }, []);
 
-  const subscribe = async () => {
-    const eventSource = new EventSource(SERVER_URL + `lab2/connect`);
 
-    eventSource.onopen = function () {
-      console.log('Event: open');
-      setIsWSocketConnected(true);
-    };
-
-    eventSource.onerror = function () {
-      console.log('Event: error');
-      setIsWSocketConnected(false);
-    };
-
-    setPause(false);
-
-    eventSource.onmessage = function (event) {
+  function connectWS() {
+    // if(socket != null)
+    // @ts-ignore
+    socket.current = new WebSocket(SERVER_URL)
+    // @ts-ignore
+    socket.current.onopen = () => {
+      setIsWSocketConnected(true)
+    }
+    // @ts-ignore
+    socket.current.onmessage = (event: any) => {
       let data = JSON.parse(event.data);
+      setStep(data.step || 0)
       setAllData(data);
+    }
+  // @ts-ignore
+    socket.current.onclose= () => {
+      console.log('Socket закрыт')
+      setIsWSocketConnected(false)
+    }
+    // @ts-ignore
+    socket.current.onerror = () => {
+      console.log('Socket произошла ошибка')
+      setIsWSocketConnected(false)
+    }
+  }
 
-      setStep(data.step || 0);
 
-      console.log(Math.min(...data.dataEnergy));
-      console.log(Math.max(...data.dataEnergy));
-    };
+  // setStep(data.step || 0);
+  //
+  // console.log(Math.min(...data.dataEnergy));
+  // console.log(Math.max(...data.dataEnergy));
+
+
+  const startDataReceiving = () => {
+    setPause(true);
+
+    const message = {
+      event: 'start',
+      type: 'INTERFERENCE',
+      condition: [lambda, beamsize, n1],
+    }
+
+    // @ts-ignore
+    socket.current.send(JSON.stringify(message))
   };
 
-  const sendConditions = (reload = true) => {
-    (async function () {
-      await axios.post(SERVER_URL + 'lab2/nextLayer', {
-        lambda,
-        beamsize,
-        n1,
-        reload,
-        type: '3D',
-      });
-    })();
-  };
 
   const pauseDataReceiving = () => {
-    (async function () {
-      await axios.get(SERVER_URL + 'lab2/pause');
-    })();
+    const message = {
+      event: 'pause'
+    }
+    // @ts-ignore
+    socket.current.send(JSON.stringify(message))
+  };
+
+  const continueDataReceiving = () => {
+    const message = {
+      event: 'continue'
+    }
+    // @ts-ignore
+    socket.current.send(JSON.stringify(message))
   };
 
   return (
@@ -126,7 +152,7 @@ export default function Index() {
             <button
               onClick={(e) => {
                 e.preventDefault();
-                sendConditions();
+                startDataReceiving();
                 setSimulation(true);
               }}
               type="button"
@@ -140,23 +166,23 @@ export default function Index() {
               disabled={!simulation}
               onClick={(e) => {
                 e.preventDefault();
-                if (!pause) {
-                  pauseDataReceiving();
-                } else {
-                  sendConditions(false);
-                }
+                 if (!pause) {
+                   pauseDataReceiving();
+                 } else {
+                   continueDataReceiving();
+                 }
                 setPause((pause) => !pause);
               }}
             >
               {pause ? CONTINUE_NAME : PAUSE_NAME}
             </button>
+            <h3>
+              <span className="badge bg-info m-2">{'Server connection: ' + isWSocketConnected}</span>
+            </h3>
           </Sidebar>
 
           <div className="p-4 bd-highlight">
             <CenteredBlock>
-              <h3>
-                <span className="badge bg-info">{'Server connection: ' + isWSocketConnected}</span>
-              </h3>
               <h3>
                 <span className="badge bg-secondary">
                   Пространственно-временная структура электромагнитных пучков
@@ -219,7 +245,7 @@ export default function Index() {
                     <Paper>
                       <CenteredBlock>
                         <h4>
-                          <span className="badge bg-primary">Плотность энергии</span>
+                          <span className="badge bg-primary">Плотность энергии электромагн. поля</span>
                         </h4>
                       </CenteredBlock>
                       <HeatMap

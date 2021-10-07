@@ -1,12 +1,13 @@
 import * as React from 'react';
 
 import MainLayout from 'layout/MainLayout';
-import { Sidebar } from '../components';
+import WebSocket from 'pages/lab3/temp';
 
 export default function Index() {
   return (
     <MainLayout title={'Wave optics'}>
-      <Sidebar />
+      {/*<Sidebar />*/}
+      <WebSocket />
     </MainLayout>
   );
   // return (
