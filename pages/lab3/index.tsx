@@ -92,8 +92,7 @@ export default function Index() {
   }
 
 
-  // setStep(data.step || 0);
-  //
+
   // console.log(Math.min(...data.dataEnergy));
   // console.log(Math.max(...data.dataEnergy));
 
