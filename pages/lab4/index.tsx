@@ -7,8 +7,8 @@ import {
   STEP_NUMBER_NAME,
   WAVE_LENGTH_NAME,
 } from 'names/lab2.name';
-import classes from './lab3.module.scss';
-import { HeatMap, Sidebar, TextInput, Paper, CenteredBlock } from 'components';
+import classes from './lab4.module.scss';
+import {HeatMap, Sidebar, TextInput, Paper, CenteredBlock, DifractionEditor} from 'components';
 
 import { SERVER_URL } from 'constants/url';
 import MainLayout from 'layout/MainLayout';
@@ -78,7 +78,7 @@ export default function Index() {
       setStep(data.step || 0)
       setAllData(data);
     }
-  // @ts-ignore
+    // @ts-ignore
     socket.current.onclose= () => {
       console.log('Socket закрыт')
       setIsWSocketConnected(false)
@@ -101,8 +101,8 @@ export default function Index() {
 
     const message = {
       event: 'start',
-      type: 'INTERFERENCE',
-      condition: [lambda, beamsize, n1],
+      type: 'DIFRACTION',
+      condition: [lambda, beamsize, n1, 1.5],
     }
 
     // @ts-ignore
@@ -128,9 +128,10 @@ export default function Index() {
 
   return (
     <>
-      <MainLayout title={'Wave optics | Lab 3'}>
+      <MainLayout title={'Wave optics | Lab 4'}>
         <div className="d-flex bg-light align-items-stretch mh-100">
           <Sidebar>
+            <DifractionEditor/>
             <TextInput
               value={typeof lambda === 'number' ? lambda : 0}
               label={WAVE_LENGTH_NAME}
@@ -164,11 +165,11 @@ export default function Index() {
               disabled={!simulation}
               onClick={(e) => {
                 e.preventDefault();
-                 if (!pause) {
-                   pauseDataReceiving();
-                 } else {
-                   continueDataReceiving();
-                 }
+                if (!pause) {
+                  pauseDataReceiving();
+                } else {
+                  continueDataReceiving();
+                }
                 setPause((pause) => !pause);
               }}
             >

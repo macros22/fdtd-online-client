@@ -43,7 +43,7 @@ const DifractionEditor = () => {
       <Canvas />
       {
         matrix.map((row, i) => {
-          return row.map((item: number, j) =>
+          return row.map((item: number, j:number) =>
             item == rIndex2
               ?  <rect width={rectWidth} height={rectHeight} x={x + j*rectWidth} y={y + i*rectHeight} fill="#bbb"/>
               : null)
