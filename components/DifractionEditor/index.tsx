@@ -24,6 +24,10 @@ const Canvas = () => (
   <rect width={width} height={height} x={x} y={y} fill="#eee"/>
 );
 
+
+
+
+
 const DifractionEditor = () => {
 
   let matrix: any[]=[];
