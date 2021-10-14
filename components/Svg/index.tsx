@@ -35,7 +35,7 @@ const Shape: React.FC<ShapeProps> = ({
   y,
   panelHeight,
   changeMatrix,
-  changeAllShapes
+  changeAllShapes,
 }) => {
   const initX = x;
   const initY = y;
@@ -152,7 +152,6 @@ const Editor = () => {
 
   const rIndexes = [0, 1.5, 2];
 
-
   let panelShapes = [
     {
       type: 'rect',
@@ -161,7 +160,7 @@ const Editor = () => {
       width: rectWidth,
       height: rectHeight,
       rIndex: rIndexes[1],
-      color: "red",
+      color: 'red',
     },
     {
       type: 'rect',
@@ -170,14 +169,10 @@ const Editor = () => {
       width: rectWidth,
       height: rectHeight,
       rIndex: rIndexes[2],
-      color: "blue",
-    }
+      color: 'blue',
+    },
   ];
   // const initPanelShapes =  panelShapes;
-
-
-
-
 
   const handleMouseClick = (e) => {
     const newJ = focusedCoord.j;
@@ -188,24 +183,22 @@ const Editor = () => {
     });
   };
 
-
-  const [focusedCoord, setFocusedCoord] = React.useState({i: -1, j: -1})
+  const [focusedCoord, setFocusedCoord] = React.useState({ i: -1, j: -1 });
 
   const handleMouseMove = (e) => {
     // Save the values of pageX and pageY and use it within setPosition.
     const pageX = e.pageX;
     const pageY = e.pageY;
-    const {x: gridX, y: gridY} = e.target.getBoundingClientRect();
+    const { x: gridX, y: gridY } = e.target.getBoundingClientRect();
 
     const x = pageX - gridX;
     const y = pageY - gridY;
 
     setFocusedCoord({
       j: Math.round((n * x) / width),
-      i: Math.round((n * y) / height)
-    })
+      i: Math.round((n * y) / height),
+    });
   };
-
 
   return (
     <>
@@ -216,17 +209,20 @@ const Editor = () => {
           width: width + 'px',
         }}
       >
-        <rect x={0} y={0}
-              width={width} height={height}
-              fill="#fafafa"
-              onClick={handleMouseClick}
-              onMouseMove={handleMouseMove}/>
+        <rect
+          x={0}
+          y={0}
+          width={width}
+          height={height}
+          fill="#fafafa"
+          onClick={handleMouseClick}
+          onMouseMove={handleMouseMove}
+        />
 
         {matrix.map((row, i) => {
-          return row.map((item: number, j: number) =>{
-
-            if((i == focusedCoord.i) && (j == focusedCoord.j)){
-              return(
+          return row.map((item: number, j: number) => {
+            if (i == focusedCoord.i && j == focusedCoord.j) {
+              return (
                 <rect
                   key={j}
                   width={rectWidth}
@@ -242,44 +238,42 @@ const Editor = () => {
 
             switch (item) {
               case panelShapes[0].rIndex:
-                return(
+                return (
                   <rect
                     key={j}
                     width={rectWidth}
                     height={rectHeight}
                     x={j * rectWidth}
                     y={i * rectHeight}
-                    fill= {panelShapes[0].color}
+                    fill={panelShapes[0].color}
                   />
                 );
               case panelShapes[1].rIndex:
-                return(
+                return (
                   <rect
                     key={j}
                     width={rectWidth}
                     height={rectHeight}
                     x={j * rectWidth}
                     y={i * rectHeight}
-                    fill= {panelShapes[1].color}
+                    fill={panelShapes[1].color}
                   />
                 );
               default:
                 return null;
             }
-
-          }
-          );
+          });
         })}
 
         {panelShapes.map((shape, index) => {
           switch (shape.type) {
-            case "rect":
+            case 'rect':
               return (
                 <rect
                   key={index + shape.x}
                   fill={shape.color}
                   stroke="#fff"
-                  strokeWidth={index == currentShape ? "5px" : ""}
+                  strokeWidth={index == currentShape ? '5px' : ''}
                   strokeOpacity="0.5"
                   x={shape.x}
                   y={shape.y}
