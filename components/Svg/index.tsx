@@ -23,6 +23,7 @@ type ShapeProps = {
   y: number;
   panelHeight: number;
   changeMatrix: (x: number, y: number) => void;
+  changeAllShapes: () => void;
 };
 
 const Shape: React.FC<ShapeProps> = ({
@@ -34,6 +35,7 @@ const Shape: React.FC<ShapeProps> = ({
   y,
   panelHeight,
   changeMatrix,
+  changeAllShapes
 }) => {
   const initX = x;
   const initY = y;
@@ -135,78 +137,6 @@ const Shape: React.FC<ShapeProps> = ({
   );
 };
 
-const Circle = () => {
-  const [position, setPosition] = React.useState<positionType>({
-    x: 100,
-    y: 100,
-    coords: {
-      x: 100,
-      y: 100,
-    },
-  });
-
-  // Use useRef to create the function once and hold a reference to it.
-  const handleMouseMove = React.useRef((e) => {
-    // if(e.pageX < 200)
-    {
-      setPosition((position) => {
-        const xDiff = position.coords.x - e.pageX;
-        const yDiff = position.coords.y - e.pageY;
-        return {
-          x: position.x - xDiff,
-          y: position.y - yDiff,
-          coords: {
-            x: e.pageX,
-            y: e.pageY,
-          },
-        };
-      });
-    }
-  });
-
-  const handleMouseDown = (e) => {
-    // Save the values of pageX and pageY and use it within setPosition.
-    const pageX = e.pageX;
-    const pageY = e.pageY;
-    setPosition((position) =>
-      Object.assign({}, position, {
-        coords: {
-          x: pageX,
-          y: pageY,
-        },
-      })
-    );
-    document.addEventListener('mousemove', handleMouseMove.current);
-  };
-
-  const handleMouseUp = () => {
-    console.log(position);
-    document.removeEventListener('mousemove', handleMouseMove.current);
-    // Use Object.assign to do a shallow merge so as not to
-    // totally overwrite the other values in state.
-    setPosition((position) =>
-      Object.assign({}, position, {
-        coords: {},
-      })
-    );
-  };
-
-  return (
-    <>
-      <circle
-        cx={position.x}
-        cy={position.y}
-        r={25}
-        fill="black"
-        stroke="black"
-        strokeWidth="1"
-        onMouseDown={handleMouseDown}
-        onMouseUp={handleMouseUp}
-      />
-    </>
-  );
-};
-
 const Editor = () => {
   const width = 460;
   const height = width;
@@ -218,33 +148,64 @@ const Editor = () => {
     height
   );
 
+  const [currentShape, setCurrentShape] = React.useState(0);
+
+  const rIndexes = [0, 1.5, 2];
+
+
   let panelShapes = [
     {
+      type: 'rect',
       x: 0,
       y: height + rectHeight,
       width: rectWidth,
       height: rectHeight,
+      rIndex: rIndexes[1],
+      color: "red",
     },
     {
+      type: 'rect',
       x: 50,
       y: height + rectHeight,
       width: rectWidth,
       height: rectHeight,
-    },
+      rIndex: rIndexes[2],
+      color: "blue",
+    }
   ];
   // const initPanelShapes =  panelShapes;
 
-  // w/x = n / ?
-  const changeMatrix = (x: number, y: number) => {
-    const newJ = Math.round((n * x) / width);
-    const newI = Math.round((n * y) / height);
 
+
+
+
+  const handleMouseClick = (e) => {
+    const newJ = focusedCoord.j;
+    const newI = focusedCoord.i;
     setMatrix((prevMatrix) => {
-      prevMatrix[newI][newJ] = rIndex2;
+      prevMatrix[newI][newJ] = panelShapes[currentShape].rIndex;
       return JSON.parse(JSON.stringify(prevMatrix));
     });
-    // panelShapes = initPanelShapes;
   };
+
+
+  const [focusedCoord, setFocusedCoord] = React.useState({i: -1, j: -1})
+
+  const handleMouseMove = (e) => {
+    // Save the values of pageX and pageY and use it within setPosition.
+    const pageX = e.pageX;
+    const pageY = e.pageY;
+    const {x: gridX, y: gridY} = e.target.getBoundingClientRect();
+
+    const x = pageX - gridX;
+    const y = pageY - gridY;
+
+    setFocusedCoord({
+      j: Math.round((n * x) / width),
+      i: Math.round((n * y) / height)
+    })
+  };
+
 
   return (
     <>
@@ -255,37 +216,79 @@ const Editor = () => {
           width: width + 'px',
         }}
       >
-        <rect x={0} y={0} width={width} height={height} fill="#fafafa" />
+        <rect x={0} y={0}
+              width={width} height={height}
+              fill="#fafafa"
+              onClick={handleMouseClick}
+              onMouseMove={handleMouseMove}/>
 
         {matrix.map((row, i) => {
-          return row.map((item: number, j: number) =>
-            item == rIndex2 ? (
-              <rect
-                key={j}
-                width={rectWidth}
-                height={rectHeight}
-                x={j * rectWidth}
-                y={i * rectHeight}
-                fill="#bbb"
-              />
-            ) : null
+          return row.map((item: number, j: number) =>{
+
+            if((i == focusedCoord.i) && (j == focusedCoord.j)){
+              return(
+                <rect
+                  key={j}
+                  width={rectWidth}
+                  height={rectHeight}
+                  x={j * rectWidth}
+                  y={i * rectHeight}
+                  fill="gray"
+                  opacity="0.2"
+                  onClick={handleMouseClick}
+                />
+              );
+            }
+
+            switch (item) {
+              case panelShapes[0].rIndex:
+                return(
+                  <rect
+                    key={j}
+                    width={rectWidth}
+                    height={rectHeight}
+                    x={j * rectWidth}
+                    y={i * rectHeight}
+                    fill= {panelShapes[0].color}
+                  />
+                );
+              case panelShapes[1].rIndex:
+                return(
+                  <rect
+                    key={j}
+                    width={rectWidth}
+                    height={rectHeight}
+                    x={j * rectWidth}
+                    y={i * rectHeight}
+                    fill= {panelShapes[1].color}
+                  />
+                );
+              default:
+                return null;
+            }
+
+          }
           );
         })}
 
         {panelShapes.map((shape, index) => {
-          return (
-            <Shape
-              key={index + shape.x}
-              x={shape.x}
-              y={shape.y}
-              width={shape.width}
-              height={shape.height}
-              parentWidth={width}
-              parentHeight={height + panelHeight}
-              panelHeight={panelHeight}
-              changeMatrix={changeMatrix}
-            />
-          );
+          switch (shape.type) {
+            case "rect":
+              return (
+                <rect
+                  key={index + shape.x}
+                  fill={shape.color}
+                  stroke="#fff"
+                  strokeWidth={index == currentShape ? "5px" : ""}
+                  strokeOpacity="0.5"
+                  x={shape.x}
+                  y={shape.y}
+                  width={shape.width}
+                  height={shape.height}
+                  onClick={() => setCurrentShape(index)}
+                />
+              );
+          }
         })}
       </svg>
     </>
@@ -319,7 +322,7 @@ const Svg = () => {
           <div className="modal-content">
             <div className="modal-header">
               <h5 className="modal-title" id="staticBackdropLabel">
-                Modal title
+                Редактор дифракционной решетки
               </h5>
               <button
                 type="button"
@@ -334,10 +337,10 @@ const Svg = () => {
             </div>
             <div className="modal-footer">
               <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">
-                Close
+                Закрыть
               </button>
               <button type="button" className="btn btn-primary">
-                Understood
+                Сохранить
               </button>
             </div>
           </div>
