@@ -5,6 +5,8 @@ import * as React from 'react';
 import { DifractionEditor } from 'components';
 import { useDifractionMatrix } from './useDifractionMatrix';
 
+import classes from './style.module.scss';
+
 type positionType = {
   x: number;
   y: number;
@@ -141,35 +143,45 @@ const Editor = () => {
   const width = 460;
   const height = width;
 
-  const panelHeight = 50;
+  const panelHeight = 100;
 
   const { matrix, setMatrix, rectWidth, rectHeight, rIndex2, n } = useDifractionMatrix(
     width,
     height
   );
 
-  const [currentShape, setCurrentShape] = React.useState(0);
+  const [currentShape, setCurrentShape] = React.useState(1);
 
-  const rIndexes = [0, 1.5, 2];
+  const rIndexes = [1, 1.5, 2];
+  const colors = ["#fafafa",'#a1bb21', '#1a52aa']
 
   let panelShapes = [
     {
       type: 'rect',
-      x: 0,
-      y: height + rectHeight,
+      x: 50,
+      y: height + rectHeight+20,
       width: rectWidth,
       height: rectHeight,
-      rIndex: rIndexes[1],
-      color: 'red',
+      rIndex: rIndexes[0],
+      color: colors[0],
     },
     {
       type: 'rect',
-      x: 50,
-      y: height + rectHeight,
+      x: 100,
+      y: height + rectHeight+20,
+      width: rectWidth,
+      height: rectHeight,
+      rIndex: rIndexes[1],
+      color: colors[1],
+    },
+    {
+      type: 'rect',
+      x: 150,
+      y: height + rectHeight+20,
       width: rectWidth,
       height: rectHeight,
       rIndex: rIndexes[2],
-      color: 'blue',
+      color: colors[2],
     },
   ];
   // const initPanelShapes =  panelShapes;
@@ -204,7 +216,7 @@ const Editor = () => {
     <>
       <svg
         style={{
-          background: '#aaa',
+          // background: '#aaa',
           height: height + panelHeight + 'px',
           width: width + 'px',
         }}
@@ -214,7 +226,7 @@ const Editor = () => {
           y={0}
           width={width}
           height={height}
-          fill="#fafafa"
+          fill={colors[0]}
           onClick={handleMouseClick}
           onMouseMove={handleMouseMove}
         />
@@ -230,24 +242,13 @@ const Editor = () => {
                   x={j * rectWidth}
                   y={i * rectHeight}
                   fill="gray"
-                  opacity="0.2"
+                  opacity="0.4"
                   onClick={handleMouseClick}
                 />
               );
             }
 
             switch (item) {
-              case panelShapes[0].rIndex:
-                return (
-                  <rect
-                    key={j}
-                    width={rectWidth}
-                    height={rectHeight}
-                    x={j * rectWidth}
-                    y={i * rectHeight}
-                    fill={panelShapes[0].color}
-                  />
-                );
               case panelShapes[1].rIndex:
                 return (
                   <rect
@@ -257,6 +258,17 @@ const Editor = () => {
                     x={j * rectWidth}
                     y={i * rectHeight}
                     fill={panelShapes[1].color}
+                  />
+                );
+              case panelShapes[2].rIndex:
+                return (
+                  <rect
+                    key={j}
+                    width={rectWidth}
+                    height={rectHeight}
+                    x={j * rectWidth}
+                    y={i * rectHeight}
+                    fill={panelShapes[2].color}
                   />
                 );
               default:
@@ -269,21 +281,26 @@ const Editor = () => {
           switch (shape.type) {
             case 'rect':
               return (
-                <rect
-                  key={index + shape.x}
-                  fill={shape.color}
-                  stroke="#fff"
-                  strokeWidth={index == currentShape ? '5px' : ''}
-                  strokeOpacity="0.5"
-                  x={shape.x}
-                  y={shape.y}
-                  width={shape.width}
-                  height={shape.height}
-                  onClick={() => setCurrentShape(index)}
-                />
+                <>
+                  <rect
+                    key={index + shape.x}
+                    fill={shape.color}
+                    stroke="green"
+                    strokeWidth={index == currentShape ? '2px' : '0px'}
+                    strokeOpacity="1"
+                    x={shape.x}
+                    y={shape.y}
+                    width={shape.width}
+                    height={shape.height}
+                    onClick={() => setCurrentShape(index)}
+                  />
+                <text x={shape.x} y={shape.y + rectHeight*3} className={classes.heavy}>{shape.rIndex}</text>
+                </>
               );
           }
         })}
+
+
       </svg>
     </>
   );
