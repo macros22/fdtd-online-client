@@ -2,143 +2,8 @@ import * as React from 'react';
 
 // https://codesandbox.io/s/blov5kowy?file=/index.js:0-1633
 
-// const Rect = () => {
-//
-//   let svg: SVGSVGElement | null | any = null;
-//
-//   let svgRectElem: any;
-//
-//   const [state, setState] = React.useState<any>({rect: {x: 0, y: 0}});
-//
-//   const startDrag = (event:any, draggedElem) => {
-//     event.preventDefault();
-//     if (svg !== null) {
-//
-//
-//       let point = svg.createSVGPoint();
-//       point.x = event.clientX;
-//       point.y = event.clientY;
-//       point = point.matrixTransform(svg.getScreenCTM().inverse());
-//
-//       setState((prevState:any) => ({
-//         dragOffset: {
-//           x: point.x - prevState.rect.x,
-//           y: point.y - prevState.rect.y
-//         }
-//       }));
-//
-//       const mousemove = () => {
-//         event.preventDefault();
-//         point.x = event.clientX;
-//         point.y = event.clientY;
-//         let cursor = point.matrixTransform(svg.getScreenCTM().inverse());
-//         setState((prevState:any) => ({
-//           rect: {
-//             x: cursor.x - prevState.dragOffset.x,
-//             y: cursor.y - prevState.dragOffset.y
-//           }
-//         }));
-//
-//
-//
-//       };
-//
-//       const mouseup = () => {
-//         document.removeEventListener("mousemove", mousemove);
-//         document.removeEventListener("mouseup", mouseup);
-//       };
-//
-//       document.addEventListener("mousemove", mousemove);
-//       document.addEventListener("mouseup", mouseup);
-//     }
-//
-//   }
-//
-//     return (
-//       <div>
-//         <svg viewBox="0 0 100 100" ref={(svg) => svg = svg}>
-//           <rect
-//             x={state.rect.x}
-//             y={state.rect.y}
-//             width="20"
-//             height="20"
-//             ref={(e) => svgRectElem = e}
-//             onMouseDown={(e) => startDrag(e, svgRectElem)}
-//           />
-//         </svg>
-//         Position: <br />
-//         X: {state.rect.x}<br />
-//         Y: {state.rect.y}
-//       </div>
-//     );
-//
-//
-// }
-
-// Same as above with class.
-
-//
-// class Rect extends React.Component {
-//   constructor() {
-//     super();
-//     this.state = {rect: {x: 0, y: 0}};
-//   }
-//
-//   render() {
-//     return (
-//       <>
-//         {/**/}
-//         <svg  viewBox="0 0 100 100" ref={(svg) => this.svg = svg}>
-//           <rect x="0" y="0" width="40" height="60" fill="#fafafa"/>
-//           <rect
-//             x={this.state.rect.x}
-//             y={this.state.rect.y}
-//             width="10"
-//             height="10"
-//             ref={(e) => this.svgRectElem = e}
-//             onMouseDown={(e) => this.startDrag(e, this.svgRectElem)}
-//           />
-//         </svg>
-//         Position: <br />
-//         X: {this.state.rect.x}<br />
-//         Y: {this.state.rect.y}
-//       </>
-//     );
-//   }
-//
-//   startDrag(event, draggedElem) {
-//     event.preventDefault();
-//     let point = this.svg.createSVGPoint();
-//     point.x = event.clientX;
-//     point.y = event.clientY;
-//     point = point.matrixTransform(this.svg.getScreenCTM().inverse());
-//     this.setState({dragOffset: {
-//         x: point.x - this.state.rect.x,
-//         y: point.y - this.state.rect.y
-//       }});
-//
-//     const mousemove = (event) => {
-//       event.preventDefault();
-//       point.x = event.clientX;
-//       point.y = event.clientY;
-//       let cursor = point.matrixTransform(this.svg.getScreenCTM().inverse());
-//       this.setState({rect: {
-//           x: cursor.x - this.state.dragOffset.x,
-//           y: cursor.y - this.state.dragOffset.y
-//         }});
-//     };
-//
-//     const mouseup = (event) => {
-//       document.removeEventListener("mousemove", mousemove);
-//       document.removeEventListener("mouseup", mouseup);
-//     };
-//
-//     document.addEventListener("mousemove", mousemove);
-//     document.addEventListener("mouseup", mouseup);
-//   }
-// }
-
 import { DifractionEditor } from 'components';
+import { useDifractionMatrix } from './useDifractionMatrix';
 
 type positionType = {
   x: number;
@@ -157,6 +22,7 @@ type ShapeProps = {
   x: number;
   y: number;
   panelHeight: number;
+  changeMatrix: (x: number, y: number) => void;
 };
 
 const Shape: React.FC<ShapeProps> = ({
@@ -167,6 +33,7 @@ const Shape: React.FC<ShapeProps> = ({
   x,
   y,
   panelHeight,
+  changeMatrix,
 }) => {
   const initX = x;
   const initY = y;
@@ -230,6 +97,8 @@ const Shape: React.FC<ShapeProps> = ({
       position.x < parentWidth - width &&
       position.y < parentHeight - panelHeight - height
     ) {
+      changeMatrix(position.x, position.y);
+
       // Use Object.assign to do a shallow merge so as not to
       // totally overwrite the other values in state.
       setPosition((position) =>
@@ -338,43 +207,44 @@ const Circle = () => {
   );
 };
 
-const getMatrix = (width = 400, height = 400) => {
-  // Refraction indexes.
-  const rIndex1 = 1;
-  const rIndex2 = 1.5;
-
-  const count = 14;
-  const n = count * 2;
-  const rectHeight: number = height / (count * 2);
-  const rectWidth = rectHeight;
-
-  let matrix: any[] = [];
-  for (let i = 0; i < n; i++) {
-    matrix.push([]);
-    for (let j = 0; j < n; j++) {
-      matrix[i].push(rIndex1);
-    }
-  }
-
-  for (let i = 0; i < n; i += 2) {
-    matrix[i][5] = rIndex2;
-  }
-
-  return {
-    matrix,
-    rectWidth,
-    rectHeight,
-    rIndex2,
-  };
-};
-
 const Editor = () => {
   const width = 460;
   const height = width;
 
   const panelHeight = 50;
 
-  const { matrix, rectWidth, rectHeight, rIndex2 } = getMatrix(width, height);
+  const { matrix, setMatrix, rectWidth, rectHeight, rIndex2, n } = useDifractionMatrix(
+    width,
+    height
+  );
+
+  let panelShapes = [
+    {
+      x: 0,
+      y: height + rectHeight,
+      width: rectWidth,
+      height: rectHeight,
+    },
+    {
+      x: 50,
+      y: height + rectHeight,
+      width: rectWidth,
+      height: rectHeight,
+    },
+  ];
+  // const initPanelShapes =  panelShapes;
+
+  // w/x = n / ?
+  const changeMatrix = (x: number, y: number) => {
+    const newJ = Math.round((n * x) / width);
+    const newI = Math.round((n * y) / height);
+
+    setMatrix((prevMatrix) => {
+      prevMatrix[newI][newJ] = rIndex2;
+      return JSON.parse(JSON.stringify(prevMatrix));
+    });
+    // panelShapes = initPanelShapes;
+  };
 
   return (
     <>
@@ -387,29 +257,11 @@ const Editor = () => {
       >
         <rect x={0} y={0} width={width} height={height} fill="#fafafa" />
 
-        <Shape
-          x={0}
-          y={height + rectHeight}
-          width={rectWidth}
-          height={rectHeight}
-          parentWidth={width}
-          parentHeight={height + panelHeight}
-          panelHeight={panelHeight}
-        />
-        <Shape
-          x={50}
-          y={height + rectHeight}
-          width={rectWidth}
-          height={rectHeight}
-          parentWidth={width}
-          parentHeight={height + panelHeight}
-          panelHeight={panelHeight}
-        />
-
         {matrix.map((row, i) => {
           return row.map((item: number, j: number) =>
             item == rIndex2 ? (
               <rect
+                key={j}
                 width={rectWidth}
                 height={rectHeight}
                 x={j * rectWidth}
@@ -417,6 +269,22 @@ const Editor = () => {
                 fill="#bbb"
               />
             ) : null
+          );
+        })}
+
+        {panelShapes.map((shape, index) => {
+          return (
+            <Shape
+              key={index + shape.x}
+              x={shape.x}
+              y={shape.y}
+              width={shape.width}
+              height={shape.height}
+              parentWidth={width}
+              parentHeight={height + panelHeight}
+              panelHeight={panelHeight}
+              changeMatrix={changeMatrix}
+            />
           );
         })}
       </svg>
