@@ -1,5 +1,5 @@
 import * as React from 'react';
-import classes from './textinput.module.scss';
+import classes from './textInput.module.scss';
 
 type TextInputProps = {
   value: number | string;
