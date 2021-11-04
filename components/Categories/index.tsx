@@ -31,4 +31,9 @@ const Categories: React.FC<Props> = ({}) => {
     </>
   );
 };
+
+
+
+
+
 export default Categories;

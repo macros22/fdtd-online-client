@@ -33,10 +33,11 @@ $background-color: $primary;
 
 /* Add a black background color to the top navigation */
 .topnav {
+  // &.link{
   background-color: $background-color;
   overflow: hidden;
   display: flex;
-  padding: 0.35rem;
+  padding: 0.25rem;
   //box-shadow: 1rem 2rem #7a7e82;
   a {
     transition: all 0.4s ease-in;
@@ -54,5 +55,6 @@ $background-color: $primary;
     &:hover {
       border-bottom: $border-width solid $border-color;
     }
+  // }
   }
 }

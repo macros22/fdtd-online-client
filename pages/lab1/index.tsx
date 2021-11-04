@@ -8,7 +8,7 @@ import {
   WAVE_LENGTH_NAME,
 } from 'names/lab2.name';
 import classes from './lab1.module.scss';
-import { Sidebar, TextInput, Paper, CenteredBlock } from 'components';
+import { Sidebar, TextInput, Paper, CenteredBlock, Column } from 'components';
 
 import { SERVER_URL } from 'constants/url';
 import MainLayout from 'layout/MainLayout';
@@ -16,32 +16,43 @@ import MainLayout from 'layout/MainLayout';
 import { DataChartType } from 'types/lab1';
 
 import { ArgumentAxis, ValueAxis, Chart, LineSeries } from '@devexpress/dx-react-chart-material-ui';
+import { LAB_1_2D } from 'constants/data-type.constants';
+import { CONTINUE, START, PAUSE } from 'constants/ws-event.constants';
 
-export default function Index() {
+
+export default function Lab1() {
+
   const [isWSocketConnected, setIsWSocketConnected] = React.useState<boolean>(false);
 
   const [socket, setSocket] = React.useState<WebSocket | null>(null);
 
+  // Input parameteres.
   const [tau, setTau] = useState<number>(10);
   const [lambda, setLambda] = useState<number>(1);
   const [n1, setN1] = useState<number>(1);
 
   const [dataChart, setDataChart] = useState<DataChartType>([]);
 
+  // Simulation step.
   const [step, setStep] = useState<number>(0);
+
+  // If simulation begin, simulation = true.
   const [simulation, setSimulation] = useState<boolean>(false);
+
   const [pause, setPause] = useState<boolean>(false);
 
   useEffect(() => {
-    connectWS();
+    connectWebSocket();
     return () => {
       if (socket !== null) {
-        socket.close(1000, 'работа закончена');
+        socket.close(1000, 'Work end!');
       }
     };
   }, []);
 
-  function connectWS() {
+
+  // WebSocket configuration.
+  function connectWebSocket() {
     const socket = new WebSocket(SERVER_URL);
 
     if (socket) {
@@ -62,30 +73,31 @@ export default function Index() {
             value: dataY[j],
           });
         }
-        setDataChart(tmpDataChart);
 
+        setDataChart(tmpDataChart);
         setStep(data.step || 0);
       };
 
       socket.onclose = () => {
-        console.log('Socket закрыт');
+        console.log('Socket closed!!');
         setIsWSocketConnected(false);
       };
 
       socket.onerror = () => {
-        console.log('Socket произошла ошибка');
+        console.log('Socket error!!');
         setIsWSocketConnected(false);
       };
     }
     setSocket(socket);
   }
 
+
   const startDataReceiving = () => {
     setPause(false);
 
     const message = {
-      event: 'start',
-      type: '2D',
+      event: START,
+      type: LAB_1_2D,
       condition: [lambda, tau, n1],
     };
 
@@ -96,7 +108,7 @@ export default function Index() {
 
   const pauseDataReceiving = () => {
     const message = {
-      event: 'pause',
+      event: PAUSE,
     };
 
     if (socket !== null) {
@@ -106,7 +118,7 @@ export default function Index() {
 
   const continueDataReceiving = () => {
     const message = {
-      event: 'continue',
+      event: CONTINUE,
     };
 
     if (socket !== null) {
@@ -169,30 +181,32 @@ export default function Index() {
             </h3>
           </Sidebar>
 
-          <div className="p-4 bd-highlight">
+          <div className="p-4 bd-highlight w-100">
+              <Column> 
             <CenteredBlock>
               <h3>
                 <span className="badge bg-secondary">2D</span>
               </h3>
-              <div className="container">
-                <div className="row">
-                  <div className="col">
+              </CenteredBlock>
+              
+              <CenteredBlock>
                     <Paper>
-                      <CenteredBlock>
+                      <CenteredBlock >
+    
                         <h4>
                           <span className="badge bg-primary">Что-то от чего-то</span>
                         </h4>
-                      </CenteredBlock>
                       <Chart data={dataChart}>
                         <ArgumentAxis />
                         <ValueAxis />
                         <LineSeries valueField="value" argumentField="argument" />
                       </Chart>
+                      </CenteredBlock>
                     </Paper>
-                  </div>
-                </div>
-              </div>
+                 
+      
             </CenteredBlock>
+                    </Column>
           </div>
         </div>
       </MainLayout>

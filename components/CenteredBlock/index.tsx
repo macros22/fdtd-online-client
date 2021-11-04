@@ -6,11 +6,7 @@ interface CenteredProps {
 
 const Centered: React.FC<CenteredProps> = ({ children }) => {
   return (
-    <div className="container">
-      <div className="row justify-content-md-center">
-        <div className="col-md-auto">{children}</div>
-      </div>
-    </div>
+      <div className="d-flex justify-content-center">{children}</div>
   );
 };
 
