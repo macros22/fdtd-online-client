@@ -5,9 +5,7 @@ interface CenteredProps {
 }
 
 const Column: React.FC<CenteredProps> = ({ children }) => {
-  return (
-    <div className="d-flex flex-column">{children}</div>    
-  );
+  return <div className="d-flex flex-column">{children}</div>;
 };
 
 export default Column;

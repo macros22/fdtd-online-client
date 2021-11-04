@@ -153,13 +153,13 @@ const Editor = () => {
   const [currentShape, setCurrentShape] = React.useState(1);
 
   const rIndexes = [1, 1.5, 2];
-  const colors = ["#fafafa",'#a1bb21', '#1a52aa']
+  const colors = ['#fafafa', '#a1bb21', '#1a52aa'];
 
   let panelShapes = [
     {
       type: 'rect',
       x: 50,
-      y: height + rectHeight+20,
+      y: height + rectHeight + 20,
       width: rectWidth,
       height: rectHeight,
       rIndex: rIndexes[0],
@@ -168,7 +168,7 @@ const Editor = () => {
     {
       type: 'rect',
       x: 100,
-      y: height + rectHeight+20,
+      y: height + rectHeight + 20,
       width: rectWidth,
       height: rectHeight,
       rIndex: rIndexes[1],
@@ -177,7 +177,7 @@ const Editor = () => {
     {
       type: 'rect',
       x: 150,
-      y: height + rectHeight+20,
+      y: height + rectHeight + 20,
       width: rectWidth,
       height: rectHeight,
       rIndex: rIndexes[2],
@@ -294,13 +294,13 @@ const Editor = () => {
                     height={shape.height}
                     onClick={() => setCurrentShape(index)}
                   />
-                <text x={shape.x} y={shape.y + rectHeight*3} className={classes.heavy}>{shape.rIndex}</text>
+                  <text x={shape.x} y={shape.y + rectHeight * 3} className={classes.heavy}>
+                    {shape.rIndex}
+                  </text>
                 </>
               );
           }
         })}
-
-
       </svg>
     </>
   );

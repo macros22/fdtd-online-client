@@ -19,9 +19,7 @@ import { ArgumentAxis, ValueAxis, Chart, LineSeries } from '@devexpress/dx-react
 import { LAB_1_2D } from 'constants/data-type.constants';
 import { CONTINUE, START, PAUSE } from 'constants/ws-event.constants';
 
-
 export default function Lab1() {
-
   const [isWSocketConnected, setIsWSocketConnected] = React.useState<boolean>(false);
 
   const [socket, setSocket] = React.useState<WebSocket | null>(null);
@@ -49,7 +47,6 @@ export default function Lab1() {
       }
     };
   }, []);
-
 
   // WebSocket configuration.
   function connectWebSocket() {
@@ -90,7 +87,6 @@ export default function Lab1() {
     }
     setSocket(socket);
   }
-
 
   const startDataReceiving = () => {
     setPause(false);
@@ -182,31 +178,28 @@ export default function Lab1() {
           </Sidebar>
 
           <div className="p-4 bd-highlight w-100">
-              <Column> 
-            <CenteredBlock>
-              <h3>
-                <span className="badge bg-secondary">2D</span>
-              </h3>
-              </CenteredBlock>
-              
+            <Column>
               <CenteredBlock>
-                    <Paper>
-                      <CenteredBlock >
-    
-                        <h4>
-                          <span className="badge bg-primary">Что-то от чего-то</span>
-                        </h4>
-                      <Chart data={dataChart}>
-                        <ArgumentAxis />
-                        <ValueAxis />
-                        <LineSeries valueField="value" argumentField="argument" />
-                      </Chart>
-                      </CenteredBlock>
-                    </Paper>
-                 
-      
-            </CenteredBlock>
-                    </Column>
+                <h3>
+                  <span className="badge bg-secondary">2D</span>
+                </h3>
+              </CenteredBlock>
+
+              <CenteredBlock>
+                <Paper>
+                  <CenteredBlock>
+                    <h4>
+                      <span className="badge bg-primary">Что-то от чего-то</span>
+                    </h4>
+                    <Chart data={dataChart}>
+                      <ArgumentAxis />
+                      <ValueAxis />
+                      <LineSeries valueField="value" argumentField="argument" />
+                    </Chart>
+                  </CenteredBlock>
+                </Paper>
+              </CenteredBlock>
+            </Column>
           </div>
         </div>
       </MainLayout>
