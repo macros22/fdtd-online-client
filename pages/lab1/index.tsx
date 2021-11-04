@@ -17,7 +17,6 @@ import { DataChartType } from 'types/lab1';
 
 import { ArgumentAxis, ValueAxis, Chart, LineSeries } from '@devexpress/dx-react-chart-material-ui';
 
-
 export default function Index() {
   const [isWSocketConnected, setIsWSocketConnected] = React.useState<boolean>(false);
 
@@ -36,44 +35,43 @@ export default function Index() {
   useEffect(() => {
     connectWS();
     return () => {
-      if(socket !== null){
+      if (socket !== null) {
         socket.close(1000, 'работа закончена');
       }
     };
   }, []);
 
   function connectWS() {
-    const socket = new WebSocket(SERVER_URL)
+    const socket = new WebSocket(SERVER_URL);
 
-    if(socket) {
+    if (socket) {
       socket.onopen = () => {
         setIsWSocketConnected(true);
       };
-    
+
       socket.onmessage = (event: any) => {
         let data = JSON.parse(event.data);
 
         let { dataX, dataY, step, col } = data;
         setStep(step || 0);
-        
+
         let tmpDataChart = [];
         for (let j = 0; j < col; j++) {
-            tmpDataChart.push({
-               argument: dataX[j],
-               value: dataY[j],
-            });
-         }
+          tmpDataChart.push({
+            argument: dataX[j],
+            value: dataY[j],
+          });
+        }
         setDataChart(tmpDataChart);
-
 
         setStep(data.step || 0);
       };
-      
+
       socket.onclose = () => {
         console.log('Socket закрыт');
         setIsWSocketConnected(false);
       };
-   
+
       socket.onerror = () => {
         console.log('Socket произошла ошибка');
         setIsWSocketConnected(false);
@@ -91,7 +89,7 @@ export default function Index() {
       condition: [lambda, tau, n1],
     };
 
-    if(socket !== null) {
+    if (socket !== null) {
       socket.send(JSON.stringify(message));
     }
   };
@@ -101,7 +99,7 @@ export default function Index() {
       event: 'pause',
     };
 
-    if(socket !== null) {
+    if (socket !== null) {
       socket.send(JSON.stringify(message));
     }
   };
@@ -111,7 +109,7 @@ export default function Index() {
       event: 'continue',
     };
 
-    if(socket !== null) {
+    if (socket !== null) {
       socket.send(JSON.stringify(message));
     }
   };
@@ -174,9 +172,7 @@ export default function Index() {
           <div className="p-4 bd-highlight">
             <CenteredBlock>
               <h3>
-                <span className="badge bg-secondary">
-                  2D
-                </span>
+                <span className="badge bg-secondary">2D</span>
               </h3>
               <div className="container">
                 <div className="row">
@@ -187,17 +183,14 @@ export default function Index() {
                           <span className="badge bg-primary">Что-то от чего-то</span>
                         </h4>
                       </CenteredBlock>
-                        <Chart data={dataChart}>
-                            <ArgumentAxis />
-                            <ValueAxis />
-                            <LineSeries valueField="value" argumentField="argument" />
-                         </Chart>
+                      <Chart data={dataChart}>
+                        <ArgumentAxis />
+                        <ValueAxis />
+                        <LineSeries valueField="value" argumentField="argument" />
+                      </Chart>
                     </Paper>
                   </div>
-
-                  
                 </div>
-                
               </div>
             </CenteredBlock>
           </div>
@@ -206,4 +199,3 @@ export default function Index() {
     </>
   );
 }
-

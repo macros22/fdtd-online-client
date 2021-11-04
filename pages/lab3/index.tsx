@@ -57,31 +57,31 @@ export default function Index() {
   useEffect(() => {
     connectWS();
     return () => {
-      if(socket !== null){
+      if (socket !== null) {
         socket.close(1000, 'работа закончена');
       }
     };
   }, []);
 
   function connectWS() {
-    const socket = new WebSocket(SERVER_URL)
+    const socket = new WebSocket(SERVER_URL);
 
-    if(socket) {
+    if (socket) {
       socket.onopen = () => {
         setIsWSocketConnected(true);
       };
-    
+
       socket.onmessage = (event: any) => {
         let data = JSON.parse(event.data);
         setStep(data.step || 0);
         setAllData(data);
       };
-      
+
       socket.onclose = () => {
         console.log('Socket закрыт');
         setIsWSocketConnected(false);
       };
-   
+
       socket.onerror = () => {
         console.log('Socket произошла ошибка');
         setIsWSocketConnected(false);
@@ -102,7 +102,7 @@ export default function Index() {
       condition: [lambda, beamsize, n1],
     };
 
-    if(socket !== null) {
+    if (socket !== null) {
       socket.send(JSON.stringify(message));
     }
   };
@@ -112,7 +112,7 @@ export default function Index() {
       event: 'pause',
     };
 
-    if(socket !== null) {
+    if (socket !== null) {
       socket.send(JSON.stringify(message));
     }
   };
@@ -122,7 +122,7 @@ export default function Index() {
       event: 'continue',
     };
 
-    if(socket !== null) {
+    if (socket !== null) {
       socket.send(JSON.stringify(message));
     }
   };
