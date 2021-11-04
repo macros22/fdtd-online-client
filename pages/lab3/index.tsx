@@ -12,7 +12,6 @@ import { HeatMap, Sidebar, TextInput, Paper, CenteredBlock } from 'components';
 
 import { SERVER_URL } from 'constants/url';
 import MainLayout from 'layout/MainLayout';
-// import { Button } from 'react-bootstrap';
 
 const min = -1;
 const max = 1.1;
@@ -20,7 +19,7 @@ const max = 1.1;
 export default function Index() {
   const [isWSocketConnected, setIsWSocketConnected] = React.useState<boolean>(false);
 
-  const socket = React.useRef<HTMLElement | null>(null);
+  const [socket, setSocket] = React.useState<WebSocket | null>(null);
 
   const [beamsize, setBeamsize] = useState<number>(3);
   const [lambda, setLambda] = useState<number>(1);
@@ -58,42 +57,44 @@ export default function Index() {
   useEffect(() => {
     connectWS();
     return () => {
-      // @ts-ignore
-      socket.close(1000, 'работа закончена');
+      if(socket !== null){
+        socket.close(1000, 'работа закончена');
+      }
     };
   }, []);
 
   function connectWS() {
-    // if(socket != null)
-    // @ts-ignore
-    socket.current = new WebSocket(SERVER_URL);
-    // @ts-ignore
-    socket.current.onopen = () => {
-      setIsWSocketConnected(true);
-    };
-    // @ts-ignore
-    socket.current.onmessage = (event: any) => {
-      let data = JSON.parse(event.data);
-      setStep(data.step || 0);
-      setAllData(data);
-    };
-    // @ts-ignore
-    socket.current.onclose = () => {
-      console.log('Socket закрыт');
-      setIsWSocketConnected(false);
-    };
-    // @ts-ignore
-    socket.current.onerror = () => {
-      console.log('Socket произошла ошибка');
-      setIsWSocketConnected(false);
-    };
+    const socket = new WebSocket(SERVER_URL)
+
+    if(socket) {
+      socket.onopen = () => {
+        setIsWSocketConnected(true);
+      };
+    
+      socket.onmessage = (event: any) => {
+        let data = JSON.parse(event.data);
+        setStep(data.step || 0);
+        setAllData(data);
+      };
+      
+      socket.onclose = () => {
+        console.log('Socket закрыт');
+        setIsWSocketConnected(false);
+      };
+   
+      socket.onerror = () => {
+        console.log('Socket произошла ошибка');
+        setIsWSocketConnected(false);
+      };
+    }
+    setSocket(socket);
   }
 
   // console.log(Math.min(...data.dataEnergy));
   // console.log(Math.max(...data.dataEnergy));
 
   const startDataReceiving = () => {
-    setPause(true);
+    setPause(false);
 
     const message = {
       event: 'start',
@@ -101,24 +102,29 @@ export default function Index() {
       condition: [lambda, beamsize, n1],
     };
 
-    // @ts-ignore
-    socket.current.send(JSON.stringify(message));
+    if(socket !== null) {
+      socket.send(JSON.stringify(message));
+    }
   };
 
   const pauseDataReceiving = () => {
     const message = {
       event: 'pause',
     };
-    // @ts-ignore
-    socket.current.send(JSON.stringify(message));
+
+    if(socket !== null) {
+      socket.send(JSON.stringify(message));
+    }
   };
 
   const continueDataReceiving = () => {
     const message = {
       event: 'continue',
     };
-    // @ts-ignore
-    socket.current.send(JSON.stringify(message));
+
+    if(socket !== null) {
+      socket.send(JSON.stringify(message));
+    }
   };
 
   return (

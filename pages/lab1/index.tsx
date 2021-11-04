@@ -1,149 +1,209 @@
 import React, { useState, useEffect } from 'react';
-import { ArgumentAxis, ValueAxis, Chart, LineSeries } from '@devexpress/dx-react-chart-material-ui';
-import Grid from '@material-ui/core/Grid';
-import axios from 'axios';
-import { Button, TextField } from '@material-ui/core';
-import Paper from '@material-ui/core/Paper';
 import {
-  CONTINUE,
-  IMPULSE_TIME_NAME,
-  PAUSE,
+  CONTINUE_NAME,
+  BEAMSIZE_NAME,
+  PAUSE_NAME,
   REFRACTIVE_INDEX_NAME,
-  STEP_NUMBER,
+  STEP_NUMBER_NAME,
   WAVE_LENGTH_NAME,
-} from 'names/lab1.name';
+} from 'names/lab2.name';
 import classes from './lab1.module.scss';
-import { DataChartType } from 'types/lab1';
+import { Sidebar, TextInput, Paper, CenteredBlock } from 'components';
+
 import { SERVER_URL } from 'constants/url';
 import MainLayout from 'layout/MainLayout';
 
+import { DataChartType } from 'types/lab1';
+
+import { ArgumentAxis, ValueAxis, Chart, LineSeries } from '@devexpress/dx-react-chart-material-ui';
+
+
 export default function Index() {
+  const [isWSocketConnected, setIsWSocketConnected] = React.useState<boolean>(false);
+
+  const [socket, setSocket] = React.useState<WebSocket | null>(null);
+
   const [tau, setTau] = useState<number>(10);
   const [lambda, setLambda] = useState<number>(1);
   const [n1, setN1] = useState<number>(1);
+
+  const [dataChart, setDataChart] = useState<DataChartType>([]);
 
   const [step, setStep] = useState<number>(0);
   const [simulation, setSimulation] = useState<boolean>(false);
   const [pause, setPause] = useState<boolean>(false);
 
-  const [dataChart, setDataChart] = useState<DataChartType>([]);
-
   useEffect(() => {
-    subscribe();
+    connectWS();
+    return () => {
+      if(socket !== null){
+        socket.close(1000, 'работа закончена');
+      }
+    };
   }, []);
 
-  const subscribe = async () => {
-    const eventSource = new EventSource(SERVER_URL + `lab1/connect`);
+  function connectWS() {
+    const socket = new WebSocket(SERVER_URL)
 
-    eventSource.onopen = function () {
-      console.log('Event: open');
-    };
+    if(socket) {
+      socket.onopen = () => {
+        setIsWSocketConnected(true);
+      };
+    
+      socket.onmessage = (event: any) => {
+        let data = JSON.parse(event.data);
 
-    eventSource.onerror = function () {
-      console.log('Event: error');
-    };
+        let { dataX, dataY, step, col } = data;
+        setStep(step || 0);
+        
+        let tmpDataChart = [];
+        for (let j = 0; j < col; j++) {
+            tmpDataChart.push({
+               argument: dataX[j],
+               value: dataY[j],
+            });
+         }
+        setDataChart(tmpDataChart);
 
+
+        setStep(data.step || 0);
+      };
+      
+      socket.onclose = () => {
+        console.log('Socket закрыт');
+        setIsWSocketConnected(false);
+      };
+   
+      socket.onerror = () => {
+        console.log('Socket произошла ошибка');
+        setIsWSocketConnected(false);
+      };
+    }
+    setSocket(socket);
+  }
+
+  const startDataReceiving = () => {
     setPause(false);
 
-    eventSource.onmessage = function (event) {
-      let { dataX, dataY, step, col } = JSON.parse(event.data);
-      setStep(step || 0);
-
-      let tmpDataChart = [];
-      for (let j = 0; j < col; j++) {
-        tmpDataChart.push({
-          argument: dataX[j],
-          value: dataY[j],
-        });
-      }
-      setDataChart(tmpDataChart);
+    const message = {
+      event: 'start',
+      type: '2D',
+      condition: [lambda, tau, n1],
     };
-  };
 
-  const sendConditions = (reload = true) => {
-    (async function () {
-      await axios.post(SERVER_URL + 'lab1/nextLayer', {
-        lambda,
-        tau,
-        n1,
-        reload,
-        type: '2D',
-      });
-    })();
+    if(socket !== null) {
+      socket.send(JSON.stringify(message));
+    }
   };
 
   const pauseDataReceiving = () => {
-    (async function () {
-      await axios.get(SERVER_URL + 'lab1/pause');
-    })();
+    const message = {
+      event: 'pause',
+    };
+
+    if(socket !== null) {
+      socket.send(JSON.stringify(message));
+    }
   };
+
+  const continueDataReceiving = () => {
+    const message = {
+      event: 'continue',
+    };
+
+    if(socket !== null) {
+      socket.send(JSON.stringify(message));
+    }
+  };
+
   return (
-    <MainLayout title={'Wave optics | Lab 1'}>
-      <div className={classes.root}>
-        <Paper className={classes.paper}>
-          <Grid container justifyContent="space-between">
-            <TextField
-              value={lambda}
+    <>
+      <MainLayout title={'Wave optics | Lab 1'}>
+        <div className="d-flex bg-light align-items-stretch mh-100">
+          <Sidebar>
+            <TextInput
+              value={typeof lambda === 'number' ? lambda : 0}
               label={WAVE_LENGTH_NAME}
-              variant="outlined"
               onChange={(e) => setLambda(+e.target.value)}
             />
-            <TextField
+            <TextInput
               label={REFRACTIVE_INDEX_NAME}
-              variant="outlined"
               value={n1}
               onChange={(e) => setN1(+e.target.value)}
             />
-            <TextField
-              label={IMPULSE_TIME_NAME}
-              variant="outlined"
+            <TextInput
+              label={BEAMSIZE_NAME}
               value={tau}
               onChange={(e) => setTau(+e.target.value)}
             />
-            <Button
+            <TextInput label={STEP_NUMBER_NAME} value={step} readOnly={true} />
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                startDataReceiving();
+                setSimulation(true);
+              }}
+              type="button"
+              className={'btn btn-primary mt-2 ' + classes.button}
+            >
+              СТАРТ
+            </button>
+            <button
+              type="button"
+              className={'btn btn-primary  mt-2 ' + classes.button}
+              disabled={!simulation}
               onClick={(e) => {
                 e.preventDefault();
                 if (!pause) {
                   pauseDataReceiving();
                 } else {
-                  sendConditions(false);
+                  continueDataReceiving();
                 }
                 setPause((pause) => !pause);
               }}
-              disabled={!simulation}
-              variant="contained"
-              color="primary"
             >
-              {pause ? CONTINUE : PAUSE}
-            </Button>
-            <Button
-              onClick={(e) => {
-                e.preventDefault();
-                sendConditions();
-                setSimulation(true);
-              }}
-              variant="contained"
-              color="primary"
-            >
-              СТАРТ
-            </Button>
-            <TextField
-              label={STEP_NUMBER}
-              value={step}
-              InputProps={{
-                readOnly: true,
-              }}
-            />
-          </Grid>
-        </Paper>
-        <Paper className={classes.paper}>
-          <Chart data={dataChart}>
-            <ArgumentAxis />
-            <ValueAxis />
-            <LineSeries valueField="value" argumentField="argument" />
-          </Chart>
-        </Paper>
-      </div>
-    </MainLayout>
+              {pause ? CONTINUE_NAME : PAUSE_NAME}
+            </button>
+            <h3>
+              <span className="badge bg-info m-2">
+                {'Server connection: ' + isWSocketConnected}
+              </span>
+            </h3>
+          </Sidebar>
+
+          <div className="p-4 bd-highlight">
+            <CenteredBlock>
+              <h3>
+                <span className="badge bg-secondary">
+                  2D
+                </span>
+              </h3>
+              <div className="container">
+                <div className="row">
+                  <div className="col">
+                    <Paper>
+                      <CenteredBlock>
+                        <h4>
+                          <span className="badge bg-primary">Что-то от чего-то</span>
+                        </h4>
+                      </CenteredBlock>
+                        <Chart data={dataChart}>
+                            <ArgumentAxis />
+                            <ValueAxis />
+                            <LineSeries valueField="value" argumentField="argument" />
+                         </Chart>
+                    </Paper>
+                  </div>
+
+                  
+                </div>
+                
+              </div>
+            </CenteredBlock>
+          </div>
+        </div>
+      </MainLayout>
+    </>
   );
 }
+
