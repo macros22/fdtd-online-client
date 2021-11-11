@@ -22,6 +22,7 @@ $gray: rgba(175, 173, 173, 0.78);
   padding: 7px 0;
   background: transparent;
   transition: border-color 0.2s;
+  z-index: 1;
 
   &:hover {
     //background: #e3dfdf;
@@ -56,7 +57,7 @@ $gray: rgba(175, 173, 173, 0.78);
     display: block;
     transition: 0.2s;
     color: $primary;
-    font-weight: 600;
+    font-weight: 500;
   }
   padding-bottom: 6px;
   //font-weight: 500;

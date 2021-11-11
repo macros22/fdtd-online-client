@@ -8,7 +8,7 @@ import {
   WAVE_LENGTH_NAME,
 } from 'names/lab2.name';
 import classes from './lab1.module.scss';
-import { Sidebar, TextInput, Paper, CenteredBlock, Column } from 'components';
+import { Sidebar, TextInput, Paper, CenteredBlock, Column, Canvas } from 'components';
 
 import { SERVER_URL } from 'constants/url';
 import MainLayout from 'layout/MainLayout';
@@ -37,6 +37,7 @@ export default function Lab1() {
   // If simulation begin, simulation = true.
   const [simulation, setSimulation] = useState<boolean>(false);
 
+  // Simulation status.
   const [pause, setPause] = useState<boolean>(false);
 
   useEffect(() => {
@@ -47,6 +48,19 @@ export default function Lab1() {
       }
     };
   }, []);
+
+
+  React.useEffect(() => {
+    const tempDataChart: DataChartType = [];
+    for(let i = 0; i < 100; i++){
+        tempDataChart.push({
+          argument: i,
+          value: Math.random()*100
+        })
+    }
+    console.log(tempDataChart);
+    setDataChart(tempDataChart);
+  }, [])
 
   // WebSocket configuration.
   function connectWebSocket() {
@@ -191,11 +205,12 @@ export default function Lab1() {
                     <h4>
                       <span className="badge bg-primary">Что-то от чего-то</span>
                     </h4>
-                    <Chart data={dataChart}>
+                    {/* <Chart data={dataChart}>
                       <ArgumentAxis />
                       <ValueAxis />
                       <LineSeries valueField="value" argumentField="argument" />
-                    </Chart>
+                    </Chart> */}
+                    <Canvas />
                   </CenteredBlock>
                 </Paper>
               </CenteredBlock>

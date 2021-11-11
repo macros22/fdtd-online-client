@@ -31,6 +31,23 @@ $background-color: $primary;
 //
 //}
 
+.logo {
+  font-weight: 600;
+  letter-spacing: 0.1rem;
+}
+
+.dropDownTitle {
+  opacity: 90%;
+  z-index: 1000;
+  div {
+    opacity: 100%;
+  }
+}
+
+.dropDownItem {
+  opacity: 100%;
+}
+
 /* Add a black background color to the top navigation */
 .topnav {
   // &.link{

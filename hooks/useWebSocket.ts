@@ -5,7 +5,7 @@
 
 // export const useWebSocket = () => {
 //     const [isWSocketConnected, setIsWSocketConnected] = React.useState<boolean>(false);
-//     const [socket, setSocket] = React.useState<WebSocket | null>(null);
+//     const [socket, setSocket] = React.useStte<WebSocket | null>(null);
 
 //     function connectWebSocket() {
 //         const socket = new WebSocket(SERVER_URL);
