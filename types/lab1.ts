@@ -1,4 +1,9 @@
+// export type DataChartType = {
+//   argument: number;
+//   value: number;
+// }[];
+
 export type DataChartType = {
-  argument: number;
-  value: number;
+  x: number;
+  y: number;
 }[];

@@ -39,13 +39,9 @@ $background-color: $primary;
 .dropDownTitle {
   opacity: 90%;
   z-index: 1000;
-  div {
+  &:hover {
     opacity: 100%;
   }
-}
-
-.dropDownItem {
-  opacity: 100%;
 }
 
 /* Add a black background color to the top navigation */

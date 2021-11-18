@@ -19,6 +19,14 @@ import { ArgumentAxis, ValueAxis, Chart, LineSeries } from '@devexpress/dx-react
 import { LAB_1_2D } from 'constants/data-type.constants';
 import { CONTINUE, START, PAUSE } from 'constants/ws-event.constants';
 
+const initDataChart: DataChartType = [];
+for (let i = 0; i < 600; i += 3) {
+  initDataChart.push({
+    x: i,
+    y: Math.random() * 450- 200,
+  });
+}
+
 export default function Lab1() {
   const [isWSocketConnected, setIsWSocketConnected] = React.useState<boolean>(false);
 
@@ -29,7 +37,12 @@ export default function Lab1() {
   const [lambda, setLambda] = useState<number>(1);
   const [n1, setN1] = useState<number>(1);
 
-  const [dataChart, setDataChart] = useState<DataChartType>([]);
+  const [dataChart, setDataChart] = useState<DataChartType>(initDataChart);
+
+  const [maxX, setMaxX] = useState<number>(600);
+  const [maxY, setMaxY] = useState<number>(400);
+  const [minX, setMinX] = useState<number>(0);
+  const [minY, setMinY] = useState<number>(0);
 
   // Simulation step.
   const [step, setStep] = useState<number>(0);
@@ -49,18 +62,17 @@ export default function Lab1() {
     };
   }, []);
 
-
   React.useEffect(() => {
-    const tempDataChart: DataChartType = [];
-    for(let i = 0; i < 100; i++){
-        tempDataChart.push({
-          argument: i,
-          value: Math.random()*100
-        })
-    }
-    console.log(tempDataChart);
-    setDataChart(tempDataChart);
-  }, [])
+    // const tempDataChart: DataChartType = [];
+    // for(let i = 0; i < 200; i += 3){
+    //     tempDataChart.push({
+    //       x: i,
+    //       y: Math.random()*450
+    //     })
+    // }
+    // console.log(tempDataChart);
+    // setDataChart(tempDataChart);
+  }, []);
 
   // WebSocket configuration.
   function connectWebSocket() {
@@ -77,11 +89,24 @@ export default function Lab1() {
         let { dataX, dataY, step, col } = data;
         setStep(step || 0);
 
-        let tmpDataChart = [];
+        let tmpDataChart: DataChartType = [];
+        // for (let j = 0; j < col; j++) {
+        //   tmpDataChart.push({
+        //     argument: dataX[j],
+        //     value: dataY[j],
+        //   });
+        // }
+
+        setMaxX(Math.max(...dataX));
+        setMaxY(Math.max(...dataY));
+
+        setMinX(Math.min(...dataX));
+        setMinY(Math.min(...dataY));
+
         for (let j = 0; j < col; j++) {
           tmpDataChart.push({
-            argument: dataX[j],
-            value: dataY[j],
+            x: +dataX[j],
+            y: +dataY[j],
           });
         }
 
@@ -164,7 +189,7 @@ export default function Lab1() {
                 setSimulation(true);
               }}
               type="button"
-              className={'btn btn-primary mt-2 ' + classes.button}
+              className={'btn btn-success mt-2 ' + classes.button}
             >
               СТАРТ
             </button>
@@ -185,8 +210,8 @@ export default function Lab1() {
               {pause ? CONTINUE_NAME : PAUSE_NAME}
             </button>
             <h3>
-              <span className="badge bg-info m-2">
-                {'Server connection: ' + isWSocketConnected}
+              <span className="badge bg-info mt-2">
+                {'Server: ' + isWSocketConnected}
               </span>
             </h3>
           </Sidebar>
@@ -201,17 +226,19 @@ export default function Lab1() {
 
               <CenteredBlock>
                 <Paper>
-                  <CenteredBlock>
-                    <h4>
-                      <span className="badge bg-primary">Что-то от чего-то</span>
-                    </h4>
+                  <Column>
+                    <CenteredBlock>
+                      <h4>
+                        <span className="badge bg-primary">Пространсвенно-временная структура электромагнитных импульсов</span>
+                      </h4>
+                    </CenteredBlock>
                     {/* <Chart data={dataChart}>
                       <ArgumentAxis />
                       <ValueAxis />
                       <LineSeries valueField="value" argumentField="argument" />
                     </Chart> */}
-                    <Canvas />
-                  </CenteredBlock>
+                    <Canvas data={dataChart} maxX={maxX} maxY={maxY} minX={minX} minY={minY} />
+                  </Column>
                 </Paper>
               </CenteredBlock>
             </Column>

@@ -8,17 +8,15 @@ const useCanvas = (draw: drawType) => {
   const WIDTH = 700;
   const HEIGHT = 500;
 
-
   React.useEffect(() => {
     if (canvasRef.current) {
       const canvas = canvasRef.current;
       const context: CanvasRenderingContext2D | null = canvas.getContext('2d');
 
+      canvas.setAttribute('width', '' + WIDTH);
+      canvas.setAttribute('height', '' + HEIGHT);
 
-      canvas.setAttribute('width', "" + WIDTH);
-      canvas.setAttribute('height', "" + HEIGHT);
-      
-      console.log(canvas.width, canvas.height)
+      console.log(canvas.width, canvas.height);
 
       //Our first draw
       if (context) {

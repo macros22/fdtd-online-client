@@ -34,9 +34,8 @@ export default function Navbar2() {
               title="Выбор лабораторной"
             >
               {sections.map((section, index) => (
-                <Link href={section.url} passHref>
+                <Link key={section.title + index} href={section.url} passHref>
                   <Dropdown.Item
-                    key={section.title}
                     className={(currentPage == index ? ' active' : '') + ' ' + classes.dropDownItem}
                   >
                     {section.title}

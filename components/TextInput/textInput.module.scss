@@ -26,7 +26,7 @@ $gray: rgba(175, 173, 173, 0.78);
 
   &:hover {
     //background: #e3dfdf;
-    border-bottom: 2px solid $primary;
+    border-bottom: solid $primary;
     transition: 0.5s;
   }
 
