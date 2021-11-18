@@ -23,7 +23,7 @@ const initDataChart: DataChartType = [];
 for (let i = 0; i < 600; i += 3) {
   initDataChart.push({
     x: i,
-    y: Math.random() * 450- 200,
+    y: Math.random() * 450 - 200,
   });
 }
 
@@ -210,9 +210,7 @@ export default function Lab1() {
               {pause ? CONTINUE_NAME : PAUSE_NAME}
             </button>
             <h3>
-              <span className="badge bg-info mt-2">
-                {'Server: ' + isWSocketConnected}
-              </span>
+              <span className="badge bg-info mt-2">{'Server: ' + isWSocketConnected}</span>
             </h3>
           </Sidebar>
 
@@ -229,7 +227,9 @@ export default function Lab1() {
                   <Column>
                     <CenteredBlock>
                       <h4>
-                        <span className="badge bg-primary">Пространсвенно-временная структура электромагнитных импульсов</span>
+                        <span className="badge bg-primary">
+                          Пространсвенно-временная структура электромагнитных импульсов
+                        </span>
                       </h4>
                     </CenteredBlock>
                     {/* <Chart data={dataChart}>

@@ -39,7 +39,7 @@ const ImageCanvas: React.FC<ImageCanvasProps> = ({ data, maxX, maxY, minX, minY 
   const chartY0 = PADDING;
 
   const x0 = chartX0;
-  const y0 = chartY0 - minY*scaleY;
+  const y0 = chartY0 - minY * scaleY;
 
   // Transform browser Y-axis to real world.
   const tY = (y: number) => HEIGHT - y;
@@ -66,7 +66,7 @@ const ImageCanvas: React.FC<ImageCanvasProps> = ({ data, maxX, maxY, minX, minY 
     ctx.lineTo(chartX0 + CHART_WIDTH, tY(y0));
 
     // Draw y axis.
-    ctx.moveTo(chartX0, tY(chartY0 ));
+    ctx.moveTo(chartX0, tY(chartY0));
     ctx.lineTo(chartX0, tY(chartY0 + CHART_HEIGHT));
 
     ctx.lineWidth = 1;
@@ -105,11 +105,11 @@ const ImageCanvas: React.FC<ImageCanvasProps> = ({ data, maxX, maxY, minX, minY 
     }
     ctx.restore();
 
-    console.log("Y0", y0)
+    console.log('Y0', y0);
     // Draw Oy tick marks numbers.
     ctx.textAlign = 'right';
     for (let y = chartY0; y <= chartY0 + CHART_HEIGHT; y += INTERVAL_Y * 2) {
-      const label = y0 + y + "";
+      const label = y0 + y + '';
       ctx.save();
       ctx.translate(chartX0 - PADDING * 2, tY(y));
       ctx.fillText(label, 0, 0);
@@ -150,7 +150,7 @@ const ImageCanvas: React.FC<ImageCanvasProps> = ({ data, maxX, maxY, minX, minY 
       var point = data[n];
 
       // Draw line segment.
-      ctx.lineTo(chartX0 + point.x * scaleX, tY(y0+ point.y * scaleY));
+      ctx.lineTo(chartX0 + point.x * scaleX, tY(y0 + point.y * scaleY));
       ctx.stroke();
       ctx.closePath();
 
@@ -162,7 +162,7 @@ const ImageCanvas: React.FC<ImageCanvasProps> = ({ data, maxX, maxY, minX, minY 
 
       // position for next segment
       ctx.beginPath();
-      console.log(y0, chartY0)
+      console.log(y0, chartY0);
       ctx.moveTo(chartX0 + point.x * scaleX, tY(y0 + point.y * scaleY));
     }
     ctx.restore();
