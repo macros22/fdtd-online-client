@@ -8,13 +8,21 @@ import {
   WAVE_LENGTH_NAME,
 } from 'names/lab2.name';
 import classes from './lab3.module.scss';
-import { HeatMap, Sidebar, TextInput, Paper, CenteredBlock } from 'components';
+import { HeatMap, Sidebar, TextInput, Paper, CenteredBlock, Column } from 'components';
 
 import { SERVER_URL } from 'constants/url';
 import MainLayout from 'layout/MainLayout';
+import { dataType } from './types';
 
 const min = -1;
 const max = 1.1;
+
+const displayedData = [
+  { title: 'Напряженность электр. поля Ez', name: 'dataEz' },
+  { title: 'Напряженность магн. поля Hy', name: 'Hy' },
+  { title: 'Напряженность магн. поля Hx', name: 'Hx' },
+  { title: 'Плотность энергии электромагн. поля', name: 'Energy' },
+];
 
 export default function Index() {
   const [isWSocketConnected, setIsWSocketConnected] = React.useState<boolean>(false);
@@ -29,17 +37,8 @@ export default function Index() {
   const [simulation, setSimulation] = useState<boolean>(false);
   const [pause, setPause] = useState<boolean>(false);
 
-  type dataType = {
-    dataX: number[];
-    dataY: number[];
-    dataEz: number[];
-    dataHx: number[];
-    dataHy: number[];
-    dataEnergy: number[];
-    row: number;
-    col: number;
-    step: number;
-  };
+  const [currentDisplayingData, setCurrentDisplayingData] = React.useState<number>(0);
+
   const initAllData: dataType = {
     dataX: [],
     dataY: [],
@@ -175,94 +174,59 @@ export default function Index() {
             >
               {pause ? CONTINUE_NAME : PAUSE_NAME}
             </button>
+            <button
+              type="button"
+              className={'btn btn-primary  mt-2 ' + classes.button}
+              disabled={!simulation}
+              onClick={(e) => {
+                e.preventDefault();
+                pauseDataReceiving();
+                setPause(false);
+                setSimulation(false);
+                setStep(0);
+              }}
+            >
+              STOP
+            </button>
             <h3>
-              <span className="badge bg-info m-2">
-                {'Server connection: ' + isWSocketConnected}
+              <span className="badge bg-info mt-2 server-badge">
+                {'Server: ' + isWSocketConnected}
               </span>
             </h3>
           </Sidebar>
 
-          <div className="p-4 bd-highlight">
-            <CenteredBlock>
-              <h3>
-                <span className="badge bg-secondary">
-                  Пространственно-временная структура электромагнитных пучков
-                </span>
-              </h3>
-              <div className="container">
-                <div className="row">
-                  <div className="col">
-                    <Paper>
-                      <CenteredBlock>
-                        <h4>
-                          <span className="badge bg-primary">Напряженность электр. поля Ez</span>
-                        </h4>
-                      </CenteredBlock>
-                      <HeatMap
-                        minVal={min}
-                        maxVal={max}
-                        dataX={allData.dataX}
-                        dataY={allData.dataY}
-                        dataVal={allData.dataEz}
-                      />
-                    </Paper>
-                  </div>
+          <div className="p-4 bd-highlight w-100">
+            <Column>
+              <CenteredBlock>
+                <h3>
+                  <span className="badge bg-secondary">
+                    Пространственно-временная структура электромагнитных пучков
+                  </span>
+                </h3>
+              </CenteredBlock>
 
-                  <div className="col">
-                    <Paper>
-                      <CenteredBlock>
-                        <h4>
-                          <span className="badge bg-primary">Напряженность магн. поля Hy</span>
-                        </h4>
-                      </CenteredBlock>
-                      <HeatMap
-                        minVal={min}
-                        maxVal={max}
-                        dataX={allData.dataX}
-                        dataY={allData.dataY}
-                        dataVal={allData.dataHy}
-                      />
-                    </Paper>
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="col">
-                    <Paper>
-                      <CenteredBlock>
-                        <h4>
-                          <span className="badge bg-primary">Напряженность магн. поля Hx</span>
-                        </h4>
-                      </CenteredBlock>
-                      <HeatMap
-                        minVal={min}
-                        maxVal={max}
-                        dataX={allData.dataX}
-                        dataY={allData.dataY}
-                        dataVal={allData.dataHx}
-                      />
-                    </Paper>
-                  </div>
-                  <div className="col">
-                    <Paper>
-                      <CenteredBlock>
-                        <h4>
-                          <span className="badge bg-primary">
-                            Плотность энергии электромагн. поля
-                          </span>
-                        </h4>
-                      </CenteredBlock>
-                      <HeatMap
-                        minVal={min}
-                        maxVal={max}
-                        dataX={allData.dataX}
-                        dataY={allData.dataY}
-                        dataVal={allData.dataEnergy}
-                      />
-                    </Paper>
-                  </div>
-                </div>
-              </div>
-            </CenteredBlock>
+              <CenteredBlock>
+                <Paper>
+                  <CenteredBlock>
+                    <h4>
+                      <span className="badge bg-primary">
+                        {displayedData[currentDisplayingData].title}
+                      </span>
+                    </h4>
+                  </CenteredBlock>
+                  <HeatMap
+                    minVal={min}
+                    maxVal={max}
+                    dataX={allData.dataX}
+                    dataY={allData.dataY}
+                    dataVal={allData.dataEz
+                      // Dynamically access object property in TypeScript.
+                      // allData[('data' + currentDisplayingData) as keyof typeof allData] as number[]
+                    }
+                  />
+                </Paper>
+              </CenteredBlock>
+            </Column>
           </div>
         </div>
       </MainLayout>

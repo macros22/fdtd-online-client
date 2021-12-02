@@ -21,7 +21,13 @@
 .button {
   display: block;
   width: 100%;
+  color: white;
+  &:hover{
+    color: white;
+  }
 }
+
+
 
 .containerFluid {
   display: flex;

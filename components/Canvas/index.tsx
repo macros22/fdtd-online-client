@@ -49,18 +49,19 @@ const ImageCanvas: React.FC<ImageCanvasProps> = ({ data, maxX, maxY, minX, minY 
     y: number;
   };
 
-  const data1: dataType[] = [];
-  const data2: dataType[] = [];
+  // const data1: dataType[] = [];
+  // const data2: dataType[] = [];
 
-  for (let x = 0; x <= CHART_WIDTH; x += INTERVAL_X) {
-    data1.push({ x, y: Math.random() * 400 });
-    data2.push({ x, y: Math.random() * 350 });
-  }
+  // for (let x = 0; x <= CHART_WIDTH; x += INTERVAL_X) {
+  //   data1.push({ x, y: Math.random() * 400 });
+  //   data2.push({ x, y: Math.random() * 350 });
+  // }
 
   const draw = (ctx: CanvasRenderingContext2D, frameCount: number) => {
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
     ctx.fillStyle = 'gray';
     ctx.beginPath();
+
     // Draw x axis.
     ctx.moveTo(chartX0, tY(y0));
     ctx.lineTo(chartX0 + CHART_WIDTH, tY(y0));
@@ -77,11 +78,11 @@ const ImageCanvas: React.FC<ImageCanvasProps> = ({ data, maxX, maxY, minX, minY 
       ctx.lineTo(x, tY(chartY0) + TICK_MARKS_HEIGHT / 2);
     }
 
-    // // Draw Oy tick marks.
-    // for(let y = chartY0; y <= y+CHART_HEIGHT; y += INTERVAL_Y) {
-    //   ctx.moveTo(chartX0-TICK_MARKS_HEIGHT/2, y);
-    //   ctx.lineTo(chartX0+TICK_MARKS_HEIGHT/2, y);
-    // }
+    // Draw Oy tick marks.
+    for (let y = chartY0; y <= chartY0 + CHART_HEIGHT; y += INTERVAL_Y) {
+      ctx.moveTo(chartX0 - TICK_MARKS_HEIGHT / 2, y);
+      ctx.lineTo(chartX0 + TICK_MARKS_HEIGHT / 2, y);
+    }
 
     // set line color
     ctx.strokeStyle = '#ccc';
@@ -98,6 +99,7 @@ const ImageCanvas: React.FC<ImageCanvasProps> = ({ data, maxX, maxY, minX, minY 
     ctx.textAlign = 'center';
     for (let x = chartX0; x <= chartX0 + CHART_WIDTH; x += INTERVAL_X * 2) {
       const label = String(Math.round(x - chartX0));
+      const label2 = data[0].x;
       ctx.save();
       ctx.translate(x, tY(chartY0 - PADDING * 3));
       ctx.fillText(label, 0, 0);
@@ -105,11 +107,13 @@ const ImageCanvas: React.FC<ImageCanvasProps> = ({ data, maxX, maxY, minX, minY 
     }
     ctx.restore();
 
-    console.log('Y0', y0);
+    console.log('sum', y0+chartY0);
+    console.log('sumstr', y0+chartY0+"");
+    
     // Draw Oy tick marks numbers.
     ctx.textAlign = 'right';
     for (let y = chartY0; y <= chartY0 + CHART_HEIGHT; y += INTERVAL_Y * 2) {
-      const label = y0 + y + '';
+      const label = (y0 + y).toFixed() + '';
       ctx.save();
       ctx.translate(chartX0 - PADDING * 2, tY(y));
       ctx.fillText(label, 0, 0);

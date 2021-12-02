@@ -16,7 +16,7 @@ const useCanvas = (draw: drawType) => {
       canvas.setAttribute('width', '' + WIDTH);
       canvas.setAttribute('height', '' + HEIGHT);
 
-      console.log(canvas.width, canvas.height);
+    //  console.log(canvas.width, canvas.height);
 
       //Our first draw
       if (context) {

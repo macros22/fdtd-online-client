@@ -1,8 +1,5 @@
 @import 'styles/colors.scss';
 
-//$primary: gray;
-//$secondary: white;
-//$white: #000;
 $gray: rgba(175, 173, 173, 0.78);
 .formGroup {
   position: relative;
@@ -25,8 +22,7 @@ $gray: rgba(175, 173, 173, 0.78);
   z-index: 1;
 
   &:hover {
-    //background: #e3dfdf;
-    border-bottom: solid $primary;
+    border-bottom: 2px solid $primary;
     transition: 0.5s;
   }
 
@@ -50,21 +46,13 @@ $gray: rgba(175, 173, 173, 0.78);
   color: $gray;
 }
 
-.formField:focus {
+.formField:hover {
   ~ .formLabel {
-    position: absolute;
-    top: 0;
-    display: block;
     transition: 0.2s;
     color: $primary;
-    font-weight: 500;
   }
-  padding-bottom: 6px;
-  //font-weight: 500;
-  border-width: 3px;
-  //border-image: linear-gradient(to right, $primary,$primary);
-  border-image-slice: 1;
 }
+
 /* reset input */
 .formField {
   &:required,

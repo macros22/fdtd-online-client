@@ -5,7 +5,7 @@ interface PaperProps {
 }
 
 const Paper: React.FC<PaperProps> = ({ children }) => {
-  return <div className="shadow-sm p-2 m-2 bg-white rounded w-100">{children}</div>;
+  return <div className="shadow-sm p-2 m-2 bg-white rounded ">{children}</div>;
 };
 
 export default Paper;

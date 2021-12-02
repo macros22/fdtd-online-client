@@ -15,7 +15,6 @@ import MainLayout from 'layout/MainLayout';
 
 import { DataChartType } from 'types/lab1';
 
-import { ArgumentAxis, ValueAxis, Chart, LineSeries } from '@devexpress/dx-react-chart-material-ui';
 import { LAB_1_2D } from 'constants/data-type.constants';
 import { CONTINUE, START, PAUSE } from 'constants/ws-event.constants';
 
@@ -84,34 +83,38 @@ export default function Lab1() {
       };
 
       socket.onmessage = (event: any) => {
-        let data = JSON.parse(event.data);
+        // if (simulation) 
+        {
+          let data = JSON.parse(event.data);
 
-        let { dataX, dataY, step, col } = data;
-        setStep(step || 0);
+          let { dataX, dataY, step, col } = data;
+          setStep(step || 0);
 
-        let tmpDataChart: DataChartType = [];
-        // for (let j = 0; j < col; j++) {
-        //   tmpDataChart.push({
-        //     argument: dataX[j],
-        //     value: dataY[j],
-        //   });
-        // }
+          let tmpDataChart: DataChartType = [];
+          // for (let j = 0; j < col; j++) {
+          //   tmpDataChart.push({
+          //     argument: dataX[j],
+          //     value: dataY[j],
+          //   });
+          // }
 
-        setMaxX(Math.max(...dataX));
-        setMaxY(Math.max(...dataY));
+          setMaxX(Math.max(...dataX));
+          setMaxY(Math.max(...dataY));
 
-        setMinX(Math.min(...dataX));
-        setMinY(Math.min(...dataY));
+          setMinX(Math.min(...dataX));
+          setMinY(Math.min(...dataY));
 
-        for (let j = 0; j < col; j++) {
-          tmpDataChart.push({
-            x: +dataX[j],
-            y: +dataY[j],
-          });
+          for (let j = 0; j < col; j++) {
+            tmpDataChart.push({
+              x: +dataX[j],
+              y: +dataY[j],
+            });
+          }
+
+          setDataChart(tmpDataChart);
+
+          setStep(data.step || 0);
         }
-
-        setDataChart(tmpDataChart);
-        setStep(data.step || 0);
       };
 
       socket.onclose = () => {
@@ -209,8 +212,24 @@ export default function Lab1() {
             >
               {pause ? CONTINUE_NAME : PAUSE_NAME}
             </button>
+            <button
+              type="button"
+              className={'btn btn-primary  mt-2 ' + classes.button}
+              disabled={!simulation}
+              onClick={(e) => {
+                e.preventDefault();
+                pauseDataReceiving();
+                setPause(false);
+                setSimulation(false);
+                setStep(0);
+              }}
+            >
+              STOP
+            </button>
             <h3>
-              <span className="badge bg-info mt-2">{'Server: ' + isWSocketConnected}</span>
+              <span className={'badge bg-info mt-2 server-badge'}>
+                {'Server: ' + isWSocketConnected}
+              </span>
             </h3>
           </Sidebar>
 
@@ -218,7 +237,9 @@ export default function Lab1() {
             <Column>
               <CenteredBlock>
                 <h3>
-                  <span className="badge bg-secondary">2D</span>
+                  <span className="badge bg-secondary">
+                    Пространсвенно-временная структура электромагнитных импульсов
+                  </span>
                 </h3>
               </CenteredBlock>
 
@@ -227,9 +248,7 @@ export default function Lab1() {
                   <Column>
                     <CenteredBlock>
                       <h4>
-                        <span className="badge bg-primary">
-                          Пространсвенно-временная структура электромагнитных импульсов
-                        </span>
+                        <span className="badge bg-primary">Пучок</span>
                       </h4>
                     </CenteredBlock>
                     {/* <Chart data={dataChart}>
