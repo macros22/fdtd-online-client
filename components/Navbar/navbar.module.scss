@@ -37,6 +37,7 @@ $background-color: $primary;
 }
 
 .dropDownTitle {
+  font: inherit;
   opacity: 90%;
   z-index: 1000;
   &:hover {

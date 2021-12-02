@@ -1,5 +1,5 @@
 import React from 'react';
-import { Navbar, Container, Nav, NavDropdown, DropdownButton, Dropdown } from 'react-bootstrap';
+import { Navbar, Container, Nav, DropdownButton, Dropdown } from 'react-bootstrap';
 import Link from 'next/link';
 
 const WAVE_OPTICS_NAME = 'ВОЛНОВАЯ ОПТИКА';

@@ -7,6 +7,9 @@ import {
   STEP_NUMBER_NAME,
   WAVE_LENGTH_NAME,
 } from 'names/lab2.name';
+
+import { DropdownButton, Dropdown } from 'react-bootstrap';
+import Link from 'next/link';
 import classes from './lab3.module.scss';
 import { HeatMap, Sidebar, TextInput, Paper, CenteredBlock, Column } from 'components';
 
@@ -18,7 +21,7 @@ const min = -1;
 const max = 1.1;
 
 const displayedData = [
-  { title: 'Напряженность электр. поля Ez', name: 'dataEz' },
+  { title: 'Напряженность электр. поля Ez', name: 'Ez' },
   { title: 'Напряженность магн. поля Hy', name: 'Hy' },
   { title: 'Напряженность магн. поля Hx', name: 'Hx' },
   { title: 'Плотность энергии электромагн. поля', name: 'Energy' },
@@ -206,6 +209,22 @@ export default function Index() {
               </CenteredBlock>
 
               <CenteredBlock>
+                <DropdownButton
+                  className={classes.dropDownTitle}
+                  id="dropdown-item-button"
+                  title="Выбор данных"
+                >
+                  {displayedData.map(({ name, title }) => (
+                    <Dropdown.Item key={name}>
+                      {/* //  className={(currentPage == index ? ' active' : '') + ' ' + classes.dropDownItem} */}
+
+                      {title}
+                    </Dropdown.Item>
+                  ))}
+                </DropdownButton>
+              </CenteredBlock>
+
+              <CenteredBlock>
                 <Paper>
                   <CenteredBlock>
                     <h4>
@@ -219,7 +238,8 @@ export default function Index() {
                     maxVal={max}
                     dataX={allData.dataX}
                     dataY={allData.dataY}
-                    dataVal={allData.dataEz
+                    dataVal={
+                      allData.dataEz
                       // Dynamically access object property in TypeScript.
                       // allData[('data' + currentDisplayingData) as keyof typeof allData] as number[]
                     }

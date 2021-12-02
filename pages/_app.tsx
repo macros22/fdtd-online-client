@@ -9,6 +9,7 @@ import React from 'react';
 
 // import 'bootstrap/dist/css/bootstrap.css'; // Add this line
 import '../styles/custom.scss';
+import '../styles/globals.scss';
 
 function MyApp({ Component, pageProps }: AppProps): JSX.Element {
   // Place this in the pages/_app.js file
