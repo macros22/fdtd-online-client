@@ -7,20 +7,30 @@ import {
   STEP_NUMBER_NAME,
   WAVE_LENGTH_NAME,
 } from 'names/lab2.name';
+
+import { DropdownButton, Dropdown } from 'react-bootstrap';
+import Link from 'next/link';
 import classes from './lab4.module.scss';
-import { HeatMap, Sidebar, TextInput, Paper, CenteredBlock, DifractionEditor } from 'components';
+import { HeatMap, Sidebar, TextInput, Paper, CenteredBlock, Column, DifractionEditor} from 'components';
 
 import { SERVER_URL } from 'constants/url';
 import MainLayout from 'layout/MainLayout';
-// import { Button } from 'react-bootstrap';
+import { dataType } from 'types/types';
 
 const min = -1;
 const max = 1.1;
 
+const displayedData = [
+  { title: 'Напряженность электр. поля Ez', name: 'Ez' },
+  { title: 'Напряженность магн. поля Hy', name: 'Hy' },
+  { title: 'Напряженность магн. поля Hx', name: 'Hx' },
+  { title: 'Плотность энергии электромагн. поля', name: 'Energy' },
+];
+
 export default function Index() {
   const [isWSocketConnected, setIsWSocketConnected] = React.useState<boolean>(false);
 
-  const socket = React.useRef<HTMLElement | null>(null);
+  const [socket, setSocket] = React.useState<WebSocket | null>(null);
 
   const [beamsize, setBeamsize] = useState<number>(3);
   const [lambda, setLambda] = useState<number>(1);
@@ -30,17 +40,8 @@ export default function Index() {
   const [simulation, setSimulation] = useState<boolean>(false);
   const [pause, setPause] = useState<boolean>(false);
 
-  type dataType = {
-    dataX: number[];
-    dataY: number[];
-    dataEz: number[];
-    dataHx: number[];
-    dataHy: number[];
-    dataEnergy: number[];
-    row: number;
-    col: number;
-    step: number;
-  };
+  const [currentDisplayingData, setCurrentDisplayingData] = React.useState<number>(0);
+
   const initAllData: dataType = {
     dataX: [],
     dataY: [],
@@ -58,42 +59,44 @@ export default function Index() {
   useEffect(() => {
     connectWS();
     return () => {
-      // @ts-ignore
-      socket.close(1000, 'работа закончена');
+      if (socket !== null) {
+        socket.close(1000, 'работа закончена');
+      }
     };
   }, []);
 
   function connectWS() {
-    // if(socket != null)
-    // @ts-ignore
-    socket.current = new WebSocket(SERVER_URL);
-    // @ts-ignore
-    socket.current.onopen = () => {
-      setIsWSocketConnected(true);
-    };
-    // @ts-ignore
-    socket.current.onmessage = (event: any) => {
-      let data = JSON.parse(event.data);
-      setStep(data.step || 0);
-      setAllData(data);
-    };
-    // @ts-ignore
-    socket.current.onclose = () => {
-      console.log('Socket закрыт');
-      setIsWSocketConnected(false);
-    };
-    // @ts-ignore
-    socket.current.onerror = () => {
-      console.log('Socket произошла ошибка');
-      setIsWSocketConnected(false);
-    };
+    const socket = new WebSocket(SERVER_URL);
+
+    if (socket) {
+      socket.onopen = () => {
+        setIsWSocketConnected(true);
+      };
+
+      socket.onmessage = (event: any) => {
+        let data = JSON.parse(event.data);
+        setStep(data.step || 0);
+        setAllData(data);
+      };
+
+      socket.onclose = () => {
+        console.log('Socket закрыт');
+        setIsWSocketConnected(false);
+      };
+
+      socket.onerror = () => {
+        console.log('Socket произошла ошибка');
+        setIsWSocketConnected(false);
+      };
+    }
+    setSocket(socket);
   }
 
   // console.log(Math.min(...data.dataEnergy));
   // console.log(Math.max(...data.dataEnergy));
 
   const startDataReceiving = () => {
-    setPause(true);
+    setPause(false);
 
     const message = {
       event: 'start',
@@ -101,24 +104,29 @@ export default function Index() {
       condition: [lambda, beamsize, n1, 1.5],
     };
 
-    // @ts-ignore
-    socket.current.send(JSON.stringify(message));
+    if (socket !== null) {
+      socket.send(JSON.stringify(message));
+    }
   };
 
   const pauseDataReceiving = () => {
     const message = {
       event: 'pause',
     };
-    // @ts-ignore
-    socket.current.send(JSON.stringify(message));
+
+    if (socket !== null) {
+      socket.send(JSON.stringify(message));
+    }
   };
 
   const continueDataReceiving = () => {
     const message = {
       event: 'continue',
     };
-    // @ts-ignore
-    socket.current.send(JSON.stringify(message));
+
+    if (socket !== null) {
+      socket.send(JSON.stringify(message));
+    }
   };
 
   return (
@@ -126,7 +134,7 @@ export default function Index() {
       <MainLayout title={'Wave optics | Lab 4'}>
         <div className="d-flex bg-light align-items-stretch mh-100">
           <Sidebar>
-            <DifractionEditor />
+          <DifractionEditor />
             <TextInput
               value={typeof lambda === 'number' ? lambda : 0}
               label={WAVE_LENGTH_NAME}
@@ -170,94 +178,76 @@ export default function Index() {
             >
               {pause ? CONTINUE_NAME : PAUSE_NAME}
             </button>
+            <button
+              type="button"
+              className={'btn btn-primary  mt-2 ' + classes.button}
+              disabled={!simulation}
+              onClick={(e) => {
+                e.preventDefault();
+                pauseDataReceiving();
+                setPause(false);
+                setSimulation(false);
+                setStep(0);
+              }}
+            >
+              STOP
+            </button>
             <h3>
-              <span className="badge bg-info m-2">
-                {'Server connection: ' + isWSocketConnected}
+              <span className="badge bg-info mt-2 server-badge">
+                {'Server: ' + isWSocketConnected}
               </span>
             </h3>
           </Sidebar>
 
-          <div className="p-4 bd-highlight">
-            <CenteredBlock>
-              <h3>
-                <span className="badge bg-secondary">
-                  Пространственно-временная структура электромагнитных пучков
-                </span>
-              </h3>
-              <div className="container">
-                <div className="row">
-                  <div className="col">
-                    <Paper>
-                      <CenteredBlock>
-                        <h4>
-                          <span className="badge bg-primary">Напряженность электр. поля Ez</span>
-                        </h4>
-                      </CenteredBlock>
-                      <HeatMap
-                        minVal={min}
-                        maxVal={max}
-                        dataX={allData.dataX}
-                        dataY={allData.dataY}
-                        dataVal={allData.dataEz}
-                      />
-                    </Paper>
-                  </div>
+          <div className="p-4 bd-highlight w-100">
+            <Column>
+              <CenteredBlock>
+                <h3>
+                  <span className="badge bg-secondary">
+                    Пространственно-временная структура электромагнитных пучков
+                  </span>
+                </h3>
+              </CenteredBlock>
 
-                  <div className="col">
-                    <Paper>
-                      <CenteredBlock>
-                        <h4>
-                          <span className="badge bg-primary">Напряженность магн. поля Hy</span>
-                        </h4>
-                      </CenteredBlock>
-                      <HeatMap
-                        minVal={min}
-                        maxVal={max}
-                        dataX={allData.dataX}
-                        dataY={allData.dataY}
-                        dataVal={allData.dataHy}
-                      />
-                    </Paper>
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="col">
-                    <Paper>
-                      <CenteredBlock>
-                        <h4>
-                          <span className="badge bg-primary">Напряженность магн. поля Hx</span>
-                        </h4>
-                      </CenteredBlock>
-                      <HeatMap
-                        minVal={min}
-                        maxVal={max}
-                        dataX={allData.dataX}
-                        dataY={allData.dataY}
-                        dataVal={allData.dataHx}
-                      />
-                    </Paper>
-                  </div>
-                  <div className="col">
-                    <Paper>
-                      <CenteredBlock>
-                        <h4>
-                          <span className="badge bg-primary">
-                            Плотность энергии электромагн. поля
-                          </span>
-                        </h4>
-                      </CenteredBlock>
-                      <HeatMap
-                        minVal={min}
-                        maxVal={max}
-                        dataX={allData.dataX}
-                        dataY={allData.dataY}
-                        dataVal={allData.dataEnergy}
-                      />
-                    </Paper>
-                  </div>
-                </div>
-              </div>
-            </CenteredBlock>
+              <CenteredBlock>
+                <DropdownButton
+                  className={classes.dropDownTitle}
+                  id="dropdown-item-button"
+                  title="Выбор данных"
+                >
+                  {displayedData.map(({ name, title }) => (
+                    <Dropdown.Item key={name}>
+                      {/* //  className={(currentPage == index ? ' active' : '') + ' ' + classes.dropDownItem} */}
+
+                      {title}
+                    </Dropdown.Item>
+                  ))}
+                </DropdownButton>
+              </CenteredBlock>
+
+              <CenteredBlock>
+                <Paper>
+                  <CenteredBlock>
+                    <h4>
+                      <span className="badge bg-primary">
+                        {displayedData[currentDisplayingData].title}
+                      </span>
+                    </h4>
+                  </CenteredBlock>
+                  <HeatMap
+                    minVal={min}
+                    maxVal={max}
+                    dataX={allData.dataX}
+                    dataY={allData.dataY}
+                    dataVal={
+                      allData.dataEz
+                      // Dynamically access object property in TypeScript.
+                      // allData[('data' + currentDisplayingData) as keyof typeof allData] as number[]
+                    }
+                  />
+                </Paper>
+              </CenteredBlock>
+            </Column>
           </div>
         </div>
       </MainLayout>

@@ -15,7 +15,7 @@ import { HeatMap, Sidebar, TextInput, Paper, CenteredBlock, Column } from 'compo
 
 import { SERVER_URL } from 'constants/url';
 import MainLayout from 'layout/MainLayout';
-import { dataType } from './types';
+import { dataType } from 'types/types';
 
 const min = -1;
 const max = 1.1;
