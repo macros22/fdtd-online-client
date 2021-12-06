@@ -6,4 +6,5 @@ export { default as Paper } from './Paper';
 export { default as CenteredBlock } from './CenteredBlock';
 export { default as Column } from './Column';
 export { default as DifractionEditor } from './DifractionEditor';
+export { default as GradientScale } from './GradientScale';
 export { default as Canvas } from './Canvas';

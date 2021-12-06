@@ -11,11 +11,20 @@ import {
 import { DropdownButton, Dropdown } from 'react-bootstrap';
 import Link from 'next/link';
 import classes from './lab4.module.scss';
-import { HeatMap, Sidebar, TextInput, Paper, CenteredBlock, Column, DifractionEditor} from 'components';
+import {
+  HeatMap,
+  Sidebar,
+  TextInput,
+  Paper,
+  CenteredBlock,
+  Column,
+  DifractionEditor,
+} from 'components';
 
 import { SERVER_URL } from 'constants/url';
 import MainLayout from 'layout/MainLayout';
 import { dataType } from 'types/types';
+import { isDynamicRoute } from 'next/dist/next-server/lib/router/utils';
 
 const min = -1;
 const max = 1.1;
@@ -134,7 +143,6 @@ export default function Index() {
       <MainLayout title={'Wave optics | Lab 4'}>
         <div className="d-flex bg-light align-items-stretch mh-100">
           <Sidebar>
-          <DifractionEditor />
             <TextInput
               value={typeof lambda === 'number' ? lambda : 0}
               label={WAVE_LENGTH_NAME}
@@ -150,7 +158,56 @@ export default function Index() {
               value={beamsize}
               onChange={(e) => setBeamsize(+e.target.value)}
             />
-            <TextInput label={STEP_NUMBER_NAME} value={step} readOnly={true} />
+
+            <DifractionEditor />
+          </Sidebar>
+
+          <div className="p-4 bd-highlight w-100">
+            <Column>
+              <CenteredBlock>
+                {displayedData.map((item, index) => {
+                  return (
+                    <button className={'btn m-2 p-2 w-25 ' + (currentDisplayingData == index ? "btn-primary " : "btn-info ")} key={item.name}>
+                      {item.name}
+                    </button>
+                  );
+                })}
+
+                {/* 
+                <h3>
+                  <span className="badge bg-secondary">
+                    Пространственно-временная структура электромагнитных пучков
+                  </span>
+                </h3> */}
+              </CenteredBlock>
+
+              <CenteredBlock>
+                <Paper>
+                  <CenteredBlock>
+                    <h4>
+                      <span className="badge bg-primary">
+                        
+                        {"Пространственно-временная структура \n " + displayedData[currentDisplayingData].name}
+                      </span>
+                    </h4>
+                  </CenteredBlock>
+                  <HeatMap
+                    minVal={min}
+                    maxVal={max}
+                    dataX={allData.dataX}
+                    dataY={allData.dataY}
+                    dataVal={
+                      allData.dataEz
+                      // Dynamically access object property in TypeScript.
+                      // allData[('data' + currentDisplayingData) as keyof typeof allData] as number[]
+                    }
+                  />
+                </Paper>
+              </CenteredBlock>
+            </Column>
+          </div>
+
+          <Sidebar>
             <button
               onClick={(e) => {
                 e.preventDefault();
@@ -197,60 +254,12 @@ export default function Index() {
                 {'Server: ' + isWSocketConnected}
               </span>
             </h3>
+            <TextInput label={STEP_NUMBER_NAME} value={step} readOnly={true} />
           </Sidebar>
-
-          <div className="p-4 bd-highlight w-100">
-            <Column>
-              <CenteredBlock>
-                <h3>
-                  <span className="badge bg-secondary">
-                    Пространственно-временная структура электромагнитных пучков
-                  </span>
-                </h3>
-              </CenteredBlock>
-
-              <CenteredBlock>
-                <DropdownButton
-                  className={classes.dropDownTitle}
-                  id="dropdown-item-button"
-                  title="Выбор данных"
-                >
-                  {displayedData.map(({ name, title }) => (
-                    <Dropdown.Item key={name}>
-                      {/* //  className={(currentPage == index ? ' active' : '') + ' ' + classes.dropDownItem} */}
-
-                      {title}
-                    </Dropdown.Item>
-                  ))}
-                </DropdownButton>
-              </CenteredBlock>
-
-              <CenteredBlock>
-                <Paper>
-                  <CenteredBlock>
-                    <h4>
-                      <span className="badge bg-primary">
-                        {displayedData[currentDisplayingData].title}
-                      </span>
-                    </h4>
-                  </CenteredBlock>
-                  <HeatMap
-                    minVal={min}
-                    maxVal={max}
-                    dataX={allData.dataX}
-                    dataY={allData.dataY}
-                    dataVal={
-                      allData.dataEz
-                      // Dynamically access object property in TypeScript.
-                      // allData[('data' + currentDisplayingData) as keyof typeof allData] as number[]
-                    }
-                  />
-                </Paper>
-              </CenteredBlock>
-            </Column>
-          </div>
         </div>
       </MainLayout>
     </>
   );
 }
+
+

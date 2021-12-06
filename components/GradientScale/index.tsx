@@ -1,16 +1,15 @@
 //http://zhangwenli.com/blog/2015/06/12/drawing-heatmap-with-html-canvas/
 //https://github.com/mourner/simpleheat/blob/86af1384db714ab32626ed25aeb396fd0869d56d/simpleheat.js
 
-import { GradientScale } from 'components';
 import React from 'react';
 
 
 type HeatMapProps = {
   minVal: number;
   maxVal: number;
-  dataX: number[];
-  dataY: number[];
-  dataVal: number[];
+  dataX?: number[];
+  dataY?: number[];
+  dataVal?: number[];
   width?: number;
   height?: number;
 };
@@ -23,8 +22,8 @@ const HeatMap: React.FC<HeatMapProps> = ({
   dataX = [],
   dataY = [],
   dataVal = [],
-  width = 420,
-  height = 420,
+  width = 450,
+  height = 450,
 }) => {
   let data: PictureDataType = [];
 
@@ -38,7 +37,7 @@ const HeatMap: React.FC<HeatMapProps> = ({
   let diametr = radius * 2;
 
   if (dataX.length == 0) {
-    for (let i = 0; i < 1000; ++i) {
+    for (let i = 0; i < 10000; ++i) {
       data.push([Math.random() * width, Math.random() * height, Math.random() * 0.3]);
     }
   } else {
@@ -152,11 +151,11 @@ const HeatMap: React.FC<HeatMapProps> = ({
 
   return (
     <React.Fragment>
+      
       <canvas style={{ display: 'none' }} ref={canvasBrushRef} />
-      <canvas style={{ display: 'none' }} ref={canvasGradientRef} />
-      {/* <canvas ref={canvasGradientRef} /> */}
+      {/* <canvas style={{ display: 'none' }} ref={canvasGradientRef} /> */}
+      <canvas ref={canvasGradientRef} />
       <canvas ref={canvasRef} />
-      {/* <GradientScale minVal={-1} maxVal={1}/> */}
     </React.Fragment>
   );
 };
