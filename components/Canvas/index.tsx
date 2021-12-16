@@ -13,30 +13,34 @@ type ImageCanvasProps = {
   maxY: number;
   minX: number;
   minY: number;
+  WIDTH: number;
+  HEIGHT: number
 };
 
-const ImageCanvas: React.FC<ImageCanvasProps> = ({ data, maxX, maxY, minX, minY }) => {
-  const WIDTH = 650;
-  const HEIGHT = 450;
+const ImageCanvas: React.FC<ImageCanvasProps> = ({ data, maxX, maxY, minX, minY, WIDTH, HEIGHT }) => {
   const PADDING = 5;
 
   const deltaX = minX >= 0 ? maxX : maxX - minX;
   const deltaY = minY >= 0 ? maxY : maxY - minY;
 
-  const scaleX = WIDTH / deltaX;
-  const scaleY = HEIGHT / deltaY;
-  const pointRadius = 5;
+  // const scaleX = WIDTH / deltaX;
+  // const scaleY = HEIGHT / deltaY;
+  // const pointRadius = 5;
 
   const INTERVAL_X = 40;
   const INTERVAL_Y = 40;
 
-  const CHART_WIDTH = WIDTH - PADDING * 2;
-  const CHART_HEIGHT = HEIGHT - PADDING * 2;
+  const CHART_WIDTH = WIDTH - PADDING * 8;
+  const CHART_HEIGHT = HEIGHT - PADDING * 6;
+
+  const scaleX = CHART_WIDTH / deltaX;
+  const scaleY = CHART_HEIGHT / deltaY;
+
 
   const TICK_MARKS_HEIGHT = 6;
 
-  const chartX0 = PADDING * 12;
-  const chartY0 = PADDING;
+  const chartX0 = PADDING * 10;
+  const chartY0 = PADDING * 6;
 
   const x0 = chartX0;
   const y0 = chartY0 - minY * scaleY;
@@ -63,14 +67,14 @@ const ImageCanvas: React.FC<ImageCanvasProps> = ({ data, maxX, maxY, minX, minY 
     ctx.beginPath();
 
     // Draw x axis.
-    ctx.moveTo(chartX0, tY(y0));
-    ctx.lineTo(chartX0 + CHART_WIDTH, tY(y0));
+    ctx.moveTo(chartX0, tY(chartY0));
+    ctx.lineTo(chartX0 + CHART_WIDTH, tY(chartY0));
 
     // Draw y axis.
     ctx.moveTo(chartX0, tY(chartY0));
     ctx.lineTo(chartX0, tY(chartY0 + CHART_HEIGHT));
 
-    ctx.lineWidth = 1;
+    ctx.lineWidth = 2;
 
     // Draw Ox tick marks.
     for (let x = chartX0; x <= chartX0 + CHART_WIDTH; x += INTERVAL_X) {
@@ -80,8 +84,8 @@ const ImageCanvas: React.FC<ImageCanvasProps> = ({ data, maxX, maxY, minX, minY 
 
     // Draw Oy tick marks.
     for (let y = chartY0; y <= chartY0 + CHART_HEIGHT; y += INTERVAL_Y) {
-      ctx.moveTo(chartX0 - TICK_MARKS_HEIGHT / 2, y);
-      ctx.lineTo(chartX0 + TICK_MARKS_HEIGHT / 2, y);
+      ctx.moveTo(chartX0 - TICK_MARKS_HEIGHT / 2, tY(y));
+      ctx.lineTo(chartX0 + TICK_MARKS_HEIGHT / 2, tY(y));
     }
 
     // set line color
@@ -91,7 +95,7 @@ const ImageCanvas: React.FC<ImageCanvasProps> = ({ data, maxX, maxY, minX, minY 
     // ctx.fill();
 
     // Draw tick marks numbers.
-    ctx.font = '8pt Roboto';
+    ctx.font = '10pt Roboto bold';
     ctx.fillStyle = 'gray';
     ctx.textBaseline = 'middle';
 
@@ -107,8 +111,8 @@ const ImageCanvas: React.FC<ImageCanvasProps> = ({ data, maxX, maxY, minX, minY 
     }
     ctx.restore();
 
-    console.log('sum', y0+chartY0);
-    console.log('sumstr', y0+chartY0+"");
+    // console.log('sum', y0+chartY0);
+    // console.log('sumstr', y0+chartY0+"");
     
     // Draw Oy tick marks numbers.
     ctx.textAlign = 'right';
@@ -174,18 +178,20 @@ const ImageCanvas: React.FC<ImageCanvasProps> = ({ data, maxX, maxY, minX, minY 
 
   return (
     <>
-      <Canvas draw={draw} />
+      <Canvas draw={draw} width={WIDTH} height={HEIGHT}/>
     </>
   );
 };
 
 type CanvasProps = {
   draw: (ctx: CanvasRenderingContext2D, frameCount: number) => void;
+    width: number;
+    height: number;
   rest?: any;
 };
 
-const Canvas: React.FC<CanvasProps> = ({ rest, draw }) => {
-  const canvasRef = useCanvas(draw);
+const Canvas: React.FC<CanvasProps> = ({ rest, draw, width, height }) => {
+  const canvasRef = useCanvas(draw, width, height);
 
   return <canvas ref={canvasRef} {...rest} />;
 };

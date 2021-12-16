@@ -18,28 +18,32 @@ import { DataChartType } from 'types/lab1';
 import { LAB_1_2D } from 'constants/data-type.constants';
 import { CONTINUE, START, PAUSE } from 'constants/ws-event.constants';
 
+const CANVAS_WIDTH = 800;
+const CANVAS_HEIGHT = 440;
+
 const initDataChart: DataChartType = [];
-for (let i = 0; i < 600; i += 3) {
+for (let i = 0; i < CANVAS_WIDTH * 0.9; i += 10) {
   initDataChart.push({
     x: i,
-    y: Math.random() * 450 - 200,
+    y: Math.random() * CANVAS_HEIGHT * 0.8 + 20,
   });
 }
 
-export default function Lab1() {
+export default function Index() {
   const [isWSocketConnected, setIsWSocketConnected] = React.useState<boolean>(false);
 
   const [socket, setSocket] = React.useState<WebSocket | null>(null);
 
-  // Input parameteres.
+  // Input params.
   const [tau, setTau] = useState<number>(10);
   const [lambda, setLambda] = useState<number>(1);
   const [n1, setN1] = useState<number>(1);
 
   const [dataChart, setDataChart] = useState<DataChartType>(initDataChart);
 
-  const [maxX, setMaxX] = useState<number>(600);
-  const [maxY, setMaxY] = useState<number>(400);
+  // Data min
+  const [maxX, setMaxX] = useState<number>(CANVAS_WIDTH);
+  const [maxY, setMaxY] = useState<number>(CANVAS_HEIGHT);
   const [minX, setMinX] = useState<number>(0);
   const [minY, setMinY] = useState<number>(0);
 
@@ -62,15 +66,9 @@ export default function Lab1() {
   }, []);
 
   React.useEffect(() => {
-    // const tempDataChart: DataChartType = [];
-    // for(let i = 0; i < 200; i += 3){
-    //     tempDataChart.push({
-    //       x: i,
-    //       y: Math.random()*450
-    //     })
-    // }
-    // console.log(tempDataChart);
-    // setDataChart(tempDataChart);
+    return () => {
+      closeSocket();
+    };
   }, []);
 
   // WebSocket configuration.
@@ -83,42 +81,34 @@ export default function Lab1() {
       };
 
       socket.onmessage = (event: any) => {
-        // if (simulation) 
-        {
-          let data = JSON.parse(event.data);
+        let data = JSON.parse(event.data);
 
-          let { dataX, dataY, step, col } = data;
-          setStep(step || 0);
+        let { dataX, dataY, step, col } = data;
+        setStep(step || 0);
 
-          let tmpDataChart: DataChartType = [];
-          // for (let j = 0; j < col; j++) {
-          //   tmpDataChart.push({
-          //     argument: dataX[j],
-          //     value: dataY[j],
-          //   });
-          // }
+        let tmpDataChart: DataChartType = [];
 
-          setMaxX(Math.max(...dataX));
-          setMaxY(Math.max(...dataY));
+        setMaxX(Math.max(...dataX));
+        setMaxY(Math.max(...dataY));
 
-          setMinX(Math.min(...dataX));
-          setMinY(Math.min(...dataY));
+        setMinX(Math.min(...dataX));
+        setMinY(Math.min(...dataY));
 
-          for (let j = 0; j < col; j++) {
-            tmpDataChart.push({
-              x: +dataX[j],
-              y: +dataY[j],
-            });
-          }
-
-          setDataChart(tmpDataChart);
-
-          setStep(data.step || 0);
+        for (let j = 0; j < col; j++) {
+          tmpDataChart.push({
+            x: +dataX[j],
+            y: +dataY[j],
+          });
         }
+
+        setDataChart(tmpDataChart);
+
+        setStep(data.step || 0);
       };
 
       socket.onclose = () => {
         console.log('Socket closed!!');
+        closeSocket();
         setIsWSocketConnected(false);
       };
 
@@ -147,6 +137,16 @@ export default function Lab1() {
   const pauseDataReceiving = () => {
     const message = {
       event: PAUSE,
+    };
+
+    if (socket !== null) {
+      socket.send(JSON.stringify(message));
+    }
+  };
+
+  const closeSocket = () => {
+    const message = {
+      event: 'close',
     };
 
     if (socket !== null) {
@@ -184,6 +184,40 @@ export default function Lab1() {
               value={tau}
               onChange={(e) => setTau(+e.target.value)}
             />
+          </Sidebar>
+
+          <div className="p-4 bd-highlight w-100">
+            <Column>
+              <CenteredBlock>
+                <h4>
+                  <span>Пространсвенно-временная структура электромагнитных импульсов</span>
+                </h4>
+              </CenteredBlock>
+
+              <CenteredBlock>
+                <Paper>
+                  <Column>
+                    <CenteredBlock>
+                      <h4>
+                        <span className="badge bg-primary">Зависимость Y от X</span>
+                      </h4>
+                    </CenteredBlock>
+
+                    <Canvas
+                      data={dataChart}
+                      maxX={maxX}
+                      maxY={maxY}
+                      minX={minX}
+                      minY={minY}
+                      WIDTH={CANVAS_WIDTH}
+                      HEIGHT={CANVAS_HEIGHT}
+                    />
+                  </Column>
+                </Paper>
+              </CenteredBlock>
+            </Column>
+          </div>
+          <Sidebar>
             <TextInput label={STEP_NUMBER_NAME} value={step} readOnly={true} />
             <button
               onClick={(e) => {
@@ -220,6 +254,7 @@ export default function Lab1() {
                 e.preventDefault();
                 pauseDataReceiving();
                 setPause(false);
+                closeSocket();
                 setSimulation(false);
                 setStep(0);
               }}
@@ -232,36 +267,6 @@ export default function Lab1() {
               </span>
             </h3>
           </Sidebar>
-
-          <div className="p-4 bd-highlight w-100">
-            <Column>
-              <CenteredBlock>
-                <h3>
-                  <span className="badge bg-secondary">
-                    Пространсвенно-временная структура электромагнитных импульсов
-                  </span>
-                </h3>
-              </CenteredBlock>
-
-              <CenteredBlock>
-                <Paper>
-                  <Column>
-                    <CenteredBlock>
-                      <h4>
-                        <span className="badge bg-primary">Пучок</span>
-                      </h4>
-                    </CenteredBlock>
-                    {/* <Chart data={dataChart}>
-                      <ArgumentAxis />
-                      <ValueAxis />
-                      <LineSeries valueField="value" argumentField="argument" />
-                    </Chart> */}
-                    <Canvas data={dataChart} maxX={maxX} maxY={maxY} minX={minX} minY={minY} />
-                  </Column>
-                </Paper>
-              </CenteredBlock>
-            </Column>
-          </div>
         </div>
       </MainLayout>
     </>

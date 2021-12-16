@@ -32,13 +32,13 @@ const HeatMap: React.FC<HeatMapProps> = ({
   const canvasBrushRef = React.useRef<HTMLCanvasElement | null>(null);
   const canvasGradientRef = React.useRef<HTMLCanvasElement | null>(null);
 
-  let brushSize = width / 220;
-  let brushBlurSize = brushSize * 1.05;
+  let brushSize = width / 185;
+  let brushBlurSize = brushSize * 1.15;
   let radius = brushSize + brushBlurSize;
   let diametr = radius * 2;
 
   if (dataX.length == 0) {
-    for (let i = 0; i < 1000; ++i) {
+    for (let i = 0; i < 3e3; ++i) {
       data.push([Math.random() * width, Math.random() * height, Math.random() * 0.3]);
     }
   } else {
@@ -87,9 +87,9 @@ const HeatMap: React.FC<HeatMapProps> = ({
       let contextGradient = canvasGradient.getContext('2d');
 
       const gradientColors: { [key: string]: string } = {
-        0: 'red',
+        0: '#6038bd',
         //  0.5: "green",
-        1.0: 'blue',
+        1.0: '#6038bd',
       };
 
       //draw data

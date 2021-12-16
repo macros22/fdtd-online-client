@@ -23,6 +23,9 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children, title, description, k
       <Navbar />
 
         <main>{children}</main>
+        <footer style={{zIndex:2000}}>
+          footer
+        </footer>
     </>
   );
 };

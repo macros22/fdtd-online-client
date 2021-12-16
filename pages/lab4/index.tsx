@@ -8,8 +8,6 @@ import {
   WAVE_LENGTH_NAME,
 } from 'names/lab2.name';
 
-import { DropdownButton, Dropdown } from 'react-bootstrap';
-import Link from 'next/link';
 import classes from './lab4.module.scss';
 import {
   HeatMap,
@@ -24,7 +22,6 @@ import {
 import { SERVER_URL } from 'constants/url';
 import MainLayout from 'layout/MainLayout';
 import { dataType } from 'types/types';
-import { isDynamicRoute } from 'next/dist/next-server/lib/router/utils';
 
 const min = -1;
 const max = 1.1;
@@ -54,6 +51,7 @@ export default function Index() {
   const initAllData: dataType = {
     dataX: [],
     dataY: [],
+    dataVal: [],
     dataEz: [],
     dataHx: [],
     dataHy: [],
@@ -85,6 +83,7 @@ export default function Index() {
       socket.onmessage = (event: any) => {
         let data = JSON.parse(event.data);
         setStep(data.step || 0);
+        console.log(Object.keys(data))
         setAllData(data);
       };
 
@@ -110,6 +109,7 @@ export default function Index() {
     const message = {
       event: 'start',
       type: 'DIFRACTION',
+      dataToReturn: displayedData[currentDisplayingData].name,
       condition: [lambda, beamsize, n1, 1.5],
     };
 
@@ -167,18 +167,21 @@ export default function Index() {
               <CenteredBlock>
                 {displayedData.map((item, index) => {
                   return (
-                    <button className={'btn m-2 p-2 w-25 ' + (currentDisplayingData == index ? "btn-primary " : "btn-info ")} key={item.name}>
+                    <button
+                      className={
+                        classes.btn +
+                        ' btn m-1 p-1 w-25 bold ' +
+                        (currentDisplayingData == index ? 'btn-primary' : 'btn-outline-primary')
+                      }
+                      key={item.name}
+                      onClick={() => {
+                        setCurrentDisplayingData(index);
+                      }}
+                    >
                       {item.name}
                     </button>
                   );
                 })}
-
-                {/* 
-                <h3>
-                  <span className="badge bg-secondary">
-                    Пространственно-временная структура электромагнитных пучков
-                  </span>
-                </h3> */}
               </CenteredBlock>
 
               <CenteredBlock>
@@ -186,8 +189,8 @@ export default function Index() {
                   <CenteredBlock>
                     <h4>
                       <span className="badge bg-primary">
-                        
-                        {"Пространственно-временная структура \n " + displayedData[currentDisplayingData].name}
+                        {'Пространственно-временная структура \n ' +
+                          displayedData[currentDisplayingData].name}
                       </span>
                     </h4>
                   </CenteredBlock>
@@ -197,7 +200,8 @@ export default function Index() {
                     dataX={allData.dataX}
                     dataY={allData.dataY}
                     dataVal={
-                      allData.dataEz
+                      allData.dataVal
+                      //allData[('data' + currentDisplayingData) as keyof typeof allData] as number[]
                       // Dynamically access object property in TypeScript.
                       // allData[('data' + currentDisplayingData) as keyof typeof allData] as number[]
                     }
@@ -261,5 +265,3 @@ export default function Index() {
     </>
   );
 }
-
-

@@ -49,7 +49,7 @@ $gray: rgba(175, 173, 173, 0.78);
 .formField:hover {
   ~ .formLabel {
     transition: 0.2s;
-    color: $primary;
+    color: $primaryFont;
   }
 }
 

@@ -6,10 +6,10 @@
 .sidebar {
   // width: 35%;
   max-width: 35vw;
-  //position: sticky;
+  // position: fixed;
   //top: 0;
   //left: 0;
-  height: 100vh;
+  min-height: 80vh;
   //z-index: 999;
   background: white;
   //color: #fff;

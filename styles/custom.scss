@@ -1,19 +1,26 @@
 /*! `Custom` Bootstrap 5 theme */
 
-// adding google font
-// https://johnny.am/blog/n2-adding-google-fonts-to-nextjs-project
-* {
-  font-family: 'Roboto';
-}
-
-.server-badge {
-  width: 100%;
-}
 
 //https://themestr.app/
 @import './colors.scss';
 //@import "bootstrap";
 @import '../node_modules/bootstrap/scss/bootstrap.scss';
+
+
+// adding google font
+// https://johnny.am/blog/n2-adding-google-fonts-to-nextjs-project
+* {
+  font-family: 'Roboto';
+  color: $primaryFont;
+  
+}
+
+
+
+.server-badge {
+  width: 100%;
+}
+
 
 // Add SASS theme customizations here..
 //html {font-size: .8rem;}

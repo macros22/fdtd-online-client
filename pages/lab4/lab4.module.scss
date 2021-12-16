@@ -2,6 +2,17 @@
   display: block;
   width: 100%;
 }
+
+.btn{
+  &:focus {
+    outline: none;
+    box-shadow: none;
+  }
+  &:active {
+    outline: none;
+    box-shadow: none;
+  }
+}
 //.root {
 //  flexgrow: 1;
 //  width: 100%;
