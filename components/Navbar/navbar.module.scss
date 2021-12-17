@@ -31,9 +31,33 @@ $background-color: $primary;
 //
 //}
 
+.navbar {
+  grid-column: span 12;
+  background-color: rgb(164, 164, 190);
+  place-items: center;
+  display: flex;
+  align-self: space-between;
+
+  flex-direction: row;
+  & > * {
+    margin: 0.81rem;
+  }
+  & > *:nth-child(3) {
+    margin-left: auto;
+  }
+}
+
 .logo {
+  font-size: 16pt;
+  color: $light;
   font-weight: 600;
-  letter-spacing: 0.1rem;
+  letter-spacing: 0.15rem;
+  text-decoration: none;
+  text-transform: uppercase;
+  &:hover{
+    color: $light;
+    opacity: 95%;
+  }
 }
 
 .dropDownTitle {

@@ -1,0 +1,22 @@
+.container {
+  display: grid;
+  height: 100vh;
+  grid-template-columns: repeat(12, 1fr);
+  grid-template-rows: 50px auto 20px;
+  color: white;
+}
+
+
+
+.aside {
+  grid-column: span 2;
+  background-color: burlywood;
+}
+
+.main {
+  grid-column: span 8;
+}
+.footer {
+  grid-column: span 12;
+  background-color: chocolate;
+}
