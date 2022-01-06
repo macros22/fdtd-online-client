@@ -40,7 +40,6 @@ export default function Navbar2(): JSX.Element {
                 </Link>
               ))}
             </DropdownButton>
-      <div>Logout</div>
     </nav>
     // <Navbar className="shadow-sm" variant="dark" bg="primary" expand="lg">
     //   <Container fluid>

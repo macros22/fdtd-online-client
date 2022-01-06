@@ -33,7 +33,7 @@ $background-color: $primary;
 
 .navbar {
   grid-column: span 12;
-  background-color: rgb(164, 164, 190);
+  background-color: $background-color;
   place-items: center;
   display: flex;
   align-self: space-between;

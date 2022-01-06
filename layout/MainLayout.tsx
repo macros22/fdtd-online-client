@@ -24,7 +24,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children, title, description, k
         <meta name="keywords" content={keywords || 'physics, wave, optics'} />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
-      {/* <Navbar /> */}
+      <Navbar />
 
       {/* <div className={classes.container}>
         <Navbar />
