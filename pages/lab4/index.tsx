@@ -23,6 +23,8 @@ import { SERVER_URL } from 'constants/url';
 import MainLayout from 'layout/MainLayout';
 import { dataType } from 'types/types';
 
+import { RefractionMatrixProvider, useRefractionMatrix } from 'store/refraction-matrix.context';
+
 const min = -1;
 const max = 1.1;
 
@@ -33,7 +35,18 @@ const displayedData = [
   { title: 'Плотность энергии электромагн. поля', name: 'Energy' },
 ];
 
-export default function Index() {
+const MatrixDisplay: React.FC = () => {
+  const [matrix, setMatrix] = useRefractionMatrix();
+  // const [count, setCount] = useRefractionMatrix()
+
+  // const changeMatrix = () => setMatrix([[2]]);
+
+  // const changeMatrix = () => setCount((prev: number) => prev + 1);
+  console.log(matrix);
+  return <DifractionEditor />;
+};
+
+function Lab4() {
   const [isWSocketConnected, setIsWSocketConnected] = React.useState<boolean>(false);
 
   const [socket, setSocket] = React.useState<WebSocket | null>(null);
@@ -63,6 +76,8 @@ export default function Index() {
 
   const [allData, setAllData] = useState<dataType>(initAllData);
 
+  const [matrix, setMatrix] = useRefractionMatrix();
+
   useEffect(() => {
     connectWS();
     return () => {
@@ -83,7 +98,7 @@ export default function Index() {
       socket.onmessage = (event: any) => {
         let data = JSON.parse(event.data);
         setStep(data.step || 0);
-        console.log(Object.keys(data))
+        console.log(Object.keys(data));
         setAllData(data);
       };
 
@@ -111,6 +126,7 @@ export default function Index() {
       type: 'DIFRACTION',
       dataToReturn: displayedData[currentDisplayingData].name,
       condition: [lambda, beamsize, n1, 1.5],
+      matrix
     };
 
     if (socket !== null) {
@@ -159,7 +175,7 @@ export default function Index() {
               onChange={(e) => setBeamsize(+e.target.value)}
             />
 
-            <DifractionEditor />
+            <MatrixDisplay />
           </Sidebar>
 
           <div className="p-4 bd-highlight w-100">
@@ -263,5 +279,13 @@ export default function Index() {
         </div>
       </MainLayout>
     </>
+  );
+}
+
+export default function WrappedLab4() {
+  return (
+    <RefractionMatrixProvider>
+      <Lab4 />
+    </RefractionMatrixProvider>
   );
 }

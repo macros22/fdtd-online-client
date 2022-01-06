@@ -23,8 +23,8 @@ const HeatMap: React.FC<HeatMapProps> = ({
   dataX = [],
   dataY = [],
   dataVal = [],
-  width = 420,
-  height = 420,
+  width = 400,
+  height = 400,
 }) => {
   let data: PictureDataType = [];
 
@@ -42,7 +42,7 @@ const HeatMap: React.FC<HeatMapProps> = ({
       data.push([Math.random() * width, Math.random() * height, Math.random() * 0.3]);
     }
   } else {
-    const gridSizeFromBackend = 320;
+    const gridSizeFromBackend = 400;
 
     for (let i = 0; i < dataX.length; ++i) {
       data.push([

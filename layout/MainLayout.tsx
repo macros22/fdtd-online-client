@@ -26,15 +26,15 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children, title, description, k
       </Head>
       {/* <Navbar /> */}
 
-      <div className={classes.container}>
+      {/* <div className={classes.container}>
         <Navbar />
         <aside className={classes.aside}>MENU</aside>
         <main className={classes.main}>CONTENT</main>
         <aside className={classes.aside}>MENU</aside>
         <footer className={classes.footer}>FOOTER</footer>
-      </div>
-
-      {/* <main>{children}</main>
+      </div> */}
+<main>{children}</main>
+      {/* 
       <footer style={{ zIndex: 2000 }}>footer</footer> */}
     </>
   );

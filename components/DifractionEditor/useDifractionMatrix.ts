@@ -5,9 +5,9 @@ export const useDifractionMatrix = (width = 400, height = 400) => {
   const rIndex1 = 1;
   const rIndex2 = 1.5;
 
-  const count = 14;
+  const count = 20;
   const n = count * 2;
-  const rectHeight: number = height / (count * 2);
+  const rectHeight: number = width / (count * 2);
   const rectWidth = rectHeight;
 
   let matrix: number[][] = [];
