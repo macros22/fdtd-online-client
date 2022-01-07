@@ -3,7 +3,14 @@
   width: 100%;
 }
 
-.btn{
+.flexRow {
+  display: flex;
+  justify-content: space-between;
+  
+}
+
+.buttonDataType {
+  max-width: 30%;
   &:focus {
     outline: none;
     box-shadow: none;

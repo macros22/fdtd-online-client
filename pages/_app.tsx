@@ -23,9 +23,9 @@ function MyApp({ Component, pageProps }: AppProps): JSX.Element {
         <title>Eng</title>
         <meta name="viewport" content="initial-scale=1, width=device-width" />
       </Head>
-      {/*<MainLayout title={'Wave optics'}>*/}
+      
       <Component {...pageProps} />
-      {/*</MainLayout>*/}
+     
     </>
   );
 }

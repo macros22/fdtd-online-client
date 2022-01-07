@@ -14,7 +14,6 @@ import {
   Sidebar,
   TextInput,
   Paper,
-  CenteredBlock,
   Column,
   DifractionEditor,
 } from 'components';
@@ -26,24 +25,17 @@ import { dataType } from 'types/types';
 import { RefractionMatrixProvider, useRefractionMatrix } from 'store/refraction-matrix.context';
 
 const min = -1;
-const max = 1.1;
+const max = 1;
 
 const displayedData = [
-  { title: 'Напряженность электр. поля Ez', name: 'Ez' },
-  { title: 'Напряженность магн. поля Hy', name: 'Hy' },
-  { title: 'Напряженность магн. поля Hx', name: 'Hx' },
-  { title: 'Плотность энергии электромагн. поля', name: 'Energy' },
+  { title: 'напряженности электрического поля Ez (проекция на ось Z)', name: 'Ez', type: 'Ez' },
+  { title: 'напряженности магнитного поля Hy (проекция на ось Y)', name: 'Hy', type: 'Hy' },
+  { title: 'напряженности магнитного поля Hx (проекция на ось X)', name: 'Hx', type: 'Hx' },
+  { title: 'плотности энергии электромагнагнитного поля', name: 'w', type: 'Energy' },
 ];
 
 const MatrixDisplay: React.FC = () => {
-  const [matrix, setMatrix] = useRefractionMatrix();
-  // const [count, setCount] = useRefractionMatrix()
-
-  // const changeMatrix = () => setMatrix([[2]]);
-
-  // const changeMatrix = () => setCount((prev: number) => prev + 1);
-  console.log(matrix);
-  return <DifractionEditor />;
+  return <DifractionEditor buttonStyle={classes.button + ' mt-3'} />;
 };
 
 function Lab4() {
@@ -115,18 +107,15 @@ function Lab4() {
     setSocket(socket);
   }
 
-  // console.log(Math.min(...data.dataEnergy));
-  // console.log(Math.max(...data.dataEnergy));
-
   const startDataReceiving = () => {
     setPause(false);
 
     const message = {
       event: 'start',
       type: 'DIFRACTION',
-      dataToReturn: displayedData[currentDisplayingData].name,
+      dataToReturn: displayedData[currentDisplayingData].type,
       condition: [lambda, beamsize, n1, 1.5],
-      matrix
+      matrix,
     };
 
     if (socket !== null) {
@@ -159,6 +148,28 @@ function Lab4() {
       <MainLayout title={'Wave optics | Lab 4'}>
         <div className="d-flex bg-light align-items-stretch mh-100">
           <Sidebar>
+            <p>Выбор данных:</p>
+
+            <div className={classes.flexRow}>
+              {displayedData.map((item, index) => {
+                return (
+                  <button
+                    className={
+                      classes.buttonDataType +
+                      ' btn bold ' +
+                      (currentDisplayingData == index ? 'btn-primary' : 'btn-outline-primary')
+                    }
+                    key={item.name}
+                    onClick={() => {
+                      setCurrentDisplayingData(index);
+                    }}
+                  >
+                    {item.name}
+                  </button>
+                );
+              })}
+            </div>
+
             <TextInput
               value={typeof lambda === 'number' ? lambda : 0}
               label={WAVE_LENGTH_NAME}
@@ -178,52 +189,32 @@ function Lab4() {
             <MatrixDisplay />
           </Sidebar>
 
-          <div className="p-4 bd-highlight w-100">
+          <div className="p-4 bd-highlight w-75">
             <Column>
-              <CenteredBlock>
-                {displayedData.map((item, index) => {
-                  return (
-                    <button
-                      className={
-                        classes.btn +
-                        ' btn m-1 p-1 w-25 bold ' +
-                        (currentDisplayingData == index ? 'btn-primary' : 'btn-outline-primary')
-                      }
-                      key={item.name}
-                      onClick={() => {
-                        setCurrentDisplayingData(index);
-                      }}
-                    >
-                      {item.name}
-                    </button>
-                  );
-                })}
-              </CenteredBlock>
+              <h3>
+                <span className="badge bg-info">{'пространственно-временная структура'}</span>
+              </h3>
 
-              <CenteredBlock>
-                <Paper>
-                  <CenteredBlock>
-                    <h4>
-                      <span className="badge bg-primary">
-                        {'Пространственно-временная структура \n ' +
-                          displayedData[currentDisplayingData].name}
-                      </span>
-                    </h4>
-                  </CenteredBlock>
-                  <HeatMap
-                    minVal={min}
-                    maxVal={max}
-                    dataX={allData.dataX}
-                    dataY={allData.dataY}
-                    dataVal={
-                      allData.dataVal
-                      //allData[('data' + currentDisplayingData) as keyof typeof allData] as number[]
-                      // Dynamically access object property in TypeScript.
-                      // allData[('data' + currentDisplayingData) as keyof typeof allData] as number[]
-                    }
-                  />
-                </Paper>
-              </CenteredBlock>
+              <h3>
+                <span className="badge bg-primary">
+                  {displayedData[currentDisplayingData].title}
+                </span>
+              </h3>
+
+              <Paper>
+                <HeatMap
+                  minVal={min}
+                  maxVal={max}
+                  dataX={allData.dataX}
+                  dataY={allData.dataY}
+                  dataVal={
+                    allData.dataVal
+                    //allData[('data' + currentDisplayingData) as keyof typeof allData] as number[]
+                    // Dynamically access object property in TypeScript.
+                    // allData[('data' + currentDisplayingData) as keyof typeof allData] as number[]
+                  }
+                />
+              </Paper>
             </Column>
           </div>
 
@@ -241,7 +232,7 @@ function Lab4() {
             </button>
             <button
               type="button"
-              className={'btn btn-primary  mt-2 ' + classes.button}
+              className={'btn btn-primary mt-2 ' + classes.button}
               disabled={!simulation}
               onClick={(e) => {
                 e.preventDefault();

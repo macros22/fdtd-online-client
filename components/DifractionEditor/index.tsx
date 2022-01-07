@@ -328,7 +328,11 @@ const Editor: React.FC<IEditorInterface> = ({ showMatrix }) => {
   );
 };
 
-const DifractionEditor = () => {
+interface IDifractionEditorProps  {
+  buttonStyle: string;
+}
+
+const DifractionEditor:React.FC<IDifractionEditorProps> = ({buttonStyle}) => {
   const [showMatrix, setShowMatrix] = React.useState(0);
 
   // return <Editor />;
@@ -337,7 +341,7 @@ const DifractionEditor = () => {
       {/*// <!-- Button trigger modal -->*/}
       <button
         type="button"
-        className="btn btn-primary"
+        className={"btn btn-primary " + buttonStyle}
         data-bs-toggle="modal"
         data-bs-target="#staticBackdrop"
       >
