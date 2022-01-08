@@ -148,7 +148,7 @@ function Lab4() {
       <MainLayout title={'Wave optics | Lab 4'}>
         <div className="d-flex bg-light align-items-stretch mh-100">
           <Sidebar>
-            <p>Выбор данных:</p>
+            <p className={classes.tempP}>Выбор данных:</p>
 
             <div className={classes.flexRow}>
               {displayedData.map((item, index) => {

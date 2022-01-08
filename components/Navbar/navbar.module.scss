@@ -31,6 +31,13 @@ $background-color: $primary;
 //
 //}
 
+.parent {
+  position: relative;
+  min-width: max-content;
+  box-shadow: 0 0.2rem 0.9rem rgba(0, 0, 0, 0.075) !important;
+  z-index: 1000;
+}
+
 .navbar {
   grid-column: span 12;
   background-color: $background-color;
@@ -45,6 +52,8 @@ $background-color: $primary;
   & > *:nth-child(3) {
     margin-left: auto;
   }
+  
+  
 }
 
 .logo {
@@ -54,7 +63,7 @@ $background-color: $primary;
   letter-spacing: 0.15rem;
   text-decoration: none;
   text-transform: uppercase;
-  &:hover{
+  &:hover {
     color: $light;
     opacity: 95%;
   }

@@ -20,27 +20,29 @@ export default function Navbar2(): JSX.Element {
   const [currentPage, setCurrentPage] = React.useState(0);
 
   return (
-    <nav className={classes.navbar}>
-      <Link href="/">
-        <a className={classes.logo}>{WAVE_OPTICS_NAME}</a>
-      </Link>
+    <div className={classes.parent}>
+      <nav className={classes.navbar}>
+        <Link href="/">
+          <a className={classes.logo}>{WAVE_OPTICS_NAME}</a>
+        </Link>
 
-       <DropdownButton
-              className={classes.dropDownTitle}
-              id="dropdown-item-button"
-              title="Выбор лабораторной"
-            >
-              {sections.map((section, index) => (
-                <Link key={section.title + index} href={section.url} passHref>
-                  <Dropdown.Item
-                    className={(currentPage == index ? ' active' : '') + ' ' + classes.dropDownItem}
-                  >
-                    {section.title}
-                  </Dropdown.Item>
-                </Link>
-              ))}
-            </DropdownButton>
-    </nav>
+        <DropdownButton
+          className={classes.dropDownTitle}
+          id="dropdown-item-button"
+          title="Выбор лабораторной"
+        >
+          {sections.map((section, index) => (
+            <Link key={section.title + index} href={section.url} passHref>
+              <Dropdown.Item
+                className={(currentPage == index ? ' active' : '') + ' ' + classes.dropDownItem}
+              >
+                {section.title}
+              </Dropdown.Item>
+            </Link>
+          ))}
+        </DropdownButton>
+      </nav>
+    </div>
     // <Navbar className="shadow-sm" variant="dark" bg="primary" expand="lg">
     //   <Container fluid>
     //     <Navbar.Brand className={classes.logo} href="/">

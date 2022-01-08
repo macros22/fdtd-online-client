@@ -33,7 +33,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children, title, description, k
         <aside className={classes.aside}>MENU</aside>
         <footer className={classes.footer}>FOOTER</footer>
       </div> */}
-<main>{children}</main>
+<main >{children}</main>
       {/* 
       <footer style={{ zIndex: 2000 }}>footer</footer> */}
     </>
