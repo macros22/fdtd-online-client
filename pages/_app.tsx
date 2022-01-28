@@ -1,7 +1,7 @@
 import { AppProps } from 'next/dist/next-server/lib/router/router';
 import Head from 'next/head';
 import React from 'react';
-// import MainLayout from "../layout/MainLayout";
+
 
 // configuration of custom bootstrap on next.js
 // https://www.mikealche.com/software-development/setting-up-bootstrap-sass-on-next-js
@@ -10,6 +10,7 @@ import React from 'react';
 // import 'bootstrap/dist/css/bootstrap.css'; // Add this line
 import '../styles/custom.scss';
 import '../styles/globals.scss';
+import '../styles/github-markdown.css';
 
 function MyApp({ Component, pageProps }: AppProps): JSX.Element {
   // Place this in the pages/_app.js file
@@ -23,9 +24,9 @@ function MyApp({ Component, pageProps }: AppProps): JSX.Element {
         <title>Eng</title>
         <meta name="viewport" content="initial-scale=1, width=device-width" />
       </Head>
-      
+
       <Component {...pageProps} />
-     
+
     </>
   );
 }
