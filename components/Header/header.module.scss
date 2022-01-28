@@ -2,17 +2,58 @@ $border-width: 4px;
 
 @import 'styles/colors.scss';
 $border-color: $light;
-$background-color: $primary;
+// $background-color: $primary;
+$background-color: #fff;
+
+// .header {
+//   display: column;
+// }
+
+.parentUp {
+  position: relative;
+  padding: 0.2rem;
+  min-width: max-content;
+  box-shadow: 0 0.2rem 0.9rem rgba(0, 0, 0, 0.075) !important;
+  z-index: 1001;
+}
 
 .parent {
   position: relative;
+  background-color: $primary;
   min-width: max-content;
-  box-shadow: 0 0.2rem 0.9rem rgba(0, 0, 0, 0.075) !important;
+  box-shadow: 0 0.2rem 0.9rem rgba(0, 0, 0, 0.1) !important;
   z-index: 1000;
+  display: flex;
+  justify-content: center;
+
+  flex-direction: row;
+  padding: 0.3rem;
+
+  a {
+    font-size: medium;
+    color: $light;
+    margin: 0 1rem;
+
+    &.active {
+      color: red;
+    }
+
+    &:hover {
+      color: $light;
+      opacity: 94%;
+    }
+  }
+}
+
+.verticalLine {
+  opacity: 50%;
+  max-height: 80%;
+  border-left: 2px solid white;
 }
 
 .navbar {
-  grid-column: span 12;
+  //   grid-column: span 12;
+  //   padding: 0.1rem;
   background-color: $background-color;
   place-items: center;
   display: flex;
@@ -20,29 +61,31 @@ $background-color: $primary;
 
   flex-direction: row;
   & > * {
-    margin: 0.81rem;
+    margin: 0 0.81rem;
   }
-  & > *:nth-child(3) {
+  & > *:nth-child(2) {
     margin-left: auto;
   }
 }
 
 .logo {
   font-size: 16pt;
-  color: $light;
-  font-weight: 600;
+  //   color: $light;
+  color: $dark;
+  font-weight: bold;
   letter-spacing: 0.15rem;
   text-decoration: none;
   text-transform: uppercase;
   &:hover {
-    color: $light;
+    color: $dark;
     opacity: 95%;
   }
 }
 
 .dropDownTitle {
   font: inherit;
-  opacity: 90%;
+  color: $dark !important;
+  //   opacity: 90%;
   z-index: 1000;
   &:hover {
     opacity: 100%;
@@ -51,8 +94,8 @@ $background-color: $primary;
 
 /* Add a black background color to the top navigation */
 .topnav {
-  // &.link{
-  background-color: $background-color;
+  color: $dark;
+  background-color: $light;
   overflow: hidden;
   display: flex;
   padding: 0.2rem;
@@ -73,6 +116,5 @@ $background-color: $primary;
     &:hover {
       border-bottom: $border-width solid $border-color;
     }
-    // }
   }
 }

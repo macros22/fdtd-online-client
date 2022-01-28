@@ -1,23 +1,31 @@
+@import 'styles/colors.scss';
+
 .button {
   display: block;
   width: 100%;
 }
-//.root {
-//  flexgrow: 1;
-//  width: 100%;
-//  //margin-top: 1rem;
-//}
-//
-//.condition {
-//  width: 200px;
-//}
-//
-//.paper {
-//  margin: 1rem;
-//  padding: 0.4rem;
-//}
-//
-//.title {
-//  text-align: center;
-//  width: 100%;
-//}
+
+.flexRow {
+  display: flex;
+  justify-content: space-between;
+}
+
+.tempP {
+  color: $gray;
+  margin-bottom: 0.2rem;
+  font-size: 0.89rem;
+  letter-spacing: 2px;
+}
+
+.buttonDataType {
+  // max-width: 25%;
+  padding: 0.25rem 0.65rem;
+  &:focus {
+    outline: none;
+    box-shadow: none;
+  }
+  &:active {
+    outline: none;
+    box-shadow: none;
+  }
+}

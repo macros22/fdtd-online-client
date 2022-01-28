@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Head from 'next/head';
 
-import { Navbar } from 'components';
+import { Header, Navbar } from 'components';
 
 // import './style.scss';
 
@@ -24,7 +24,8 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children, title, description, k
         <meta name="keywords" content={keywords || 'physics, wave, optics'} />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
-      <Navbar />
+      {/* <Navbar /> */}
+      <Header />
 
       {/* <div className={classes.container}>
         <Navbar />
@@ -33,7 +34,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children, title, description, k
         <aside className={classes.aside}>MENU</aside>
         <footer className={classes.footer}>FOOTER</footer>
       </div> */}
-<main >{children}</main>
+      <main >{children}</main>
       {/* 
       <footer style={{ zIndex: 2000 }}>footer</footer> */}
     </>

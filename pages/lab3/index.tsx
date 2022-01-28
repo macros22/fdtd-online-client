@@ -8,26 +8,37 @@ import {
   WAVE_LENGTH_NAME,
 } from 'names/lab2.name';
 
-import { DropdownButton, Dropdown } from 'react-bootstrap';
-import Link from 'next/link';
 import classes from './lab3.module.scss';
-import { HeatMap, Sidebar, TextInput, Paper, CenteredBlock, Column } from 'components';
+import {
+  HeatMap,
+  Sidebar,
+  TextInput,
+  Paper,
+  Column,
+  DifractionEditor,
+} from 'components';
 
 import { SERVER_URL } from 'constants/url';
 import MainLayout from 'layout/MainLayout';
 import { dataType } from 'types/types';
 
+import { RefractionMatrixProvider, useRefractionMatrix } from 'store/refraction-matrix.context';
+
 const min = -1;
-const max = 1.1;
+const max = 1;
 
 const displayedData = [
-  { title: 'Напряженность электр. поля Ez', name: 'Ez' },
-  { title: 'Напряженность магн. поля Hy', name: 'Hy' },
-  { title: 'Напряженность магн. поля Hx', name: 'Hx' },
-  { title: 'Плотность энергии электромагн. поля', name: 'Energy' },
+  { title: 'напряженности электрического поля Ez (проекция на ось Z)', name: 'Ez', type: 'Ez' },
+  { title: 'напряженности магнитного поля Hy (проекция на ось Y)', name: 'Hy', type: 'Hy' },
+  { title: 'проекции на ось X напряженности магнитного поля (Hx)', name: 'Hx', type: 'Hx' },
+  { title: 'плотности энергии электромагнагнитного поля', name: 'w', type: 'Energy' },
 ];
 
-export default function Index() {
+const MatrixDisplay: React.FC = () => {
+  return <DifractionEditor buttonStyle={classes.button + ' mt-3'} />;
+};
+
+function Lab4() {
   const [isWSocketConnected, setIsWSocketConnected] = React.useState<boolean>(false);
 
   const [socket, setSocket] = React.useState<WebSocket | null>(null);
@@ -45,6 +56,7 @@ export default function Index() {
   const initAllData: dataType = {
     dataX: [],
     dataY: [],
+    dataVal: [],
     dataEz: [],
     dataHx: [],
     dataHy: [],
@@ -55,6 +67,8 @@ export default function Index() {
   };
 
   const [allData, setAllData] = useState<dataType>(initAllData);
+
+  const [matrix, setMatrix] = useRefractionMatrix();
 
   useEffect(() => {
     connectWS();
@@ -76,6 +90,7 @@ export default function Index() {
       socket.onmessage = (event: any) => {
         let data = JSON.parse(event.data);
         setStep(data.step || 0);
+        console.log(Object.keys(data));
         setAllData(data);
       };
 
@@ -92,16 +107,15 @@ export default function Index() {
     setSocket(socket);
   }
 
-  // console.log(Math.min(...data.dataEnergy));
-  // console.log(Math.max(...data.dataEnergy));
-
   const startDataReceiving = () => {
     setPause(false);
 
     const message = {
       event: 'start',
-      type: 'INTERFERENCE',
-      condition: [lambda, beamsize, n1],
+      type: 'DIFRACTION',
+      dataToReturn: displayedData[currentDisplayingData].type,
+      condition: [lambda, beamsize, n1, 1.5],
+      matrix,
     };
 
     if (socket !== null) {
@@ -131,25 +145,92 @@ export default function Index() {
 
   return (
     <>
-      <MainLayout title={'Wave optics | Lab 3'}>
+      <MainLayout title={'Wave optics | Lab 4'}>
         <div className="d-flex bg-light align-items-stretch mh-100">
           <Sidebar>
+            <p className={classes.tempP}>Выбор данных:</p>
+
+            <div className={classes.flexRow}>
+              {displayedData.map((item, index) => {
+                return (
+                  <button
+                    className={
+                      classes.buttonDataType +
+                      ' btn bold ' +
+                      (currentDisplayingData == index ? 'btn-primary' : 'btn-outline-primary')
+                    }
+                    key={item.name}
+                    onClick={() => {
+                      setCurrentDisplayingData(index);
+                    }}
+                  >
+                    {item.name}
+                  </button>
+                );
+              })}
+            </div>
+            <hr />
             <TextInput
               value={typeof lambda === 'number' ? lambda : 0}
               label={WAVE_LENGTH_NAME}
               onChange={(e) => setLambda(+e.target.value)}
             />
+
             <TextInput
               label={REFRACTIVE_INDEX_NAME}
               value={n1}
               onChange={(e) => setN1(+e.target.value)}
             />
+
             <TextInput
               label={BEAMSIZE_NAME}
               value={beamsize}
               onChange={(e) => setBeamsize(+e.target.value)}
             />
-            <TextInput label={STEP_NUMBER_NAME} value={step} readOnly={true} />
+
+            <MatrixDisplay />
+          </Sidebar>
+
+          <div className="p-3 bd-highlight w-75">
+            <Column>
+              <h2>
+                <span>{'Пространственно-временная структура'}</span>
+              </h2>
+
+              <h5>
+                <span>
+                  {displayedData[currentDisplayingData].title}
+                </span>
+              </h5>
+
+              {/* <h2>
+                <span>{'Пространственно-временная структура'}</span>
+              </h2>
+
+              <h4>
+                <span className='badge bg-primary'>
+                  {displayedData[currentDisplayingData].title}
+                </span>
+              </h4> */}
+
+              <Paper>
+                <HeatMap
+                  minVal={min}
+                  maxVal={max}
+                  dataX={allData.dataX}
+                  dataY={allData.dataY}
+                  dataVal={
+                    allData.dataVal
+                    //allData[('data' + currentDisplayingData) as keyof typeof allData] as number[]
+                    // Dynamically access object property in TypeScript.
+                    // allData[('data' + currentDisplayingData) as keyof typeof allData] as number[]
+                  }
+                />
+              </Paper>
+            </Column>
+          </div>
+
+          <Sidebar>
             <button
               onClick={(e) => {
                 e.preventDefault();
@@ -163,7 +244,7 @@ export default function Index() {
             </button>
             <button
               type="button"
-              className={'btn btn-primary  mt-2 ' + classes.button}
+              className={'btn btn-primary mt-2 ' + classes.button}
               disabled={!simulation}
               onClick={(e) => {
                 e.preventDefault();
@@ -196,60 +277,19 @@ export default function Index() {
                 {'Server: ' + isWSocketConnected}
               </span>
             </h3>
+            <hr />
+            <TextInput label={STEP_NUMBER_NAME} value={step} readOnly={true} />
           </Sidebar>
-
-          <div className="p-4 bd-highlight w-100">
-            <Column>
-              <CenteredBlock>
-                <h3>
-                  <span className="badge bg-secondary">
-                    Пространственно-временная структура электромагнитных пучков
-                  </span>
-                </h3>
-              </CenteredBlock>
-
-              <CenteredBlock>
-                <DropdownButton
-                  className={classes.dropDownTitle}
-                  id="dropdown-item-button"
-                  title="Выбор данных"
-                >
-                  {displayedData.map(({ name, title }) => (
-                    <Dropdown.Item key={name}>
-                      {/* //  className={(currentPage == index ? ' active' : '') + ' ' + classes.dropDownItem} */}
-
-                      {title}
-                    </Dropdown.Item>
-                  ))}
-                </DropdownButton>
-              </CenteredBlock>
-
-              <CenteredBlock>
-                <Paper>
-                  <CenteredBlock>
-                    <h4>
-                      <span className="badge bg-primary">
-                        {displayedData[currentDisplayingData].title}
-                      </span>
-                    </h4>
-                  </CenteredBlock>
-                  <HeatMap
-                    minVal={min}
-                    maxVal={max}
-                    dataX={allData.dataX}
-                    dataY={allData.dataY}
-                    dataVal={
-                      allData.dataEz
-                      // Dynamically access object property in TypeScript.
-                      // allData[('data' + currentDisplayingData) as keyof typeof allData] as number[]
-                    }
-                  />
-                </Paper>
-              </CenteredBlock>
-            </Column>
-          </div>
         </div>
       </MainLayout>
     </>
+  );
+}
+
+export default function WrappedLab4() {
+  return (
+    <RefractionMatrixProvider>
+      <Lab4 />
+    </RefractionMatrixProvider>
   );
 }
