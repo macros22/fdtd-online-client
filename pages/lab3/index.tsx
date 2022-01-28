@@ -187,7 +187,7 @@ function Lab4() {
               value={beamsize}
               onChange={(e) => setBeamsize(+e.target.value)}
             />
-
+            <hr />
             <MatrixDisplay />
           </Sidebar>
 
