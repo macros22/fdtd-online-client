@@ -1,5 +1,5 @@
 import React from 'react';
-import { DropdownButton, Dropdown, Navbar, NavDropdown, Nav } from 'react-bootstrap';
+import { DropdownButton, Navbar, NavDropdown, Nav } from 'react-bootstrap';
 import Link from 'next/link';
 
 const WAVE_OPTICS_NAME = 'ВОЛНОВАЯ ОПТИКА';
@@ -15,6 +15,12 @@ const sections = [
 ];
 
 import classes from './header.module.scss';
+import Dropdown from 'components/Dropdown';
+
+
+
+
+
 
 export default function Header(): JSX.Element {
     const [currentPage, setCurrentPage] = React.useState(0);
@@ -40,9 +46,11 @@ export default function Header(): JSX.Element {
                         <option value="Gold">Gold</option>
                     </select> */}
 
-                    <Nav>
+                    <Dropdown />
+
+                    {/* <Nav>
                         <NavDropdown
-                            className={classes.dropDownTitle}
+                            // className={classes.dropDownTitle}
                             id="nav-dropdown-dark-example"
                             title="Выбор лабораторной"
                             menuVariant="light"
@@ -50,31 +58,16 @@ export default function Header(): JSX.Element {
                             {sections.map((section, index) => (
                                 <Link key={section.title + index} href={section.url} passHref>
                                     <NavDropdown.Item
-                                        className={(currentPage == index ? ' active' : '') + ' ' + classes.dropDownItem}
+                                    // className={(currentPage == index ? ' active' : '') + ' ' + classes.dropDownItem}
                                     >
                                         {section.title}
                                     </NavDropdown.Item>
                                 </Link>
                             ))}
                         </NavDropdown>
-                    </Nav>
+                    </Nav> */}
 
-                    {/* <DropdownButton
-                        className={classes.dropDownTitle}
-                        id="dropdown-item-button"
-                        title="Выбор лабораторной"
 
-                    >
-                        {sections.map((section, index) => (
-                            <Link key={section.title + index} href={section.url} passHref>
-                                <Dropdown.Item
-                                    className={(currentPage == index ? ' active' : '') + ' ' + classes.dropDownItem}
-                                >
-                                    {section.title}
-                                </Dropdown.Item>
-                            </Link>
-                        ))}
-                    </DropdownButton> */}
                 </nav>
             </div>
             <div className={classes.parent}>
@@ -89,3 +82,5 @@ export default function Header(): JSX.Element {
         </div>
     );
 }
+
+

@@ -27,14 +27,14 @@ export default function Navbar2(): JSX.Element {
         </Link>
 
         <DropdownButton
-          className={classes.dropDownTitle}
+          // className={classes.dropDownTitle}
           id="dropdown-item-button"
           title="Выбор лабораторной"
         >
           {sections.map((section, index) => (
             <Link key={section.title + index} href={section.url} passHref>
               <Dropdown.Item
-                className={(currentPage == index ? ' active' : '') + ' ' + classes.dropDownItem}
+              // className={(currentPage == index ? ' active' : '') + ' ' + classes.dropDownItem}
               >
                 {section.title}
               </Dropdown.Item>
