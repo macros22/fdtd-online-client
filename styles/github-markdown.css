@@ -58,6 +58,11 @@
 
 .markdown-body {
   /* margin-top: 1rem !important; */
+  background-color: white;
+  /* border: 1.52px solid #eee; */
+  box-shadow: 0 0.225rem 0.35rem rgba(0, 0, 0, 0.075) !important;
+  padding: 1.5rem;
+  box-shadow: inset;
   margin: 0 auto;
   width: 70%;
   -ms-text-size-adjust: 100%;

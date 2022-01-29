@@ -21,7 +21,8 @@ $background-color: #fff;
   position: relative;
   background-color: $primary;
   min-width: max-content;
-  box-shadow: 0 0.2rem 0.9rem rgba(0, 0, 0, 0.1) !important;
+  // box-shadow: 0 0.2rem 0.9rem rgba(0, 0, 0, 0.1) !important;
+  box-shadow: 0 0.2rem 0.9rem rgba(19, 85, 226, 0.2) !important;
   z-index: 1000;
   display: flex;
   justify-content: center;
@@ -41,7 +42,7 @@ $background-color: #fff;
 
     &:hover {
       color: $light;
-      opacity: 94%;
+      opacity: 86%;
     }
   }
 }
