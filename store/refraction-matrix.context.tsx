@@ -51,9 +51,15 @@ for (let i = 0; i < n; i++) {
 
 
 
+interface IReturnObject {
+  rectWidth: number;
+  rectHeight: number;
+  rIndex1: number;
+  rIndex2: number;
+  n: number;
+}
 
-
-const returnObj = {
+const returnObj: IReturnObject = {
   rectWidth,
   rectHeight,
   rIndex1,
@@ -61,8 +67,25 @@ const returnObj = {
   n,
 };
 
-const RefractionMatrixContext = React.createContext(defaultMatrix);
+interface IContext {
+  matrix: number[][];
+  setMatrix: React.Dispatch<React.SetStateAction<number[][]>>,
+  returnObj: IReturnObject;
+}
+
+const RefractionMatrixContext = React.createContext<IContext | null>(null);
 // const RefractionMatrixContext = React.createContext(0);
+
+
+
+function RefractionMatrixProvider(props: any) {
+  const [matrix, setMatrix] = React.useState(defaultMatrix);
+
+  // const value = React.useMemo(() => [matrix, setMatrix], [matrix]);
+
+  return <RefractionMatrixContext.Provider value={{ matrix, setMatrix, returnObj }} {...props} />;
+}
+
 
 function useRefractionMatrix() {
   const context = React.useContext(RefractionMatrixContext);
@@ -70,14 +93,6 @@ function useRefractionMatrix() {
     throw new Error(`useCount must be used within a RefractionMatrixProvider`);
   }
   return context;
-}
-
-function RefractionMatrixProvider(props: any) {
-  const [matrix, setMatrix] = React.useState(defaultMatrix);
-
-  // const value = React.useMemo(() => [matrix, setMatrix], [matrix]);
-
-  return <RefractionMatrixContext.Provider value={[matrix, setMatrix, returnObj]} {...props} />;
 }
 
 export { RefractionMatrixProvider, useRefractionMatrix };

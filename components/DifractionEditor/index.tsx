@@ -2,9 +2,9 @@ import * as React from 'react';
 
 // https://codesandbox.io/s/blov5kowy?file=/index.js:0-1633
 
-import { useDifractionMatrix } from './useDifractionMatrix';
+// import { useDifractionMatrix } from './useDifractionMatrix';
 
-import classes from './style.module.scss';
+import styles from './matrix-editor.module.scss';
 import { useRefractionMatrix } from 'store/refraction-matrix.context';
 
 type positionType = {
@@ -52,7 +52,7 @@ const Shape: React.FC<ShapeProps> = ({
   });
 
   // Use useRef to create the function once and hold a reference to it.
-  const handleMouseMove = React.useRef((e) => {
+  const handleMouseMove = React.useRef((e: React.MouseEvent) => {
     {
       setPosition((position) => {
         const xDiff = position.coords.x - e.pageX;
@@ -77,7 +77,7 @@ const Shape: React.FC<ShapeProps> = ({
     }
   });
 
-  const handleMouseDown = (e) => {
+  const handleMouseDown = (e: React.MouseEvent) => {
     // Save the values of pageX and pageY and use it within setPosition.
     const pageX = e.pageX;
     const pageY = e.pageY;
@@ -89,11 +89,11 @@ const Shape: React.FC<ShapeProps> = ({
         },
       })
     );
-    document.addEventListener('mousemove', handleMouseMove.current);
+    window.addEventListener('mousemove', handleMouseMove.current);
   };
 
   const handleMouseUp = () => {
-    document.removeEventListener('mousemove', handleMouseMove.current);
+    window.removeEventListener('mousemove', handleMouseMove.current);
 
     if (
       position.x > 0 &&
@@ -139,28 +139,29 @@ const Shape: React.FC<ShapeProps> = ({
   );
 };
 
-interface IEditorInterface {
-  showMatrix: number;
-}
 
-const Editor: React.FC<IEditorInterface> = ({ showMatrix }) => {
-  // React.useEffect(() => {
-  //   console.log(matrix);
-  // }, [showMatrix]);
+
+const colors = ['#fafafa', '#a1bb21', '#1a52aa'];
+
+const Editor: React.FC = () => {
 
   const width = 400;
   const height = width;
-  const [matrix, setMatrix, obj] = useRefractionMatrix();
-
+  const { matrix, setMatrix, returnObj } = useRefractionMatrix();
   const panelHeight = 70;
 
-  // const { matrix, setMatrix, rectWidth, rectHeight, rIndex2, n } = useDifractionMatrix(
-  const { rectWidth, rectHeight, rIndex2, n } = obj;
+
+  React.useEffect(() => {
+    console.log(matrix.length)
+  }, [matrix])
+
+
+  const { rectWidth, rectHeight, rIndex2, n } = returnObj;
 
   const [currentShape, setCurrentShape] = React.useState(1);
 
   const rIndexes = [1, 1.5, 2];
-  const colors = ['#fafafa', '#a1bb21', '#1a52aa'];
+  // const colors = ['#fafafa', '#a1bb21', '#1a52aa'];
 
   const panelPaddingY = height + rectHeight + 10;
   const panelPaddingX = 50;
@@ -250,7 +251,7 @@ const Editor: React.FC<IEditorInterface> = ({ showMatrix }) => {
           fill={colors[0]}
           onClick={handleMouseClick}
           onMouseMove={handleMouseMove}
-          // onMouseOut={handleMouseOut}
+        // onMouseOut={handleMouseOut}
         />
 
         {matrix.map((row, i) => {
@@ -316,7 +317,7 @@ const Editor: React.FC<IEditorInterface> = ({ showMatrix }) => {
                     height={shape.height}
                     onClick={() => setCurrentShape(index)}
                   />
-                  <text x={shape.x} y={shape.y + rectHeight * 3} className={classes.heavy}>
+                  <text x={shape.x} y={shape.y + rectHeight * 3} className={styles.heavy}>
                     {shape.rIndex}
                   </text>
                 </>
@@ -328,17 +329,19 @@ const Editor: React.FC<IEditorInterface> = ({ showMatrix }) => {
   );
 };
 
-interface IDifractionEditorProps  {
+interface IDifractionEditorProps {
   buttonStyle: string;
 }
 
-const DifractionEditor:React.FC<IDifractionEditorProps> = ({buttonStyle}) => {
-  const [showMatrix, setShowMatrix] = React.useState(0);
+const DifractionEditor: React.FC<IDifractionEditorProps> = ({ buttonStyle }) => {
+  // const [showMatrix, setShowMatrix] = React.useState(0);
 
   // return <Editor />;
   return (
     <>
       {/*// <!-- Button trigger modal -->*/}
+      <svg
+        className={styles.matrixPreview} />
       <button
         type="button"
         className={"btn btn-primary " + buttonStyle}
@@ -371,19 +374,17 @@ const DifractionEditor:React.FC<IDifractionEditorProps> = ({buttonStyle}) => {
                 aria-label="Close"
               ></button>
             </div>
-            <Editor showMatrix={showMatrix} />
-            {/*<DifractionEditor/>*/}
-            {/* </div> */}
+            <Editor />
             <div className="modal-footer">
-              <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">
+              <button type="button" className="btn btn-info" data-bs-dismiss="modal">
                 Закрыть
               </button>
               <button
                 type="button"
                 className="btn btn-primary"
-                onClick={() => {
-                  setShowMatrix((prev) => prev + 1);
-                }}
+              // onClick={() => {
+              //   setShowMatrix((prev) => prev + 1);
+              // }}
               >
                 Сохранить
               </button>

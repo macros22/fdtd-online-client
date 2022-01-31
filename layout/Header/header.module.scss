@@ -11,9 +11,9 @@ $background-color: #fff;
 
 .parentUp {
   position: relative;
-  padding: 0.2rem;
+  padding: 0.25rem;
   min-width: max-content;
-  box-shadow: 0 0.2rem 0.9rem rgba(0, 0, 0, 0.075) !important;
+  // box-shadow: 0 0.2rem 0.2rem rgba(0, 0, 0, 0.15) !important;
   z-index: 1001;
 }
 
@@ -22,14 +22,14 @@ $background-color: #fff;
   background-color: $primary;
   min-width: max-content;
   // box-shadow: 0 0.2rem 0.9rem rgba(0, 0, 0, 0.1) !important;
-  box-shadow: 0 0.2rem 0.9rem rgba(19, 85, 226, 0.2) !important;
+  box-shadow: 0 0.3rem 0.3rem rgba(19, 85, 226, 0.15) !important;
   z-index: 1000;
   display: flex;
   justify-content: center;
   vertical-align: middle;
 
   flex-direction: row;
-  padding: 0.4rem;
+  padding: 0.3rem;
 
   a {
     font-size: medium;

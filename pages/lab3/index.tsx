@@ -19,7 +19,7 @@ import {
 } from 'components';
 
 import { SERVER_URL } from 'constants/url';
-import MainLayout from 'layout/MainLayout';
+import MainLayout, { MetaPropsType, withLayout } from 'layout/MainLayout';
 import { dataType } from 'types/types';
 
 import { RefractionMatrixProvider, useRefractionMatrix } from 'store/refraction-matrix.context';
@@ -38,7 +38,7 @@ const MatrixDisplay: React.FC = () => {
   return <DifractionEditor buttonStyle={classes.button + ' mt-3'} />;
 };
 
-function Lab4() {
+const Lab3: React.FC = () => {
   const [isWSocketConnected, setIsWSocketConnected] = React.useState<boolean>(false);
 
   const [socket, setSocket] = React.useState<WebSocket | null>(null);
@@ -68,7 +68,7 @@ function Lab4() {
 
   const [allData, setAllData] = useState<dataType>(initAllData);
 
-  const [matrix, setMatrix] = useRefractionMatrix();
+  const { matrix, setMatrix } = useRefractionMatrix();
 
   useEffect(() => {
     connectWS();
@@ -145,65 +145,65 @@ function Lab4() {
 
   return (
     <>
-      <MainLayout title={'Wave optics | Lab 4'}>
-        <div className="d-flex bg-light align-items-stretch mh-100">
-          <Sidebar>
-            <p className={classes.tempP}>Выбор данных:</p>
+      {/* <MainLayout title={'Wave optics | Lab 4'}> */}
+      <div className="d-flex bg-light align-items-stretch mh-100">
+        <Sidebar>
+          <p className={classes.tempP}>Выбор данных:</p>
 
-            <div className={classes.flexRow}>
-              {displayedData.map((item, index) => {
-                return (
-                  <button
-                    className={
-                      classes.buttonDataType +
-                      ' btn bold ' +
-                      (currentDisplayingData == index ? 'btn-primary' : 'btn-outline-primary')
-                    }
-                    key={item.name}
-                    onClick={() => {
-                      setCurrentDisplayingData(index);
-                    }}
-                  >
-                    {item.name}
-                  </button>
-                );
-              })}
-            </div>
-            <hr />
-            <TextInput
-              value={typeof lambda === 'number' ? lambda : 0}
-              label={WAVE_LENGTH_NAME}
-              onChange={(e) => setLambda(+e.target.value)}
-            />
+          <div className={classes.flexRow}>
+            {displayedData.map((item, index) => {
+              return (
+                <button
+                  className={
+                    classes.buttonDataType +
+                    ' btn bold ' +
+                    (currentDisplayingData == index ? 'btn-primary' : 'btn-outline-primary')
+                  }
+                  key={item.name}
+                  onClick={() => {
+                    setCurrentDisplayingData(index);
+                  }}
+                >
+                  {item.name}
+                </button>
+              );
+            })}
+          </div>
+          <hr />
+          <TextInput
+            value={typeof lambda === 'number' ? lambda : 0}
+            label={WAVE_LENGTH_NAME}
+            onChange={(e) => setLambda(+e.target.value)}
+          />
 
-            <TextInput
-              label={REFRACTIVE_INDEX_NAME}
-              value={n1}
-              onChange={(e) => setN1(+e.target.value)}
-            />
+          <TextInput
+            label={REFRACTIVE_INDEX_NAME}
+            value={n1}
+            onChange={(e) => setN1(+e.target.value)}
+          />
 
-            <TextInput
-              label={BEAMSIZE_NAME}
-              value={beamsize}
-              onChange={(e) => setBeamsize(+e.target.value)}
-            />
-            <hr />
-            <MatrixDisplay />
-          </Sidebar>
+          <TextInput
+            label={BEAMSIZE_NAME}
+            value={beamsize}
+            onChange={(e) => setBeamsize(+e.target.value)}
+          />
+          <hr />
+          <MatrixDisplay />
+        </Sidebar>
 
-          <div className="p-3 bd-highlight w-75">
-            <Column>
-              <h2>
-                <span>{'Пространственно-временная структура'}</span>
-              </h2>
+        <div className="p-3 bd-highlight w-75">
+          <Column>
+            <h2>
+              <span>{'Пространственно-временная структура'}</span>
+            </h2>
 
-              <h5>
-                <span>
-                  {displayedData[currentDisplayingData].title}
-                </span>
-              </h5>
+            <h5>
+              <span>
+                {displayedData[currentDisplayingData].title}
+              </span>
+            </h5>
 
-              {/* <h2>
+            {/* <h2>
                 <span>{'Пространственно-временная структура'}</span>
               </h2>
 
@@ -213,83 +213,92 @@ function Lab4() {
                 </span>
               </h4> */}
 
-              <Paper>
-                <HeatMap
-                  minVal={min}
-                  maxVal={max}
-                  dataX={allData.dataX}
-                  dataY={allData.dataY}
-                  dataVal={
-                    allData.dataVal
-                    //allData[('data' + currentDisplayingData) as keyof typeof allData] as number[]
-                    // Dynamically access object property in TypeScript.
-                    // allData[('data' + currentDisplayingData) as keyof typeof allData] as number[]
-                  }
-                />
-              </Paper>
-            </Column>
-          </div>
-
-          <Sidebar>
-            <button
-              onClick={(e) => {
-                e.preventDefault();
-                startDataReceiving();
-                setSimulation(true);
-              }}
-              type="button"
-              className={'btn btn-primary mt-2 ' + classes.button}
-            >
-              СТАРТ
-            </button>
-            <button
-              type="button"
-              className={'btn btn-primary mt-2 ' + classes.button}
-              disabled={!simulation}
-              onClick={(e) => {
-                e.preventDefault();
-                if (!pause) {
-                  pauseDataReceiving();
-                } else {
-                  continueDataReceiving();
+            <Paper>
+              <HeatMap
+                minVal={min}
+                maxVal={max}
+                dataX={allData.dataX}
+                dataY={allData.dataY}
+                dataVal={
+                  allData.dataVal
+                  //allData[('data' + currentDisplayingData) as keyof typeof allData] as number[]
+                  // Dynamically access object property in TypeScript.
+                  // allData[('data' + currentDisplayingData) as keyof typeof allData] as number[]
                 }
-                setPause((pause) => !pause);
-              }}
-            >
-              {pause ? CONTINUE_NAME : PAUSE_NAME}
-            </button>
-            <button
-              type="button"
-              className={'btn btn-primary  mt-2 ' + classes.button}
-              disabled={!simulation}
-              onClick={(e) => {
-                e.preventDefault();
-                pauseDataReceiving();
-                setPause(false);
-                setSimulation(false);
-                setStep(0);
-              }}
-            >
-              STOP
-            </button>
-            <h3>
-              <span className="badge bg-info mt-2 server-badge">
-                {'Server: ' + isWSocketConnected}
-              </span>
-            </h3>
-            <hr />
-            <TextInput label={STEP_NUMBER_NAME} value={step} readOnly={true} />
-          </Sidebar>
+              />
+            </Paper>
+          </Column>
         </div>
-      </MainLayout>
+
+        <Sidebar>
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              startDataReceiving();
+              setSimulation(true);
+            }}
+            type="button"
+            className={'btn btn-primary mt-2 ' + classes.button}
+          >
+            СТАРТ
+          </button>
+          <button
+            type="button"
+            className={'btn btn-primary mt-2 ' + classes.button}
+            disabled={!simulation}
+            onClick={(e) => {
+              e.preventDefault();
+              if (!pause) {
+                pauseDataReceiving();
+              } else {
+                continueDataReceiving();
+              }
+              setPause((pause) => !pause);
+            }}
+          >
+            {pause ? CONTINUE_NAME : PAUSE_NAME}
+          </button>
+          <button
+            type="button"
+            className={'btn btn-primary  mt-2 ' + classes.button}
+            disabled={!simulation}
+            onClick={(e) => {
+              e.preventDefault();
+              pauseDataReceiving();
+              setPause(false);
+              setSimulation(false);
+              setStep(0);
+            }}
+          >
+            STOP
+          </button>
+          <h3>
+            <span className="badge bg-info mt-2 server-badge">
+              {'Server: ' + isWSocketConnected}
+            </span>
+          </h3>
+          <hr />
+          <TextInput label={STEP_NUMBER_NAME} value={step} readOnly={true} />
+        </Sidebar>
+      </div>
+      {/* </MainLayout> */}
     </>
   );
 }
 
-export default function WrappedLab4() {
-  return (
+
+
+const WrappedLab3: React.FC = () => {
+  return (<>
     <RefractionMatrixProvider>
-      <Lab4 />
+      <Lab3 />
     </RefractionMatrixProvider>
-  );
+  </>);
 }
+
+const metaProps: MetaPropsType = {
+  title: 'Wave optics | Lab 3',
+  description: 'Interference',
+}
+
+export default withLayout(WrappedLab3, metaProps);

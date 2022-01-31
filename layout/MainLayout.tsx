@@ -1,18 +1,12 @@
 import * as React from 'react';
 import Head from 'next/head';
 
-import { Header, Navbar } from 'components';
-
 // import './style.scss';
 
-import classes from './style.module.scss';
+// import classes from './style.module.scss';
+import Header from './Header';
+import { MainLayoutProps } from './MainLayout.props';
 
-interface MainLayoutProps {
-  children?: React.ReactNode;
-  title?: string;
-  description?: string;
-  keywords?: string;
-}
 
 const MainLayout: React.FC<MainLayoutProps> = ({ children, title, description, keywords }) => {
   return (
@@ -41,4 +35,17 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children, title, description, k
   );
 };
 
-export default MainLayout;
+
+export type MetaPropsType = Omit<MainLayoutProps, "children">;
+
+export const withLayout = <T extends Record<string, unknown>>(Component: React.FC<T>, metaProps?: MetaPropsType) => {
+  return function withLayoutComponent(props: T): JSX.Element {
+    return (
+      // <AppContextProvider menu={props.menu} firstCategory={props.firstCategory}>
+      <MainLayout {...metaProps} >
+        <Component {...props} />
+      </MainLayout>
+      // </AppContextProvider>
+    );
+  };
+};

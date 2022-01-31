@@ -11,12 +11,14 @@ import classes from './lab1.module.scss';
 import { Sidebar, TextInput, Paper, CenteredBlock, Column, Canvas } from 'components';
 
 import { SERVER_URL } from 'constants/url';
-import MainLayout from 'layout/MainLayout';
+// import MainLayout from 'layout/MainLayout';
 
 import { DataChartType } from 'types/lab1';
 
 import { LAB_1_2D } from 'constants/data-type.constants';
 import { CONTINUE, START, PAUSE } from 'constants/ws-event.constants';
+import { MetaPropsType, withLayout } from 'layout/MainLayout';
+import { MainLayoutProps } from 'layout/MainLayout.props';
 
 const CANVAS_WIDTH = 800;
 const CANVAS_HEIGHT = 440;
@@ -29,7 +31,7 @@ for (let i = 0; i < CANVAS_WIDTH * 0.9; i += 10) {
   });
 }
 
-export default function Index() {
+const Lab2D: React.FC = () => {
   const [isWSocketConnected, setIsWSocketConnected] = React.useState<boolean>(false);
 
   const [socket, setSocket] = React.useState<WebSocket | null>(null);
@@ -166,109 +168,115 @@ export default function Index() {
 
   return (
     <>
-      <MainLayout title={'Wave optics | Lab 1'}>
-        <div className="d-flex bg-light align-items-stretch mh-100">
-          <Sidebar>
-            <TextInput
-              value={typeof lambda === 'number' ? lambda : 0}
-              label={WAVE_LENGTH_NAME}
-              onChange={(e) => setLambda(+e.target.value)}
-            />
-            <TextInput
-              label={REFRACTIVE_INDEX_NAME}
-              value={n1}
-              onChange={(e) => setN1(+e.target.value)}
-            />
-            <TextInput
-              label={BEAMSIZE_NAME}
-              value={tau}
-              onChange={(e) => setTau(+e.target.value)}
-            />
-          </Sidebar>
+      {/* <MainLayout title={'Wave optics | Lab 1'}> */}
+      <div className="d-flex bg-light align-items-stretch mh-100">
+        <Sidebar>
+          <TextInput
+            value={typeof lambda === 'number' ? lambda : 0}
+            label={WAVE_LENGTH_NAME}
+            onChange={(e) => setLambda(+e.target.value)}
+          />
+          <TextInput
+            label={REFRACTIVE_INDEX_NAME}
+            value={n1}
+            onChange={(e) => setN1(+e.target.value)}
+          />
+          <TextInput
+            label={BEAMSIZE_NAME}
+            value={tau}
+            onChange={(e) => setTau(+e.target.value)}
+          />
+        </Sidebar>
 
-          <div className="p-4 bd-highlight w-100">
-            <Column>
-              <CenteredBlock>
-                <h4>
-                  <span>Пространсвенно-временная структура электромагнитных импульсов</span>
-                </h4>
-              </CenteredBlock>
+        <div className="p-4 bd-highlight w-100">
+          <Column>
+            <CenteredBlock>
+              <h4>
+                <span>Пространсвенно-временная структура электромагнитных импульсов</span>
+              </h4>
+            </CenteredBlock>
 
-              <CenteredBlock>
-                <Paper>
-                  <Column>
-                    <CenteredBlock>
-                      <h4>
-                        <span className="badge bg-primary">Зависимость Y от X</span>
-                      </h4>
-                    </CenteredBlock>
+            <CenteredBlock>
+              <Paper>
+                <Column>
+                  <CenteredBlock>
+                    <h4>
+                      <span className="badge bg-primary">Зависимость Y от X</span>
+                    </h4>
+                  </CenteredBlock>
 
-                    <Canvas
-                      data={dataChart}
-                      maxX={maxX}
-                      maxY={maxY}
-                      minX={minX}
-                      minY={minY}
-                      WIDTH={CANVAS_WIDTH}
-                      HEIGHT={CANVAS_HEIGHT}
-                    />
-                  </Column>
-                </Paper>
-              </CenteredBlock>
-            </Column>
-          </div>
-          <Sidebar>
-            <TextInput label={STEP_NUMBER_NAME} value={step} readOnly={true} />
-            <button
-              onClick={(e) => {
-                e.preventDefault();
-                startDataReceiving();
-                setSimulation(true);
-              }}
-              type="button"
-              className={'btn btn-success mt-2 ' + classes.button}
-            >
-              СТАРТ
-            </button>
-            <button
-              type="button"
-              className={'btn btn-primary  mt-2 ' + classes.button}
-              disabled={!simulation}
-              onClick={(e) => {
-                e.preventDefault();
-                if (!pause) {
-                  pauseDataReceiving();
-                } else {
-                  continueDataReceiving();
-                }
-                setPause((pause) => !pause);
-              }}
-            >
-              {pause ? CONTINUE_NAME : PAUSE_NAME}
-            </button>
-            <button
-              type="button"
-              className={'btn btn-primary  mt-2 ' + classes.button}
-              disabled={!simulation}
-              onClick={(e) => {
-                e.preventDefault();
-                pauseDataReceiving();
-                setPause(false);
-                closeSocket();
-                setSimulation(false);
-                setStep(0);
-              }}
-            >
-              STOP
-            </button>
-            <h3>
-              <span className={'badge bg-info mt-2 server-badge'}>
-                {'Server: ' + isWSocketConnected}
-              </span>
-            </h3>
-          </Sidebar>
+                  <Canvas
+                    data={dataChart}
+                    maxX={maxX}
+                    maxY={maxY}
+                    minX={minX}
+                    minY={minY}
+                    WIDTH={CANVAS_WIDTH}
+                    HEIGHT={CANVAS_HEIGHT}
+                  />
+                </Column>
+              </Paper>
+            </CenteredBlock>
+          </Column>
         </div>
-      </MainLayout>
+        <Sidebar>
+          <TextInput label={STEP_NUMBER_NAME} value={step} readOnly={true} />
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              startDataReceiving();
+              setSimulation(true);
+            }}
+            type="button"
+            className={'btn btn-success mt-2 ' + classes.button}
+          >
+            СТАРТ
+          </button>
+          <button
+            type="button"
+            className={'btn btn-primary  mt-2 ' + classes.button}
+            disabled={!simulation}
+            onClick={(e) => {
+              e.preventDefault();
+              if (!pause) {
+                pauseDataReceiving();
+              } else {
+                continueDataReceiving();
+              }
+              setPause((pause) => !pause);
+            }}
+          >
+            {pause ? CONTINUE_NAME : PAUSE_NAME}
+          </button>
+          <button
+            type="button"
+            className={'btn btn-primary  mt-2 ' + classes.button}
+            disabled={!simulation}
+            onClick={(e) => {
+              e.preventDefault();
+              pauseDataReceiving();
+              setPause(false);
+              closeSocket();
+              setSimulation(false);
+              setStep(0);
+            }}
+          >
+            STOP
+          </button>
+          <h3>
+            <span className={'badge bg-info mt-2 server-badge'}>
+              {'Server: ' + isWSocketConnected}
+            </span>
+          </h3>
+        </Sidebar>
+      </div>
+      {/* </MainLayout> */}
     </>
   );
 }
+
+const metaProps: MetaPropsType = {
+  title: 'Wave optics | Lab 1',
+  description: '2D',
+}
+export default withLayout(Lab2D, metaProps);
