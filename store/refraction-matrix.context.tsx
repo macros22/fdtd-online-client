@@ -3,6 +3,7 @@ import React from 'react';
 let defaultMatrix: number[][] = [];
 const rIndex1 = 1;
 const rIndex2 = 1.5;
+const rIndex3 = 2;
 
 const n = 40;
 
@@ -56,6 +57,7 @@ interface IReturnObject {
   rectHeight: number;
   rIndex1: number;
   rIndex2: number;
+  rIndex3: number;
   n: number;
 }
 
@@ -64,6 +66,7 @@ const returnObj: IReturnObject = {
   rectHeight,
   rIndex1,
   rIndex2,
+  rIndex3,
   n,
 };
 

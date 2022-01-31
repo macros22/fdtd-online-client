@@ -1,9 +1,6 @@
-import * as React from 'react';
-
 // https://codesandbox.io/s/blov5kowy?file=/index.js:0-1633
 
-// import { useDifractionMatrix } from './useDifractionMatrix';
-
+import * as React from 'react';
 import styles from './matrix-editor.module.scss';
 import { useRefractionMatrix } from 'store/refraction-matrix.context';
 
@@ -16,18 +13,11 @@ const Editor: React.FC = () => {
   const { matrix, setMatrix, returnObj } = useRefractionMatrix();
   const panelHeight = 70;
 
-
-  React.useEffect(() => {
-    console.log(matrix.length)
-  }, [matrix])
-
-
-  const { rectWidth, rectHeight, rIndex1, rIndex2, n } = returnObj;
+  const { rectWidth, rectHeight, rIndex1, rIndex2, rIndex3, n } = returnObj;
 
   const [currentShape, setCurrentShape] = React.useState(1);
 
-  const rIndexes = [rIndex1, rIndex2, 2];
-  // const colors = ['#fafafa', '#a1bb21', '#1a52aa'];
+  const rIndexes = [rIndex1, rIndex2, rIndex3];
 
   const panelPaddingY = height + rectHeight + 10;
   const panelPaddingX = 50;
@@ -61,12 +51,15 @@ const Editor: React.FC = () => {
       color: colors[2],
     },
   ];
-  // const initPanelShapes =  panelShapes;
+
+  React.useEffect(() => {
+    console.log(matrix.length)
+  }, [matrix])
 
   const handleMouseClick = () => {
     const newJ = focusedCoord.j;
     const newI = focusedCoord.i;
-    // console.log(newI, ':==:', newJ);
+
     setMatrix((prevMatrix) => {
       prevMatrix[newI][newJ] = panelShapes[currentShape].rIndex;
       return JSON.parse(JSON.stringify(prevMatrix));
@@ -86,13 +79,9 @@ const Editor: React.FC = () => {
     const pageX = e.pageX;
     const pageY = e.pageY;
     const { x: gridX, y: gridY } = e.target.getBoundingClientRect();
-    // console.log(gridX, '::', gridY, '----grid');
-    // console.log(pageX, '::', pageY, '----page');
+
     const x = pageX - gridX - rectWidth / 2;
     const y = pageY - gridY - rectWidth / 2;
-
-    // console.log(rectWidth);
-    // console.log(x, '::', y);
 
     setFocusedCoord({
       i: Math.round((n * x) / width),
@@ -261,4 +250,4 @@ const MatrixEditor: React.FC<IDifractionEditorProps> = ({ buttonStyle }) => {
 
 export default MatrixEditor;
 
-// https://javascript.plainenglish.io/how-to-implement-drag-and-drop-from-react-to-svg-d3-16700f01470c
+
