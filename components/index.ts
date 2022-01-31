@@ -5,7 +5,7 @@ export { default as TextInput } from './TextInput';
 export { default as Paper } from './Paper';
 export { default as CenteredBlock } from './CenteredBlock';
 export { default as Column } from './Column';
-export { default as DifractionEditor } from './DifractionEditor';
+export { default as MatrixEditor } from './MatrixEditor';
 export { default as GradientScale } from './GradientScale';
 export { default as Canvas } from './Canvas';
 export { default as Dropdown } from './Dropdown';

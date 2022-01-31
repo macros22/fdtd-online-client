@@ -15,11 +15,11 @@ import {
   TextInput,
   Paper,
   Column,
-  DifractionEditor,
+  MatrixEditor,
 } from 'components';
 
 import { SERVER_URL } from 'constants/url';
-import MainLayout, { MetaPropsType, withLayout } from 'layout/MainLayout';
+import { MetaPropsType, withLayout } from 'layout/MainLayout';
 import { dataType } from 'types/types';
 
 import { RefractionMatrixProvider, useRefractionMatrix } from 'store/refraction-matrix.context';
@@ -35,7 +35,7 @@ const displayedData = [
 ];
 
 const MatrixDisplay: React.FC = () => {
-  return <DifractionEditor buttonStyle={classes.button + ' mt-3'} />;
+  return <MatrixEditor buttonStyle={classes.button + ' mt-3'} />;
 };
 
 const Lab3: React.FC = () => {

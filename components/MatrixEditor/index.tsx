@@ -7,140 +7,6 @@ import * as React from 'react';
 import styles from './matrix-editor.module.scss';
 import { useRefractionMatrix } from 'store/refraction-matrix.context';
 
-type positionType = {
-  x: number;
-  y: number;
-  coords: {
-    x: number;
-    y: number;
-  };
-};
-
-type ShapeProps = {
-  parentWidth: number;
-  parentHeight: number;
-  width: number;
-  height: number;
-  x: number;
-  y: number;
-  panelHeight: number;
-  changeMatrix: (x: number, y: number) => void;
-  changeAllShapes: () => void;
-};
-
-const Shape: React.FC<ShapeProps> = ({
-  parentWidth,
-  parentHeight,
-  width,
-  height,
-  x,
-  y,
-  panelHeight,
-  changeMatrix,
-  changeAllShapes,
-}) => {
-  const initX = x;
-  const initY = y;
-
-  const [position, setPosition] = React.useState<positionType>({
-    x,
-    y,
-    coords: {
-      x,
-      y,
-    },
-  });
-
-  // Use useRef to create the function once and hold a reference to it.
-  const handleMouseMove = React.useRef((e: React.MouseEvent) => {
-    {
-      setPosition((position) => {
-        const xDiff = position.coords.x - e.pageX;
-        const yDiff = position.coords.y - e.pageY;
-
-        const newX = position.x - xDiff;
-        const newY = position.y - yDiff;
-
-        if (newX > 0 && newY > 0 && newX < parentWidth - width && newY < parentHeight - height) {
-          return {
-            x: newX,
-            y: newY,
-            coords: {
-              x: e.pageX,
-              y: e.pageY,
-            },
-          };
-        } else {
-          return position;
-        }
-      });
-    }
-  });
-
-  const handleMouseDown = (e: React.MouseEvent) => {
-    // Save the values of pageX and pageY and use it within setPosition.
-    const pageX = e.pageX;
-    const pageY = e.pageY;
-    setPosition((position) =>
-      Object.assign({}, position, {
-        coords: {
-          x: pageX,
-          y: pageY,
-        },
-      })
-    );
-    window.addEventListener('mousemove', handleMouseMove.current);
-  };
-
-  const handleMouseUp = () => {
-    window.removeEventListener('mousemove', handleMouseMove.current);
-
-    if (
-      position.x > 0 &&
-      position.y > 0 &&
-      position.x < parentWidth - width &&
-      position.y < parentHeight - panelHeight - height
-    ) {
-      changeMatrix(position.x, position.y);
-
-      // Use Object.assign to do a shallow merge so as not to
-      // totally overwrite the other values in state.
-      setPosition((position) =>
-        Object.assign({}, position, {
-          coords: {},
-        })
-      );
-    } else {
-      setPosition({
-        x: initX,
-        y: initY,
-        coords: {
-          x: initX,
-          y: initY,
-        },
-      });
-    }
-  };
-
-  return (
-    <>
-      <rect
-        x={position.x}
-        y={position.y}
-        width={width}
-        height={height}
-        fill="#b5f"
-        stroke="gray"
-        strokeWidth="1"
-        onMouseDown={handleMouseDown}
-        onMouseUp={handleMouseUp}
-      />
-    </>
-  );
-};
-
-
-
 const colors = ['#fafafa', '#a1bb21', '#1a52aa'];
 
 const Editor: React.FC = () => {
@@ -156,11 +22,11 @@ const Editor: React.FC = () => {
   }, [matrix])
 
 
-  const { rectWidth, rectHeight, rIndex2, n } = returnObj;
+  const { rectWidth, rectHeight, rIndex1, rIndex2, n } = returnObj;
 
   const [currentShape, setCurrentShape] = React.useState(1);
 
-  const rIndexes = [1, 1.5, 2];
+  const rIndexes = [rIndex1, rIndex2, 2];
   // const colors = ['#fafafa', '#a1bb21', '#1a52aa'];
 
   const panelPaddingY = height + rectHeight + 10;
@@ -333,15 +199,12 @@ interface IDifractionEditorProps {
   buttonStyle: string;
 }
 
-const DifractionEditor: React.FC<IDifractionEditorProps> = ({ buttonStyle }) => {
-  // const [showMatrix, setShowMatrix] = React.useState(0);
+const MatrixEditor: React.FC<IDifractionEditorProps> = ({ buttonStyle }) => {
 
-  // return <Editor />;
   return (
     <>
       {/*// <!-- Button trigger modal -->*/}
-      <svg
-        className={styles.matrixPreview} />
+      <svg className={styles.matrixPreview} />
       <button
         type="button"
         className={"btn btn-primary " + buttonStyle}
@@ -396,6 +259,6 @@ const DifractionEditor: React.FC<IDifractionEditorProps> = ({ buttonStyle }) => 
   );
 };
 
-export default DifractionEditor;
+export default MatrixEditor;
 
 // https://javascript.plainenglish.io/how-to-implement-drag-and-drop-from-react-to-svg-d3-16700f01470c
