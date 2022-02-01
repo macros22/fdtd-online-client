@@ -8,71 +8,56 @@ const colors = ['#fafafa', '#a1bb21', '#1a52aa'];
 
 const Editor: React.FC = () => {
 
+  // Matrix sizes.
   const width = 400;
   const height = width;
   const { matrix, setMatrix, returnObj } = useRefractionMatrix();
+
+  // Under matrix panel size.
   const panelHeight = 70;
 
-  const { rectWidth, rectHeight, rIndex1, rIndex2, rIndex3, n } = returnObj;
+  const { rectWidth, rectHeight, rIndexes, n } = returnObj;
 
   const [currentShape, setCurrentShape] = React.useState(1);
-
-  const rIndexes = [rIndex1, rIndex2, rIndex3];
 
   const panelPaddingY = height + rectHeight + 10;
   const panelPaddingX = 50;
 
-  let panelShapes = [
-    {
-      type: 'rect',
-      x: panelPaddingX,
-      y: panelPaddingY,
-      width: rectWidth,
-      height: rectHeight,
-      rIndex: rIndexes[0],
-      color: colors[0],
-    },
-    {
-      type: 'rect',
-      x: panelPaddingX * 2,
-      y: panelPaddingY,
-      width: rectWidth,
-      height: rectHeight,
-      rIndex: rIndexes[1],
-      color: colors[1],
-    },
-    {
-      type: 'rect',
-      x: panelPaddingX * 3,
-      y: panelPaddingY,
-      width: rectWidth,
-      height: rectHeight,
-      rIndex: rIndexes[2],
-      color: colors[2],
-    },
-  ];
+
+
+  // Panel with refraction index shapes.
+  let panelShapes = new Array(rIndexes.length).fill({}).map((_, index) => ({
+    type: 'rect',
+    x: panelPaddingX * (index + 1),
+    y: panelPaddingY,
+    width: rectWidth,
+    height: rectHeight,
+    rIndex: rIndexes[index],
+    color: colors[index],
+  }));
 
   React.useEffect(() => {
     console.log(matrix.length)
   }, [matrix])
 
+
+  // Handlers.
   const handleMouseClick = () => {
     const newJ = focusedCoord.j;
     const newI = focusedCoord.i;
 
     setMatrix((prevMatrix) => {
-      prevMatrix[newI][newJ] = panelShapes[currentShape].rIndex;
-      return JSON.parse(JSON.stringify(prevMatrix));
+      if (prevMatrix[newI][newJ] !== panelShapes[currentShape].rIndex) {
+        prevMatrix[newI][newJ] = panelShapes[currentShape].rIndex;
+        return JSON.parse(JSON.stringify(prevMatrix));
+      }
+      return prevMatrix;
     });
   };
 
   const initialFocusedCoords = { i: 0, j: 0 };
 
   const [focusedCoord, setFocusedCoord] = React.useState(initialFocusedCoords);
-
-  // const handleMouseOut = () => {
-  //   setFocusedCoord(initialFocusedCoords);
-  // };
 
   const handleMouseMove = (e: any) => {
     // Save the values of pageX and pageY and use it within setPosition.
@@ -106,12 +91,13 @@ const Editor: React.FC = () => {
           fill={colors[0]}
           onClick={handleMouseClick}
           onMouseMove={handleMouseMove}
-        // onMouseOut={handleMouseOut}
         />
 
         {matrix.map((row, i) => {
           return row.map((item: number, j: number) => {
-            if (i == focusedCoord.i && j == focusedCoord.j) {
+
+            const colorIndex = panelShapes.findIndex(panel => panel.rIndex == item);
+            if (colorIndex > 0) {
               return (
                 <rect
                   key={j}
@@ -119,41 +105,25 @@ const Editor: React.FC = () => {
                   height={rectHeight}
                   x={i * rectWidth}
                   y={j * rectHeight}
-                  fill="gray"
-                  opacity="0.4"
-                  onClick={handleMouseClick}
+                  fill={panelShapes[colorIndex].color}
                 />
               );
             }
-
-            switch (item) {
-              case panelShapes[1].rIndex:
-                return (
-                  <rect
-                    key={j}
-                    width={rectWidth}
-                    height={rectHeight}
-                    x={i * rectWidth}
-                    y={j * rectHeight}
-                    fill={panelShapes[1].color}
-                  />
-                );
-              case panelShapes[2].rIndex:
-                return (
-                  <rect
-                    key={j}
-                    width={rectWidth}
-                    height={rectHeight}
-                    x={i * rectWidth}
-                    y={j * rectHeight}
-                    fill={panelShapes[2].color}
-                  />
-                );
-              default:
-                return null;
-            }
           });
         })}
+
+
+        {/* Focused rect */}
+        <rect
+          key={focusedCoord.i + "" + focusedCoord.j}
+          width={rectWidth}
+          height={rectHeight}
+          x={focusedCoord.i * rectWidth}
+          y={focusedCoord.j * rectHeight}
+          fill="gray"
+          opacity="0.4"
+          onClick={handleMouseClick}
+        />
 
         {panelShapes.map((shape, index) => {
           switch (shape.type) {
@@ -192,7 +162,7 @@ const MatrixEditor: React.FC<IDifractionEditorProps> = ({ buttonStyle }) => {
 
   return (
     <>
-      {/*// <!-- Button trigger modal -->*/}
+      {/* <!-- Button trigger modal -->*/}
       <svg className={styles.matrixPreview} />
       <button
         type="button"

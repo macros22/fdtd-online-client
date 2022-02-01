@@ -1,9 +1,7 @@
 import React from 'react';
 
 let defaultMatrix: number[][] = [];
-const rIndex1 = 1;
-const rIndex2 = 1.5;
-const rIndex3 = 2;
+const rIndexes = [1, 1.5, 2];
 
 const n = 40;
 
@@ -16,57 +14,21 @@ const rectWidth = rectHeight;
 for (let i = 0; i < n; i++) {
   defaultMatrix[i] = [];
   for (let j = 0; j < n; j++) {
-    defaultMatrix[i][j] = rIndex1;
+    defaultMatrix[i][j] = rIndexes[0];
   }
 }
-// for (let i = 0; i < n; i += 5) {
-//   for (let j = 1; j < 3; j++) {
-//     defaultMatrix[j][i] = rIndex2;
-//   }
-// }
-
-
-
-////////////////////
-// const gridWidth = 10;
-// const gridGap = 8;
-
-// // const size_t gridWidth = 5; // temporary value
-// // const size_t gridGap = 3;    // temporary value
-
-// const gridGapCount = n / gridGap;
-// // const size_t gridBeginX = 5;
-
-// const gridBeginX = 6;
-// const gridEndX = gridBeginX + gridGap;
-
-// for (let i = gridBeginX; i <= gridEndX; i++) {
-//   // Each grid gap.
-//   for (let j = 0; j < gridGapCount; j += 2) {
-//     for (let k = gridGap * j; k < gridGap * (j + 1); k++) {
-//       defaultMatrix[i][k] = rIndex2;
-//     }
-//   }
-// }
-////////////////////
-
-
 
 interface IReturnObject {
   rectWidth: number;
   rectHeight: number;
-  rIndex1: number;
-  rIndex2: number;
-  rIndex3: number;
+  rIndexes: number[];
   n: number;
 }
 
 const returnObj: IReturnObject = {
   rectWidth,
   rectHeight,
-  rIndex1,
-  rIndex2,
-  rIndex3,
+  rIndexes,
   n,
 };
 
@@ -77,9 +39,6 @@ interface IContext {
 }
 
 const RefractionMatrixContext = React.createContext<IContext | null>(null);
-// const RefractionMatrixContext = React.createContext(0);
-
-
 
 function RefractionMatrixProvider(props: any) {
   const [matrix, setMatrix] = React.useState(defaultMatrix);

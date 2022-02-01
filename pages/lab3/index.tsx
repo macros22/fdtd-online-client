@@ -38,7 +38,7 @@ const MatrixDisplay: React.FC = () => {
   return <MatrixEditor buttonStyle={classes.button + ' mt-3'} />;
 };
 
-const Lab3: React.FC = () => {
+const Lab3Page: React.FC = () => {
   const [isWSocketConnected, setIsWSocketConnected] = React.useState<boolean>(false);
 
   const [socket, setSocket] = React.useState<WebSocket | null>(null);
@@ -288,10 +288,10 @@ const Lab3: React.FC = () => {
 
 
 
-const WrappedLab3: React.FC = () => {
+const WrappedLab3Page: React.FC = () => {
   return (<>
     <RefractionMatrixProvider>
-      <Lab3 />
+      <Lab3Page />
     </RefractionMatrixProvider>
   </>);
 }
@@ -301,4 +301,4 @@ const metaProps: MetaPropsType = {
   description: 'Interference',
 }
 
-export default withLayout(WrappedLab3, metaProps);
+export default withLayout(WrappedLab3Page, metaProps);
