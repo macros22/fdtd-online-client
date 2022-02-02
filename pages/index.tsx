@@ -1,4 +1,4 @@
-import * as React from 'react';
+import * as React from 'react'
 
 // import MainLayout from 'layout/MainLayout';
 import { MatrixEditor } from 'components';

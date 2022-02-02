@@ -19,12 +19,17 @@
     "remark": "13.0.0",
     "remark-math": "4.0.0",
     "remark-parse": "9.0.0",
-    "sass": "^1.32.6"
+    "sass": "^1.32.6",
+    "stylelint": "^14.3.0",
+    "stylelint-config-recommended-scss": "^5.0.2",
+    "stylelint-order": "^5.0.0",
+    "stylelint-scss": "^4.1.0"
   },
   "scripts": {
     "dev": "next",
     "build": "next build",
     "start": "next start",
+    "stylelint": "stylelint \"./components/**/*.scss\" --fix",
     "post-update": "echo \"codesandbox preview only, need an update\" && yarn upgrade --latest"
   },
   "devDependencies": {
@@ -32,7 +37,9 @@
     "@types/react": "latest",
     "@types/react-dom": "latest",
     "@types/react-redux": "^7.1.16",
-    "prettier": "^2.3.2",
+    "@typescript-eslint/eslint-plugin": "^5.10.2",
+    "@typescript-eslint/parser": "^5.10.2",
+    "eslint": "^8.8.0",
     "typescript": "latest"
   }
 }

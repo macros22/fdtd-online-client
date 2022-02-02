@@ -1,13 +1,13 @@
 .text {
-  -webkit-user-select: none; /* Safari */
-  -moz-user-select: none; /* Firefox */
-  -ms-user-select: none; /* IE10+/Edge */
-  user-select: none; /* Standard */
-  font: bold 10px sans-serif;
+	font: bold 10px sans-serif;
+	-webkit-user-select: none; /* Safari */
+	-moz-user-select: none; /* Firefox */
+	-ms-user-select: none; /* IE10+/Edge */
+	user-select: none; /* Standard */
 }
 
 .matrixPreview {
-  background: #eee;
-  height: 180px;
-  width: 180px;
+	background: #EEE;
+	height: 180px;
+	width: 180px;
 }

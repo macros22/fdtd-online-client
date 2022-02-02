@@ -1,35 +1,35 @@
 .root {
-  flexgrow: 1;
-  width: 100%;
-  //margin-top: 1rem;
+	flexgrow: 1;
+	width: 100%;
+	//margin-top: 1rem;
 }
 
 .condition {
-  width: 100%;
+	width: 100%;
 }
 
 .paper {
-  margin: 1rem;
-  padding: 1rem;
+	margin: 1rem;
+	padding: 1rem;
 }
 
 .title {
-  text-align: center;
-  width: 100%;
+	text-align: center;
+	width: 100%;
 }
 
 .button {
-  display: block;
-  width: 100%;
-  color: white;
-  &:hover{
-    color: white;
-  }
+	color: white;
+	display: block;
+	width: 100%;
+	&:hover{
+		color: white;
+	}
 }
 
 
 
 .containerFluid {
-  display: flex;
-  flex-direction: column;
+	display: flex;
+	flex-direction: column;
 }

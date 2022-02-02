@@ -4,7 +4,7 @@ import { serialize } from "next-mdx-remote/serialize";
 import remarkMath from "remark-math";
 import markdown from "remark-parse";
 import rehypeKatex from "rehype-katex";
-import MainLayout from 'layout/MainLayout';
+import MainLayout from "layout/MainLayout";
 
 const data = `# Моделирование распространения электромагнитных волн на основе численного решения уравнений Максвелла
 
@@ -64,25 +64,23 @@ const Markdown: React.FC<IProps> = ({ mdxSource }) => {
         />
       </Head>
 
-      <MainLayout>
-        <div style={{ backgroundColor: "#f5f5f5" }}>
-          <div className="markdown-body">
-            {/* <span className="katex">
+      {/* <MainLayout> */}
+      <div style={{ backgroundColor: "#f5f5f5" }}>
+        <div className="markdown-body">
+          {/* <span className="katex">
           <span className="katex-mathml">
             The KaTeX stylesheet is not loaded!
           </span>
           <span className="katex-version rule">KaTeX stylesheet version: </span>
         </span> */}
 
-            <MDXRemote {...mdxSource} />
-          </div>
+          <MDXRemote {...mdxSource} />
         </div>
-      </MainLayout >
-
+      </div>
+      {/* </MainLayout > */}
     </div>
-
   );
-}
+};
 
 export default Markdown;
 
@@ -90,13 +88,13 @@ export async function getStaticProps() {
   const mdxSource = await serialize(data, {
     mdxOptions: {
       remarkPlugins: [markdown, remarkMath],
-      rehypePlugins: [rehypeKatex]
-    }
+      rehypePlugins: [rehypeKatex],
+    },
   });
 
   return {
     props: {
-      mdxSource
-    }
+      mdxSource,
+    },
   };
 }

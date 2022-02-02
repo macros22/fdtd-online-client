@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react'
 import {
   CONTINUE_NAME,
   BEAMSIZE_NAME,
@@ -287,6 +287,10 @@ const Lab3Page: React.FC = () => {
 }
 
 
+const metaProps: MetaPropsType = {
+  title: 'Wave optics | Lab 3',
+  description: 'Interference',
+}
 
 const WrappedLab3Page: React.FC = () => {
   return (<>
@@ -296,9 +300,5 @@ const WrappedLab3Page: React.FC = () => {
   </>);
 }
 
-const metaProps: MetaPropsType = {
-  title: 'Wave optics | Lab 3',
-  description: 'Interference',
-}
 
 export default withLayout(WrappedLab3Page, metaProps);

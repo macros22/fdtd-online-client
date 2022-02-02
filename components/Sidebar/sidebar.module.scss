@@ -1,18 +1,18 @@
 .wrapper {
-  display: flex;
-  width: 100%;
-  gap: 50px 60px;
+	display: flex;
+	gap: 50px 60px;
+	width: 100%;
 }
 
 .sidebar {
-  // width: 35%;
-  max-width: 16vw;
-  // position: fixed;
-  //top: 0;
-  //left: 0;
-  min-height: 80vh;
-  //z-index: 999;
-  background: white;
-  //color: #fff;
-  transition: all 0.6s;
+	//z-index: 999;
+	background: white;
+	// width: 35%;
+	max-width: 16vw;
+	// position: fixed;
+	//top: 0;
+	//left: 0;
+	min-height: 80vh;
+	//color: #fff;
+	transition: all 0.6s;
 }

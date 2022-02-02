@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Children, PropsWithChildren, ReactNode } from 'react';
 
 let defaultMatrix: number[][] = [];
 const rIndexes = [1, 1.5, 2];
@@ -40,13 +40,26 @@ interface IContext {
 
 const RefractionMatrixContext = React.createContext<IContext | null>(null);
 
-function RefractionMatrixProvider(props: any) {
+// function RefractionMatrixProvider({ children }: IContext & { children: ReactNode }) {
+function RefractionMatrixProvider({ children }: PropsWithChildren<{}>) {
   const [matrix, setMatrix] = React.useState(defaultMatrix);
 
   // const value = React.useMemo(() => [matrix, setMatrix], [matrix]);
 
-  return <RefractionMatrixContext.Provider value={{ matrix, setMatrix, returnObj }} {...props} />;
+  return (
+    <RefractionMatrixContext.Provider
+      value={{ matrix, setMatrix, returnObj }}>
+      {children}
+    </RefractionMatrixContext.Provider>);
 }
+
+// function RefractionMatrixProvider(props: any) {
+//   const [matrix, setMatrix] = React.useState(defaultMatrix);
+
+//   // const value = React.useMemo(() => [matrix, setMatrix], [matrix]);
+
+//   return <RefractionMatrixContext.Provider value={{ matrix, setMatrix, returnObj }} {...props} />;
+// }
 
 
 function useRefractionMatrix() {
