@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from "react";
 import {
   CONTINUE_NAME,
   BEAMSIZE_NAME,
@@ -6,9 +6,9 @@ import {
   REFRACTIVE_INDEX_NAME,
   STEP_NUMBER_NAME,
   WAVE_LENGTH_NAME,
-} from 'names/lab2.name';
+} from "names/lab2.name";
 
-import classes from './lab3.module.scss';
+import classes from "./lab3.module.scss";
 import {
   HeatMap,
   Sidebar,
@@ -16,30 +16,56 @@ import {
   Paper,
   Column,
   MatrixEditor,
-} from 'components';
+} from "components";
 
-import { SERVER_URL } from 'constants/url';
-import { MetaPropsType, withLayout } from 'layout/MainLayout';
-import { dataType } from 'types/types';
+import { MetaPropsType, withLayout } from "layout/MainLayout";
+import { dataType } from "types/types";
 
-import { RefractionMatrixProvider, useRefractionMatrix } from 'store/refraction-matrix.context';
+import {
+  RefractionMatrixProvider,
+  useRefractionMatrix,
+} from "store/refraction-matrix.context";
+import { useWebSocket } from "hooks/useWebSocket";
 
 const min = -1;
 const max = 1;
 
-const displayedData = [
-  { title: 'напряженности электрического поля Ez (проекция на ось Z)', name: 'Ez', type: 'Ez' },
-  { title: 'напряженности магнитного поля Hy (проекция на ось Y)', name: 'Hy', type: 'Hy' },
-  { title: 'проекции на ось X напряженности магнитного поля (Hx)', name: 'Hx', type: 'Hx' },
-  { title: 'плотности энергии электромагнагнитного поля', name: 'w', type: 'Energy' },
+export type DisplayedDataType = {
+  title: string;
+  name: string;
+  type: string;
+}[];
+
+const displayedData: DisplayedDataType = [
+  {
+    title: "напряженности электрического поля Ez (проекция на ось Z)",
+    name: "Ez",
+    type: "Ez",
+  },
+  {
+    title: "напряженности магнитного поля Hy (проекция на ось Y)",
+    name: "Hy",
+    type: "Hy",
+  },
+  {
+    title: "проекции на ось X напряженности магнитного поля (Hx)",
+    name: "Hx",
+    type: "Hx",
+  },
+  {
+    title: "плотности энергии электромагнагнитного поля",
+    name: "w",
+    type: "Energy",
+  },
 ];
 
 const MatrixDisplay: React.FC = () => {
-  return <MatrixEditor buttonStyle={classes.button + ' mt-3'} />;
+  return <MatrixEditor buttonStyle={classes.button + " mt-3"} />;
 };
 
 const Lab3Page: React.FC = () => {
-  const [isWSocketConnected, setIsWSocketConnected] = React.useState<boolean>(false);
+  const [isWSocketConnected, setIsWSocketConnected] =
+    React.useState<boolean>(false);
 
   const [socket, setSocket] = React.useState<WebSocket | null>(null);
 
@@ -51,7 +77,8 @@ const Lab3Page: React.FC = () => {
   const [simulation, setSimulation] = useState<boolean>(false);
   const [pause, setPause] = useState<boolean>(false);
 
-  const [currentDisplayingData, setCurrentDisplayingData] = React.useState<number>(0);
+  const [currentDisplayingData, setCurrentDisplayingData] =
+    React.useState<number>(0);
 
   const initAllData: dataType = {
     dataX: [],
@@ -71,76 +98,37 @@ const Lab3Page: React.FC = () => {
   const { matrix, setMatrix } = useRefractionMatrix();
 
   useEffect(() => {
-    connectWS();
+    connectWS({
+      setIsWSocketConnected,
+      setStep,
+      setAllData,
+      setSocket,
+    });
     return () => {
       if (socket !== null) {
-        socket.close(1000, 'работа закончена');
+        socket.close(1000, "работа закончена");
       }
     };
   }, []);
 
-  function connectWS() {
-    const socket = new WebSocket(SERVER_URL);
+  const {
+    connectWS,
+    startDataReceiving,
+    continueDataReceiving,
+    pauseDataReceiving,
+  } = useWebSocket();
 
-    if (socket) {
-      socket.onopen = () => {
-        setIsWSocketConnected(true);
-      };
-
-      socket.onmessage = (event: any) => {
-        let data = JSON.parse(event.data);
-        setStep(data.step || 0);
-        console.log(Object.keys(data));
-        setAllData(data);
-      };
-
-      socket.onclose = () => {
-        console.log('Socket закрыт');
-        setIsWSocketConnected(false);
-      };
-
-      socket.onerror = () => {
-        console.log('Socket произошла ошибка');
-        setIsWSocketConnected(false);
-      };
-    }
-    setSocket(socket);
-  }
-
-  const startDataReceiving = () => {
-    setPause(false);
-
-    const message = {
-      event: 'start',
-      type: 'DIFRACTION',
-      dataToReturn: displayedData[currentDisplayingData].type,
-      condition: [lambda, beamsize, n1, 1.5],
+  const clickStartBtnHandler = (e: React.MouseEvent) => {
+    e.preventDefault();
+    const condition = [lambda, beamsize, n1, 1.5];
+    startDataReceiving({
+      setPause,
+      displayedData,
+      currentDisplayingData,
+      condition,
       matrix,
-    };
-
-    if (socket !== null) {
-      socket.send(JSON.stringify(message));
-    }
-  };
-
-  const pauseDataReceiving = () => {
-    const message = {
-      event: 'pause',
-    };
-
-    if (socket !== null) {
-      socket.send(JSON.stringify(message));
-    }
-  };
-
-  const continueDataReceiving = () => {
-    const message = {
-      event: 'continue',
-    };
-
-    if (socket !== null) {
-      socket.send(JSON.stringify(message));
-    }
+    });
+    setSimulation(true);
   };
 
   return (
@@ -156,8 +144,10 @@ const Lab3Page: React.FC = () => {
                 <button
                   className={
                     classes.buttonDataType +
-                    ' btn bold ' +
-                    (currentDisplayingData == index ? 'btn-primary' : 'btn-outline-primary')
+                    " btn bold " +
+                    (currentDisplayingData == index
+                      ? "btn-primary"
+                      : "btn-outline-primary")
                   }
                   key={item.name}
                   onClick={() => {
@@ -171,7 +161,7 @@ const Lab3Page: React.FC = () => {
           </div>
           <hr />
           <TextInput
-            value={typeof lambda === 'number' ? lambda : 0}
+            value={typeof lambda === "number" ? lambda : 0}
             label={WAVE_LENGTH_NAME}
             onChange={(e) => setLambda(+e.target.value)}
           />
@@ -194,24 +184,12 @@ const Lab3Page: React.FC = () => {
         <div className="p-3 bd-highlight w-75">
           <Column>
             <h2>
-              <span>{'Пространственно-временная структура'}</span>
+              <span>{"Пространственно-временная структура"}</span>
             </h2>
 
             <h5>
-              <span>
-                {displayedData[currentDisplayingData].title}
-              </span>
+              <span>{displayedData[currentDisplayingData].title}</span>
             </h5>
-
-            {/* <h2>
-                <span>{'Пространственно-временная структура'}</span>
-              </h2>
-
-              <h4>
-                <span className='badge bg-primary'>
-                  {displayedData[currentDisplayingData].title}
-                </span>
-              </h4> */}
 
             <Paper>
               <HeatMap
@@ -232,19 +210,15 @@ const Lab3Page: React.FC = () => {
 
         <Sidebar>
           <button
-            onClick={(e) => {
-              e.preventDefault();
-              startDataReceiving();
-              setSimulation(true);
-            }}
+            onClick={clickStartBtnHandler}
             type="button"
-            className={'btn btn-primary mt-2 ' + classes.button}
+            className={"btn btn-primary mt-2 " + classes.button}
           >
             СТАРТ
           </button>
           <button
             type="button"
-            className={'btn btn-primary mt-2 ' + classes.button}
+            className={"btn btn-primary mt-2 " + classes.button}
             disabled={!simulation}
             onClick={(e) => {
               e.preventDefault();
@@ -260,7 +234,7 @@ const Lab3Page: React.FC = () => {
           </button>
           <button
             type="button"
-            className={'btn btn-primary  mt-2 ' + classes.button}
+            className={"btn btn-primary  mt-2 " + classes.button}
             disabled={!simulation}
             onClick={(e) => {
               e.preventDefault();
@@ -274,7 +248,7 @@ const Lab3Page: React.FC = () => {
           </button>
           <h3>
             <span className="badge bg-info mt-2 server-badge">
-              {'Server: ' + isWSocketConnected}
+              {"Server: " + isWSocketConnected}
             </span>
           </h3>
           <hr />
@@ -284,21 +258,85 @@ const Lab3Page: React.FC = () => {
       {/* </MainLayout> */}
     </>
   );
-}
-
+};
 
 const metaProps: MetaPropsType = {
-  title: 'Wave optics | Lab 3',
-  description: 'Interference',
-}
+  title: "Wave optics | Lab 3",
+  description: "Interference",
+};
 
 const WrappedLab3Page: React.FC = () => {
-  return (<>
-    <RefractionMatrixProvider>
-      <Lab3Page />
-    </RefractionMatrixProvider>
-  </>);
-}
-
+  return (
+    <>
+      <RefractionMatrixProvider>
+        <Lab3Page />
+      </RefractionMatrixProvider>
+    </>
+  );
+};
 
 export default withLayout(WrappedLab3Page, metaProps);
+
+// function connectWS() {
+//   const socket = new WebSocket(SERVER_URL);
+
+//   if (socket) {
+//     socket.onopen = () => {
+//       setIsWSocketConnected(true);
+//     };
+
+//     socket.onmessage = (event: any) => {
+//       let data = JSON.parse(event.data);
+//       setStep(data.step || 0);
+//       console.log(Object.keys(data));
+//       setAllData(data);
+//     };
+
+//     socket.onclose = () => {
+//       console.log("Socket закрыт");
+//       setIsWSocketConnected(false);
+//     };
+
+//     socket.onerror = () => {
+//       console.log("Socket произошла ошибка");
+//       setIsWSocketConnected(false);
+//     };
+//   }
+//   setSocket(socket);
+// }
+
+// const startDataReceiving = () => {
+//   setPause(false);
+
+//   const message = {
+//     event: "start",
+//     type: "DIFRACTION",
+//     dataToReturn: displayedData[currentDisplayingData].type,
+//     condition: [lambda, beamsize, n1, 1.5],
+//     matrix,
+//   };
+
+//   if (socket !== null) {
+//     socket.send(JSON.stringify(message));
+//   }
+// };
+
+// const pauseDataReceiving = () => {
+//   const message = {
+//     event: "pause",
+//   };
+
+//   if (socket !== null) {
+//     socket.send(JSON.stringify(message));
+//   }
+// };
+
+// const continueDataReceiving = () => {
+//   const message = {
+//     event: "continue",
+//   };
+
+//   if (socket !== null) {
+//     socket.send(JSON.stringify(message));
+//   }
+// };
