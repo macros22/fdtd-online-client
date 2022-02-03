@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import {
   CONTINUE_NAME,
   BEAMSIZE_NAME,
@@ -69,13 +69,13 @@ const Lab3Page: React.FC = () => {
 
   const [socket, setSocket] = React.useState<WebSocket | null>(null);
 
-  const [beamsize, setBeamsize] = useState<number>(3);
-  const [lambda, setLambda] = useState<number>(1);
-  const [n1, setN1] = useState<number>(1);
+  const [beamsize, setBeamsize] = React.useState<number>(3);
+  const [lambda, setLambda] = React.useState<number>(1);
+  const [n1, setN1] = React.useState<number>(1);
 
-  const [step, setStep] = useState<number>(0);
-  const [simulation, setSimulation] = useState<boolean>(false);
-  const [pause, setPause] = useState<boolean>(false);
+  const [step, setStep] = React.useState<number>(0);
+  const [simulation, setSimulation] = React.useState<boolean>(false);
+  const [pause, setPause] = React.useState<boolean>(false);
 
   const [currentDisplayingData, setCurrentDisplayingData] =
     React.useState<number>(0);
@@ -93,11 +93,11 @@ const Lab3Page: React.FC = () => {
     step: 0,
   };
 
-  const [allData, setAllData] = useState<dataType>(initAllData);
+  const [allData, setAllData] = React.useState<dataType>(initAllData);
 
   const { matrix, setMatrix } = useRefractionMatrix();
 
-  useEffect(() => {
+  React.useEffect(() => {
     connectWS({
       setIsWSocketConnected,
       setStep,
@@ -120,13 +120,13 @@ const Lab3Page: React.FC = () => {
 
   const clickStartBtnHandler = (e: React.MouseEvent) => {
     e.preventDefault();
-    const condition = [lambda, beamsize, n1, 1.5];
     startDataReceiving({
       setPause,
       displayedData,
       currentDisplayingData,
-      condition,
+      condition: [lambda, beamsize, n1, 1.5],
       matrix,
+      socket,
     });
     setSimulation(true);
   };
@@ -223,9 +223,9 @@ const Lab3Page: React.FC = () => {
             onClick={(e) => {
               e.preventDefault();
               if (!pause) {
-                pauseDataReceiving();
+                pauseDataReceiving(socket);
               } else {
-                continueDataReceiving();
+                continueDataReceiving(socket);
               }
               setPause((pause) => !pause);
             }}
@@ -238,7 +238,7 @@ const Lab3Page: React.FC = () => {
             disabled={!simulation}
             onClick={(e) => {
               e.preventDefault();
-              pauseDataReceiving();
+              pauseDataReceiving(socket);
               setPause(false);
               setSimulation(false);
               setStep(0);

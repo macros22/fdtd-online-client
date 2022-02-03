@@ -11,7 +11,7 @@ $background-color: #FFF;
 
 .parentUp {
 	min-width: max-content;
-	padding: 0.25rem;
+	padding: 0.4rem;
 	position: relative;
 	// box-shadow: 0 0.2rem 0.2rem rgba(0, 0, 0, 0.15) !important;
 	z-index: 1001;
@@ -26,14 +26,14 @@ $background-color: #FFF;
 	flex-direction: row;
 	justify-content: center;
 	min-width: max-content;
-	padding: 0.3rem;
+	padding: 0.22rem;
 	position: relative;
 	vertical-align: middle;
 	z-index: 1000;
 
 	a {
 		color: $light;
-		font-size: medium;
+		font-size: 14px;
 		margin: 0 1rem;
 
 		&.active {
