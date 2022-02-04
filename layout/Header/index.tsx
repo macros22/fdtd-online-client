@@ -1,44 +1,43 @@
-import React from 'react';
-import { DropdownButton, Navbar, NavDropdown, Nav } from 'react-bootstrap';
-import Link from 'next/link';
+import React from "react";
+import { DropdownButton, Navbar, NavDropdown, Nav } from "react-bootstrap";
+import Link from "next/link";
 
-const WAVE_OPTICS_NAME = 'ВОЛНОВАЯ ОПТИКА';
+const WAVE_OPTICS_NAME = "ВОЛНОВАЯ ОПТИКА";
 
-import { LAB_1_NAME, LAB_2_NAME, LAB_3_NAME, LAB_4_NAME, LAB_5_NAME } from 'names/navbar.name';
+import {
+  LAB_1_NAME,
+  LAB_2_NAME,
+  LAB_3_NAME,
+  LAB_4_NAME,
+  LAB_5_NAME,
+} from "names/navbar.name";
 
 const sections = [
-    { title: LAB_1_NAME, url: '/lab1' },
-    { title: LAB_2_NAME, url: '/lab2' },
-    { title: LAB_3_NAME, url: '/lab3' },
-    { title: LAB_4_NAME, url: '/lab4' },
-    { title: LAB_5_NAME, url: '/lab5' },
+  { title: LAB_1_NAME, url: "/lab1" },
+  { title: LAB_2_NAME, url: "/lab2" },
+  { title: LAB_3_NAME, url: "/lab3" },
+  { title: LAB_4_NAME, url: "/lab4" },
+  { title: LAB_5_NAME, url: "/lab5" },
 ];
 
-import classes from './header.module.scss';
-import Dropdown from 'components/Dropdown';
-
-
-
-
-
+import classes from "./header.module.scss";
+import Dropdown from "components/molecules/Dropdown";
 
 export default function Header(): JSX.Element {
-    const [currentPage, setCurrentPage] = React.useState(0);
+  const [currentPage, setCurrentPage] = React.useState(0);
 
-    return (
-        <div>
-            <div className={classes.parentUp}>
-
-                {/* <Link href="/">
+  return (
+    <div>
+      <div className={classes.parentUp}>
+        {/* <Link href="/">
                     <a className={classes.logo}>Теория</a>
                 </Link> */}
-                <nav className={classes.navbar}>
-                    <Link href="/">
-                        <a className={classes.logo}>{WAVE_OPTICS_NAME}</a>
-                    </Link>
+        <nav className={classes.navbar}>
+          <Link href="/">
+            <a className={classes.logo}>{WAVE_OPTICS_NAME}</a>
+          </Link>
 
-
-                    {/* <label htmlFor="lab">Выбор лабораторной:</label>
+          {/* <label htmlFor="lab">Выбор лабораторной:</label>
                     <select name="lab" id="lab">
                         <option value="free">Free</option>
                         <option value="bronze">Bronze</option>
@@ -46,9 +45,9 @@ export default function Header(): JSX.Element {
                         <option value="Gold">Gold</option>
                     </select> */}
 
-                    <Dropdown />
+          <Dropdown />
 
-                    {/* <Nav>
+          {/* <Nav>
                         <NavDropdown
                             // className={classes.dropDownTitle}
                             id="nav-dropdown-dark-example"
@@ -66,21 +65,17 @@ export default function Header(): JSX.Element {
                             ))}
                         </NavDropdown>
                     </Nav> */}
-
-
-                </nav>
-            </div>
-            <div className={classes.parent}>
-                <Link href="/">
-                    <a className={classes.logo}>Теория</a>
-                </Link>
-                <div className={classes.verticalLine}></div>
-                <Link href="/">
-                    <a className={classes.logo}>Модель</a>
-                </Link>
-            </div>
-        </div>
-    );
+        </nav>
+      </div>
+      <div className={classes.parent}>
+        <Link href="/">
+          <a className={classes.logo}>Теория</a>
+        </Link>
+        <div className={classes.verticalLine}></div>
+        <Link href="/">
+          <a className={classes.logo}>Модель</a>
+        </Link>
+      </div>
+    </div>
+  );
 }
-
-

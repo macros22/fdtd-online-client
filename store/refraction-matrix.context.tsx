@@ -1,3 +1,4 @@
+import { LabNames } from "pages/[lab]";
 import React, { Children, PropsWithChildren, ReactNode } from "react";
 
 let defaultMatrix: number[][] = [];
@@ -72,7 +73,7 @@ function RefractionMatrixProvider({ children }: PropsWithChildren<{}>) {
 //   return <RefractionMatrixContext.Provider value={{ matrix, setMatrix, returnObj }} {...props} />;
 // }
 
-function useRefractionMatrix() {
+function useRefractionMatrix(currentLabName: LabNames) {
   const context = React.useContext(RefractionMatrixContext);
   if (!context) {
     throw new Error(`useCount must be used within a RefractionMatrixProvider`);
