@@ -3,120 +3,143 @@ $border-width: 4px;
 @import 'styles/colors.scss';
 $border-color: $light;
 // $background-color: $primary;
-$background-color: #FFF;
+$background-color: #fff;
 
 // .header {
 //   display: column;
 // }
 
 .parentUp {
-	min-width: max-content;
-	padding: 0.4rem;
-	position: relative;
-	// box-shadow: 0 0.2rem 0.2rem rgba(0, 0, 0, 0.15) !important;
-	z-index: 1001;
+  min-width: max-content;
+  vertical-align: baseline;
+  padding: 1rem;
+  position: relative;
+  // box-shadow: 0 0.2rem 0.2rem rgba(0, 0, 0, 0.15) !important;
+  z-index: 1001;
 }
 
+.activeLabContentType {
+  color: $dark;
+  border-bottom: 3px solid tomato !important;
+}
+
+.labContentType {
+  margin: 0 auto !important;
+  max-width: max-content;
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  a {
+    box-sizing: content-box !important;
+
+    border-bottom: 3px solid transparent;
+    font-weight: bold;
+
+    color: $dark;
+    font-size: 18px;
+
+    &:hover {
+      border-bottom: 3px solid tomato;
+    }
+  }
+}
 .parent {
-	background-color: $primary;
-	// box-shadow: 0 0.2rem 0.9rem rgba(0, 0, 0, 0.1) !important;
-	box-shadow: 0 0.3rem 0.3rem rgba(19, 85, 226, 0.15) !important;
-	display: flex;
+  background-color: $primary;
+  // box-shadow: 0 0.2rem 0.9rem rgba(0, 0, 0, 0.1) !important;
+  box-shadow: 0 0.2rem 0.2rem rgba(19, 85, 226, 0.15) !important;
+  display: flex;
 
-	flex-direction: row;
-	justify-content: center;
-	min-width: max-content;
-	padding: 0.22rem;
-	position: relative;
-	vertical-align: middle;
-	z-index: 1000;
+  //   flex-direction: row;
+  justify-content: center;
 
-	a {
-		color: $light;
-		font-size: 14px;
-		margin: 0 1rem;
+  position: relative;
+  vertical-align: baseline;
+  z-index: 1000;
 
-		&.active {
-			color: red;
-		}
+  h2 {
+    // because bootstarp, need to remove
+    margin: 0 !important;
 
-		&:hover {
-			color: $light;
-			opacity: 86%;
-		}
-	}
+    color: $light;
+    font-size: 20px;
+    line-height: 20px;
+    padding: 0.45rem;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    font-weight: bold;
+  }
 }
 
 .verticalLine {
-	// max-height: 60%;
-	border-left: 2px solid white;
-	opacity: 50%;
+  opacity: 33%;
+  border-left: 2px solid $dark;
 }
 
 .navbar {
-	align-self: space-between;
-	//   grid-column: span 12;
-	//   padding: 0.1rem;
-	background-color: $background-color;
-	display: flex;
+  align-self: space-between;
+  //   grid-column: span 12;
+  //   padding: 0.1rem;
+  background-color: $background-color;
+  display: flex;
 
-	flex-direction: row;
-	place-items: center;
-	& > * {
-		margin: 0 0.81rem;
-	}
-	& > *:nth-child(2) {
-		margin-left: auto;
-	}
+  flex-direction: row;
+  //   vertical-align: baseline;
+  place-items: center;
+  & > * {
+    margin: 0 0.81rem;
+  }
+  & > *:nth-child(3) {
+    margin-left: auto;
+  }
 }
 
 .logo {
-	//   color: $light;
-	color: $dark;
-	font-size: 16pt;
-	font-weight: bold;
-	letter-spacing: 0.15rem;
-	text-decoration: none;
-	text-transform: uppercase;
-	&:hover {
-		color: $dark;
-		opacity: 95%;
-	}
+  //   color: $light;
+  color: $dark;
+  font-size: 16pt;
+  font-weight: bold;
+  letter-spacing: 0.15rem;
+  text-decoration: none;
+  text-transform: uppercase;
+  &:hover {
+    color: $dark;
+    opacity: 95%;
+  }
 }
 
 .dropDownTitle {
-	color: $dark !important;
-	font: inherit;
-	//   opacity: 90%;
-	z-index: 1000;
-	&:hover {
-		opacity: 100%;
-	}
+  color: $dark !important;
+  font: inherit;
+  //   opacity: 90%;
+  z-index: 1000;
+  &:hover {
+    opacity: 100%;
+  }
 }
 
 /* Add a black background color to the top navigation */
 .topnav {
-	background-color: $light;
-	color: $dark;
-	display: flex;
-	overflow: hidden;
-	padding: 0.2rem;
-	//box-shadow: 1rem 2rem #7a7e82;
-	a {
-		border-bottom: $border-width solid transparent;
-		color: $border-color;
-		font-size: 18px;
-		padding: 8px 18px;
-		text-align: center;
-		text-decoration: none;
-		transition: all 0.4s ease-in;
+  background-color: $light;
+  color: $dark;
+  display: flex;
+  overflow: hidden;
+  padding: 0.2rem;
+  //box-shadow: 1rem 2rem #7a7e82;
+  a {
+    border-bottom: $border-width solid transparent;
+    color: $border-color;
+    font-size: 18px;
+    padding: 8px 18px;
+    text-align: center;
+    text-decoration: none;
+    transition: all 0.4s ease-in;
 
-		&.active {
-			border-bottom: $border-width solid $border-color;
-		}
+    &.active {
+      border-bottom: $border-width solid $border-color;
+    }
 
-		&:hover {
-			border-bottom: $border-width solid $border-color;
-		}
-	}
+    &:hover {
+      border-bottom: $border-width solid $border-color;
+    }
+  }
 }
