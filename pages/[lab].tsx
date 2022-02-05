@@ -16,6 +16,7 @@ import {
   Paper,
   Column,
   MatrixEditor,
+  Tag,
 } from "components";
 
 import { MetaPropsType, withLayout } from "layout/MainLayout";
@@ -233,6 +234,9 @@ const LabPage: React.FC<ILabPageProps> = ({ currentLabName }) => {
           </h3>
           <hr />
           <TextInput label={STEP_NUMBER_NAME} value={step} readOnly={true} />
+          <Tag size="l" color="primary">
+            {step}
+          </Tag>
         </Sidebar>
       </div>
     </>

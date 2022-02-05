@@ -8,3 +8,4 @@ export { default as MatrixEditor } from './organisms/MatrixEditor';
 export { default as GradientScale } from './atoms/GradientScale';
 export { default as Canvas } from './molecules/Canvas';
 export { default as Dropdown } from './molecules/Dropdown';
+export { default as Tag } from './atoms/Tag/Tag';
