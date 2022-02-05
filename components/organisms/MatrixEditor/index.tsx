@@ -131,9 +131,8 @@ const Editor: React.FC = () => {
           switch (shape.type) {
             case "rect":
               return (
-                <>
+                <React.Fragment key={index + shape.x}>
                   <rect
-                    key={index + shape.x}
                     fill={shape.color}
                     stroke="red"
                     strokeWidth={index == currentShape ? "2px" : "0px"}
@@ -151,7 +150,7 @@ const Editor: React.FC = () => {
                   >
                     {shape.rIndex}
                   </text>
-                </>
+                </React.Fragment>
               );
           }
         })}

@@ -1,5 +1,3 @@
-import { useRouter } from "next/dist/client/router";
-
 import React from "react";
 import {
   CONTINUE_NAME,
@@ -23,12 +21,11 @@ import {
 import { MetaPropsType, withLayout } from "layout/MainLayout";
 import { dataType } from "types/types";
 
-import {
-  RefractionMatrixProvider,
-  useRefractionMatrix,
-} from "store/refraction-matrix.context";
+import { useRefractionMatrix } from "store/refraction-matrix.context";
 import { useWebSocket } from "hooks/useWebSocket";
 import { displayedData } from "utils/displayed-data";
+import { GetStaticPaths, GetStaticProps, GetStaticPropsContext } from "next";
+import { ParsedUrlQuery } from "querystring";
 
 const min = -1;
 const max = 1;
@@ -36,19 +33,12 @@ const max = 1;
 export enum LabNames {
   LAB_2D = "2D",
   LAB_3D = "3D",
-  LAB_DIFRACTION = "DIFRACTION",
-  LAB_INTERFERENCE = "INTERFERENCE",
-  BORDER_DIVIDE = "BORDER DIVIDE",
+  DIFRACTION = "DIFRACTION",
+  INTERFERENCE = "INTERFERENCE",
+  BORDER = "BORDER",
 }
 
-let currentLabName: LabNames | null = null;
-
-const LabPage: React.FC = () => {
-  const router = useRouter();
-  const { lab } = router.query;
-
-  currentLabName = Object.values(LabNames).find((l) => l == lab) || null;
-
+const LabPage: React.FC<ILabPageProps> = ({ currentLabName }) => {
   const [isWSocketConnected, setIsWSocketConnected] =
     React.useState<boolean>(false);
 
@@ -135,7 +125,7 @@ const LabPage: React.FC = () => {
             onChange={(e) => setN1(+e.target.value)}
           />
 
-          {currentLabName === LabNames.LAB_DIFRACTION && (
+          {currentLabName === LabNames.DIFRACTION && (
             <>
               <TextInput
                 label={REFRACTIVE_INDEX_NAME}
@@ -249,19 +239,44 @@ const LabPage: React.FC = () => {
   );
 };
 
-const metaProps: MetaPropsType = {
-  title: `Wave optics | Lab ${currentLabName || ""}`,
-  description: currentLabName || "",
+export default withLayout(LabPage);
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  return {
+    paths: [
+      { params: { lab: LabNames.LAB_2D } },
+      { params: { lab: LabNames.LAB_3D } },
+      { params: { lab: LabNames.DIFRACTION } },
+      { params: { lab: LabNames.INTERFERENCE } },
+      { params: { lab: LabNames.BORDER } },
+    ],
+    fallback: true,
+  };
 };
 
-const WrappedLabPage: React.FC = () => {
-  return (
-    <>
-      <RefractionMatrixProvider>
-        <LabPage />
-      </RefractionMatrixProvider>
-    </>
-  );
+export const getStaticProps: GetStaticProps<ILabPageProps> = async ({
+  params,
+}: GetStaticPropsContext<ParsedUrlQuery>) => {
+  if (typeof params?.lab === "string") {
+    const currentLabName: LabNames | null =
+      Object.values(LabNames).find(
+        (l) => l == params.lab?.toString().toUpperCase()
+      ) || null;
+
+    if (currentLabName) {
+      return {
+        props: {
+          currentLabName,
+        },
+      };
+    }
+  }
+
+  return {
+    notFound: true,
+  };
 };
 
-export default withLayout(WrappedLabPage, metaProps);
+export interface ILabPageProps extends Record<string, unknown> {
+  currentLabName: LabNames;
+}
