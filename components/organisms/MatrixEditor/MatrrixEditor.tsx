@@ -1,10 +1,10 @@
 // https://codesandbox.io/s/blov5kowy?file=/index.js:0-1633
 
-import * as React from "react";
-import styles from "./matrix-editor.module.scss";
-import { useRefractionMatrix } from "store/refraction-matrix.context";
+import * as React from 'react';
+import styles from './MatrixEditor.module.scss';
+import { useRefractionMatrix } from 'store/refraction-matrix.context';
 
-const colors = ["#fafafa", "#a1bb21", "#1a52aa"];
+const colors = ['#fafafa', '#a1bb21', '#1a52aa'];
 
 const Editor: React.FC = () => {
   // Matrix sizes.
@@ -24,7 +24,7 @@ const Editor: React.FC = () => {
 
   // Panel with refraction index shapes.
   let panelShapes = new Array(rIndexes.length).fill({}).map((_, index) => ({
-    type: "rect",
+    type: 'rect',
     x: panelPaddingX * (index + 1),
     y: panelPaddingY,
     width: rectWidth,
@@ -67,8 +67,8 @@ const Editor: React.FC = () => {
     const x = pageX - gridX - rectWidth / 2;
     const y = pageY - gridY - rectHeight / 2;
 
-    console.log("grid", gridX, gridY);
-    console.log("page", pageX, pageY);
+    console.log('grid', gridX, gridY);
+    console.log('page', pageX, pageY);
 
     setFocusedCoord({
       i: Math.round((n * x) / width),
@@ -81,8 +81,8 @@ const Editor: React.FC = () => {
       <svg
         style={{
           // background: '#aaa',
-          height: height + panelHeight + "px",
-          width: width + "px",
+          height: height + panelHeight + 'px',
+          width: width + 'px',
         }}
       >
         <rect
@@ -103,7 +103,7 @@ const Editor: React.FC = () => {
             if (colorIndex > 0) {
               return (
                 <rect
-                  key={i + "" + j}
+                  key={i + '' + j}
                   width={rectWidth}
                   height={rectHeight}
                   x={i * rectWidth}
@@ -122,21 +122,21 @@ const Editor: React.FC = () => {
           height={rectHeight}
           x={focusedCoord.i * rectWidth}
           y={focusedCoord.j * rectHeight}
-          fill="gray"
-          opacity="0.4"
+          fill='gray'
+          opacity='0.4'
           onClick={handleMouseClick}
         />
 
         {panelShapes.map((shape, index) => {
           switch (shape.type) {
-            case "rect":
+            case 'rect':
               return (
                 <React.Fragment key={index + shape.x}>
                   <rect
                     fill={shape.color}
-                    stroke="red"
-                    strokeWidth={index == currentShape ? "2px" : "0px"}
-                    strokeOpacity="1"
+                    stroke='red'
+                    strokeWidth={index == currentShape ? '2px' : '0px'}
+                    strokeOpacity='1'
                     x={shape.x}
                     y={shape.y}
                     width={shape.width}
@@ -171,39 +171,39 @@ const MatrixEditor: React.FC<IDifractionEditorProps> = ({ buttonStyle }) => {
       {/* <!-- Button trigger modal -->*/}
       <svg className={styles.matrixPreview} />
       <button
-        type="button"
-        className={"btn btn-primary " + buttonStyle}
-        data-bs-toggle="modal"
-        data-bs-target="#staticBackdrop"
+        type='button'
+        className={'btn btn-primary ' + buttonStyle}
+        data-bs-toggle='modal'
+        data-bs-target='#staticBackdrop'
       >
         Изменить
       </button>
 
       {/*// <!-- Modal -->*/}
       <div
-        className="modal fade"
-        id="staticBackdrop"
-        data-bs-backdrop="static"
-        data-bs-keyboard="false"
+        className='modal fade'
+        id='staticBackdrop'
+        data-bs-backdrop='static'
+        data-bs-keyboard='false'
         tabIndex={-1}
-        aria-labelledby="staticBackdropLabel"
-        aria-hidden="true"
+        aria-labelledby='staticBackdropLabel'
+        aria-hidden='true'
       >
-        <div className="modal-dialog">
-          <div className="modal-content">
-            <div className="modal-header">
-              <h5 className="modal-title" id="staticBackdropLabel">
+        <div className='modal-dialog'>
+          <div className='modal-content'>
+            <div className='modal-header'>
+              <h5 className='modal-title' id='staticBackdropLabel'>
                 Редактор дифракционной решетки
               </h5>
               <button
-                type="button"
-                className="btn-close"
-                data-bs-dismiss="modal"
-                aria-label="Close"
+                type='button'
+                className='btn-close'
+                data-bs-dismiss='modal'
+                aria-label='Close'
               ></button>
             </div>
             <Editor />
-            <div className="modal-footer">
+            <div className='modal-footer'>
               {/* <button
                 type="button"
                 className="btn btn-info"
@@ -212,8 +212,8 @@ const MatrixEditor: React.FC<IDifractionEditorProps> = ({ buttonStyle }) => {
                 Закрыть
               </button> */}
               <button
-                type="button"
-                className="btn btn-primary"
+                type='button'
+                className='btn btn-primary'
                 onClick={() => resetMatrix()}
               >
                 Вернуть начальное состояние
