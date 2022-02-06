@@ -4,7 +4,6 @@
 import { GradientScale } from 'components';
 import React from 'react';
 
-
 type HeatMapProps = {
   minVal: number;
   maxVal: number;
@@ -39,7 +38,11 @@ const HeatMap: React.FC<HeatMapProps> = ({
 
   if (dataX.length == 0) {
     for (let i = 0; i < 3e3; ++i) {
-      data.push([Math.random() * width, Math.random() * height, Math.random() * 0.3]);
+      data.push([
+        Math.random() * width,
+        Math.random() * height,
+        Math.random() * 0.3,
+      ]);
     }
   } else {
     const gridSizeFromBackend = 400;
@@ -53,10 +56,13 @@ const HeatMap: React.FC<HeatMapProps> = ({
     }
   }
 
-
   React.useEffect(() => {
     // Creating main canvas.
-    if (canvasRef.current && canvasBrushRef.current && canvasGradientRef.current) {
+    if (
+      canvasRef.current &&
+      canvasBrushRef.current &&
+      canvasGradientRef.current
+    ) {
       let canvas = canvasRef.current;
 
       let ctx: CanvasRenderingContext2D | null = canvas.getContext('2d');
@@ -65,7 +71,8 @@ const HeatMap: React.FC<HeatMapProps> = ({
 
       // Creating brush canvas.
       const brushCanvas = canvasBrushRef.current;
-      const brushContext: CanvasRenderingContext2D | null = brushCanvas.getContext('2d');
+      const brushContext: CanvasRenderingContext2D | null =
+        brushCanvas.getContext('2d');
       brushCanvas.width = diametr;
       brushCanvas.height = diametr;
 

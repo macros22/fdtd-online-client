@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   CONTINUE_NAME,
   BEAMSIZE_NAME,
@@ -6,9 +6,9 @@ import {
   REFRACTIVE_INDEX_NAME,
   STEP_NUMBER_NAME,
   WAVE_LENGTH_NAME,
-} from "names/lab2.name";
+} from 'names/lab2.name';
 
-import classes from "./lab3/lab3.module.scss";
+import classes from './lab3/lab3.module.scss';
 import {
   HeatMap,
   Sidebar,
@@ -17,26 +17,27 @@ import {
   Column,
   MatrixEditor,
   Tag,
-} from "components";
+  NewHeatMap,
+} from 'components';
 
-import { MetaPropsType, withLayout } from "layout/MainLayout";
-import { dataType } from "types/types";
+import { MetaPropsType, withLayout } from 'layout/MainLayout';
+import { dataType } from 'types/types';
 
-import { useRefractionMatrix } from "store/refraction-matrix.context";
-import { useWebSocket } from "hooks/useWebSocket";
-import { displayedData } from "utils/displayed-data";
-import { GetStaticPaths, GetStaticProps, GetStaticPropsContext } from "next";
-import { ParsedUrlQuery } from "querystring";
+import { useRefractionMatrix } from 'store/refraction-matrix.context';
+import { useWebSocket } from 'hooks/useWebSocket';
+import { displayedData } from 'utils/displayed-data';
+import { GetStaticPaths, GetStaticProps, GetStaticPropsContext } from 'next';
+import { ParsedUrlQuery } from 'querystring';
 
 const min = -1;
 const max = 1;
 
 export enum LabNames {
-  LAB_2D = "2D",
-  LAB_3D = "3D",
-  DIFRACTION = "DIFRACTION",
-  INTERFERENCE = "INTERFERENCE",
-  BORDER = "BORDER",
+  LAB_2D = '2D',
+  LAB_3D = '3D',
+  DIFRACTION = 'DIFRACTION',
+  INTERFERENCE = 'INTERFERENCE',
+  BORDER = 'BORDER',
 }
 
 const LabPage: React.FC<ILabPageProps> = ({ currentLabName }) => {
@@ -79,7 +80,7 @@ const LabPage: React.FC<ILabPageProps> = ({ currentLabName }) => {
     });
     return () => {
       if (socket !== null) {
-        socket.close(1000, "работа закончена");
+        socket.close(1000, 'работа закончена');
       }
     };
   }, []);
@@ -106,10 +107,10 @@ const LabPage: React.FC<ILabPageProps> = ({ currentLabName }) => {
 
   return (
     <>
-      <div className="d-flex bg-light align-items-stretch mh-100">
+      <div className='d-flex bg-light align-items-stretch mh-100'>
         <Sidebar>
           <TextInput
-            value={typeof lambda === "number" ? lambda : 0}
+            value={typeof lambda === 'number' ? lambda : 0}
             label={WAVE_LENGTH_NAME}
             onChange={(e) => setLambda(+e.target.value)}
           />
@@ -134,22 +135,22 @@ const LabPage: React.FC<ILabPageProps> = ({ currentLabName }) => {
                 onChange={(e) => setN2(+e.target.value)}
               />
               <hr />
-              <MatrixEditor buttonStyle={classes.button + " mt-3"} />
+              <MatrixEditor buttonStyle={classes.button + ' mt-3'} />
             </>
           )}
         </Sidebar>
 
-        <div className="p-3 bd-highlight w-75">
+        <div className='p-3 bd-highlight w-75'>
           <Column>
             <h2>
-              <span>{"Пространственно-временная структура"}</span>
+              <span>{'Пространственно-временная структура'}</span>
             </h2>
 
             <h5>
               <span>{displayedData[currentDisplayingData].title}</span>
             </h5>
 
-            <Paper>
+            {/* <Paper>
               <HeatMap
                 minVal={min}
                 maxVal={max}
@@ -157,6 +158,9 @@ const LabPage: React.FC<ILabPageProps> = ({ currentLabName }) => {
                 dataY={allData.dataY}
                 dataVal={allData.dataVal}
               />
+            </Paper> */}
+            <Paper>
+              <NewHeatMap />
             </Paper>
           </Column>
         </div>
@@ -172,10 +176,10 @@ const LabPage: React.FC<ILabPageProps> = ({ currentLabName }) => {
                     <button
                       className={
                         classes.buttonDataType +
-                        " btn bold " +
+                        ' btn bold ' +
                         (currentDisplayingData == index
-                          ? "btn-primary"
-                          : "btn-outline-primary")
+                          ? 'btn-primary'
+                          : 'btn-outline-primary')
                       }
                       key={item.name}
                       onClick={() => {
@@ -192,14 +196,14 @@ const LabPage: React.FC<ILabPageProps> = ({ currentLabName }) => {
           )}
           <button
             onClick={clickStartBtnHandler}
-            type="button"
-            className={"btn btn-primary mt-2 " + classes.button}
+            type='button'
+            className={'btn btn-primary mt-2 ' + classes.button}
           >
             СТАРТ
           </button>
           <button
-            type="button"
-            className={"btn btn-primary mt-2 " + classes.button}
+            type='button'
+            className={'btn btn-primary mt-2 ' + classes.button}
             disabled={!simulation}
             onClick={(e) => {
               e.preventDefault();
@@ -214,8 +218,8 @@ const LabPage: React.FC<ILabPageProps> = ({ currentLabName }) => {
             {pause ? CONTINUE_NAME : PAUSE_NAME}
           </button>
           <button
-            type="button"
-            className={"btn btn-primary  mt-2 " + classes.button}
+            type='button'
+            className={'btn btn-primary  mt-2 ' + classes.button}
             disabled={!simulation}
             onClick={(e) => {
               e.preventDefault();
@@ -228,13 +232,13 @@ const LabPage: React.FC<ILabPageProps> = ({ currentLabName }) => {
             STOP
           </button>
           <h3>
-            <span className="badge bg-info mt-2 server-badge">
-              {"Server: " + isWSocketConnected}
+            <span className='badge bg-info mt-2 server-badge'>
+              {'Server: ' + isWSocketConnected}
             </span>
           </h3>
           <hr />
           <TextInput label={STEP_NUMBER_NAME} value={step} readOnly={true} />
-          <Tag size="l" color="primary">
+          <Tag size='l' color='primary'>
             {step}
           </Tag>
         </Sidebar>
@@ -261,7 +265,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export const getStaticProps: GetStaticProps<ILabPageProps> = async ({
   params,
 }: GetStaticPropsContext<ParsedUrlQuery>) => {
-  if (typeof params?.lab === "string") {
+  if (typeof params?.lab === 'string') {
     const currentLabName: LabNames | null =
       Object.values(LabNames).find(
         (l) => l == params.lab?.toString().toUpperCase()
