@@ -14,7 +14,7 @@ const defaultGradient: { [key: string]: string } = {
 };
 
 const GradientScale: React.FC<GradientScaleProps> = ({
-  width = 400,
+  width = 20,
   height = 400,
 }) => {
   const canvasRef = React.useRef<HTMLCanvasElement | null>(null);

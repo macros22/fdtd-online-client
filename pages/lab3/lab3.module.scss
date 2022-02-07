@@ -1,31 +1,42 @@
 @import 'styles/colors.scss';
 
+.graph {
+  display: inline-grid;
+  grid-template-columns: auto auto;
+}
+
+.workArea {
+  display: grid;
+  grid-template-rows: auto auto;
+  justify-items: center;
+}
+
 .button {
-	display: block;
-	width: 100%;
+  display: block;
+  width: 100%;
 }
 
 .flexRow {
-	display: flex;
-	justify-content: space-between;
+  display: flex;
+  justify-content: space-between;
 }
 
 .tempP {
-	color: $gray;
-	font-size: 0.89rem;
-	letter-spacing: 2px;
-	margin-bottom: 0.2rem;
+  color: $gray;
+  font-size: 0.89rem;
+  letter-spacing: 2px;
+  margin-bottom: 0.2rem;
 }
 
 .buttonDataType {
-	// max-width: 25%;
-	padding: 0.25rem 0.65rem;
-	&:focus {
-		box-shadow: none;
-		outline: none;
-	}
-	&:active {
-		box-shadow: none;
-		outline: none;
-	}
+  // max-width: 25%;
+  padding: 0.25rem 0.65rem;
+  &:focus {
+    box-shadow: none;
+    outline: none;
+  }
+  &:active {
+    box-shadow: none;
+    outline: none;
+  }
 }

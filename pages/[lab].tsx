@@ -8,7 +8,7 @@ import {
   WAVE_LENGTH_NAME,
 } from 'names/lab2.name';
 
-import classes from './lab3/lab3.module.scss';
+import styles from './lab3/lab3.module.scss';
 import {
   HeatMap,
   Sidebar,
@@ -29,9 +29,6 @@ import { useWebSocket } from 'hooks/useWebSocket';
 import { displayedData } from 'utils/displayed-data';
 import { GetStaticPaths, GetStaticProps, GetStaticPropsContext } from 'next';
 import { ParsedUrlQuery } from 'querystring';
-
-const min = -1;
-const max = 1;
 
 export enum LabNames {
   LAB_2D = '2D',
@@ -136,56 +133,48 @@ const LabPage: React.FC<ILabPageProps> = ({ currentLabName }) => {
                 onChange={(e) => setN2(+e.target.value)}
               />
               <hr />
-              <MatrixEditor buttonStyle={classes.button + ' mt-3'} />
+              <MatrixEditor buttonStyle={styles.button + ' mt-3'} />
             </>
           )}
         </Sidebar>
 
         <div className='p-3 bd-highlight w-75'>
-          <Column>
-            <h2>
-              <span>{'Пространственно-временная структура'}</span>
-            </h2>
+          <div className={styles.workArea}>
+            <h6>
+              <span>
+                {'Пространственно-временная структура ' +
+                  displayedData[currentDisplayingData].title}
+              </span>
+            </h6>
 
-            <h5>
-              <span>{displayedData[currentDisplayingData].title}</span>
-            </h5>
-
-            {/* <Paper>
-              <HeatMap
-                minVal={min}
-                maxVal={max}
-                dataX={allData.dataX}
-                dataY={allData.dataY}
-                dataVal={allData.dataVal}
-              />
-            </Paper> */}
-            <Paper>
-              <NewHeatMap
-                minVal={Math.min(...allData.dataVal)}
-                maxVal={Math.max(...allData.dataVal)}
-                dataX={allData.dataX}
-                dataY={allData.dataY}
-                dataVal={allData.dataVal}
-              />
-            </Paper>
-            <Paper>
-              <GradientScale />
-            </Paper>
-          </Column>
+            <div className={styles.graph}>
+              <Paper>
+                <NewHeatMap
+                  minVal={Math.min(...allData.dataVal)}
+                  maxVal={Math.max(...allData.dataVal)}
+                  dataX={allData.dataX}
+                  dataY={allData.dataY}
+                  dataVal={allData.dataVal}
+                />
+              </Paper>
+              <Paper>
+                <GradientScale />
+              </Paper>
+            </div>
+          </div>
         </div>
 
         <Sidebar>
           {currentLabName !== LabNames.LAB_2D && (
             <>
-              <p className={classes.tempP}>Выбор данных:</p>
+              <p className={styles.tempP}>Выбор данных:</p>
 
-              <div className={classes.flexRow}>
+              <div className={styles.flexRow}>
                 {displayedData.map((item, index) => {
                   return (
                     <button
                       className={
-                        classes.buttonDataType +
+                        styles.buttonDataType +
                         ' btn bold ' +
                         (currentDisplayingData == index
                           ? 'btn-primary'
@@ -207,13 +196,13 @@ const LabPage: React.FC<ILabPageProps> = ({ currentLabName }) => {
           <button
             onClick={clickStartBtnHandler}
             type='button'
-            className={'btn btn-primary mt-2 ' + classes.button}
+            className={'btn btn-primary mt-2 ' + styles.button}
           >
             СТАРТ
           </button>
           <button
             type='button'
-            className={'btn btn-primary mt-2 ' + classes.button}
+            className={'btn btn-primary mt-2 ' + styles.button}
             disabled={!simulation}
             onClick={(e) => {
               e.preventDefault();
@@ -229,7 +218,7 @@ const LabPage: React.FC<ILabPageProps> = ({ currentLabName }) => {
           </button>
           <button
             type='button'
-            className={'btn btn-primary  mt-2 ' + classes.button}
+            className={'btn btn-primary  mt-2 ' + styles.button}
             disabled={!simulation}
             onClick={(e) => {
               e.preventDefault();
