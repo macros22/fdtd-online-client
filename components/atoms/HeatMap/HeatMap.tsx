@@ -1,7 +1,7 @@
 //http://zhangwenli.com/blog/2015/06/12/drawing-heatmap-with-html-canvas/
 //https://github.com/mourner/simpleheat/blob/86af1384db714ab32626ed25aeb396fd0869d56d/simpleheat.js
 
-import { GradientScale } from 'components';
+// import { GradientScale } from 'components';
 import React from 'react';
 
 type HeatMapProps = {

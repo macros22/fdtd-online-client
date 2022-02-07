@@ -160,7 +160,13 @@ const LabPage: React.FC<ILabPageProps> = ({ currentLabName }) => {
               />
             </Paper> */}
             <Paper>
-              <NewHeatMap />
+              <NewHeatMap
+                minVal={min}
+                maxVal={max}
+                dataX={allData.dataX}
+                dataY={allData.dataY}
+                dataVal={allData.dataVal}
+              />
             </Paper>
           </Column>
         </div>
