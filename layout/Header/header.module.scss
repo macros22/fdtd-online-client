@@ -5,18 +5,54 @@ $border-color: $light;
 // $background-color: $primary;
 $background-color: #fff;
 
-// .header {
-//   display: column;
-// }
+////////////////////
+.container {
+  display: grid;
+  grid-template-rows: 10vh 5vh;
+  max-height: 15vh;
+}
+
+////////////
 
 .parentUp {
-  min-width: max-content;
-  vertical-align: baseline;
-  padding: 1rem;
-  position: relative;
-  // box-shadow: 0 0.2rem 0.2rem rgba(0, 0, 0, 0.15) !important;
+  padding: 0.75rem;
   z-index: 1001;
+  display: grid;
+
+  grid-template-columns: auto 300px auto;
+  align-self: center;
 }
+
+.parent {
+  background-color: $primary;
+  box-shadow: 0 0.2rem 0.2rem rgba(19, 85, 226, 0.15) !important;
+
+  vertical-align: baseline;
+  text-align: center;
+  z-index: 1000;
+
+  h2 {
+    // because bootstarp, need to remove
+    margin: 0 !important;
+
+    color: $light;
+    font-size: 20px;
+    line-height: 20px;
+    padding: 0.45rem;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    font-weight: bold;
+  }
+}
+
+// .parentUp {
+//   min-width: max-content;
+//   vertical-align: baseline;
+//   padding: 1rem;
+//   position: relative;
+//   // box-shadow: 0 0.2rem 0.2rem rgba(0, 0, 0, 0.15) !important;
+//   z-index: 1001;
+// }
 
 .activeLabContentType {
   color: $dark;
@@ -24,7 +60,9 @@ $background-color: #fff;
 }
 
 .labContentType {
-  margin: 0 auto !important;
+  align-self: center;
+  justify-self: center;
+  // margin: 0 auto !important;
   max-width: max-content;
   display: flex;
   flex-direction: row;
@@ -43,58 +81,60 @@ $background-color: #fff;
     }
   }
 }
-.parent {
-  background-color: $primary;
-  // box-shadow: 0 0.2rem 0.9rem rgba(0, 0, 0, 0.1) !important;
-  box-shadow: 0 0.2rem 0.2rem rgba(19, 85, 226, 0.15) !important;
-  display: flex;
+// .parent {
+//   background-color: $primary;
+//   // box-shadow: 0 0.2rem 0.9rem rgba(0, 0, 0, 0.1) !important;
+//   box-shadow: 0 0.2rem 0.2rem rgba(19, 85, 226, 0.15) !important;
+//   display: flex;
 
-  //   flex-direction: row;
-  justify-content: center;
+//   //   flex-direction: row;
+//   justify-content: center;
 
-  position: relative;
-  vertical-align: baseline;
-  z-index: 1000;
+//   position: relative;
+//   vertical-align: baseline;
+//   z-index: 1000;
 
-  h2 {
-    // because bootstarp, need to remove
-    margin: 0 !important;
+//   h2 {
+//     // because bootstarp, need to remove
+//     margin: 0 !important;
 
-    color: $light;
-    font-size: 20px;
-    line-height: 20px;
-    padding: 0.45rem;
-    text-transform: uppercase;
-    letter-spacing: 3px;
-    font-weight: bold;
-  }
-}
+//     color: $light;
+//     font-size: 20px;
+//     line-height: 20px;
+//     padding: 0.45rem;
+//     text-transform: uppercase;
+//     letter-spacing: 3px;
+//     font-weight: bold;
+//   }
+// }
 
 .verticalLine {
   opacity: 33%;
   border-left: 2px solid $dark;
 }
 
-.navbar {
-  align-self: space-between;
-  //   grid-column: span 12;
-  //   padding: 0.1rem;
-  background-color: $background-color;
-  display: flex;
+// .navbar {
+//   align-self: space-between;
+//   //   grid-column: span 12;
+//   //   padding: 0.1rem;
+//   background-color: $background-color;
+//   display: flex;
 
-  flex-direction: row;
-  //   vertical-align: baseline;
-  place-items: center;
-  & > * {
-    margin: 0 0.81rem;
-  }
-  & > *:nth-child(3) {
-    margin-left: auto;
-  }
-}
+//   flex-direction: row;
+//   //   vertical-align: baseline;
+//   place-items: center;
+//   & > * {
+//     margin: 0 0.81rem;
+//   }
+//   & > *:nth-child(3) {
+//     margin-left: auto;
+//   }
+// }
 
 .logo {
   //   color: $light;
+  align-self: center;
+
   color: $dark;
   font-size: 16pt;
   font-weight: bold;
@@ -108,6 +148,7 @@ $background-color: #fff;
 }
 
 .dropDownTitle {
+  justify-self: end;
   color: $dark !important;
   font: inherit;
   //   opacity: 90%;
