@@ -18,6 +18,7 @@ import {
   MatrixEditor,
   Tag,
   NewHeatMap,
+  GradientScale,
 } from 'components';
 
 import { MetaPropsType, withLayout } from 'layout/MainLayout';
@@ -161,12 +162,15 @@ const LabPage: React.FC<ILabPageProps> = ({ currentLabName }) => {
             </Paper> */}
             <Paper>
               <NewHeatMap
-                minVal={min}
-                maxVal={max}
+                minVal={Math.min(...allData.dataVal)}
+                maxVal={Math.max(...allData.dataVal)}
                 dataX={allData.dataX}
                 dataY={allData.dataY}
                 dataVal={allData.dataVal}
               />
+            </Paper>
+            <Paper>
+              <GradientScale />
             </Paper>
           </Column>
         </div>

@@ -31,13 +31,12 @@ const NewHeatMap: React.FC<HeatMapProps> = ({
   let radiusInitial = width / 185;
   let blurInitial = radiusInitial * 1.15;
 
-  console.log('radiusInitial', radiusInitial);
+  // console.log('radiusInitial', radiusInitial);
 
   const [radius, setRadius] = React.useState<number>(radiusInitial);
   const [blur, setBlur] = React.useState<number>(blurInitial);
 
   const init = () => {
-    // setTimeout(() => {
     if (
       canvasRef.current &&
       canvasBrushRef.current &&
@@ -58,7 +57,6 @@ const NewHeatMap: React.FC<HeatMapProps> = ({
         .radius(radius, blur);
       heat.draw();
     }
-    // }, 0);
   };
 
   React.useEffect(() => {

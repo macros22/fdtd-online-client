@@ -25,7 +25,7 @@ interface IStartDataReceiving {
 export const useWebSocket = () => {
     const connectWS = ({ setIsWSocketConnected, setStep, setAllData, setSocket }: IConnectWS): void => {
         const socket = new WebSocket(SERVER_URL);
-        console.log(socket)
+        // console.log(socket)
         if (socket) {
             socket.onopen = () => {
                 setIsWSocketConnected(true);
@@ -34,7 +34,7 @@ export const useWebSocket = () => {
             socket.onmessage = (event: any) => {
                 let data = JSON.parse(event.data);
                 setStep(data.step || 0);
-                console.log(Object.keys(data));
+                // console.log(Object.keys(data));
                 setAllData(data);
             };
 
