@@ -14,30 +14,64 @@ $background-color: #fff;
 
 ////////////
 
-.parentUp {
-  padding: 0.75rem;
-  z-index: 1001;
+// .parentUp {
+//   padding: 0.75rem;
+//   z-index: 1001;
+//   display: grid;
+
+//   grid-template-columns: auto 300px auto;
+//   align-self: center;
+// }
+
+// .parent {
+// background-color: $primary;
+// box-shadow: 0 0.2rem 0.2rem rgba(19, 85, 226, 0.15) !important;
+
+//   vertical-align: baseline;
+//   text-align: center;
+//   z-index: 1000;
+
+//   h2 {
+//     // because bootstarp, need to remove
+//     margin: 0 !important;
+
+//     color: $light;
+//     font-size: 20px;
+//     line-height: 20px;
+//     padding: 0.45rem;
+//     text-transform: uppercase;
+//     letter-spacing: 3px;
+//     font-weight: bold;
+//   }
+// }
+
+.headerUp {
+  grid-area: headerUp;
   display: grid;
 
-  grid-template-columns: auto 300px auto;
-  align-self: center;
+  grid-template-columns: 350px auto 350px;
+
+  grid-template-areas: 'logo labContentType right';
 }
 
-.parent {
+.headerDown {
+  grid-area: headerDown;
   background-color: $primary;
   box-shadow: 0 0.2rem 0.2rem rgba(19, 85, 226, 0.15) !important;
-
-  vertical-align: baseline;
-  text-align: center;
+  display: flex;
+  justify-content: center;
   z-index: 1000;
+
+  // vertical-align: baseline;
 
   h2 {
     // because bootstarp, need to remove
     margin: 0 !important;
 
+    align-self: center;
     color: $light;
-    font-size: 20px;
-    line-height: 20px;
+    font-size: 18px;
+    line-height: 18px;
     padding: 0.45rem;
     text-transform: uppercase;
     letter-spacing: 3px;
@@ -60,10 +94,11 @@ $background-color: #fff;
 }
 
 .labContentType {
+  grid-area: labContentType;
   align-self: center;
   justify-self: center;
   // margin: 0 auto !important;
-  max-width: max-content;
+  // max-width: max-content;
   display: flex;
   flex-direction: row;
   gap: 1rem;

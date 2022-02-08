@@ -20,7 +20,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({
         <meta name='keywords' content={keywords || 'physics, wave, optics'} />
         <meta name='viewport' content='width=device-width, initial-scale=1' />
       </Head>
-      <div className={styles.container}>
+      <div className={styles.wrapper}>
         <Header />
 
         <main>{children}</main>

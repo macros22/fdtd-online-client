@@ -1,5 +1,44 @@
 @import 'styles/colors.scss';
 
+.wrapper {
+  grid-area: content;
+  background-color: $light;
+  height: 100%;
+  display: grid;
+  grid-template-columns: 185px auto 185px;
+  grid-template-areas: 'sidebar contentInner sidebar2';
+}
+
+@media (max-width: 900px) {
+  .wrapper {
+    display: grid;
+    background-color: $light;
+    grid-template-columns: 1fr 1fr;
+    height: 100%;
+    grid-template-areas:
+      'sidebar sidebar2'
+      'contentInner contentInner';
+  }
+}
+
+.sidebar {
+  grid-area: sidebar;
+  background-color: $white;
+  padding: 1rem;
+}
+
+.sidebar2 {
+  grid-area: sidebar2;
+  background-color: $white;
+  padding: 1rem;
+}
+
+.content {
+  grid-area: contentInner;
+  // background-color: #444;
+  padding: 1rem;
+}
+
 .graph {
   display: inline-grid;
   grid-template-columns: auto auto;

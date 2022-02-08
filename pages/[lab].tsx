@@ -105,8 +105,9 @@ const LabPage: React.FC<ILabPageProps> = ({ currentLabName }) => {
 
   return (
     <>
-      <div className='d-flex bg-light align-items-stretch mh-100'>
-        <Sidebar>
+      <div className={styles.wrapper}>
+        <Sidebar className={styles.sidebar}>
+          {/* <div className={styles.sidebar}> */}
           <TextInput
             value={typeof lambda === 'number' ? lambda : 0}
             label={WAVE_LENGTH_NAME}
@@ -137,8 +138,10 @@ const LabPage: React.FC<ILabPageProps> = ({ currentLabName }) => {
             </>
           )}
         </Sidebar>
+        {/* </div> */}
 
-        <div className='p-3 bd-highlight w-75'>
+        {/* <div className='p-3 bd-highlight w-75'> */}
+        <div className={styles.content}>
           <div className={styles.workArea}>
             <h6>
               <span>
@@ -164,7 +167,8 @@ const LabPage: React.FC<ILabPageProps> = ({ currentLabName }) => {
           </div>
         </div>
 
-        <Sidebar>
+        <Sidebar className={styles.sidebar2}>
+          {/* <div className={styles.sidebar2}> */}
           {currentLabName !== LabNames.LAB_2D && (
             <>
               <p className={styles.tempP}>Выбор данных:</p>
@@ -241,6 +245,7 @@ const LabPage: React.FC<ILabPageProps> = ({ currentLabName }) => {
             {step}
           </Tag>
         </Sidebar>
+        {/* </div> */}
       </div>
     </>
   );

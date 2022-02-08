@@ -37,9 +37,8 @@ export default function Header(): JSX.Element {
     React.useState<LabContentKind>(LabContentKind.MODEL);
 
   return (
-    <div className={styles.container}>
-      {/* <div className={styles.parentUp}> */}
-      <nav className={styles.parentUp}>
+    <>
+      <nav className={styles.headerUp}>
         <Link href='/'>
           <a className={styles.logo}>{WAVE_OPTICS_NAME}</a>
         </Link>
@@ -69,14 +68,13 @@ export default function Header(): JSX.Element {
             </a>
           </Link>
         </div>
-        <React.Fragment className={styles.dropdown}>
-          <Dropdown />
-        </React.Fragment>
+
+        <Dropdown />
       </nav>
-      {/* </div> */}
-      <div className={styles.parent}>
+
+      <div className={styles.headerDown}>
         <h2>{currentLabName}</h2>
       </div>
-    </div>
+    </>
   );
 }
