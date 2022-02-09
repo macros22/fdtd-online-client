@@ -19,7 +19,10 @@ import {
   Tag,
   NewHeatMap,
   GradientScale,
+  ButtonGroup,
 } from 'components';
+
+import cn from 'classnames';
 
 import { MetaPropsType, withLayout } from 'layout/MainLayout';
 import { dataType } from 'types/types';
@@ -29,6 +32,7 @@ import { useWebSocket } from 'hooks/useWebSocket';
 import { displayedData } from 'utils/displayed-data';
 import { GetStaticPaths, GetStaticProps, GetStaticPropsContext } from 'next';
 import { ParsedUrlQuery } from 'querystring';
+import { Button } from 'components/atoms/Button/Button';
 
 export enum LabNames {
   LAB_2D = '2D',
@@ -172,18 +176,10 @@ const LabPage: React.FC<ILabPageProps> = ({ currentLabName }) => {
           {currentLabName !== LabNames.LAB_2D && (
             <>
               <p className={styles.tempP}>Выбор данных:</p>
-
-              <div className={styles.flexRow}>
+              <ButtonGroup activeButton={currentDisplayingData}>
                 {displayedData.map((item, index) => {
                   return (
                     <button
-                      className={
-                        styles.buttonDataType +
-                        ' btn bold ' +
-                        (currentDisplayingData == index
-                          ? 'btn-primary'
-                          : 'btn-outline-primary')
-                      }
                       key={item.name}
                       onClick={() => {
                         setCurrentDisplayingData(index);
@@ -193,7 +189,7 @@ const LabPage: React.FC<ILabPageProps> = ({ currentLabName }) => {
                     </button>
                   );
                 })}
-              </div>
+              </ButtonGroup>
               <hr />
             </>
           )}

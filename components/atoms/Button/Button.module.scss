@@ -1,0 +1,64 @@
+@import 'styles/colors';
+@import 'styles/vars';
+
+.button {
+  border: none;
+  border-radius: 5px;
+
+  box-sizing: border-box;
+
+  cursor: pointer;
+  display: inline-block;
+
+  font-size: 14px;
+  padding: 10px;
+  text-align: center;
+  transition: all 0.2s;
+}
+
+.primary {
+  background-color: $primary;
+  color: $white;
+}
+
+.primary:hover {
+  background-color: $info;
+}
+
+.outline {
+  border: $border-width solid $primary;
+  background-color: $white;
+  color: $primary;
+}
+
+.outline:hover {
+  background-color: $primary;
+  color: $white;
+}
+
+.ghost {
+  background: none;
+  border: 1px solid $gray;
+  color: var(--black);
+}
+
+.ghost:hover {
+  background-color: $primary;
+  color: var(--white);
+}
+
+.arrow {
+  display: inline-block;
+
+  margin-left: 10px;
+}
+
+.down {
+  transform: rotate(90deg);
+  transition: all 0.2s;
+}
+
+.primary svg,
+.ghost:hover svg {
+  fill: $white;
+}
