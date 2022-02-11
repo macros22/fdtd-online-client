@@ -24,6 +24,7 @@ $background-color: #fff;
 }
 
 .headerDown {
+  align-items: center;
   background-color: $primary;
   box-shadow: 0 0.2rem 0.2rem rgba(19, 85, 226, 0.15) !important;
   display: flex;

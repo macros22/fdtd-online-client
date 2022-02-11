@@ -1,13 +1,15 @@
-import * as React from 'react'
-
-// import MainLayout from 'layout/MainLayout';
-import { MatrixEditor } from 'components';
-// import Svg from '../components/DifractionEditor';
+import { Select, Option } from 'components';
+import * as React from 'react';
 
 export default function Index() {
   return (
-    // <MainLayout title={'Wave optics'}>
-    <MatrixEditor buttonStyle={' mt-3'} />
-    // </MainLayout>
+    <>
+      <Select placeholder='Choose an option'>
+        <Option value='one'>One</Option>
+        <Option value='two'>Two</Option>
+        <Option value='three'>Three</Option>
+        <Option value='four'>Four</Option>
+      </Select>
+    </>
   );
 }

@@ -30,6 +30,7 @@ import {
 } from 'app/reducers/labTypeSlice';
 import { useAppDispatch, useAppSelector } from 'app/hooks';
 import { LabContentType } from 'types/types';
+import { Select, Option } from 'components';
 
 export default function Header(): JSX.Element {
   const currentLabTitle =
@@ -79,7 +80,15 @@ export default function Header(): JSX.Element {
       </nav>
 
       <div className={styles.headerDown}>
-        <h2>{currentLabTitle}</h2>
+        {/* <h2>{currentLabTitle}</h2> */}
+        {/* <> */}
+        <Select placeholder={currentLabTitle}>
+          <Option value={currentLabTitle}>{currentLabTitle}</Option>
+          <Option value={currentLabTitle}>{currentLabTitle}</Option>
+          <Option value={currentLabTitle}>{currentLabTitle}</Option>
+          <Option value={currentLabTitle}>{currentLabTitle}</Option>
+        </Select>
+        {/* </> */}
       </div>
     </>
   );
