@@ -1,0 +1,45 @@
+//https://themestr.app/
+@import 'colors';
+
+//@import "bootstrap";
+@import '../../node_modules/bootstrap/scss/bootstrap';
+
+:root {
+  --primary: #{$primary};
+  --secondary: #{$secondary};
+  --success: #{$success};
+  --danger: #{$danger};
+  --info: #{$info};
+  --warning: #{$warning};
+  --light: #{$light};
+  --dark: #{$dark};
+  --gray: #{$gray};
+  --primaryFont: #{$primaryFont};
+}
+
+// html {
+//   min-width: 500px !important;
+// }
+
+// adding google font
+// https://johnny.am/blog/n2-adding-google-fonts-to-nextjs-project
+* {
+  color: $primaryFont;
+  font-family: Roboto, Arial, Helvetica, sans-serif;
+
+  a {
+    text-decoration: none;
+  }
+
+  // font-family: 'Roboto';
+}
+
+.server-badge {
+  width: 100%;
+}
+
+// Add SASS theme customizations here..
+//html {font-size: .8rem;}
+//@include media-breakpoint-up(sm) {html {font-size: .9rem;}}
+//@include media-breakpoint-up(md) {html {font-size: .9rem;}}
+//@include media-breakpoint-up(lg) {html {font-size: 1rem;}}

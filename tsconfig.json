@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "baseUrl": ".",
+    "baseUrl": "./src/",
     "allowJs": true,
     "allowSyntheticDefaultImports": true,
     "jsx": "preserve",

@@ -1,0 +1,145 @@
+$border-width: 4px;
+
+@import 'styles/colors.scss';
+$border-color: $light;
+// $background-color: $primary;
+$background-color: #fff;
+
+////////////////////
+.container {
+  display: grid;
+  grid-template-rows: 10vh 5vh;
+  max-height: 15vh;
+}
+
+.headerUp {
+  display: grid;
+  grid-area: headerUp;
+
+  grid-template-areas: 'logo labContentType right';
+
+  grid-template-columns: 350px auto 350px;
+
+  z-index: 1001;
+}
+
+.headerDown {
+  background-color: $primary;
+  box-shadow: 0 0.2rem 0.2rem rgba(19, 85, 226, 0.15) !important;
+  display: flex;
+  grid-area: headerDown;
+  justify-content: center;
+  z-index: 1000;
+
+  h2 {
+    align-self: center;
+    color: $light;
+    font-size: 18px;
+    font-weight: bold;
+    letter-spacing: 3px;
+    line-height: 18px;
+    // because bootstarp, need to remove
+    margin: 0 !important;
+    padding: 0.45rem;
+    text-transform: uppercase;
+  }
+}
+
+.activeLabContentType {
+  border-bottom: 3px solid tomato !important;
+  color: $dark;
+}
+
+.labContentType {
+  align-self: center;
+  // margin: 0 auto !important;
+  // max-width: max-content;
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  grid-area: labContentType;
+  justify-self: center;
+  a {
+    border-bottom: 3px solid transparent;
+    box-sizing: content-box !important;
+
+    color: $dark;
+    font-size: 18px;
+    font-weight: bold;
+
+    &:hover {
+      border-bottom: 3px solid tomato;
+    }
+  }
+}
+
+//     color: $light;
+//     font-size: 20px;
+//     line-height: 20px;
+//     padding: 0.45rem;
+//     text-transform: uppercase;
+//     letter-spacing: 3px;
+//     font-weight: bold;
+//   }
+// }
+
+.verticalLine {
+  border-left: 2px solid $dark;
+  opacity: 33%;
+}
+
+.logo {
+  //   color: $light;
+  align-self: center;
+  color: $dark;
+  font-size: 16pt;
+  font-weight: bold;
+  letter-spacing: 0.15rem;
+
+  margin-left: 1rem;
+  text-decoration: none;
+  text-transform: uppercase;
+
+  &:hover {
+    color: $dark;
+    opacity: 95%;
+  }
+}
+
+.dropDownTitle {
+  color: $dark !important;
+  font: inherit;
+  justify-self: end;
+  //   opacity: 90%;
+  z-index: 1000;
+  &:hover {
+    opacity: 100%;
+  }
+}
+
+/* Add a black background color to the top navigation */
+.topnav {
+  background-color: $light;
+  color: $dark;
+  display: flex;
+  overflow: hidden;
+  padding: 0.2rem;
+  //box-shadow: 1rem 2rem #7a7e82;
+  a {
+    border-bottom: $border-width solid transparent;
+    color: $border-color;
+    font-size: 18px;
+    padding: 8px 18px;
+    text-align: center;
+    text-decoration: none;
+    transition: all 0.4s ease-in;
+
+    &.active {
+      border-bottom: $border-width solid $border-color;
+    }
+
+    &:hover {
+      border-bottom: $border-width solid $border-color;
+    }
+  }
+}
