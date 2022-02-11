@@ -9,7 +9,7 @@ import { ParsedUrlQuery } from 'querystring';
 
 import { useAppDispatch } from 'app/hooks';
 import { setLabContentType, setLabName } from 'app/reducers/labTypeSlice';
-import { data2D } from 'theory-posts/2D';
+// import { data2D } from 'theory-posts/2D';
 
 const LabPage: React.FC<ILabPageProps> = ({
   currentLabName,
@@ -88,20 +88,6 @@ export const getStaticProps: GetStaticProps<ILabPageProps> = async ({
 
     if (currentLabName && currentLabContentType) {
       if (currentLabContentType == LabContentType.THEORY) {
-        const data = data2D;
-
-        const mdxSource = await serialize(data, {
-          mdxOptions: {
-            remarkPlugins: [markdown, remarkMath],
-            rehypePlugins: [rehypeKatex],
-          },
-        });
-
-        return {
-          props: {
-            mdxSource,
-          },
-        };
       }
 
       return {
