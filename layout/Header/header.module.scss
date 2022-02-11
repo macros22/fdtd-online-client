@@ -46,36 +46,37 @@ $background-color: #fff;
 // }
 
 .headerUp {
-  grid-area: headerUp;
   display: grid;
+  grid-area: headerUp;
+
+  grid-template-areas: 'logo labContentType right';
 
   grid-template-columns: 350px auto 350px;
 
-  grid-template-areas: 'logo labContentType right';
+  z-index: 1001;
 }
 
 .headerDown {
-  grid-area: headerDown;
   background-color: $primary;
   box-shadow: 0 0.2rem 0.2rem rgba(19, 85, 226, 0.15) !important;
   display: flex;
+  grid-area: headerDown;
   justify-content: center;
   z-index: 1000;
 
   // vertical-align: baseline;
 
   h2 {
-    // because bootstarp, need to remove
-    margin: 0 !important;
-
     align-self: center;
     color: $light;
     font-size: 18px;
+    font-weight: bold;
+    letter-spacing: 3px;
     line-height: 18px;
+    // because bootstarp, need to remove
+    margin: 0 !important;
     padding: 0.45rem;
     text-transform: uppercase;
-    letter-spacing: 3px;
-    font-weight: bold;
   }
 }
 
@@ -89,27 +90,26 @@ $background-color: #fff;
 // }
 
 .activeLabContentType {
-  color: $dark;
   border-bottom: 3px solid tomato !important;
+  color: $dark;
 }
 
 .labContentType {
-  grid-area: labContentType;
   align-self: center;
-  justify-self: center;
   // margin: 0 auto !important;
   // max-width: max-content;
   display: flex;
   flex-direction: row;
   gap: 1rem;
+  grid-area: labContentType;
+  justify-self: center;
   a {
-    box-sizing: content-box !important;
-
     border-bottom: 3px solid transparent;
-    font-weight: bold;
+    box-sizing: content-box !important;
 
     color: $dark;
     font-size: 18px;
+    font-weight: bold;
 
     &:hover {
       border-bottom: 3px solid tomato;
@@ -144,8 +144,8 @@ $background-color: #fff;
 // }
 
 .verticalLine {
-  opacity: 33%;
   border-left: 2px solid $dark;
+  opacity: 33%;
 }
 
 // .navbar {
@@ -183,9 +183,9 @@ $background-color: #fff;
 }
 
 .dropDownTitle {
-  justify-self: end;
   color: $dark !important;
   font: inherit;
+  justify-self: end;
   //   opacity: 90%;
   z-index: 1000;
   &:hover {

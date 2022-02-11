@@ -1,5 +1,5 @@
-import { LabNames } from "pages/[lab]";
-import React, { Children, PropsWithChildren, ReactNode } from "react";
+import { LabNames } from 'pages/[lab]/[contentType]';
+import React, { Children, PropsWithChildren, ReactNode } from 'react';
 
 let defaultMatrix: number[][] = [];
 const rIndexes = [1, 1.5, 2];

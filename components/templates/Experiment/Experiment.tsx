@@ -8,7 +8,7 @@ import {
   WAVE_LENGTH_NAME,
 } from 'names/lab2.name';
 
-import styles from './lab3/lab3.module.scss';
+import styles from './Experiment.module.scss';
 import {
   HeatMap,
   Sidebar,
@@ -22,27 +22,23 @@ import {
   ButtonGroup,
 } from 'components';
 
-import cn from 'classnames';
-
-import { MetaPropsType, withLayout } from 'layout/MainLayout';
-import { dataType } from 'types/types';
+import { dataType, LabNames } from 'types/types';
 
 import { useRefractionMatrix } from 'store/refraction-matrix.context';
 import { useWebSocket } from 'hooks/useWebSocket';
 import { displayedData } from 'utils/displayed-data';
-import { GetStaticPaths, GetStaticProps, GetStaticPropsContext } from 'next';
-import { ParsedUrlQuery } from 'querystring';
-import { Button } from 'components/atoms/Button/Button';
+import { useAppDispatch } from 'app/hooks';
+import { setLabContentType, setLabName } from 'app/reducers/labTypeSlice';
+import { IExperimentProps } from './Experiment.props';
 
-export enum LabNames {
-  LAB_2D = '2D',
-  LAB_3D = '3D',
-  DIFRACTION = 'DIFRACTION',
-  INTERFERENCE = 'INTERFERENCE',
-  BORDER = 'BORDER',
-}
+const Experiment: React.FC<IExperimentProps> = ({
+  currentLabName,
+  currentLabContentType,
+}) => {
+  const dispatch = useAppDispatch();
+  dispatch(setLabName(currentLabName));
+  dispatch(setLabContentType(currentLabContentType));
 
-const LabPage: React.FC<ILabPageProps> = ({ currentLabName }) => {
   const [isWSocketConnected, setIsWSocketConnected] =
     React.useState<boolean>(false);
 
@@ -72,6 +68,7 @@ const LabPage: React.FC<ILabPageProps> = ({ currentLabName }) => {
   const [allData, setAllData] = React.useState<dataType>(initAllData);
 
   const { matrix, setMatrix } = useRefractionMatrix(currentLabName);
+  console.log(currentLabContentType);
 
   React.useEffect(() => {
     connectWS({
@@ -247,44 +244,4 @@ const LabPage: React.FC<ILabPageProps> = ({ currentLabName }) => {
   );
 };
 
-export default withLayout(LabPage);
-
-export const getStaticPaths: GetStaticPaths = async () => {
-  return {
-    paths: [
-      { params: { lab: LabNames.LAB_2D } },
-      { params: { lab: LabNames.LAB_3D } },
-      { params: { lab: LabNames.DIFRACTION } },
-      { params: { lab: LabNames.INTERFERENCE } },
-      { params: { lab: LabNames.BORDER } },
-    ],
-    fallback: true,
-  };
-};
-
-export const getStaticProps: GetStaticProps<ILabPageProps> = async ({
-  params,
-}: GetStaticPropsContext<ParsedUrlQuery>) => {
-  if (typeof params?.lab === 'string') {
-    const currentLabName: LabNames | null =
-      Object.values(LabNames).find(
-        (l) => l == params.lab?.toString().toUpperCase()
-      ) || null;
-
-    if (currentLabName) {
-      return {
-        props: {
-          currentLabName,
-        },
-      };
-    }
-  }
-
-  return {
-    notFound: true,
-  };
-};
-
-export interface ILabPageProps extends Record<string, unknown> {
-  currentLabName: LabNames;
-}
+export default Experiment;

@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 
-import cn from 'classnames';
+import cn from 'clsx';
 
 const WAVE_OPTICS_NAME = 'ВОЛНОВАЯ ОПТИКА';
 
@@ -23,18 +23,22 @@ const sections = [
 
 import styles from './Header.module.scss';
 import Dropdown from 'components/molecules/Dropdown';
+import {
+  selectLabContentType,
+  selectLabName,
+  setLabContentType,
+} from 'app/reducers/labTypeSlice';
+import { useAppDispatch, useAppSelector } from 'app/hooks';
+import { LabContentType } from 'types/types';
 
 export default function Header(): JSX.Element {
-  const currentLabName =
+  const currentLabTitle =
     'Моделирование явления интерференции электромагнитных волн';
 
-  enum LabContentKind {
-    MODEL = 'MODEL',
-    THEORY = 'THEORY',
-  }
+  const currentLabContentType = useAppSelector(selectLabContentType);
+  const currentLabName = useAppSelector(selectLabName);
 
-  const [currentLabContent, setCurrentLabContent] =
-    React.useState<LabContentKind>(LabContentKind.MODEL);
+  const dispatch = useAppDispatch();
 
   return (
     <>
@@ -44,24 +48,26 @@ export default function Header(): JSX.Element {
         </Link>
 
         <div className={styles.labContentType}>
-          <Link href='#'>
+          <Link href={`/${currentLabName}/${LabContentType.THEORY}`}>
             <a
-              onClick={() => setCurrentLabContent(LabContentKind.THEORY)}
+              onClick={() => dispatch(setLabContentType(LabContentType.THEORY))}
               className={cn({
                 [styles.activeLabContentType]:
-                  currentLabContent == LabContentKind.THEORY,
+                  currentLabContentType === LabContentType.THEORY,
               })}
             >
               Теория
             </a>
           </Link>
           <div className={styles.verticalLine}></div>
-          <Link href='#'>
+          <Link href={`/${currentLabName}/${LabContentType.EXPERIMENT}`}>
             <a
-              onClick={() => setCurrentLabContent(LabContentKind.MODEL)}
+              onClick={() =>
+                dispatch(setLabContentType(LabContentType.EXPERIMENT))
+              }
               className={cn(styles.labContentType, {
                 [styles.activeLabContentType]:
-                  currentLabContent == LabContentKind.MODEL,
+                  currentLabContentType == LabContentType.EXPERIMENT,
               })}
             >
               Модель
@@ -73,7 +79,7 @@ export default function Header(): JSX.Element {
       </nav>
 
       <div className={styles.headerDown}>
-        <h2>{currentLabName}</h2>
+        <h2>{currentLabTitle}</h2>
       </div>
     </>
   );
