@@ -5,7 +5,7 @@
   display: grid;
   grid-area: content;
   grid-template-areas: 'sidebar contentInner sidebar2';
-  grid-template-columns: 220px auto 220px;
+  grid-template-columns: 17% auto 17%;
   height: 100%;
 }
 
@@ -24,12 +24,15 @@
 .sidebar {
   background-color: $white;
   grid-area: sidebar;
+  overflow-y: scroll;
   padding: 1rem;
+  scrollbar-width: thin;
 }
 
 .sidebar2 {
   background-color: $white;
   grid-area: sidebar2;
+
   padding: 1rem;
 }
 

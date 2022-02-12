@@ -79,7 +79,7 @@ const NewHeatMap: React.FC<HeatMapProps> = ({
       <canvas style={{ display: 'none' }} ref={canvasGradientRef} />
       <canvas ref={canvasRef} />
 
-      <div className={styles.options}>
+      {/* <div className={styles.options}>
         <label>Radius </label>
         <input
           onChange={radiusHandler}
@@ -101,7 +101,7 @@ const NewHeatMap: React.FC<HeatMapProps> = ({
           min={blurInitial - 0.2}
           max={blurInitial + 0.2}
         />
-      </div>
+      </div> */}
     </React.Fragment>
   );
 };
