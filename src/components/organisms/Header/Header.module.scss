@@ -24,26 +24,14 @@ $background-color: #fff;
 }
 
 .headerDown {
-  align-items: center;
   background-color: $primary;
   box-shadow: 0 0.2rem 0.2rem rgba(19, 85, 226, 0.15) !important;
-  display: flex;
+  display: grid;
   grid-area: headerDown;
-  justify-content: center;
-  z-index: 1000;
+  grid-template-areas: 'label select .';
 
-  h2 {
-    align-self: center;
-    color: $light;
-    font-size: 18px;
-    font-weight: bold;
-    letter-spacing: 3px;
-    line-height: 18px;
-    // because bootstarp, need to remove
-    margin: 0 !important;
-    padding: 0.45rem;
-    text-transform: uppercase;
-  }
+  grid-template-columns: 250px auto 250px;
+  z-index: 1000;
 }
 
 .activeLabContentType {

@@ -76,19 +76,18 @@ export default function Header(): JSX.Element {
           </Link>
         </div>
 
-        <Dropdown />
+        {/* <Dropdown /> */}
       </nav>
 
       <div className={styles.headerDown}>
         {/* <h2>{currentLabTitle}</h2> */}
-        {/* <> */}
+
         <Select placeholder={currentLabTitle}>
           <Option value={currentLabTitle}>{currentLabTitle}</Option>
           <Option value={currentLabTitle}>{currentLabTitle}</Option>
           <Option value={currentLabTitle}>{currentLabTitle}</Option>
           <Option value={currentLabTitle}>{currentLabTitle}</Option>
         </Select>
-        {/* </> */}
       </div>
     </>
   );

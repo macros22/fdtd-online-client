@@ -1,40 +1,47 @@
+.label {
+  align-self: center;
+  color: white;
+  font-size: 12px;
+  grid-area: label;
+  justify-self: self-end;
+  letter-spacing: 2px;
+  opacity: 75%;
+  padding: 0.1rem;
+}
+
 .selectContainer {
+  align-self: center;
   border-radius: 5px;
   display: inline-block;
+  grid-area: select;
+  justify-self: center;
+
   position: relative;
   width: max-content;
+
+  svg {
+    margin-left: 8px;
+    transform: rotate(0);
+
+    &.rotated {
+      transform: rotate(180deg);
+    }
+  }
 }
 
 .selectedText {
   cursor: pointer;
 
-  //   font-size: large;
-  //   padding: 10px 20px;
-  //   text-align: center;
-
-  svg {
-    margin-left: 8px;
-    transform: rotate(180deg);
-
-    &.rotated {
-      transform: rotate(0);
-    }
-  }
-
   span {
-    align-self: baseline;
-    // border-bottom: 1px dashed tomato;
+    align-self: center;
     color: white;
     cursor: pointer;
-    font-size: 20px;
+    font-size: 17px;
     font-weight: bold;
     letter-spacing: 3px;
-    line-height: 20px;
-    // because bootstarp, need to remove
-    // margin: 0 !important;
-    // padding: 0.45rem;
+    line-height: 26px;
+    margin: 0 !important;
     text-transform: uppercase;
-    vertical-align: auto;
   }
 }
 
@@ -44,7 +51,7 @@
   border-radius: 5px;
 
   margin: 0;
-  margin-top: 5px;
+  margin-top: 10px;
   padding: 0;
   position: absolute;
   text-align: center;

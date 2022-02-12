@@ -4,6 +4,13 @@
 //@import "bootstrap";
 @import '../../node_modules/bootstrap/scss/bootstrap';
 
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  scrollbar-width: thin;
+}
+
 :root {
   --primary: #{$primary};
   --secondary: #{$secondary};

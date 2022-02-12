@@ -48,14 +48,14 @@ export class heatmap {
     // }
 
     defaultGradient: { [key: string]: string } = {
-        0: 'blue',
-        0.4: 'cyan',
-        0.5: 'lime',
-        0.6: 'yellow',
-        1.0: 'red',
-        // 0: '#6038bd',
-        // 0.5: 'white',
-        // 1: '#6038bd',
+        // 0: 'blue',
+        // 0.4: 'cyan',
+        // 0.5: 'lime',
+        // 0.6: 'yellow',
+        // 1.0: 'red',
+        0: 'red',
+        0.5: 'white',
+        1: 'blue',
     }
 
     data(newData: pointType[]) {
