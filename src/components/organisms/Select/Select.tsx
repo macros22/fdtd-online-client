@@ -1,6 +1,5 @@
 import React, { ReactNode, useState, useRef } from 'react';
 import useOnClickOutside from './useOnClickOutside';
-import { SelectContext } from './selectContext';
 import styles from './Select.module.scss';
 
 const Select: React.FC<{
@@ -11,7 +10,7 @@ const Select: React.FC<{
   const [selectedOption, setSelectedOption] = useState(defaultValue || '');
   const [showDropdown, setShowDropdown] = useState(false);
   const showDropdownHandler = () => setShowDropdown(!showDropdown);
-  const selectPlaceholder = placeholder || 'Choose an option';
+  const selectPlaceholder = placeholder || 'Choose an lab';
   const selectContainerRef = useRef(null);
 
   const clickOutsideHandler = () => setShowDropdown(false);
