@@ -8,8 +8,27 @@ import {
     PURGE,
     REGISTER,
 } from 'redux-persist'
-import storage from 'redux-persist/lib/storage' // defaults to localStorage for web
 
+import createWebStorage from "redux-persist/lib/storage/createWebStorage";
+
+const createNoopStorage = () => {
+    return {
+        getItem(_key: any) {
+            return Promise.resolve(null);
+        },
+        setItem(_key: any, value: any) {
+            return Promise.resolve(value);
+        },
+        removeItem(_key: any) {
+            return Promise.resolve();
+        },
+    };
+};
+
+const storage = typeof window !== "undefined" ? createWebStorage("local") : createNoopStorage();
+
+
+// import storage from 'redux-persist/lib/storage' // defaults to localStorage for web
 
 import labTypeReducer from './reducers/labTypeSlice'
 

@@ -8,7 +8,6 @@ export { default as Column } from './atoms/Column';
 export { default as MatrixEditor } from './organisms/MatrixEditor/MatrrixEditor';
 export { default as GradientScale } from './atoms/GradientScale';
 export { default as Canvas } from './molecules/Canvas';
-export { default as Dropdown } from './molecules/Dropdown';
 export { default as Tag } from './atoms/Tag/Tag';
 export { default as ButtonGroup } from './molecules/ButtonGroup/ButtonGroup';
 export { default as Experiment } from './templates/Experiment/Experiment';

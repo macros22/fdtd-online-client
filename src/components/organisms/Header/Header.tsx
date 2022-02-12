@@ -5,39 +5,24 @@ import cn from 'clsx';
 
 const WAVE_OPTICS_NAME = 'ВОЛНОВАЯ ОПТИКА';
 
-// import {
-//   LAB_1_NAME,
-//   LAB_2_NAME,
-//   LAB_3_NAME,
-//   LAB_4_NAME,
-//   LAB_5_NAME,
-// } from 'names/navbar.name';
-
-// const sections = [
-//   { title: LAB_1_NAME, url: '/lab1' },
-//   { title: LAB_2_NAME, url: '/lab2' },
-//   { title: LAB_3_NAME, url: '/lab3' },
-//   { title: LAB_4_NAME, url: '/lab4' },
-//   { title: LAB_5_NAME, url: '/lab5' },
-// ];
-
 import styles from './Header.module.scss';
-import Dropdown from 'components/molecules/Dropdown';
+
 import {
   selectLabContentType,
   selectLabName,
   setLabContentType,
 } from 'app/reducers/labTypeSlice';
 import { useAppDispatch, useAppSelector } from 'app/hooks';
-import { LabContentType } from 'types/types';
+import { LabContentType, LabNames } from 'types/types';
 import { Select, Option } from 'components';
+import { labTitles } from 'names/navbar.name';
 
 export default function Header(): JSX.Element {
-  const currentLabTitle =
-    'Моделирование явления интерференции электромагнитных волн';
-
   const currentLabContentType = useAppSelector(selectLabContentType);
   const currentLabName = useAppSelector(selectLabName);
+
+  const currentLabTitle =
+    Object.values(labTitles)[Object.values(LabNames).indexOf(currentLabName)];
 
   const dispatch = useAppDispatch();
 
@@ -75,18 +60,17 @@ export default function Header(): JSX.Element {
             </a>
           </Link>
         </div>
-
-        {/* <Dropdown /> */}
       </nav>
 
       <div className={styles.headerDown}>
-        {/* <h2>{currentLabTitle}</h2> */}
-
         <Select placeholder={currentLabTitle}>
-          <Option value={currentLabTitle}>{currentLabTitle}</Option>
-          <Option value={currentLabTitle}>{currentLabTitle}</Option>
-          <Option value={currentLabTitle}>{currentLabTitle}</Option>
-          <Option value={currentLabTitle}>{currentLabTitle}</Option>
+          {Object.values(LabNames).map((labName, index) => {
+            return (
+              <Option key={labName} value={labName}>
+                {Object.values(labTitles)[index]}
+              </Option>
+            );
+          })}
         </Select>
       </div>
     </>

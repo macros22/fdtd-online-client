@@ -1,5 +1,8 @@
-export const LAB_1_NAME = 'Двумерная(№1)';
-export const LAB_2_NAME = 'Трехмерная(№2)';
-export const LAB_3_NAME = 'Интерференция(№3)';
-export const LAB_4_NAME = 'Дифракция(№4)';
-export const LAB_5_NAME = 'Граница раздела двух сред(№5)';
+export const labTitles = {
+    LAB_1_NAME: 'Двумерная',
+    LAB_2_NAME: 'Трехмерная',
+    LAB_3_NAME: 'Моделирование явления дифракции электромагнитных волн',
+    LAB_4_NAME: 'Моделирование явления интерференции электромагнитных волн',
+    LAB_5_NAME: 'Граница раздела двух сред',
+}
+
