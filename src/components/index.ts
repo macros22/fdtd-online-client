@@ -11,7 +11,9 @@ export { default as Canvas } from './molecules/Canvas';
 export { default as Tag } from './atoms/Tag/Tag';
 export { default as ButtonGroup } from './molecules/ButtonGroup/ButtonGroup';
 export { default as Experiment } from './templates/Experiment/Experiment';
+export { default as Theory } from './templates/Theory/Theory';
 export { default as Header } from './organisms/Header/Header';
 export { default as Select } from "./organisms/Select/Select";
 export { default as Option } from "./organisms/Select/Option";
+
 

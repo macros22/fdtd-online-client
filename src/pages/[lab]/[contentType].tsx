@@ -1,5 +1,5 @@
 import React from 'react';
-import { Experiment } from 'components';
+import { Experiment, Theory } from 'components';
 
 import { withLayout } from 'layout/MainLayout';
 import { LabContentType, LabNames } from 'types/types';
@@ -9,11 +9,23 @@ import { ParsedUrlQuery } from 'querystring';
 
 import { useAppDispatch } from 'app/hooks';
 import { setLabContentType, setLabName } from 'app/reducers/labTypeSlice';
-// import { data2D } from 'theory-posts/2D';
+
+//@ts-ignore
+import { serialize } from 'next-mdx-remote/serialize';
+//@ts-ignore
+import { MDXRemote } from 'next-mdx-remote';
+import fs from 'fs';
+import path from 'path';
+import matter from 'gray-matter';
+import markdown from 'remark-parse';
+import remarkMath from 'remark-math';
+import rehypeKatex from 'rehype-katex';
 
 const LabPage: React.FC<ILabPageProps> = ({
   currentLabName,
   currentLabContentType,
+  // frontMatter: { title, date },
+  mdxSource,
 }) => {
   const dispatch = useAppDispatch();
   dispatch(setLabName(currentLabName));
@@ -21,7 +33,11 @@ const LabPage: React.FC<ILabPageProps> = ({
 
   switch (currentLabContentType) {
     case LabContentType.THEORY:
-      return <>theory</>;
+      return (
+        <Theory>
+          <MDXRemote {...mdxSource} />
+        </Theory>
+      );
     case LabContentType.EXPERIMENT:
       return (
         <>
@@ -88,6 +104,29 @@ export const getStaticProps: GetStaticProps<ILabPageProps> = async ({
 
     if (currentLabName && currentLabContentType) {
       if (currentLabContentType == LabContentType.THEORY) {
+        const files = fs.readdirSync(path.join('src/theory-posts'));
+
+        const markdownWithMeta = fs.readFileSync(
+          path.join('src/theory-posts', currentLabName + '.mdx'),
+          'utf-8'
+        );
+
+        const { data: frontMatter, content } = matter(markdownWithMeta);
+        const mdxSource = await serialize(content, {
+          mdxOptions: {
+            remarkPlugins: [markdown, remarkMath],
+            rehypePlugins: [rehypeKatex],
+          },
+        });
+
+        return {
+          props: {
+            currentLabName,
+            currentLabContentType,
+            frontMatter,
+            mdxSource,
+          },
+        };
       }
 
       return {
@@ -107,4 +146,6 @@ export const getStaticProps: GetStaticProps<ILabPageProps> = async ({
 export interface ILabPageProps extends Record<string, unknown> {
   currentLabName: LabNames;
   currentLabContentType: LabContentType;
+  frontMatter?: any;
+  mdxSource?: any;
 }

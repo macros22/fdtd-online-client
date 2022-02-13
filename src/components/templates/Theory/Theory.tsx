@@ -1,12 +1,11 @@
 import React from 'react';
-//@ts-ignore
-import TestMDX from 'theory-posts/test.mdx';
+import styles from './Theory.module.scss';
 
-const Theory = () => {
+const Theory: React.FC = ({ children }) => {
   return (
-    <>
-      <TestMDX />
-    </>
+    <div className={styles.wrapper}>
+      <div className={styles.content}>{children}</div>;
+    </div>
   );
 };
 
