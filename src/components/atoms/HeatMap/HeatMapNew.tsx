@@ -21,14 +21,14 @@ const NewHeatMap: React.FC<HeatMapProps> = ({
   dataX = [],
   dataY = [],
   dataVal = [],
-  width = 400,
-  height = 400,
+  width = 440,
+  height = 440,
 }) => {
   const canvasRef = React.useRef<HTMLCanvasElement | null>(null);
   const canvasBrushRef = React.useRef<HTMLCanvasElement | null>(null);
   const canvasGradientRef = React.useRef<HTMLCanvasElement | null>(null);
 
-  let radiusInitial = width / 185;
+  let radiusInitial = width / 180;
   let blurInitial = radiusInitial * 1.15;
 
   // console.log('radiusInitial', radiusInitial);
