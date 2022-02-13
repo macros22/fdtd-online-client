@@ -30,6 +30,14 @@ function MyApp({ Component, pageProps }: AppProps): JSX.Element {
               name='viewport'
               content='initial-scale=1, width=device-width'
             />
+
+            {/* //there's no way to disable mixed content using javascript but you can add this tag */}
+            <meta
+              http-equiv='Content-Security-Policy'
+              content='upgrade-insecure-requests'
+            />
+            {/* //to your HTML to allow mixed content */}
+
             <link
               href='https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css'
               rel='stylesheet'
