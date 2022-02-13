@@ -16,9 +16,10 @@ import { PersistGate } from 'redux-persist/integration/react';
 
 function MyApp({ Component, pageProps }: AppProps): JSX.Element {
   // Place this in the pages/_app.js file
-  // React.useEffect(() => {
-  //   import('bootstrap/dist/js/bootstrap');
-  // }, []);
+  React.useEffect(() => {
+    //@ts-ignore
+    import('bootstrap/dist/js/bootstrap');
+  }, []);
 
   return (
     <>
