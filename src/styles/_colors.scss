@@ -1,15 +1,18 @@
 // https://www.easel.ly/
-$primary: #3e6ae3;
-$secondary: #7a7e82;
-$success: #27b567;
-$danger: rgb(238, 106, 126);
-// $info: rgb(255, 177, 95);
-$info: tomato;
-$warning: #f2c231;
-$light: #f5f5f5;
-$dark: #4a4a4a;
-$gray: rgba(175, 173, 173, 0.78);
+:root {
+  --primary: rgb(62, 106, 227);
+  --darken-primary: hsl(from var(--primary) h s calc(l - 5%));
 
-$white: #fff;
+  --secondary: #7a7e82;
+  --success: #27b567;
+  --danger: rgb(238, 106, 126);
+  --info: tomato;
+  --warning: #f2c231;
+  --light: #f5f5f5;
+  --dark: #4a4a4a;
+  --gray: rgba(175, 173, 173, 0.78);
 
-$primaryFont: #4a4a4a;
+  --white: #fff;
+
+  --color-text: #4a4a4a;
+}

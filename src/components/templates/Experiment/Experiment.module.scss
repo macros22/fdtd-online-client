@@ -1,7 +1,5 @@
-@import 'styles/colors.scss';
-
 .wrapper {
-  background-color: $light;
+  background-color: var(--light);
   display: grid;
   grid-area: content;
   grid-template-areas: 'sidebar contentInner sidebar2';
@@ -11,7 +9,7 @@
 
 @media (max-width: 900px) {
   .wrapper {
-    background-color: $light;
+    background-color: var(--light);
     display: grid;
     grid-template-areas:
       'sidebar sidebar2'
@@ -22,7 +20,7 @@
 }
 
 .sidebar {
-  background-color: $white;
+  background-color: var(--white);
   grid-area: sidebar;
   overflow-y: scroll;
   padding: 1rem;
@@ -30,7 +28,7 @@
 }
 
 .sidebar2 {
-  background-color: $white;
+  background-color: var(--white);
   grid-area: sidebar2;
 
   padding: 1rem;
@@ -64,7 +62,7 @@
 }
 
 .tempP {
-  color: $gray;
+  color: var(--gray);
   font-size: 0.89rem;
   letter-spacing: 2px;
   margin-bottom: 0.2rem;

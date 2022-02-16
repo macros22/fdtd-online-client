@@ -1,52 +1,42 @@
-//https://themestr.app/
 @import 'colors';
-
-//@import "bootstrap";
-@import '../../node_modules/bootstrap/scss/bootstrap';
+@import 'fonts';
+@import 'vars';
+// @import '../../node_modules/bootstrap/scss/bootstrap';
 
 *,
 *::before,
 *::after {
   box-sizing: border-box;
-  scrollbar-width: thin;
 }
 
-:root {
-  --primary: #{$primary};
-  --secondary: #{$secondary};
-  --success: #{$success};
-  --danger: #{$danger};
-  --info: #{$info};
-  --warning: #{$warning};
-  --light: #{$light};
-  --dark: #{$dark};
-  --gray: #{$gray};
-  --primaryFont: #{$primaryFont};
-}
-
-// html {
-//   min-width: 500px !important;
-// }
-
-// adding google font
-// https://johnny.am/blog/n2-adding-google-fonts-to-nextjs-project
-* {
-  color: $primaryFont;
+html,
+body {
+  color: var(--color-text);
   font-family: Roboto, Arial, Helvetica, sans-serif;
+  font-size: var(--text-base-size);
+  scrollbar-width: thin;
 
   a {
     text-decoration: none;
   }
-
-  // font-family: 'Roboto';
-}
-
-.server-badge {
-  width: 100%;
 }
 
 // Add SASS theme customizations here..
-//html {font-size: .8rem;}
-//@include media-breakpoint-up(sm) {html {font-size: .9rem;}}
-//@include media-breakpoint-up(md) {html {font-size: .9rem;}}
-//@include media-breakpoint-up(lg) {html {font-size: 1rem;}}
+// html {
+//   font-size: 0.8rem;
+// }
+// @include media-breakpoint-up(sm) {
+//   html {
+//     font-size: 0.9rem;
+//   }
+// }
+// @include media-breakpoint-up(md) {
+//   html {
+//     font-size: 0.9rem;
+//   }
+// }
+// @include media-breakpoint-up(lg) {
+//   html {
+//     font-size: 1rem;
+//   }
+// }

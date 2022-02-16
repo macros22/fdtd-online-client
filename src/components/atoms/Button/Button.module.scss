@@ -1,9 +1,6 @@
-@import 'styles/colors';
-@import 'styles/vars';
-
 .button {
   border: none;
-  border-radius: 5px;
+  border-radius: var(--border-radius);
 
   box-sizing: border-box;
 
@@ -17,33 +14,37 @@
 }
 
 .primary {
-  background-color: $primary;
-  color: $white;
+  background-color: var(--primary);
+  color: var(--white);
 }
 
-.primary:hover {
-  background-color: $info;
+// .primary:hover {
+//   background-color: var(--darken-primary);
+// }
+.primary:hover:before,
+.primary:focus:before {
+  background: rgba(0, 0, 0, 0.05); /* black mask with 5% opacity */
 }
 
 .outline {
-  border: $border-width solid $primary;
-  background-color: $white;
-  color: $primary;
+  background-color: var(--white);
+  border: var(--border-width) solid var(--primary);
+  color: var(--primary);
 }
 
 .outline:hover {
-  background-color: $primary;
-  color: $white;
+  background-color: var(--primary);
+  color: var(--white);
 }
 
 .ghost {
   background: none;
-  border: 1px solid $gray;
+  border: 1px solid var(--gray);
   color: var(--black);
 }
 
 .ghost:hover {
-  background-color: $primary;
+  background-color: var(--primary);
   color: var(--white);
 }
 
@@ -60,5 +61,5 @@
 
 .primary svg,
 .ghost:hover svg {
-  fill: $white;
+  fill: var(--white);
 }

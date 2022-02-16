@@ -3,7 +3,7 @@ import { ButtonProps } from './Button.props';
 // import ArrowIcon from './arrow.svg';
 import cn from 'clsx';
 
-export const Button = ({
+const Button = ({
   appearance = 'primary',
   arrow = 'none',
   children,
@@ -32,3 +32,5 @@ export const Button = ({
     </button>
   );
 };
+
+export default Button;
