@@ -20,6 +20,7 @@ import {
   NewHeatMap,
   GradientScale,
   ButtonGroup,
+  Button,
 } from 'components';
 
 import { dataType, LabNames } from 'types/types';
@@ -85,17 +86,35 @@ const Experiment: React.FC<IExperimentProps> = ({
     pauseDataReceiving,
   } = useWebSocket();
 
-  const clickStartBtnHandler = (e: React.MouseEvent) => {
-    e.preventDefault();
-    startDataReceiving({
-      setPause,
-      displayedData,
-      currentDisplayingData,
-      condition: [lambda, beamsize, n1, n2],
-      matrix,
-      socket,
-    });
-    setSimulation(true);
+  const clickStartPauseContinueBtnHandler = () => {
+    // e.preventDefault();
+    if (!simulation) {
+      startDataReceiving({
+        setPause,
+        displayedData,
+        currentDisplayingData,
+        condition: [lambda, beamsize, n1, n2],
+        matrix,
+        socket,
+      });
+      setSimulation(true);
+    } else {
+      if (!pause) {
+        pauseDataReceiving(socket);
+      } else {
+        continueDataReceiving(socket);
+      }
+      setPause((pause) => !pause);
+    }
+  };
+
+  const clickStopBtnHandler = (e: React.MouseEvent) => {
+    if (simulation) {
+      pauseDataReceiving(socket);
+      setPause(false);
+      setSimulation(false);
+      setStep(0);
+    }
   };
 
   return (
@@ -184,43 +203,24 @@ const Experiment: React.FC<IExperimentProps> = ({
               <hr />
             </>
           )}
-          <button
-            onClick={clickStartBtnHandler}
-            type='button'
-            className={'btn btn-primary mt-2 ' + styles.button}
-          >
-            СТАРТ
-          </button>
-          <button
-            type='button'
-            className={'btn btn-primary mt-2 ' + styles.button}
-            disabled={!simulation}
-            onClick={(e) => {
-              e.preventDefault();
-              if (!pause) {
-                pauseDataReceiving(socket);
-              } else {
-                continueDataReceiving(socket);
-              }
-              setPause((pause) => !pause);
-            }}
-          >
-            {pause ? CONTINUE_NAME : PAUSE_NAME}
-          </button>
-          <button
-            type='button'
-            className={'btn btn-primary  mt-2 ' + styles.button}
-            disabled={!simulation}
-            onClick={(e) => {
-              e.preventDefault();
-              pauseDataReceiving(socket);
-              setPause(false);
-              setSimulation(false);
-              setStep(0);
-            }}
-          >
-            STOP
-          </button>
+          <div className={styles.sidebarButton}>
+            <Button
+              width='maxWidth'
+              onClick={clickStartPauseContinueBtnHandler}
+            >
+              {!simulation ? 'СТАРТ' : pause ? CONTINUE_NAME : PAUSE_NAME}
+            </Button>
+          </div>
+          <div className={styles.sidebarButton}>
+            <Button
+              width='maxWidth'
+              appearance={simulation ? 'primary' : 'ghost'}
+              onClick={clickStopBtnHandler}
+            >
+              STOP
+            </Button>
+          </div>
+
           <h3>
             <span className='badge bg-info mt-2 server-badge'>
               {'Server: ' + isWSocketConnected}

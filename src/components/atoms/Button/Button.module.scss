@@ -13,17 +13,18 @@
   transition: all 0.2s;
 }
 
+.maxWidth {
+  display: block;
+  width: 100%;
+}
+
 .primary {
   background-color: var(--primary);
   color: var(--white);
 }
 
-// .primary:hover {
-//   background-color: var(--darken-primary);
-// }
-.primary:hover:before,
-.primary:focus:before {
-  background: rgba(0, 0, 0, 0.05); /* black mask with 5% opacity */
+.primary:hover {
+  background-color: var(--darken-primary);
 }
 
 .outline {
@@ -38,15 +39,14 @@
 }
 
 .ghost {
-  background: none;
-  border: 1px solid var(--gray);
-  color: var(--black);
+  color: var(--color-text);
+  cursor: not-allowed !important;
 }
 
-.ghost:hover {
-  background-color: var(--primary);
-  color: var(--white);
-}
+// .ghost:hover {
+//   background-color: var(--primary);
+//   color: var(--white);
+// }
 
 .arrow {
   display: inline-block;

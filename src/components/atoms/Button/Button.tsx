@@ -5,6 +5,7 @@ import cn from 'clsx';
 
 const Button = ({
   appearance = 'primary',
+  width = 'content',
   arrow = 'none',
   children,
   className,
@@ -16,6 +17,7 @@ const Button = ({
         [styles.primary]: appearance == 'primary',
         [styles.ghost]: appearance == 'ghost',
         [styles.outline]: appearance == 'outline',
+        [styles.maxWidth]: width == 'maxWidth',
       })}
       {...props}
     >
