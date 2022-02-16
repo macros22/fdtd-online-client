@@ -120,8 +120,7 @@ const Experiment: React.FC<IExperimentProps> = ({
   return (
     <>
       <div className={styles.wrapper}>
-        <Sidebar className={styles.sidebar}>
-          {/* <div className={styles.sidebar}> */}
+        <Sidebar className={styles.sidebarLeft}>
           <TextInput
             value={typeof lambda === 'number' ? lambda : 0}
             label={WAVE_LENGTH_NAME}
@@ -152,9 +151,7 @@ const Experiment: React.FC<IExperimentProps> = ({
             </>
           )}
         </Sidebar>
-        {/* </div> */}
 
-        {/* <div className='p-3 bd-highlight w-75'> */}
         <div className={styles.content}>
           <div className={styles.workArea}>
             <h6>
@@ -181,8 +178,7 @@ const Experiment: React.FC<IExperimentProps> = ({
           </div>
         </div>
 
-        <Sidebar className={styles.sidebar2}>
-          {/* <div className={styles.sidebar2}> */}
+        <Sidebar className={styles.sidebarRight}>
           {currentLabName !== LabNames.LAB_2D && (
             <>
               <p className={styles.tempP}>Выбор данных:</p>
@@ -203,36 +199,28 @@ const Experiment: React.FC<IExperimentProps> = ({
               <hr />
             </>
           )}
-          <div className={styles.sidebarButton}>
-            <Button
-              width='maxWidth'
-              onClick={clickStartPauseContinueBtnHandler}
-            >
-              {!simulation ? 'СТАРТ' : pause ? CONTINUE_NAME : PAUSE_NAME}
-            </Button>
-          </div>
-          <div className={styles.sidebarButton}>
-            <Button
-              width='maxWidth'
-              appearance={simulation ? 'primary' : 'ghost'}
-              onClick={clickStopBtnHandler}
-            >
-              STOP
-            </Button>
-          </div>
 
-          <h3>
-            <span className='badge bg-info mt-2 server-badge'>
-              {'Server: ' + isWSocketConnected}
-            </span>
-          </h3>
+          <Button onClick={clickStartPauseContinueBtnHandler}>
+            {!simulation ? 'СТАРТ' : pause ? CONTINUE_NAME : PAUSE_NAME}
+          </Button>
+
+          <Button
+            appearance={simulation ? 'primary' : 'ghost'}
+            onClick={clickStopBtnHandler}
+          >
+            STOP
+          </Button>
+
+          <hr />
+          <Tag size='l' color='primary'>
+            {'Server: ' + isWSocketConnected}
+          </Tag>
           <hr />
           <TextInput label={STEP_NUMBER_NAME} value={step} readOnly={true} />
           <Tag size='l' color='primary'>
             {step}
           </Tag>
         </Sidebar>
-        {/* </div> */}
       </div>
     </>
   );

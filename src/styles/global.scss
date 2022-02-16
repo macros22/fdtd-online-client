@@ -19,6 +19,12 @@ body {
   a {
     text-decoration: none;
   }
+
+  hr {
+    height: 1px;
+    margin: 0;
+    opacity: 0.25;
+  }
 }
 
 // Add SASS theme customizations here..

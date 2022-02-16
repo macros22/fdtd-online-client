@@ -1,8 +1,9 @@
 .tag {
-	border-radius: 5px;
+	border-radius: var(--border-radius);
 	box-sizing: border-box;
 	display: inline-block;
 	margin-right: 5px;
+	text-align: center;
 }
 
 .s {

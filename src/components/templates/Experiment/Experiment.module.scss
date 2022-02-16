@@ -19,7 +19,7 @@
   }
 }
 
-.sidebar {
+.sidebarLeft {
   background-color: var(--white);
   grid-area: sidebar;
   overflow-y: scroll;
@@ -27,11 +27,17 @@
   scrollbar-width: thin;
 }
 
-.sidebar2 {
+.sidebarRight {
   background-color: var(--white);
+
+  display: flex;
+  flex-direction: column;
+
   grid-area: sidebar2;
 
   padding: 1rem;
+
+  row-gap: 0.75rem;
 }
 
 .content {
@@ -49,11 +55,6 @@
   display: grid;
   grid-template-rows: auto auto;
   justify-items: center;
-}
-
-.sidebarButton {
-  display: block;
-  width: 100% !important;
 }
 
 .flexRow {
