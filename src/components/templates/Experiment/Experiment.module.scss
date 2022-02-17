@@ -2,9 +2,11 @@
   background-color: var(--light);
   display: grid;
   grid-area: content;
-  grid-template-areas: 'sidebar contentInner sidebar2';
+  grid-template-areas: 'sidebarLeft contentInner sidebarRight';
   grid-template-columns: 17% auto 17%;
   height: 100%;
+
+  overflow: auto;
 }
 
 @media (max-width: 900px) {
@@ -12,7 +14,7 @@
     background-color: var(--light);
     display: grid;
     grid-template-areas:
-      'sidebar sidebar2'
+      'sidebarLeft sidebarRight'
       'contentInner contentInner';
     grid-template-columns: 1fr 1fr;
     height: 100%;
@@ -20,29 +22,19 @@
 }
 
 .sidebarLeft {
-  background-color: var(--white);
-  grid-area: sidebar;
-  overflow-y: scroll;
-  padding: 1rem;
-  scrollbar-width: thin;
+  box-shadow: calc(var(--space-xxxs) * 0.02) 0 calc(var(--space-xxxs) * 2)
+    rgba(0, 0, 0, 0.075) !important;
+  grid-area: sidebarLeft;
 }
 
 .sidebarRight {
-  background-color: var(--white);
-
-  display: flex;
-  flex-direction: column;
-
-  grid-area: sidebar2;
-
-  padding: 1rem;
-
-  row-gap: 0.75rem;
+  box-shadow: var(--space-xxxxs) 0 calc(var(--space-xxxs) * 2)
+    rgba(0, 0, 0, 0.075) !important;
+  grid-area: sidebarRight;
 }
 
 .content {
   grid-area: contentInner;
-  // background-color: #444;
   padding: 1rem;
 }
 
@@ -67,17 +59,4 @@
   font-size: 0.89rem;
   letter-spacing: 2px;
   margin-bottom: 0.2rem;
-}
-
-.buttonDataType {
-  // max-width: 25%;
-  padding: 0.25rem 0.65rem;
-  &:focus {
-    box-shadow: none;
-    outline: none;
-  }
-  &:active {
-    box-shadow: none;
-    outline: none;
-  }
 }

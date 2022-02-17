@@ -4,8 +4,6 @@ export { default as NewHeatMap } from './atoms/HeatMap/HeatMapNew';
 export { default as Sidebar } from './molecules/Sidebar/Sidebar';
 export { default as TextInput } from './atoms/TextInput/TextInput';
 export { default as Paper } from './atoms/Paper/Paper';
-export { default as CenteredBlock } from './atoms/CenteredBlock';
-export { default as Column } from './atoms/Column';
 export { default as MatrixEditor } from './organisms/MatrixEditor/MatrrixEditor';
 export { default as GradientScale } from './atoms/GradientScale';
 export { default as Canvas } from './molecules/Canvas';
