@@ -220,6 +220,9 @@ const Experiment: React.FC<IExperimentProps> = ({
           <Tag size='l' color='primary'>
             {step}
           </Tag>
+          <Tag size='l' color='primary'>
+            {step}
+          </Tag>
         </Sidebar>
       </div>
     </>

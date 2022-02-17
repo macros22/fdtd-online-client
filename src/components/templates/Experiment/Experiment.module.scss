@@ -1,12 +1,10 @@
 .wrapper {
-  background-color: var(--light);
+  background-color: var(--light-color);
   display: grid;
   grid-area: content;
   grid-template-areas: 'sidebarLeft contentInner sidebarRight';
   grid-template-columns: 17% auto 17%;
   height: 100%;
-
-  overflow: auto;
 }
 
 @media (max-width: 900px) {
@@ -22,14 +20,10 @@
 }
 
 .sidebarLeft {
-  box-shadow: calc(var(--space-xxxs) * 0.02) 0 calc(var(--space-xxxs) * 2)
-    rgba(0, 0, 0, 0.075) !important;
   grid-area: sidebarLeft;
 }
 
 .sidebarRight {
-  box-shadow: var(--space-xxxxs) 0 calc(var(--space-xxxs) * 2)
-    rgba(0, 0, 0, 0.075) !important;
   grid-area: sidebarRight;
 }
 

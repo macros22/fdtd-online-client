@@ -14,7 +14,7 @@
 
 .headerDown {
   background-color: var(--primary-color);
-  box-shadow: 0 var(--space-xxxs) var(--space-xxxs) var(--shadow-color) !important;
+  box-shadow: 0 var(--space-xxxs) var(--space-xxxs) var(--shadow-color-header) !important;
   display: grid;
   grid-area: headerDown;
   grid-template-areas: 'label select .';
