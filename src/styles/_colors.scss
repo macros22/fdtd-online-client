@@ -16,3 +16,23 @@
 
   --color-text: #4a4a4a;
 }
+
+:root {
+  --primary-color: rgb(62, 106, 227);
+  --darken-primary-color: rgb(52, 91, 197);
+
+  --secondary-color: #7a7e82;
+  --success-color: rgb(29, 203, 139);
+  --danger-color: tomato;
+  --info-color: rgb(147, 147, 212);
+  --warning-color: #f2c231;
+  --light-color: #f5f5f5;
+  --dark-color: #4a4a4a;
+  --gray-color: rgba(175, 173, 173, 0.78);
+  // --gray-color: rgb(251, 251, 251);
+
+  --white-color: #fff;
+
+  --text-color: #4a4a4a;
+  --shadow-color: rgba(19, 85, 226, 0.15);
+}
