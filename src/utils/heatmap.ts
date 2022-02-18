@@ -44,14 +44,6 @@ export class heatmap {
 
     defaultRadius = 25;
 
-    // defaultGradient: { [key: string]: string } = {
-    //     0.4: 'blue',
-    //     0.6: 'cyan',
-    //     0.7: 'lime',
-    //     0.8: 'yellow',
-    //     1.0: 'red',
-    // }
-
     defaultGradient: { [key: string]: string } = defaultGradient || {
         0: 'red',
         0.5: 'white',

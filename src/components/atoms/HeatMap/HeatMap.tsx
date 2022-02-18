@@ -4,16 +4,7 @@ import React from 'react';
 
 import styles from './HeatMap.module.scss';
 import { heatmap } from 'utils/heatmap';
-
-type HeatMapProps = {
-  minVal: number;
-  maxVal: number;
-  dataX: number[];
-  dataY: number[];
-  dataVal: number[];
-  width?: number;
-  height?: number;
-};
+import { HeatMapProps } from './HeatMap.props';
 
 const NewHeatMap: React.FC<HeatMapProps> = ({
   minVal = -1,

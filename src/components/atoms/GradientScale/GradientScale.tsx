@@ -1,10 +1,6 @@
 import React from 'react';
 import { defaultGradient as dGradient } from 'utils/default-gradient';
-
-type GradientScaleProps = {
-  width?: number;
-  height?: number;
-};
+import { GradientScaleProps } from './GradientScale.props';
 
 const defaultGradient: { [key: string]: string } = dGradient || {
   0: 'blue',
