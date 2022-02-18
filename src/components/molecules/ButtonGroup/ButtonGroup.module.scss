@@ -2,7 +2,7 @@
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   button {
-    background-color: var(--white);
+    background: transparent;
     border: var(--border-width) solid var(--primary);
     border-radius: 0;
     color: var(--primary);

@@ -10,6 +10,9 @@ const TextInput: React.FC<TextInputProps> = ({
 }) => {
   return (
     <div className={classes.formGroup}>
+      <label htmlFor='name' className={classes.label}>
+        {label}
+      </label>
       <input
         type='input'
         onChange={onChange}
@@ -21,9 +24,6 @@ const TextInput: React.FC<TextInputProps> = ({
         readOnly={readOnly}
         required
       />
-      <label htmlFor='name' className={classes.formLabel}>
-        {label}
-      </label>
     </div>
   );
 };
