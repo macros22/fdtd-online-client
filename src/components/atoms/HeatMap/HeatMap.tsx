@@ -1,8 +1,9 @@
-//http://zhangwenli.com/blog/2015/06/12/drawing-heatmap-with-html-canvas/
-//https://github.com/mourner/simpleheat/blob/86af1384db714ab32626ed25aeb396fd0869d56d/simpleheat.js
+// import { data } from './data';
 
-// import { GradientScale } from 'components';
 import React from 'react';
+
+import styles from './HeatMap.module.scss';
+import { heatmap } from 'utils/heatmap';
 
 type HeatMapProps = {
   minVal: number;
@@ -14,158 +15,109 @@ type HeatMapProps = {
   height?: number;
 };
 
-type PictureDataType = Array<Array<number>>;
-
-const HeatMap: React.FC<HeatMapProps> = ({
+const NewHeatMap: React.FC<HeatMapProps> = ({
   minVal = -1,
   maxVal = 1,
   dataX = [],
   dataY = [],
   dataVal = [],
-  width = 400,
-  height = 400,
+  width = 425,
+  height = 425,
 }) => {
-  let data: PictureDataType = [];
-
   const canvasRef = React.useRef<HTMLCanvasElement | null>(null);
   const canvasBrushRef = React.useRef<HTMLCanvasElement | null>(null);
   const canvasGradientRef = React.useRef<HTMLCanvasElement | null>(null);
 
-  let brushSize = width / 185;
-  let brushBlurSize = brushSize * 1.15;
-  let radius = brushSize + brushBlurSize;
-  let diametr = radius * 2;
+  let radiusInitial = width / 120 + 0.1;
+  let blurInitial = radiusInitial * 1.45 + 0.1;
 
-  if (dataX.length == 0) {
-    for (let i = 0; i < 3e3; ++i) {
-      data.push([
-        Math.random() * width,
-        Math.random() * height,
-        Math.random() * 0.3,
-      ]);
-    }
-  } else {
-    const gridSizeFromBackend = 400;
+  // console.log('radiusInitial', radiusInitial);
 
-    for (let i = 0; i < dataX.length; ++i) {
-      data.push([
-        (dataX[i] * width) / gridSizeFromBackend,
-        (dataY[i] * height) / gridSizeFromBackend,
-        (dataVal[i] + Math.abs(minVal)) / (maxVal + Math.abs(minVal)),
-      ]);
-    }
-  }
+  const [radius, setRadius] = React.useState<number>(radiusInitial);
+  const [blur, setBlur] = React.useState<number>(blurInitial);
 
-  React.useEffect(() => {
-    // Creating main canvas.
+  const init = () => {
     if (
       canvasRef.current &&
       canvasBrushRef.current &&
       canvasGradientRef.current
     ) {
       let canvas = canvasRef.current;
+      let canvasBrush = canvasBrushRef.current;
+      let canvasGradient = canvasGradientRef.current;
 
-      let ctx: CanvasRenderingContext2D | null = canvas.getContext('2d');
       canvas.width = width;
       canvas.height = height;
 
-      // Creating brush canvas.
-      const brushCanvas = canvasBrushRef.current;
-      const brushContext: CanvasRenderingContext2D | null =
-        brushCanvas.getContext('2d');
-      brushCanvas.width = diametr;
-      brushCanvas.height = diametr;
+      let data: [number[], number[], number[]] = [[], [], []];
 
-      brushContext!.shadowOffsetX = diametr;
-      brushContext!.shadowBlur = brushBlurSize;
-      brushContext!.shadowColor = 'black';
-
-      brushContext!.fillStyle = '#000000';
-      brushContext!.beginPath();
-      brushContext!.arc(-radius, radius, brushSize, 0, Math.PI * 2, true);
-      brushContext!.closePath();
-      brushContext!.fill();
-
-      // Creating gradient.
-      const levels = 256;
-      let canvasGradient = canvasGradientRef.current;
-      canvasGradient.width = 1;
-      canvasGradient.height = levels;
-      let contextGradient = canvasGradient.getContext('2d');
-
-      const gradientColors: { [key: string]: string } = {
-        0: '#6038bd',
-        //  0.5: "green",
-        1.0: '#6038bd',
-      };
-
-      //draw data
-      for (let i = 0; i < data.length; ++i) {
-        const point = data[i];
-        const x = point[0];
-        const y = point[1];
-        const alpha = point[2]; // using value as alpha
-
-        ctx!.globalAlpha = alpha;
-
-        ctx!.drawImage(brushCanvas, x - radius, y - radius);
+      if (dataVal.length == 0) {
+        for (let i = 0; i < 3e3; ++i) {
+          data[0].push(Math.random() * width);
+          data[1].push(Math.random() * height);
+          data[2].push(Math.random() * 0.3);
+        }
+      } else {
+        data = [dataX, dataY, dataVal];
       }
 
-      // add color to gradient stops
+      const gridSizeFromBackend = 400;
 
-      let gradient = contextGradient!.createLinearGradient(0, 0, 0, levels);
-      for (let pos in gradientColors) {
-        gradient.addColorStop(+pos, gradientColors[pos]);
-      }
-
-      contextGradient!.fillStyle = gradient;
-      contextGradient!.fillRect(0, 0, canvasGradient.width, levels);
-      let gradientPixels = contextGradient!.getImageData(0, 0, 1, levels).data;
-
-      // const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-      // const grData = contextGradient.getImageData(0, 0, canvasGradient.width, levels);
-      // // Iterate through every pixel
-      // console.log(gradient[100]);
-      // for (let i = 0; i < imageData.data.length; i += 4) {
-      //   // Modify pixel data
-
-      // grData.data
-      //   const rand = Math.random() * levels*0.8;
-      //   imageData.data[i + 0] = 50; // R value
-      //   imageData.data[i + 1] = 20; // G value
-      //   imageData.data[i + 2] = 210; // B value
-      //   imageData.data[i + 3] = rand; // A value
-      // }
-
-      // // Draw image data to the canvas
-      // ctx.putImageData(imageData, 20, 20);
-
-      let imageData = ctx!.getImageData(0, 0, canvas.width, canvas.height);
-      let len = imageData.data.length / 4;
-      while (len--) {
-        let id = len * 4 + 3;
-        let alpha = imageData.data[id] / levels; // why not `gradientLevels`?
-
-        let colorOffset = Math.floor(alpha * (levels - 1));
-
-        imageData.data[id - 3] = gradientPixels[colorOffset * 4]; // red
-        imageData.data[id - 2] = gradientPixels[colorOffset * 4 + 1]; // green
-        imageData.data[id - 1] = gradientPixels[colorOffset * 4 + 2]; // blue
-      }
-
-      ctx!.putImageData(imageData, 0, 0);
+      let heat = new heatmap(canvas, canvasBrush, canvasGradient)
+        .newData(...data)
+        .min(minVal)
+        .max(maxVal)
+        .radius(radius, blur)
+        .realGridSize(gridSizeFromBackend);
+      heat.draw();
     }
-  }, [data]);
+  };
+
+  React.useEffect(() => {
+    init();
+  }, [dataVal]);
+
+  const radiusHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setRadius(+e.target.value);
+    init();
+  };
+
+  const blurHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setBlur(+e.target.value);
+    init();
+  };
 
   return (
     <React.Fragment>
       <canvas style={{ display: 'none' }} ref={canvasBrushRef} />
       <canvas style={{ display: 'none' }} ref={canvasGradientRef} />
-      {/* <canvas ref={canvasGradientRef} /> */}
       <canvas ref={canvasRef} />
-      {/* <GradientScale minVal={-1} maxVal={1}/> */}
+      {/* 
+      <div className={styles.options}>
+        <label>Radius </label>
+        <input
+          onChange={radiusHandler}
+          type='range'
+          id='radius'
+          value={radius}
+          step={0.02}
+          min={radiusInitial - 0.2}
+          max={radiusInitial + 0.2}
+        />
+        <br />
+        <label>Blur </label>
+        <input
+          onChange={blurHandler}
+          type='range'
+          id='blur'
+          value={blur}
+          step={0.02}
+          min={blurInitial - 0.2}
+          max={blurInitial + 0.2}
+        />
+      </div> */}
     </React.Fragment>
   );
 };
 
-export default HeatMap;
+export default NewHeatMap;

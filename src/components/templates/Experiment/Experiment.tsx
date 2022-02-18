@@ -10,14 +10,12 @@ import {
 
 import styles from './Experiment.module.scss';
 import {
-  // HeatMap,
+  HeatMap,
   Sidebar,
   TextInput,
   Paper,
-  // Column,
   MatrixEditor,
   Tag,
-  NewHeatMap,
   GradientScale,
   ButtonGroup,
   Button,
@@ -30,19 +28,20 @@ import { useWebSocket } from 'hooks/useWebSocket';
 import { IExperimentProps } from './Experiment.props';
 import { displayedData } from 'utils/displayed-data';
 
-const Experiment: React.FC<IExperimentProps> = ({
-  currentLabName,
-  currentLabContentType,
-}) => {
+const Experiment: React.FC<IExperimentProps> = ({ currentLabName }) => {
   const [isWSocketConnected, setIsWSocketConnected] =
     React.useState<boolean>(false);
 
   const [socket, setSocket] = React.useState<WebSocket | null>(null);
 
+  const heatMapWidth = 430;
+  const heatMapHeight = 430;
+
+  const [tau, setTau] = React.useState<number>(10);
   const [beamsize, setBeamsize] = React.useState<number>(3);
   const [lambda, setLambda] = React.useState<number>(1);
-  const [n1, setN1] = React.useState<number>(1);
-  const [n2, setN2] = React.useState<number>(2);
+  const [refractiveIndex1, setrefractiveIndex1] = React.useState<number>(1);
+  const [refractiveIndex2, setRefractiveIndex2] = React.useState<number>(2);
 
   const [step, setStep] = React.useState<number>(0);
   const [simulation, setSimulation] = React.useState<boolean>(false);
@@ -63,7 +62,6 @@ const Experiment: React.FC<IExperimentProps> = ({
   const [allData, setAllData] = React.useState<dataType>(initAllData);
 
   const { matrix } = useRefractionMatrix();
-  console.log(currentLabContentType);
 
   React.useEffect(() => {
     connectWS({
@@ -86,14 +84,14 @@ const Experiment: React.FC<IExperimentProps> = ({
     pauseDataReceiving,
   } = useWebSocket();
 
+  // Handlers.
   const clickStartPauseContinueBtnHandler = () => {
-    // e.preventDefault();
     if (!simulation) {
       startDataReceiving({
         setPause,
         displayedData,
         currentDisplayingData,
-        condition: [lambda, beamsize, n1, n2],
+        condition: [lambda, beamsize, refractiveIndex1, refractiveIndex2],
         matrix,
         socket,
       });
@@ -126,25 +124,32 @@ const Experiment: React.FC<IExperimentProps> = ({
             label={WAVE_LENGTH_NAME}
             onChange={(e) => setLambda(+e.target.value)}
           />
-
-          <TextInput
-            label={BEAMSIZE_NAME}
-            value={beamsize}
-            onChange={(e) => setBeamsize(+e.target.value)}
-          />
+          {currentLabName === LabNames.LAB_2D ? (
+            <TextInput
+              label={BEAMSIZE_NAME}
+              value={tau}
+              onChange={(e) => setTau(+e.target.value)}
+            />
+          ) : (
+            <TextInput
+              label={BEAMSIZE_NAME}
+              value={beamsize}
+              onChange={(e) => setBeamsize(+e.target.value)}
+            />
+          )}
 
           <TextInput
             label={REFRACTIVE_INDEX_NAME}
-            value={n1}
-            onChange={(e) => setN1(+e.target.value)}
+            value={refractiveIndex1}
+            onChange={(e) => setrefractiveIndex1(+e.target.value)}
           />
 
           {currentLabName === LabNames.DIFRACTION && (
             <>
               <TextInput
                 label={REFRACTIVE_INDEX_NAME}
-                value={n2}
-                onChange={(e) => setN2(+e.target.value)}
+                value={refractiveIndex2}
+                onChange={(e) => setRefractiveIndex2(+e.target.value)}
               />
               <hr />
               <MatrixEditor buttonStyle={styles.button + ' mt-3'} />
@@ -163,7 +168,9 @@ const Experiment: React.FC<IExperimentProps> = ({
 
             <div className={styles.graph}>
               <Paper>
-                <NewHeatMap
+                <HeatMap
+                  width={heatMapWidth}
+                  height={heatMapHeight}
                   minVal={Math.min(...allData.dataVal)}
                   maxVal={Math.max(...allData.dataVal)}
                   dataX={allData.dataX}
@@ -172,7 +179,7 @@ const Experiment: React.FC<IExperimentProps> = ({
                 />
               </Paper>
               <Paper>
-                <GradientScale />
+                <GradientScale height={heatMapHeight} />
               </Paper>
             </div>
           </div>
@@ -199,18 +206,15 @@ const Experiment: React.FC<IExperimentProps> = ({
               <hr />
             </>
           )}
-
           <Button onClick={clickStartPauseContinueBtnHandler}>
             {!simulation ? 'СТАРТ' : pause ? CONTINUE_NAME : PAUSE_NAME}
           </Button>
-
           <Button
             appearance={simulation ? 'primary' : 'ghost'}
             onClick={clickStopBtnHandler}
           >
             STOP
           </Button>
-
           <hr />
           <Tag size='l' color='primary'>
             {'Server: ' + isWSocketConnected}
@@ -223,6 +227,7 @@ const Experiment: React.FC<IExperimentProps> = ({
           <Tag size='l' color='primary'>
             {step}
           </Tag>
+          +
         </Sidebar>
       </div>
     </>

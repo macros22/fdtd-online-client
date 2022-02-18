@@ -1,3 +1,4 @@
+import { defaultGradient } from './default-gradient';
 
 
 export type pointType = [number, number, number];
@@ -15,9 +16,13 @@ export class heatmap {
     _min: number = -1;
     _data: pointType[] = [[0, 0, 0]];
 
+    // For scaling data.
+    _realGridSize: number = 400;
+
     dataX: number[] = [];
     dataY: number[] = [];
     dataVal: number[] = []
+
 
     constructor(private readonly canvas: HTMLCanvasElement, private readonly brushCanvas: HTMLCanvasElement, private readonly gradientCanvas: HTMLCanvasElement) {
 
@@ -47,12 +52,7 @@ export class heatmap {
     //     1.0: 'red',
     // }
 
-    defaultGradient: { [key: string]: string } = {
-        // 0: 'blue',
-        // 0.4: 'cyan',
-        // 0.5: 'lime',
-        // 0.6: 'yellow',
-        // 1.0: 'red',
+    defaultGradient: { [key: string]: string } = defaultGradient || {
         0: 'red',
         0.5: 'white',
         1: 'blue',
@@ -61,6 +61,22 @@ export class heatmap {
     data(newData: pointType[]) {
         this._data = newData;
         return this;
+    }
+
+    // For scaling data.
+    realGridSize(gridSize: number) {
+        this._realGridSize = gridSize;
+        return this;
+    }
+
+    // For scaling data.
+    getRealX(x: number) {
+        return (x * this.width) / this._realGridSize;
+    }
+
+    // For scaling data.
+    getRealY(y: number) {
+        return (y * this.height) / this._realGridSize;
     }
 
     max(max: number) {
@@ -168,7 +184,10 @@ export class heatmap {
                     ),
                     1
                 );
-                ctx.drawImage(this.brushCanvas, this.dataX[i] - this.brushRadius, this.dataY[i] - this.brushRadius);
+                ctx.drawImage(
+                    this.brushCanvas,
+                    this.getRealX(this.dataX[i]) - this.brushRadius,
+                    this.getRealX(this.dataY[i]) - this.brushRadius);
             }
 
             // colorize the heatmap, using opacity value of each pixel to get the right color from our gradient
@@ -186,9 +205,9 @@ export class heatmap {
             j = pixels[i + 3] * 4; // get gradient color from opacity value
 
             if (j && gradient) {
-                pixels[i] = gradient[j];
-                pixels[i + 1] = gradient[j + 1];
-                pixels[i + 2] = gradient[j + 2];
+                pixels[i] = gradient[j];  // red
+                pixels[i + 1] = gradient[j + 1]; // green
+                pixels[i + 2] = gradient[j + 2]; // blue
             }
         }
     }

@@ -1,11 +1,12 @@
 import React from 'react';
+import { defaultGradient as dGradient } from 'utils/default-gradient';
 
 type GradientScaleProps = {
   width?: number;
   height?: number;
 };
 
-const defaultGradient: { [key: string]: string } = {
+const defaultGradient: { [key: string]: string } = dGradient || {
   0: 'blue',
   0.4: 'cyan',
   0.5: 'lime',
@@ -14,7 +15,7 @@ const defaultGradient: { [key: string]: string } = {
 };
 
 const GradientScale: React.FC<GradientScaleProps> = ({
-  width = 20,
+  width = 15,
   height = 400,
 }) => {
   const canvasRef = React.useRef<HTMLCanvasElement | null>(null);
@@ -34,7 +35,7 @@ const GradientScale: React.FC<GradientScaleProps> = ({
       // Точка конца линии градиента: x=220, y=0
       if (ctx) {
         // let gradient = ctx.createLinearGradient(70, 0, 220, 0);
-        let gradient = ctx.createLinearGradient(0, 0, 0, 400);
+        let gradient = ctx.createLinearGradient(0, 0, 0, height);
 
         // Добавление трёх контрольных точек
         const grad = defaultGradient;

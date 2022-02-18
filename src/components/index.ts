@@ -1,6 +1,5 @@
 export { default as HeatMap } from './atoms/HeatMap/HeatMap';
 export { default as Button } from './atoms/Button/Button';
-export { default as NewHeatMap } from './atoms/HeatMap/HeatMapNew';
 export { default as Sidebar } from './molecules/Sidebar/Sidebar';
 export { default as TextInput } from './atoms/TextInput/TextInput';
 export { default as Paper } from './atoms/Paper/Paper';
