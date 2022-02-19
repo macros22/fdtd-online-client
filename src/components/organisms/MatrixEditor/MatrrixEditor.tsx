@@ -3,6 +3,8 @@
 import * as React from 'react';
 import styles from './MatrixEditor.module.scss';
 import { useRefractionMatrix } from 'store/refraction-matrix.context';
+import { MatrixEditorProps } from './MatrixEditor.props';
+import { Button } from 'components';
 
 const colors = ['#fafafa', '#a1bb21', '#1a52aa'];
 
@@ -117,7 +119,6 @@ const Editor: React.FC = () => {
 
         {/* Focused rect */}
         <rect
-          // key={focusedCoord.i + "" + focusedCoord.j}
           width={rectWidth}
           height={rectHeight}
           x={focusedCoord.i * rectWidth}
@@ -159,69 +160,31 @@ const Editor: React.FC = () => {
   );
 };
 
-interface IDifractionEditorProps {
-  buttonStyle: string;
-}
-
-const MatrixEditor: React.FC<IDifractionEditorProps> = ({ buttonStyle }) => {
+const MatrixEditor: React.FC<MatrixEditorProps> = () => {
   const { resetMatrix } = useRefractionMatrix();
+
+  const [isOpened, setIsOpend] = React.useState<boolean>(false);
 
   return (
     <>
       {/* <!-- Button trigger modal -->*/}
       <svg className={styles.matrixPreview} />
-      <button
-        type='button'
-        className={'btn btn-primary ' + buttonStyle}
-        data-bs-toggle='modal'
-        data-bs-target='#staticBackdrop'
-      >
-        Изменить
-      </button>
+      <Button onClick={() => setIsOpend(true)}>Изменить</Button>
+      {isOpened && (
+        <>
+          <div className={styles.tmp}></div>
 
-      {/*// <!-- Modal -->*/}
-      <div
-        className='modal fade'
-        id='staticBackdrop'
-        data-bs-backdrop='static'
-        data-bs-keyboard='false'
-        tabIndex={-1}
-        aria-labelledby='staticBackdropLabel'
-        aria-hidden='true'
-      >
-        <div className='modal-dialog'>
-          <div className='modal-content'>
-            <div className='modal-header'>
-              <h5 className='modal-title' id='staticBackdropLabel'>
-                Редактор дифракционной решетки
-              </h5>
-              <button
-                type='button'
-                className='btn-close'
-                data-bs-dismiss='modal'
-                aria-label='Close'
-              ></button>
-            </div>
-            <Editor />
-            <div className='modal-footer'>
-              {/* <button
-                type="button"
-                className="btn btn-info"
-                data-bs-dismiss="modal"
-              >
-                Закрыть
-              </button> */}
-              <button
-                type='button'
-                className='btn btn-primary'
-                onClick={() => resetMatrix()}
-              >
+          <div className={styles.modalWrapper}>
+            <div className={styles.modal}>
+              <Editor />
+              <Button onClick={() => resetMatrix()}>
                 Вернуть начальное состояние
-              </button>
+              </Button>
+              <Button onClick={() => setIsOpend(false)}>назад</Button>
             </div>
           </div>
-        </div>
-      </div>
+        </>
+      )}
     </>
   );
 };

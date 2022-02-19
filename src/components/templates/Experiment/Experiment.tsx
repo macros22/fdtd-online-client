@@ -153,7 +153,9 @@ const Experiment: React.FC<IExperimentProps> = ({ currentLabName }) => {
                 onChange={(e) => setRefractiveIndex2(+e.target.value)}
               />
               <hr />
-              <MatrixEditor buttonStyle={styles.button + ' mt-3'} />
+              <WithLabel labelText='Матрица:'>
+                <MatrixEditor />
+              </WithLabel>
             </>
           )}
         </Sidebar>
