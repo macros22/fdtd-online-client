@@ -7,6 +7,7 @@ const Tag = ({
   children,
   color = 'ghost',
   href,
+  fullWidth = false,
   className,
   ...props
 }: PProps): JSX.Element => {
@@ -19,6 +20,7 @@ const Tag = ({
         [styles.ghost]: color == 'ghost',
         [styles.success]: color == 'success',
         [styles.primary]: color == 'primary',
+        [styles.fullWidth]: fullWidth == true,
       })}
       {...props}
     >

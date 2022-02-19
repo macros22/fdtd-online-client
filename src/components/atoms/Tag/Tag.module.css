@@ -28,6 +28,9 @@
 	border: 1px solid var(--info);
 }
 
+.fullWidth {
+	width: 100%;
+}
 
 .green {
 	background: var(--success);

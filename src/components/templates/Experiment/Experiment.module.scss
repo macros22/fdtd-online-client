@@ -29,7 +29,7 @@
 
 .content {
   grid-area: contentInner;
-  padding: 1rem;
+  padding: var(--space-sm);
 }
 
 .graph {
@@ -41,16 +41,4 @@
   display: grid;
   grid-template-rows: auto auto;
   justify-items: center;
-}
-
-.flexRow {
-  display: flex;
-  justify-content: space-between;
-}
-
-.tempP {
-  color: var(--gray);
-  font-size: 0.89rem;
-  letter-spacing: 2px;
-  margin-bottom: 0.2rem;
 }

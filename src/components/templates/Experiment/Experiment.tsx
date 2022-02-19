@@ -12,13 +12,14 @@ import styles from './Experiment.module.scss';
 import {
   HeatMap,
   Sidebar,
-  TextInput,
+  NumberInput,
   Paper,
   MatrixEditor,
   Tag,
   GradientScale,
   ButtonGroup,
   Button,
+  WithLabel,
 } from 'components';
 
 import { dataType, LabNames } from 'types/types';
@@ -119,26 +120,26 @@ const Experiment: React.FC<IExperimentProps> = ({ currentLabName }) => {
     <>
       <div className={styles.wrapper}>
         <Sidebar className={styles.sidebarLeft}>
-          <TextInput
+          <NumberInput
             value={typeof lambda === 'number' ? lambda : 0}
             label={WAVE_LENGTH_NAME}
             onChange={(e) => setLambda(+e.target.value)}
           />
           {currentLabName === LabNames.LAB_2D ? (
-            <TextInput
+            <NumberInput
               label={BEAMSIZE_NAME}
               value={tau}
               onChange={(e) => setTau(+e.target.value)}
             />
           ) : (
-            <TextInput
+            <NumberInput
               label={BEAMSIZE_NAME}
               value={beamsize}
               onChange={(e) => setBeamsize(+e.target.value)}
             />
           )}
 
-          <TextInput
+          <NumberInput
             label={REFRACTIVE_INDEX_NAME}
             value={refractiveIndex1}
             onChange={(e) => setrefractiveIndex1(+e.target.value)}
@@ -146,7 +147,7 @@ const Experiment: React.FC<IExperimentProps> = ({ currentLabName }) => {
 
           {currentLabName === LabNames.DIFRACTION && (
             <>
-              <TextInput
+              <NumberInput
                 label={REFRACTIVE_INDEX_NAME}
                 value={refractiveIndex2}
                 onChange={(e) => setRefractiveIndex2(+e.target.value)}
@@ -188,21 +189,22 @@ const Experiment: React.FC<IExperimentProps> = ({ currentLabName }) => {
         <Sidebar className={styles.sidebarRight}>
           {currentLabName !== LabNames.LAB_2D && (
             <>
-              <p className={styles.tempP}>Выбор данных:</p>
-              <ButtonGroup activeButton={currentDisplayingData}>
-                {displayedData.map((item, index) => {
-                  return (
-                    <button
-                      key={item.name}
-                      onClick={() => {
-                        setCurrentDisplayingData(index);
-                      }}
-                    >
-                      {item.name}
-                    </button>
-                  );
-                })}
-              </ButtonGroup>
+              <WithLabel labelText='Выбор данных:'>
+                <ButtonGroup activeButton={currentDisplayingData}>
+                  {displayedData.map((item, index) => {
+                    return (
+                      <button
+                        key={item.name}
+                        onClick={() => {
+                          setCurrentDisplayingData(index);
+                        }}
+                      >
+                        {item.name}
+                      </button>
+                    );
+                  })}
+                </ButtonGroup>
+              </WithLabel>
               <hr />
             </>
           )}
@@ -216,18 +218,17 @@ const Experiment: React.FC<IExperimentProps> = ({ currentLabName }) => {
             STOP
           </Button>
           <hr />
-          <Tag size='l' color='primary'>
-            {'Server: ' + isWSocketConnected}
-          </Tag>
+          <WithLabel labelText={STEP_NUMBER_NAME}>
+            <Tag size='l' color='primary' fullWidth>
+              {step}
+            </Tag>
+          </WithLabel>
           <hr />
-          <TextInput label={STEP_NUMBER_NAME} value={step} readOnly={true} />
-          <Tag size='l' color='primary'>
-            {step}
-          </Tag>
-          <Tag size='l' color='primary'>
-            {step}
-          </Tag>
-          +
+          <WithLabel labelText='Server connection:'>
+            <Tag size='l' color='primary' fullWidth>
+              {isWSocketConnected + ''}
+            </Tag>
+          </WithLabel>
         </Sidebar>
       </div>
     </>

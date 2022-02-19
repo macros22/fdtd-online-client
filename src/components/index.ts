@@ -1,7 +1,8 @@
 export { default as HeatMap } from './atoms/HeatMap/HeatMap';
 export { default as Button } from './atoms/Button/Button';
+export { default as WithLabel } from './atoms/WithLabel/WithLabel';
 export { default as Sidebar } from './molecules/Sidebar/Sidebar';
-export { default as TextInput } from './atoms/TextInput/TextInput';
+export { default as NumberInput } from './atoms/NumberInput/NumberInput';
 export { default as Paper } from './atoms/Paper/Paper';
 export { default as MatrixEditor } from './organisms/MatrixEditor/MatrrixEditor';
 export { default as GradientScale } from './atoms/GradientScale/GradientScale';
