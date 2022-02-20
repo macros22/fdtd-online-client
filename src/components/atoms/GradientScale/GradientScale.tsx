@@ -11,14 +11,22 @@ const defaultGradient: { [key: string]: string } = dGradient || {
 };
 
 const GradientScale: React.FC<GradientScaleProps> = ({
-  width = 15,
-  height = 400,
+  gradientWidth = 15,
+  gradientHeight = 400,
+  max = 1,
+  min = -1,
 }) => {
   const canvasRef = React.useRef<HTMLCanvasElement | null>(null);
 
   const init = () => {
     if (canvasRef.current) {
       let canvas = canvasRef.current;
+
+      const numberSpaceWidth = 40;
+      const width = gradientWidth + numberSpaceWidth;
+      const height = gradientHeight;
+
+      const scaleCoeff = (max - min) / gradientHeight;
 
       canvas.width = width;
       canvas.height = height;
@@ -41,7 +49,22 @@ const GradientScale: React.FC<GradientScaleProps> = ({
 
         // Установка стиля заливки и отрисовка прямоугольника градиента
         ctx.fillStyle = gradient;
-        ctx.fillRect(0, 0, width, height);
+        ctx.fillRect(numberSpaceWidth, 0, gradientWidth, gradientHeight);
+
+        // Draw Oy tick marks numbers.
+        const INTERVAL_Y = height / 20;
+        ctx.textAlign = 'right';
+        ctx.font = '12pt Roboto bold';
+        ctx.fillStyle = '#4a4a4a';
+        // ctx.textBaseline = 'middle';
+        const tY = (y: number) => height - y;
+        for (let y = 0; y <= height; y += INTERVAL_Y) {
+          const label = (y * scaleCoeff + min).toFixed(1) + '';
+          ctx.save();
+          ctx.translate(gradientWidth + 15, tY(y));
+          ctx.fillText(label, 0, 0);
+          ctx.restore();
+        }
       }
     }
   };

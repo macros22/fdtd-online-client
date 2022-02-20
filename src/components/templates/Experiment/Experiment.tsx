@@ -182,7 +182,7 @@ const Experiment: React.FC<IExperimentProps> = ({ currentLabName }) => {
                 />
               </Paper>
               <Paper>
-                <GradientScale height={heatMapHeight} />
+                <GradientScale gradientHeight={heatMapHeight} />
               </Paper>
             </div>
           </div>

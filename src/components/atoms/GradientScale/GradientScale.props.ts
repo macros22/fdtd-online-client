@@ -1,4 +1,6 @@
 export type GradientScaleProps = {
-    width?: number;
-    height?: number;
+    gradientWidth?: number;
+    gradientHeight?: number;
+    max?: number;
+    min?: number;
 };
