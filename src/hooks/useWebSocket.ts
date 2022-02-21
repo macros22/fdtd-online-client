@@ -1,7 +1,7 @@
-// import { SERVER_URL } from 'constants/url';
-const SERVER_URL = 'ws://physics-platform-server.herokuapp.com/';
-import { DisplayedDataType } from 'pages/lab3';
+import { SERVER_URL, SERVER_URL_LOCAL } from 'constants/url';
+// const SERVER_URL = 'ws://physics-platform-server.herokuapp.com/';
 import { dataType } from 'types/types';
+import { DisplayedDataType } from 'utils/displayed-data';
 interface IConnectWS {
     setIsWSocketConnected: React.Dispatch<React.SetStateAction<boolean>>;
     setStep: React.Dispatch<React.SetStateAction<number>>;
@@ -24,7 +24,7 @@ interface IStartDataReceiving {
 
 export const useWebSocket = () => {
     const connectWS = ({ setIsWSocketConnected, setStep, setAllData, setSocket }: IConnectWS): void => {
-        const socket = new WebSocket(SERVER_URL);
+        const socket = new WebSocket(SERVER_URL_LOCAL);
         // console.log(socket)
         if (socket) {
             socket.onopen = () => {
@@ -36,6 +36,8 @@ export const useWebSocket = () => {
                 setStep(data.step || 0);
                 // console.log(Object.keys(data));
                 setAllData(data);
+
+                socket.send(JSON.stringify({step:data.step || 0}))
             };
 
             socket.onclose = () => {
