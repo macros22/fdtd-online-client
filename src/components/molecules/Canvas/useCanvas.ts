@@ -1,6 +1,7 @@
 import React from 'react';
 
-type drawType = (ctx: CanvasRenderingContext2D, frameCount: number) => void;
+// type drawType = (ctx: CanvasRenderingContext2D, frameCount: number) => void;
+export type drawType = (ctx: CanvasRenderingContext2D) => void;
 
 const useCanvas = (draw: drawType, width: number, height: number) => {
   const canvasRef = React.useRef<HTMLCanvasElement | null>(null);
@@ -19,7 +20,7 @@ const useCanvas = (draw: drawType, width: number, height: number) => {
       //Our first draw
       if (context) {
         // let frameCount = 0;
-        let animationFrameId: any;
+        // let animationFrameId: any;
 
         //Our draw came here
         // const render = () => {
@@ -28,10 +29,11 @@ const useCanvas = (draw: drawType, width: number, height: number) => {
         //   animationFrameId = window.requestAnimationFrame(render);
         // };
         // render();
-        draw(context, 5);
-        return () => {
-          window.cancelAnimationFrame(animationFrameId);
-        };
+        // draw(context, 5);
+        draw(context);
+        // return () => {
+        //   window.cancelAnimationFrame(animationFrameId);
+        // };
       }
     }
   }, [draw]);

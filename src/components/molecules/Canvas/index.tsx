@@ -1,6 +1,6 @@
 import React from 'react';
 import { DataChartType } from 'types/lab1';
-import useCanvas from './useCanvas';
+import useCanvas, { drawType } from './useCanvas';
 
 // https://medium.com/@pdx.lucasm/canvas-with-react-js-32e133c05258
 
@@ -60,20 +60,18 @@ const ImageCanvas: React.FC<ImageCanvasProps> = ({
     y: number;
   };
 
-  // const data1: dataType[] = [];
-  // const data2: dataType[] = [];
+  const data1: dataType[] = [];
+  const data2: dataType[] = [];
 
-  // for (let x = 0; x <= CHART_WIDTH; x += INTERVAL_X) {
-  //   data1.push({ x, y: Math.random() * 400 });
-  //   data2.push({ x, y: Math.random() * 350 });
-  // }
+  for (let x = 0; x <= CHART_WIDTH; x += INTERVAL_X) {
+    data1.push({ x, y: Math.random() * 400 });
+    data2.push({ x, y: Math.random() * 350 });
+  }
 
-  const draw = (ctx: CanvasRenderingContext2D, frameCount: number) => {
+  const draw: drawType  = (ctx) => {
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
     ctx.fillStyle = 'gray';
     ctx.beginPath();
-
-    console.log(frameCount);
 
     // Draw x axis.
     ctx.moveTo(chartX0, tY(chartY0));
@@ -134,7 +132,9 @@ const ImageCanvas: React.FC<ImageCanvasProps> = ({
     }
     ctx.restore();
 
-    drawLine(ctx, data, 'gray', 1);
+    // console.log(data)
+    if(data[0])
+      drawLine(ctx, data, 'red', 2);
     // drawLine(ctx, data1, 'blue', 2);
     // drawLine(ctx, data2, 'red', 2);
   };
@@ -179,7 +179,7 @@ const ImageCanvas: React.FC<ImageCanvasProps> = ({
 
       // position for next segment
       ctx.beginPath();
-      console.log(y0, chartY0);
+      // console.log(y0, chartY0);
       ctx.moveTo(chartX0 + point.x * scaleX, tY(y0 + point.y * scaleY));
     }
     ctx.restore();
@@ -193,7 +193,7 @@ const ImageCanvas: React.FC<ImageCanvasProps> = ({
 };
 
 type CanvasProps = {
-  draw: (ctx: CanvasRenderingContext2D, frameCount: number) => void;
+  draw: drawType ;
   width: number;
   height: number;
   rest?: any;

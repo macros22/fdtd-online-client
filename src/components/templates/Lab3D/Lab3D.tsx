@@ -8,7 +8,7 @@ import {
   WAVE_LENGTH_NAME,
 } from 'names/lab2.name';
 
-import styles from './Experiment.module.scss';
+import styles from '../../../styles/lab3D.module.scss';
 import {
   HeatMap,
   Sidebar,
@@ -25,11 +25,12 @@ import {
 import { dataType, LabNames } from 'types/types';
 
 import { useRefractionMatrix } from 'store/refraction-matrix.context';
-import { useWebSocket } from 'hooks/useWebSocket';
-import { IExperimentProps } from './Experiment.props';
 import { displayedData } from 'utils/displayed-data';
+import { SERVER_URL_LOCAL } from 'constants/url';
+import { Lab3DProps } from './Lab3D.prop';
 
-const Experiment: React.FC<IExperimentProps> = ({ currentLabName }) => {
+const Lab3D: React.FC<Lab3DProps> = ({currentLabName}) => {
+
   const [isWSocketConnected, setIsWSocketConnected] =
     React.useState<boolean>(false);
 
@@ -38,7 +39,6 @@ const Experiment: React.FC<IExperimentProps> = ({ currentLabName }) => {
   const heatMapWidth = 430;
   const heatMapHeight = 430;
 
-  const [tau, setTau] = React.useState<number>(10);
   const [beamsize, setBeamsize] = React.useState<number>(3);
   const [lambda, setLambda] = React.useState<number>(1);
   const [refractiveIndex1, setrefractiveIndex1] = React.useState<number>(1);
@@ -64,44 +64,93 @@ const Experiment: React.FC<IExperimentProps> = ({ currentLabName }) => {
 
   const { matrix } = useRefractionMatrix();
 
+  // Websocket ---- start.
+  const connectWS = () => {
+    const socket = new WebSocket(SERVER_URL_LOCAL);
+    // console.log(socket)
+    if (socket) {
+      socket.onopen = () => {
+        setIsWSocketConnected(true);
+      };
+
+      socket.onmessage = (event: any) => {
+        let data = JSON.parse(event.data);
+        setStep(data.step || 0);
+        // console.log(Object.keys(data));
+        setAllData(data);
+
+        socket.send(JSON.stringify({ step: data.step || 0 }));
+      };
+
+      socket.onclose = () => {
+        console.log('Socket закрыт');
+        setIsWSocketConnected(false);
+      };
+
+      socket.onerror = () => {
+        console.log('Socket произошла ошибка');
+        setIsWSocketConnected(false);
+      };
+    }
+    setSocket(socket);
+  };
+
+  const startDataReceiving = () => {
+    setPause(false);
+
+    const message = {
+      event: 'start',
+      type : (currentLabName == LabNames.INTERFERENCE ? LabNames.INTERFERENCE : LabNames.LAB_3D).toString(),
+      dataToReturn: displayedData[currentDisplayingData].type,
+      condition: [lambda, beamsize, refractiveIndex1, refractiveIndex2],
+      matrix,
+    };
+
+    if (socket) {
+      socket.send(JSON.stringify(message));
+    }
+  };
+
+  const pauseDataReceiving = () => {
+    const message = {
+      event: 'pause',
+    };
+
+    if (socket !== null) {
+      socket.send(JSON.stringify(message));
+    }
+  };
+
+  const continueDataReceiving = () => {
+    const message = {
+      event: 'continue',
+    };
+
+    if (socket !== null) {
+      socket.send(JSON.stringify(message));
+    }
+  };
+
   React.useEffect(() => {
-    connectWS({
-      setIsWSocketConnected,
-      setStep,
-      setAllData,
-      setSocket,
-    });
+    connectWS();
     return () => {
       if (socket !== null) {
         socket.close(1000, 'работа закончена');
       }
     };
   }, []);
-
-  const {
-    connectWS,
-    startDataReceiving,
-    continueDataReceiving,
-    pauseDataReceiving,
-  } = useWebSocket();
+  // Websocket ---- end.
 
   // Handlers.
   const clickStartPauseContinueBtnHandler = () => {
     if (!simulation) {
-      startDataReceiving({
-        setPause,
-        displayedData,
-        currentDisplayingData,
-        condition: [lambda, beamsize, refractiveIndex1, refractiveIndex2],
-        matrix,
-        socket,
-      });
+      startDataReceiving();
       setSimulation(true);
     } else {
       if (!pause) {
-        pauseDataReceiving(socket);
+        pauseDataReceiving();
       } else {
-        continueDataReceiving(socket);
+        continueDataReceiving();
       }
       setPause((pause) => !pause);
     }
@@ -109,7 +158,7 @@ const Experiment: React.FC<IExperimentProps> = ({ currentLabName }) => {
 
   const clickStopBtnHandler = (e: React.MouseEvent) => {
     if (simulation) {
-      pauseDataReceiving(socket);
+      pauseDataReceiving();
       setPause(false);
       setSimulation(false);
       setStep(0);
@@ -125,39 +174,29 @@ const Experiment: React.FC<IExperimentProps> = ({ currentLabName }) => {
             label={WAVE_LENGTH_NAME}
             onChange={(e) => setLambda(+e.target.value)}
           />
-          {currentLabName === LabNames.LAB_2D ? (
-            <NumberInput
-              label={BEAMSIZE_NAME}
-              value={tau}
-              onChange={(e) => setTau(+e.target.value)}
-            />
-          ) : (
-            <NumberInput
-              label={BEAMSIZE_NAME}
-              value={beamsize}
-              onChange={(e) => setBeamsize(+e.target.value)}
-            />
-          )}
+
+          <NumberInput
+            label={BEAMSIZE_NAME}
+            value={beamsize}
+            onChange={(e) => setBeamsize(+e.target.value)}
+          />
 
           <NumberInput
             label={REFRACTIVE_INDEX_NAME}
             value={refractiveIndex1}
             onChange={(e) => setrefractiveIndex1(+e.target.value)}
           />
-
-          {currentLabName === LabNames.DIFRACTION && (
-            <>
-              <NumberInput
-                label={REFRACTIVE_INDEX_NAME}
-                value={refractiveIndex2}
-                onChange={(e) => setRefractiveIndex2(+e.target.value)}
-              />
-              <hr />
-              <WithLabel labelText='Матрица:'>
-                <MatrixEditor />
-              </WithLabel>
-            </>
-          )}
+          <>
+            <NumberInput
+              label={REFRACTIVE_INDEX_NAME}
+              value={refractiveIndex2}
+              onChange={(e) => setRefractiveIndex2(+e.target.value)}
+            />
+            <hr />
+            <WithLabel labelText='Матрица:'>
+              <MatrixEditor />
+            </WithLabel>
+          </>
         </Sidebar>
 
         <div className={styles.content}>
@@ -189,27 +228,24 @@ const Experiment: React.FC<IExperimentProps> = ({ currentLabName }) => {
         </div>
 
         <Sidebar className={styles.sidebarRight}>
-          {currentLabName !== LabNames.LAB_2D && (
-            <>
-              <WithLabel labelText='Выбор данных:'>
-                <ButtonGroup activeButton={currentDisplayingData}>
-                  {displayedData.map((item, index) => {
-                    return (
-                      <button
-                        key={item.name}
-                        onClick={() => {
-                          setCurrentDisplayingData(index);
-                        }}
-                      >
-                        {item.name}
-                      </button>
-                    );
-                  })}
-                </ButtonGroup>
-              </WithLabel>
-              <hr />
-            </>
-          )}
+          <WithLabel labelText='Выбор данных:'>
+            <ButtonGroup activeButton={currentDisplayingData}>
+              {displayedData.map((item, index) => {
+                return (
+                  <button
+                    key={item.name}
+                    onClick={() => {
+                      setCurrentDisplayingData(index);
+                    }}
+                  >
+                    {item.name}
+                  </button>
+                );
+              })}
+            </ButtonGroup>
+          </WithLabel>
+          <hr />
+
           <Button onClick={clickStartPauseContinueBtnHandler}>
             {!simulation ? 'СТАРТ' : pause ? CONTINUE_NAME : PAUSE_NAME}
           </Button>
@@ -237,4 +273,4 @@ const Experiment: React.FC<IExperimentProps> = ({ currentLabName }) => {
   );
 };
 
-export default Experiment;
+export default Lab3D;

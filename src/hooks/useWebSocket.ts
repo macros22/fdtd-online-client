@@ -59,10 +59,10 @@ export const useWebSocket = () => {
 
         const message = {
             event: "start",
-            type: "3D",
-            dataToReturn: displayedData[currentDisplayingData].type,
+            type: "2D",
+            // dataToReturn: displayedData[currentDisplayingData].type,
             condition,
-            matrix,
+            // matrix,
         };
 
         if (socket) {

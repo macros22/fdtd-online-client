@@ -1,5 +1,5 @@
 import React from 'react';
-import { Experiment, Theory } from 'components';
+import { Lab2D, Theory } from 'components';
 
 import { withLayout } from 'layout/MainLayout';
 import { LabContentType, LabNames } from 'types/types';
@@ -20,6 +20,7 @@ import matter from 'gray-matter';
 import markdown from 'remark-parse';
 import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
+import { Lab3D } from 'components';
 
 const LabPage: React.FC<ILabPageProps> = ({
   currentLabName,
@@ -39,14 +40,20 @@ const LabPage: React.FC<ILabPageProps> = ({
         </Theory>
       );
     case LabContentType.EXPERIMENT:
-      return (
-        <>
-          <Experiment
-            currentLabName={currentLabName}
-            currentLabContentType={currentLabContentType}
-          />
-        </>
-      );
+      switch (currentLabName) {
+        case LabNames.LAB_2D:
+          return (
+            <>
+              <Lab2D />
+            </>
+          );
+        default:
+          return (
+            <>
+              <Lab3D currentLabName={currentLabName}/>
+            </>
+          );
+      }
   }
 
   return <>Loading...</>;
