@@ -12,13 +12,13 @@
   width: 100%;
 }
 
-.tmp {
-  background: rgb(197, 197, 197);
+.substrate {
+  background: black;
   bottom: 0;
   height: 100%;
 
   left: 0;
-  opacity: 0.97;
+  opacity: 0.75;
   position: fixed;
   right: 0;
   top: 0;
@@ -45,6 +45,11 @@
   display: flex;
   flex-direction: column;
   height: 90vh;
-  padding: var(--space-md);
+  // padding: var(--space-md);
   width: max-content;
+}
+
+.buttons {
+  display: flex;
+  justify-content: space-evenly;
 }

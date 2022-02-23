@@ -6,7 +6,7 @@ import { useRefractionMatrix } from 'store/refraction-matrix.context';
 import { MatrixEditorProps } from './MatrixEditor.props';
 import { Button } from 'components';
 
-const colors = ['#fafafa', '#a1bb21', '#1a52aa'];
+const colors = ['#fafafa', 'tomato', '#1a52aa'];
 
 const Editor: React.FC = () => {
   // Matrix sizes.
@@ -69,8 +69,8 @@ const Editor: React.FC = () => {
     const x = pageX - gridX - rectWidth / 2;
     const y = pageY - gridY - rectHeight / 2;
 
-    console.log('grid', gridX, gridY);
-    console.log('page', pageX, pageY);
+    // console.log('grid', gridX, gridY);
+    // console.log('page', pageX, pageY);
 
     setFocusedCoord({
       i: Math.round((n * x) / width),
@@ -135,7 +135,7 @@ const Editor: React.FC = () => {
                 <React.Fragment key={index + shape.x}>
                   <rect
                     fill={shape.color}
-                    stroke='red'
+                    stroke='black'
                     strokeWidth={index == currentShape ? '2px' : '0px'}
                     strokeOpacity='1'
                     x={shape.x}
@@ -172,15 +172,23 @@ const MatrixEditor: React.FC<MatrixEditorProps> = () => {
       <Button onClick={() => setIsOpend(true)}>Изменить</Button>
       {isOpened && (
         <>
-          <div className={styles.tmp}></div>
+          <div className={styles.substrate}></div>
 
-          <div className={styles.modalWrapper}>
+          <div
+            className={styles.modalWrapper}
+            // onClick={(e) => {
+            //   e.stopPropagation();
+            //   setIsOpend(false);
+            //   console.log('back clicked');
+            // }}
+          >
             <div className={styles.modal}>
+              <h2>Editor</h2>
               <Editor />
-              <Button onClick={() => resetMatrix()}>
-                Вернуть начальное состояние
-              </Button>
-              <Button onClick={() => setIsOpend(false)}>назад</Button>
+              <div className={styles.buttons}>
+                <Button onClick={() => resetMatrix()}>Reset</Button>
+                <Button onClick={() => setIsOpend(false)}>Back</Button>
+              </div>
             </div>
           </div>
         </>
