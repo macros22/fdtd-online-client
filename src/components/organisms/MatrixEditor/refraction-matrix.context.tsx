@@ -69,7 +69,17 @@ export interface IContext {
   returnObj: IReturnObject;
 }
 
-const RefractionMatrixContext = React.createContext<IContext | null>(null);
+export const RefractionMatrixContext = React.createContext<IContext>({
+  matrix: defaultMatrix,
+  setMatrix: () => {},
+  resetMatrix: () => {},
+  returnObj: {
+    rectWidth,
+    rectHeight,
+    rIndexes,
+    n,
+  },
+});
 
 type RefractionMatrixProviderProps = { currentLabName: LabNames };
 
@@ -97,10 +107,10 @@ export const RefractionMatrixProvider: React.FC<
 };
 
 // currentLabName: LabNames
-export const useRefractionMatrix = () => {
-  const context = React.useContext(RefractionMatrixContext);
-  if (!context) {
-    throw new Error(`useCount must be used within a RefractionMatrixProvider`);
-  }
-  return context;
-};
+// export const useRefractionMatrix = () => {
+//   const context = React.useContext(RefractionMatrixContext);
+//   if (!context) {
+//     throw new Error(`useCount must be used within a RefractionMatrixProvider`);
+//   }
+//   return context;
+// };

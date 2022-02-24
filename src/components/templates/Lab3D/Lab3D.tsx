@@ -24,10 +24,10 @@ import {
 
 import { dataType, LabNames } from 'types/types';
 
-import { useRefractionMatrix } from 'components/organisms/MatrixEditor/refraction-matrix.context';
 import { displayedData } from 'utils/displayed-data';
 import { SERVER_URL_LOCAL } from 'constants/url';
 import { Lab3DProps } from './Lab3D.prop';
+import { RefractionMatrixContext } from 'components/organisms/MatrixEditor/refraction-matrix.context';
 
 const Lab3D: React.FC<Lab3DProps> = ({ currentLabName }) => {
   const [isWSocketConnected, setIsWSocketConnected] =
@@ -61,12 +61,11 @@ const Lab3D: React.FC<Lab3DProps> = ({ currentLabName }) => {
 
   const [allData, setAllData] = React.useState<dataType>(initAllData);
 
-  const { matrix } = useRefractionMatrix();
+  const { matrix } = React.useContext(RefractionMatrixContext);
 
   // Websocket ---- start.
   const connectWS = () => {
     const socket = new WebSocket(SERVER_URL_LOCAL);
-    // console.log(socket)
     if (socket) {
       socket.onopen = () => {
         setIsWSocketConnected(true);
@@ -75,7 +74,6 @@ const Lab3D: React.FC<Lab3DProps> = ({ currentLabName }) => {
       socket.onmessage = (event: any) => {
         let data = JSON.parse(event.data);
         setStep(data.step || 0);
-        // console.log(Object.keys(data));
         setAllData(data);
 
         socket.send(JSON.stringify({ step: data.step || 0 }));

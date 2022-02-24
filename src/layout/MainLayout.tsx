@@ -47,7 +47,7 @@ export const withLayout = <T extends Record<string, unknown>>(
     return (
       <RefractionMatrixProvider
         // currentLabName={(props?.currentLabName as LabNames) || ''}
-        currentLabName={LabNames.BORDER}
+        currentLabName={(props?.currentLabName as LabNames) || LabNames.LAB_3D}
       >
         <MainLayout {...metaProps}>
           <Component {...props} />

@@ -2,9 +2,10 @@
 
 import * as React from 'react';
 import styles from './MatrixEditor.module.scss';
-import { useRefractionMatrix } from 'components/organisms/MatrixEditor/refraction-matrix.context';
+// import { useRefractionMatrix } from 'components/organisms/MatrixEditor/refraction-matrix.context';
 import { MatrixEditorProps } from './MatrixEditor.props';
 import { Button } from 'components';
+import { RefractionMatrixContext } from './refraction-matrix.context';
 
 const colors = ['#fafafa', 'tomato', '#1a52aa'];
 
@@ -12,7 +13,9 @@ const Editor: React.FC = () => {
   // Matrix sizes.
   const width = 400;
   const height = width;
-  const { matrix, setMatrix, returnObj } = useRefractionMatrix();
+  const { matrix, setMatrix, returnObj } = React.useContext(
+    RefractionMatrixContext
+  );
 
   // Under matrix panel size.
   const panelHeight = 70;
@@ -153,7 +156,7 @@ const Editor: React.FC = () => {
 };
 
 const MatrixEditor: React.FC<MatrixEditorProps> = () => {
-  const { resetMatrix } = useRefractionMatrix();
+  const { resetMatrix } = React.useContext(RefractionMatrixContext);
 
   const [isOpened, setIsOpend] = React.useState<boolean>(false);
 
