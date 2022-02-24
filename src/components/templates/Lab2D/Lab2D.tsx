@@ -21,7 +21,7 @@ import {
 
 import { dataType, LabNames } from 'types/types';
 
-import { useRefractionMatrix } from 'store/refraction-matrix.context';
+import { useRefractionMatrix } from 'components/organisms/MatrixEditor/refraction-matrix.context';
 import { displayedData } from 'utils/displayed-data';
 import { SERVER_URL_LOCAL } from 'constants/url';
 import { DataChartType } from 'types/lab1';
@@ -74,18 +74,18 @@ const Lab2D: React.FC = () => {
         setStep(data.step || 0);
         console.log(data);
 
-        const tmpdata2DChart: DataChartType = []
-        for (let i = 0; i < data.col; i ++) {
-            tmpdata2DChart.push({
-              x: data.dataX[i],
-              y: data.dataY[i],
-            });
-          }
-          setMinX(Math.min(...data.dataX))
-          setMinY(Math.min(...data.dataY))
-          setMaxX(Math.max(...data.dataX))
-          setMaxY(Math.max(...data.dataY))
-        
+        const tmpdata2DChart: DataChartType = [];
+        for (let i = 0; i < data.col; i++) {
+          tmpdata2DChart.push({
+            x: data.dataX[i],
+            y: data.dataY[i],
+          });
+        }
+        setMinX(Math.min(...data.dataX));
+        setMinY(Math.min(...data.dataY));
+        setMaxX(Math.max(...data.dataX));
+        setMaxY(Math.max(...data.dataY));
+
         setAllData(tmpdata2DChart);
 
         socket.send(JSON.stringify({ step: data.step || 0 }));

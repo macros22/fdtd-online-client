@@ -24,13 +24,12 @@ import {
 
 import { dataType, LabNames } from 'types/types';
 
-import { useRefractionMatrix } from 'store/refraction-matrix.context';
+import { useRefractionMatrix } from 'components/organisms/MatrixEditor/refraction-matrix.context';
 import { displayedData } from 'utils/displayed-data';
 import { SERVER_URL_LOCAL } from 'constants/url';
 import { Lab3DProps } from './Lab3D.prop';
 
-const Lab3D: React.FC<Lab3DProps> = ({currentLabName}) => {
-
+const Lab3D: React.FC<Lab3DProps> = ({ currentLabName }) => {
   const [isWSocketConnected, setIsWSocketConnected] =
     React.useState<boolean>(false);
 
@@ -100,7 +99,10 @@ const Lab3D: React.FC<Lab3DProps> = ({currentLabName}) => {
 
     const message = {
       event: 'start',
-      type : (currentLabName == LabNames.INTERFERENCE ? LabNames.INTERFERENCE : LabNames.LAB_3D).toString(),
+      type: (currentLabName == LabNames.INTERFERENCE
+        ? LabNames.INTERFERENCE
+        : LabNames.LAB_3D
+      ).toString(),
       dataToReturn: displayedData[currentDisplayingData].type,
       condition: [lambda, beamsize, refractiveIndex1, refractiveIndex2],
       matrix,

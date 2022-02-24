@@ -2,8 +2,9 @@ import * as React from 'react';
 import Head from 'next/head';
 import styles from './MainLayout.module.scss';
 import { MainLayoutProps } from './MainLayout.props';
-import { RefractionMatrixProvider } from 'store/refraction-matrix.context';
+import { RefractionMatrixProvider } from 'components/organisms/MatrixEditor/refraction-matrix.context';
 import { Header } from 'components';
+import { LabNames } from 'types/types';
 
 const MainLayout: React.FC<MainLayoutProps> = ({
   children,
@@ -41,9 +42,13 @@ export const withLayout = <T extends Record<string, unknown>>(
       }`,
       description: (props?.currentLabName as string)?.toLowerCase() || '',
     };
+    // console.log(props?.currentLabName as string);
 
     return (
-      <RefractionMatrixProvider>
+      <RefractionMatrixProvider
+        // currentLabName={(props?.currentLabName as LabNames) || ''}
+        currentLabName={LabNames.BORDER}
+      >
         <MainLayout {...metaProps}>
           <Component {...props} />
         </MainLayout>

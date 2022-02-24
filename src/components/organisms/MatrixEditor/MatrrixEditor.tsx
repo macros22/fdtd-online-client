@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import styles from './MatrixEditor.module.scss';
-import { useRefractionMatrix } from 'store/refraction-matrix.context';
+import { useRefractionMatrix } from 'components/organisms/MatrixEditor/refraction-matrix.context';
 import { MatrixEditorProps } from './MatrixEditor.props';
 import { Button } from 'components';
 
@@ -53,10 +53,6 @@ const Editor: React.FC = () => {
 
   const [focusedCoord, setFocusedCoord] = React.useState(initialFocusedCoords);
 
-  React.useEffect(() => {
-    // console.log(focusedCoord);
-  }, [focusedCoord]);
-
   const handleMouseMove = (e: React.MouseEvent) => {
     // Save the values of pageX and pageY and use it within setPosition.
     const pageX = e.clientX;
@@ -69,9 +65,6 @@ const Editor: React.FC = () => {
     const x = pageX - gridX - rectWidth / 2;
     const y = pageY - gridY - rectHeight / 2;
 
-    // console.log('grid', gridX, gridY);
-    // console.log('page', pageX, pageY);
-
     setFocusedCoord({
       i: Math.round((n * x) / width),
       j: Math.round((n * y) / height),
@@ -82,7 +75,6 @@ const Editor: React.FC = () => {
     <>
       <svg
         style={{
-          // background: '#aaa',
           height: height + panelHeight + 'px',
           width: width + 'px',
         }}
@@ -174,14 +166,7 @@ const MatrixEditor: React.FC<MatrixEditorProps> = () => {
         <>
           <div className={styles.substrate}></div>
 
-          <div
-            className={styles.modalWrapper}
-            // onClick={(e) => {
-            //   e.stopPropagation();
-            //   setIsOpend(false);
-            //   console.log('back clicked');
-            // }}
-          >
+          <div className={styles.modalWrapper}>
             <div className={styles.modal}>
               <h2>Editor</h2>
               <Editor />
