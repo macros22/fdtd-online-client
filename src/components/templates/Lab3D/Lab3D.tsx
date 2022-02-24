@@ -102,7 +102,10 @@ const Lab3D: React.FC<Lab3DProps> = ({ currentLabName }) => {
         : LabNames.LAB_3D
       ).toString(),
       dataToReturn: displayedData[currentDisplayingData].type,
-      condition: [lambda, beamsize, refractiveIndex1, refractiveIndex2],
+      condition: currentLabName == LabNames.INTERFERENCE
+                    ? [lambda, beamsize, refractiveIndex1]
+                    : [lambda, beamsize],
+      
       matrix,
     };
 
