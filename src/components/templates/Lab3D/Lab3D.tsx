@@ -64,7 +64,7 @@ const Lab3D: React.FC<Lab3DProps> = ({ currentLabName }) => {
 
   const matrix = useAppSelector(selectEpsilonMatrix);
 
-  console.log(matrix)
+  console.log(matrix);
   // Websocket ---- start.
   const connectWS = () => {
     const socket = new WebSocket(SERVER_URL_LOCAL);
@@ -104,9 +104,10 @@ const Lab3D: React.FC<Lab3DProps> = ({ currentLabName }) => {
         : LabNames.LAB_3D
       ).toString(),
       dataToReturn: displayedData[currentDisplayingData].type,
-      condition: currentLabName == LabNames.INTERFERENCE
-                    ? [lambda, beamsize, refractiveIndex1]
-                    : [lambda, beamsize],
+      condition:
+        currentLabName == LabNames.INTERFERENCE
+          ? [lambda, beamsize, refractiveIndex1]
+          : [lambda, beamsize],
       matrix,
     };
 
@@ -133,9 +134,10 @@ const Lab3D: React.FC<Lab3DProps> = ({ currentLabName }) => {
         : LabNames.LAB_3D
       ).toString(),
       dataToReturn: displayedData[currentDisplayingData].type,
-      condition: currentLabName == LabNames.INTERFERENCE
-                    ? [lambda, beamsize, refractiveIndex1]
-                    : [lambda, beamsize],
+      condition:
+        currentLabName == LabNames.INTERFERENCE
+          ? [lambda, beamsize, refractiveIndex1]
+          : [lambda, beamsize],
       matrix,
     };
 

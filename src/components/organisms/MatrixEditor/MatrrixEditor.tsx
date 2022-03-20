@@ -7,7 +7,16 @@ import { Button } from 'components';
 import { useAppDispatch, useAppSelector } from 'app/hooks';
 import { LabNames } from 'types/types';
 import { selectLabName } from 'app/reducers/labTypeSlice';
-import { selectEpsilonMatrix, selectEpsilonMatrixCountX, selectEpsilonMatrixCountY, selectEpsilonMatrixRectHeight, selectEpsilonMatrixRectWidth, selectEpsilonMatrixValues, setEpsilonMatrix2D, updateEpsilonMatrix2D } from 'app/reducers/epsilon-matrix.reducer';
+import {
+  selectEpsilonMatrix,
+  selectEpsilonMatrixCountX,
+  selectEpsilonMatrixCountY,
+  selectEpsilonMatrixRectHeight,
+  selectEpsilonMatrixRectWidth,
+  selectEpsilonMatrixValues,
+  setEpsilonMatrix,
+  updateEpsilonMatrix
+} from 'app/reducers/epsilon-matrix.reducer';
 
 const colors = ['#fafafa', 'tomato', '#1a52aa'];
 
@@ -15,26 +24,23 @@ const Editor: React.FC = () => {
   // Matrix sizes.
   const width = 400;
   const height = width;
-  
+
   const countX = useAppSelector(selectEpsilonMatrixCountX);
   const countY = useAppSelector(selectEpsilonMatrixCountY);
   const matrix = useAppSelector(selectEpsilonMatrix);
   const rectWidth = useAppSelector(selectEpsilonMatrixRectWidth);
   const rectHeight = useAppSelector(selectEpsilonMatrixRectHeight);
 
-  console.log(rectWidth)
-  console.log(rectHeight)
   const rIndexes = useAppSelector(selectEpsilonMatrixValues);
 
   const dispatch = useAppDispatch();
-
 
   // Under matrix panel size.
   const panelHeight = 70;
 
   const [currentShape, setCurrentShape] = React.useState(1);
 
-  const panelPaddingY = height + rectHeight + 10;
+  const panelPaddingY = height + Math.min(rectWidth, rectHeight) + 10;
   const panelPaddingX = 50;
 
   // Panel with refraction index shapes.
@@ -48,22 +54,22 @@ const Editor: React.FC = () => {
     color: colors[index],
   }));
 
-  
   const initialFocusedCoords = { i: 0, j: 0 };
 
   const [focusedCoord, setFocusedCoord] = React.useState(initialFocusedCoords);
-
 
   // Handlers.
   const handleMouseClick = () => {
     const newJ = focusedCoord.j;
     const newI = focusedCoord.i;
-    dispatch(updateEpsilonMatrix2D({i:newI, j: newJ, newEpsilonValue: panelShapes[currentShape].rIndex}))
+    dispatch(
+      updateEpsilonMatrix({
+        i: newI,
+        j: newJ,
+        newEpsilonValue: panelShapes[currentShape].rIndex,
+      })
+    );
   };
-
-  React.useEffect(() => {
-    // console.log(focusedCoord);
-  }, [focusedCoord])
 
   const handleMouseMove = (e: React.MouseEvent) => {
     // Save the values of pageX and pageY and use it within setPosition.
@@ -81,7 +87,6 @@ const Editor: React.FC = () => {
       i: Math.round((countX * x) / width),
       j: Math.round((countY * y) / height),
     });
-
   };
 
   return (
@@ -116,9 +121,8 @@ const Editor: React.FC = () => {
                   x={i * rectWidth}
                   y={j * rectHeight}
                   fill={panelShapes[colorIndex].color}
-
                   // element is invisible for clicks.
-                  style={{pointerEvents: "none"}}
+                  style={{ pointerEvents: 'none' }}
                 />
               );
             }
@@ -148,8 +152,8 @@ const Editor: React.FC = () => {
                     strokeOpacity='1'
                     x={shape.x}
                     y={shape.y}
-                    width={shape.width}
-                    height={shape.height}
+                    width={Math.min(shape.width, shape.height)}
+                    height={Math.min(shape.width, shape.height)}
                     onClick={() => setCurrentShape(index)}
                   />
                   <text
@@ -175,12 +179,12 @@ const MatrixEditor: React.FC<MatrixEditorProps> = () => {
   const currentLabName = useAppSelector(selectLabName);
 
   const resetMatrix = (currentLabName: LabNames) => {
-    dispatch(setEpsilonMatrix2D(currentLabName));
-  }
+    dispatch(setEpsilonMatrix(currentLabName));
+  };
 
   React.useEffect(() => {
-    dispatch(setEpsilonMatrix2D(currentLabName));
-  }, [currentLabName])
+    dispatch(setEpsilonMatrix(currentLabName));
+  }, [currentLabName]);
 
   return (
     <>
@@ -196,7 +200,9 @@ const MatrixEditor: React.FC<MatrixEditorProps> = () => {
               <h2>Editor</h2>
               <Editor />
               <div className={styles.buttons}>
-                <Button onClick={() => resetMatrix(currentLabName)}>Reset</Button>
+                <Button onClick={() => resetMatrix(currentLabName)}>
+                  Reset
+                </Button>
                 <Button onClick={() => setIsOpend(false)}>Back</Button>
               </div>
             </div>
