@@ -28,7 +28,7 @@ import { displayedData } from 'utils/displayed-data';
 import { SERVER_URL_LOCAL } from 'constants/url';
 import { Lab3DProps } from './Lab3D.prop';
 import { useAppSelector } from 'app/hooks';
-import { selectEpsilonMatrix1D, selectEpsilonMatrix2D } from 'app/reducers/epsilon-matrix.reducer';
+import { selectEpsilonMatrix } from 'app/reducers/epsilon-matrix.reducer';
 
 const Lab3D: React.FC<Lab3DProps> = ({ currentLabName }) => {
   const [isWSocketConnected, setIsWSocketConnected] =
@@ -62,7 +62,7 @@ const Lab3D: React.FC<Lab3DProps> = ({ currentLabName }) => {
 
   const [allData, setAllData] = React.useState<dataType>(initAllData);
 
-  const matrix = useAppSelector(selectEpsilonMatrix2D);
+  const matrix = useAppSelector(selectEpsilonMatrix);
 
   console.log(matrix)
   // Websocket ---- start.

@@ -5,33 +5,35 @@ import type { AppState } from '../store'
 
 
 export interface IEpsilonMatrixState {
-    epsilon1D: number[],
-    rectWidth1D: number,
-    rectHeight1D: number,
-    epsilonVectorSize1D: number;
-
-    epsilon2D: number[][],
+    epsilonMatrix: number[][],
     rectWidth: number;
     rectHeight: number;
     rIndexes: number[];
-    readonly epsilonMatrixSize2D: number;
+
+    // Epsilon matrix size.
+    countX: number;
+    countY: number;
 }
 
 
 const rIndexes = [1, 4, 6];
 
-const epsilonVectorSize1D = 10;
-const epsilonMatrixSize2D = 50;
+// Epsilon matrix sizes.
+const countX = 50;
+const countY = 25;
 
 const width = 400;
+const height = 400;
+const rectWidth = width / countX;
+const rectHeight = height / countY;
 
 const make2DEpsilonMatrixEmpty = () => {
 
   let eps: number[][] = [];
 
-  for (let i = 0; i < epsilonMatrixSize2D; i++) {
+  for (let i = 0; i < countX; i++) {
     eps[i] = [];
-    for (let j = 0; j < epsilonMatrixSize2D; j++) {
+    for (let j = 0; j < countY; j++) {
       eps[i][j] = rIndexes[0];
     }
   }
@@ -42,9 +44,9 @@ const make2DEpsilonMatrixBorder = () => {
 
   let eps: number[][] = [];
 
-  for (let i = 0; i < epsilonMatrixSize2D; i++) {
+  for (let i = 0; i < countX; i++) {
     eps[i] = [];
-    for (let j = 0; j < epsilonMatrixSize2D; j++) {
+    for (let j = 0; j < countY; j++) {
       if (i < j) {
         eps[i][j] = rIndexes[0];
       } else {
@@ -59,32 +61,27 @@ const make2DEpsilonMatrixDifraction = () => {
 
   let eps: number[][] = [];
 
-  for (let i = 0; i < epsilonMatrixSize2D; i++) {
+  for (let i = 0; i < countX; i++) {
     eps[i] = [];
-    for (let j = 0; j < epsilonMatrixSize2D; j++) {
+    for (let j = 0; j < countY; j++) {
       eps[i][j] = rIndexes[0];
     }
   }
-  for (let j = 0; j < epsilonMatrixSize2D; j += 3) {
-    eps[Math.floor(epsilonMatrixSize2D / 6)][j] = rIndexes[1];
+  for (let j = 0; j < countX; j += 3) {
+    eps[Math.floor(countX / 6)][j] = rIndexes[1];
   }
   return eps;
 }
 
 
 const initialState: IEpsilonMatrixState = {
-    epsilon1D: [],
-    epsilonVectorSize1D,
-    rectWidth1D: width / epsilonVectorSize1D,
-    rectHeight1D: width / epsilonVectorSize1D,
-    epsilon2D: [],
-    epsilonMatrixSize2D,
-    rectWidth: width / epsilonMatrixSize2D,
-    rectHeight: width / epsilonMatrixSize2D,
+    epsilonMatrix: [],
+    countX,
+    countY,
+    rectWidth,
+    rectHeight,
     rIndexes,
 }
-
-
 
 interface IUpdateEpslonMatrix1D {
   i: number;
@@ -104,23 +101,23 @@ export const epsilonMatrixSlice = createSlice({
     reducers: {
         setEpsilonMatrix1D: (state) => {
         
-            let eps: number[] = [];
+            let eps: number[][] = [];
 
-            for (let i = 0; i < epsilonMatrixSize2D; i++) {
-                if(i < epsilonMatrixSize2D/2) {
-                    eps[i] = rIndexes[0]; 
+            for (let j = 0; j < countY; j++) {
+                if(j < countY/2) {
+                    eps[0][j] = rIndexes[0]; 
                 } else {
-                    eps[i] = rIndexes[1]; 
+                    eps[0][j] = rIndexes[1]; 
                 }
             }
-            state.epsilon1D = eps;            
+            state.epsilonMatrix = eps;            
 
         },
         updateEpsilonMatrix1D: (state, action: PayloadAction<IUpdateEpslonMatrix1D>) => {
             // if(state.epsilon1D[action.payload.i, action.payload.j] !== action.payload.newEpsilonValue) {
 
             // }
-            state.epsilon1D[action.payload.i] = action.payload.newEpsilonValue;
+            state.epsilonMatrix[0][action.payload.i] = action.payload.newEpsilonValue;
             
         },
         setEpsilonMatrix2D: (state, action: PayloadAction<LabNames>) => {
@@ -137,10 +134,10 @@ export const epsilonMatrixSlice = createSlice({
                   eps = make2DEpsilonMatrixEmpty();
               }
             
-            state.epsilon2D = eps;
+            state.epsilonMatrix = eps;
         },
         updateEpsilonMatrix2D: (state, action: PayloadAction<IUpdateEpslonMatrix2D>) => {
-            state.epsilon2D[action.payload.i][action.payload.j] = action.payload.newEpsilonValue;
+            state.epsilonMatrix[action.payload.i][action.payload.j] = action.payload.newEpsilonValue;
         },
     },
 })
@@ -148,11 +145,12 @@ export const epsilonMatrixSlice = createSlice({
 export const { updateEpsilonMatrix1D, updateEpsilonMatrix2D, setEpsilonMatrix1D, setEpsilonMatrix2D} = epsilonMatrixSlice.actions;
 
 
-export const selectEpsilonMatrix1D = (state: AppState) => state.epsilonMatrix.epsilon1D;
-export const selectEpsilonMatrix2D = (state: AppState) => state.epsilonMatrix.epsilon2D;
+export const selectEpsilonMatrix = (state: AppState) => state.epsilonMatrix.epsilonMatrix;
 
-export const selectEpsilonMatrixSize2D = (state: AppState) => state.epsilonMatrix.epsilonMatrixSize2D || epsilonMatrixSize2D;
+export const selectEpsilonMatrixCountX = (state: AppState) => state.epsilonMatrix.countX;
+export const selectEpsilonMatrixCountY = (state: AppState) => state.epsilonMatrix.countY;
 export const selectEpsilonMatrixValues = (state: AppState) => state.epsilonMatrix.rIndexes;
-export const selectEpsilonMatrixRectSize = (state: AppState) => state.epsilonMatrix.rectWidth;
+export const selectEpsilonMatrixRectWidth = (state: AppState) => state.epsilonMatrix.rectWidth;
+export const selectEpsilonMatrixRectHeight = (state: AppState) => state.epsilonMatrix.rectHeight;
 
 export default epsilonMatrixSlice.reducer;

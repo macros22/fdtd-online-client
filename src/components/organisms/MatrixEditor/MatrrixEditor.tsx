@@ -5,9 +5,9 @@ import styles from './MatrixEditor.module.scss';
 import { MatrixEditorProps } from './MatrixEditor.props';
 import { Button } from 'components';
 import { useAppDispatch, useAppSelector } from 'app/hooks';
-import { selectEpsilonMatrix1D, selectEpsilonMatrix2D, selectEpsilonMatrixRectSize, selectEpsilonMatrixSize2D, selectEpsilonMatrixValues, setEpsilonMatrix2D, updateEpsilonMatrix1D, updateEpsilonMatrix2D } from 'app/reducers/epsilon-matrix.reducer';
 import { LabNames } from 'types/types';
 import { selectLabName } from 'app/reducers/labTypeSlice';
+import { selectEpsilonMatrix, selectEpsilonMatrixCountX, selectEpsilonMatrixCountY, selectEpsilonMatrixRectHeight, selectEpsilonMatrixRectWidth, selectEpsilonMatrixValues, setEpsilonMatrix2D, updateEpsilonMatrix2D } from 'app/reducers/epsilon-matrix.reducer';
 
 const colors = ['#fafafa', 'tomato', '#1a52aa'];
 
@@ -16,10 +16,14 @@ const Editor: React.FC = () => {
   const width = 400;
   const height = width;
   
-  const epsilonMatrixSize2D = useAppSelector(selectEpsilonMatrixSize2D);
-  const matrix = useAppSelector(selectEpsilonMatrix2D);
-  const rectWidth = useAppSelector(selectEpsilonMatrixRectSize);
-  const rectHeight = rectWidth;
+  const countX = useAppSelector(selectEpsilonMatrixCountX);
+  const countY = useAppSelector(selectEpsilonMatrixCountY);
+  const matrix = useAppSelector(selectEpsilonMatrix);
+  const rectWidth = useAppSelector(selectEpsilonMatrixRectWidth);
+  const rectHeight = useAppSelector(selectEpsilonMatrixRectHeight);
+
+  console.log(rectWidth)
+  console.log(rectHeight)
   const rIndexes = useAppSelector(selectEpsilonMatrixValues);
 
   const dispatch = useAppDispatch();
@@ -45,7 +49,6 @@ const Editor: React.FC = () => {
   }));
 
   
-
   const initialFocusedCoords = { i: 0, j: 0 };
 
   const [focusedCoord, setFocusedCoord] = React.useState(initialFocusedCoords);
@@ -75,8 +78,8 @@ const Editor: React.FC = () => {
     const y = pageY - gridY - rectHeight / 2;
 
     setFocusedCoord({
-      i: Math.round((epsilonMatrixSize2D * x) / width),
-      j: Math.round((epsilonMatrixSize2D * y) / height),
+      i: Math.round((countX * x) / width),
+      j: Math.round((countY * y) / height),
     });
 
   };
