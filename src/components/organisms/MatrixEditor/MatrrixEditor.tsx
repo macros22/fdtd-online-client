@@ -113,6 +113,9 @@ const Editor: React.FC = () => {
                   x={i * rectWidth}
                   y={j * rectHeight}
                   fill={panelShapes[colorIndex].color}
+
+                  // element is invisible for clicks.
+                  style={{pointerEvents: "none"}}
                 />
               );
             }
