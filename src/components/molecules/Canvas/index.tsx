@@ -29,7 +29,9 @@ const ImageCanvas: React.FC<ImageCanvasProps> = ({
   const PADDING = 5;
 
   const deltaX = minX >= 0 ? maxX : maxX - minX;
-  const deltaY = minY >= 0 ? maxY : maxY - minY;
+  // const deltaY = minY >= 0 ? maxY : maxY - minY;
+  // const deltaY = Math.max(Math.abs(minY), Math.abs(maxY))*2;
+  const deltaY = 2;
 
   // const scaleX = WIDTH / deltaX;
   // const scaleY = HEIGHT / deltaY;

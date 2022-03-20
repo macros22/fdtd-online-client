@@ -27,7 +27,8 @@ import { dataType, LabNames } from 'types/types';
 import { displayedData } from 'utils/displayed-data';
 import { SERVER_URL_LOCAL } from 'constants/url';
 import { Lab3DProps } from './Lab3D.prop';
-import { RefractionMatrixContext } from 'components/organisms/MatrixEditor/refraction-matrix.context';
+import { useAppSelector } from 'app/hooks';
+import { selectEpsilonMatrix1D, selectEpsilonMatrix2D } from 'app/reducers/epsilon-matrix.reducer';
 
 const Lab3D: React.FC<Lab3DProps> = ({ currentLabName }) => {
   const [isWSocketConnected, setIsWSocketConnected] =
@@ -61,8 +62,9 @@ const Lab3D: React.FC<Lab3DProps> = ({ currentLabName }) => {
 
   const [allData, setAllData] = React.useState<dataType>(initAllData);
 
-  const { matrix } = React.useContext(RefractionMatrixContext);
+  const matrix = useAppSelector(selectEpsilonMatrix2D);
 
+  console.log(matrix)
   // Websocket ---- start.
   const connectWS = () => {
     const socket = new WebSocket(SERVER_URL_LOCAL);
@@ -105,7 +107,6 @@ const Lab3D: React.FC<Lab3DProps> = ({ currentLabName }) => {
       condition: currentLabName == LabNames.INTERFERENCE
                     ? [lambda, beamsize, refractiveIndex1]
                     : [lambda, beamsize],
-      
       matrix,
     };
 
@@ -127,6 +128,15 @@ const Lab3D: React.FC<Lab3DProps> = ({ currentLabName }) => {
   const continueDataReceiving = () => {
     const message = {
       event: 'continue',
+      type: (currentLabName == LabNames.INTERFERENCE
+        ? LabNames.INTERFERENCE
+        : LabNames.LAB_3D
+      ).toString(),
+      dataToReturn: displayedData[currentDisplayingData].type,
+      condition: currentLabName == LabNames.INTERFERENCE
+                    ? [lambda, beamsize, refractiveIndex1]
+                    : [lambda, beamsize],
+      matrix,
     };
 
     if (socket !== null) {

@@ -19,9 +19,9 @@ import {
   Canvas,
 } from 'components';
 
-import { dataType, LabNames } from 'types/types';
+// import { dataType, LabNames } from 'types/types';
 
-import { useRefractionMatrix } from 'components/organisms/MatrixEditor/refraction-matrix.context';
+// import { useRefractionMatrix } from 'components/organisms/MatrixEditor/refraction-matrix.context';
 import { displayedData } from 'utils/displayed-data';
 import { SERVER_URL_LOCAL } from 'constants/url';
 import { DataChartType } from 'types/lab1';
@@ -52,7 +52,7 @@ const Lab2D: React.FC = () => {
 
   const [minX, setMinX] = React.useState<number>(0);
   const [minY, setMinY] = React.useState<number>(0);
-  const [maxX, setMaxX] = React.useState<number>(400);
+  const [maxX, setMaxX] = React.useState<number>(100);
   const [maxY, setMaxY] = React.useState<number>(0.001);
 
   const [currentDisplayingData, setCurrentDisplayingData] =
@@ -131,6 +131,8 @@ const Lab2D: React.FC = () => {
   const continueDataReceiving = () => {
     const message = {
       event: 'continue',
+      type: '2D',
+      condition: [lambda, tau, refractiveIndex1],
     };
 
     if (socket !== null) {

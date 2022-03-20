@@ -2,12 +2,10 @@
 
 import * as React from 'react';
 import styles from './MatrixEditor.module.scss';
-import { MatrixEditorProps } from './MatrixEditor.props';
+// import { useRefractionMatrix } from 'components/organisms/MatrixEditor/refraction-matrix.context';
+import { MatrixEditorProps } from './Epsilon1DEditor.props';
 import { Button } from 'components';
-import { useAppDispatch, useAppSelector } from 'app/hooks';
-import { selectEpsilonMatrix1D, selectEpsilonMatrix2D, selectEpsilonMatrixRectSize, selectEpsilonMatrixSize2D, selectEpsilonMatrixValues, setEpsilonMatrix2D, updateEpsilonMatrix1D, updateEpsilonMatrix2D } from 'app/reducers/epsilon-matrix.reducer';
-import { LabNames } from 'types/types';
-import { selectLabName } from 'app/reducers/labTypeSlice';
+import { RefractionMatrixContext } from './epsilon-1D-matrix.context';
 
 const colors = ['#fafafa', 'tomato', '#1a52aa'];
 
@@ -15,18 +13,14 @@ const Editor: React.FC = () => {
   // Matrix sizes.
   const width = 400;
   const height = width;
-  
-  const epsilonMatrixSize2D = useAppSelector(selectEpsilonMatrixSize2D);
-  const matrix = useAppSelector(selectEpsilonMatrix2D);
-  const rectWidth = useAppSelector(selectEpsilonMatrixRectSize);
-  const rectHeight = rectWidth;
-  const rIndexes = useAppSelector(selectEpsilonMatrixValues);
-
-  const dispatch = useAppDispatch();
-
+  const { matrix, setMatrix, returnObj } = React.useContext(
+    RefractionMatrixContext
+  );
 
   // Under matrix panel size.
   const panelHeight = 70;
+
+  const { rectWidth, rectHeight, rIndexes, n } = returnObj;
 
   const [currentShape, setCurrentShape] = React.useState(1);
 
@@ -44,23 +38,23 @@ const Editor: React.FC = () => {
     color: colors[index],
   }));
 
-  
-
-  const initialFocusedCoords = { i: 0, j: 0 };
-
-  const [focusedCoord, setFocusedCoord] = React.useState(initialFocusedCoords);
-
-
   // Handlers.
   const handleMouseClick = () => {
     const newJ = focusedCoord.j;
     const newI = focusedCoord.i;
-    dispatch(updateEpsilonMatrix2D({i:newI, j: newJ, newEpsilonValue: panelShapes[currentShape].rIndex}))
+
+    setMatrix((prevMatrix) => {
+      if (prevMatrix[newI][newJ] !== panelShapes[currentShape].rIndex) {
+        prevMatrix[newI][newJ] = panelShapes[currentShape].rIndex;
+        return JSON.parse(JSON.stringify(prevMatrix));
+      }
+      return prevMatrix;
+    });
   };
 
-  React.useEffect(() => {
-    // console.log(focusedCoord);
-  }, [focusedCoord])
+  const initialFocusedCoords = { i: 0, j: 0 };
+
+  const [focusedCoord, setFocusedCoord] = React.useState(initialFocusedCoords);
 
   const handleMouseMove = (e: React.MouseEvent) => {
     // Save the values of pageX and pageY and use it within setPosition.
@@ -75,10 +69,9 @@ const Editor: React.FC = () => {
     const y = pageY - gridY - rectHeight / 2;
 
     setFocusedCoord({
-      i: Math.round((epsilonMatrixSize2D * x) / width),
-      j: Math.round((epsilonMatrixSize2D * y) / height),
+      i: Math.round((n * x) / width),
+      j: Math.round((n * y) / height),
     });
-
   };
 
   return (
@@ -163,18 +156,9 @@ const Editor: React.FC = () => {
 };
 
 const MatrixEditor: React.FC<MatrixEditorProps> = () => {
+  const { resetMatrix } = React.useContext(RefractionMatrixContext);
+
   const [isOpened, setIsOpend] = React.useState<boolean>(false);
-
-  const dispatch = useAppDispatch();
-  const currentLabName = useAppSelector(selectLabName);
-
-  const resetMatrix = (currentLabName: LabNames) => {
-    dispatch(setEpsilonMatrix2D(currentLabName));
-  }
-
-  React.useEffect(() => {
-    dispatch(setEpsilonMatrix2D(currentLabName));
-  }, [currentLabName])
 
   return (
     <>
@@ -190,7 +174,7 @@ const MatrixEditor: React.FC<MatrixEditorProps> = () => {
               <h2>Editor</h2>
               <Editor />
               <div className={styles.buttons}>
-                <Button onClick={() => resetMatrix(currentLabName)}>Reset</Button>
+                <Button onClick={() => resetMatrix()}>Reset</Button>
                 <Button onClick={() => setIsOpend(false)}>Back</Button>
               </div>
             </div>

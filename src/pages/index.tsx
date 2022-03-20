@@ -7,7 +7,7 @@ function Index() {
   return (
     <>
       {/* <Test /> */}
-      <Lab3D />
+      {/* <Lab3D /> */}
     </>
   );
 }

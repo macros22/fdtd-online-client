@@ -10,6 +10,7 @@ import {
 } from 'redux-persist'
 
 import createWebStorage from "redux-persist/lib/storage/createWebStorage";
+import epsilonMatrixReducer from './reducers/epsilon-matrix.reducer';
 
 const createNoopStorage = () => {
     return {
@@ -35,6 +36,7 @@ import labTypeReducer from './reducers/labTypeSlice'
 
 const rootReducer = combineReducers({
     labType: labTypeReducer,
+    epsilonMatrix: epsilonMatrixReducer,
 });
 
 

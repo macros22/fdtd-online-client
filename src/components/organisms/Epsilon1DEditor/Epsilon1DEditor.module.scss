@@ -1,0 +1,55 @@
+.text {
+  font: bold 10px sans-serif;
+  -webkit-user-select: none; /* Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+/Edge */
+  user-select: none; /* Standard */
+}
+
+.matrixPreview {
+  background: #eee;
+  height: 50px;
+  width: 100%;
+}
+
+.substrate {
+  background: black;
+  bottom: 0;
+  height: 100%;
+
+  left: 0;
+  opacity: 0.75;
+  position: fixed;
+  right: 0;
+  top: 0;
+
+  width: 100%;
+  z-index: 1004;
+}
+
+.modalWrapper {
+  align-items: center;
+  // background: #fff;
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  left: 0;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1005;
+}
+
+.modal {
+  background: white;
+  display: flex;
+  flex-direction: column;
+  height: 90vh;
+  // padding: var(--space-md);
+  width: max-content;
+}
+
+.buttons {
+  display: flex;
+  justify-content: space-evenly;
+}
