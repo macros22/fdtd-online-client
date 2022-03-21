@@ -17,6 +17,7 @@ import {
   setEpsilonMatrix,
   updateEpsilonMatrix
 } from 'app/reducers/epsilon-matrix.reducer';
+import DragAndDrop from './DragAndDrop';
 
 const colors = ['#fafafa', 'tomato', '#1a52aa'];
 
@@ -204,7 +205,9 @@ const MatrixEditor: React.FC<MatrixEditorProps> = () => {
                   Reset
                 </Button>
                 <Button onClick={() => setIsOpend(false)}>Back</Button>
+                
               </div>
+              <DragAndDrop WIDTH={400} HEIGHT={400} />
             </div>
           </div>
         </>
