@@ -9,13 +9,11 @@ import { LabNames } from 'types/types';
 import { selectLabName } from 'app/reducers/labTypeSlice';
 import {
   selectEpsilonMatrix,
-  selectEpsilonMatrixCountX,
-  selectEpsilonMatrixCountY,
-  selectEpsilonMatrixRectHeight,
-  selectEpsilonMatrixRectWidth,
+  selectEpsilonMatrixCountRow,
+  selectEpsilonMatrixCountCol,
   selectEpsilonMatrixValues,
   setEpsilonMatrix,
-  updateEpsilonMatrix
+  updateEpsilonMatrix,
 } from 'app/reducers/epsilon-matrix.reducer';
 import DragAndDrop from './DragAndDrop';
 
@@ -24,13 +22,17 @@ const colors = ['#fafafa', 'tomato', '#1a52aa'];
 const Editor: React.FC = () => {
   // Matrix sizes.
   const width = 400;
-  const height = width;
+  const height = 400;
 
-  const countX = useAppSelector(selectEpsilonMatrixCountX);
-  const countY = useAppSelector(selectEpsilonMatrixCountY);
+  const countRow = useAppSelector(selectEpsilonMatrixCountRow);
+  const countCol = useAppSelector(selectEpsilonMatrixCountCol);
   const matrix = useAppSelector(selectEpsilonMatrix);
-  const rectWidth = useAppSelector(selectEpsilonMatrixRectWidth);
-  const rectHeight = useAppSelector(selectEpsilonMatrixRectHeight);
+  React.useEffect(() => {
+    console.log(matrix);
+  }, [matrix]);
+
+  const rectWidth = width / countCol;
+  const rectHeight = height / countRow;
 
   const rIndexes = useAppSelector(selectEpsilonMatrixValues);
 
@@ -63,6 +65,7 @@ const Editor: React.FC = () => {
   const handleMouseClick = () => {
     const newJ = focusedCoord.j;
     const newI = focusedCoord.i;
+    console.log(newI, newJ, 'asdsd');
     dispatch(
       updateEpsilonMatrix({
         i: newI,
@@ -84,9 +87,15 @@ const Editor: React.FC = () => {
     const x = pageX - gridX - rectWidth / 2;
     const y = pageY - gridY - rectHeight / 2;
 
+    console.log('x, y:', x, y);
+    console.log(
+      'focusedCoord (i,j)',
+      Math.round((countRow * y) / height),
+      Math.round((countCol * x) / width)
+    );
     setFocusedCoord({
-      i: Math.round((countX * x) / width),
-      j: Math.round((countY * y) / height),
+      j: Math.round((countCol * x) / width),
+      i: Math.round((countRow * y) / height),
     });
   };
 
@@ -119,8 +128,8 @@ const Editor: React.FC = () => {
                   key={i + '' + j}
                   width={rectWidth}
                   height={rectHeight}
-                  x={i * rectWidth}
-                  y={j * rectHeight}
+                  x={j * rectWidth}
+                  y={i * rectHeight}
                   fill={panelShapes[colorIndex].color}
                   // element is invisible for clicks.
                   style={{ pointerEvents: 'none' }}
@@ -134,8 +143,8 @@ const Editor: React.FC = () => {
         <rect
           width={rectWidth}
           height={rectHeight}
-          x={focusedCoord.i * rectWidth}
-          y={focusedCoord.j * rectHeight}
+          x={focusedCoord.j * rectWidth}
+          y={focusedCoord.i * rectHeight}
           fill='gray'
           opacity='0.4'
           onClick={handleMouseClick}
@@ -178,13 +187,26 @@ const MatrixEditor: React.FC<MatrixEditorProps> = () => {
 
   const dispatch = useAppDispatch();
   const currentLabName = useAppSelector(selectLabName);
+  React.useEffect(() => {
+    console.log(currentLabName);
+  }, [currentLabName]);
 
   const resetMatrix = (currentLabName: LabNames) => {
-    dispatch(setEpsilonMatrix(currentLabName));
+    dispatch(setEpsilonMatrix({ currentLabName }));
   };
 
   React.useEffect(() => {
-    dispatch(setEpsilonMatrix(currentLabName));
+    if (currentLabName == LabNames.LAB_2D) {
+      dispatch(
+        setEpsilonMatrix({ currentLabName, newCountRow: 1, newCountCol: 25 })
+      );
+    } else {
+      dispatch(
+        setEpsilonMatrix({ currentLabName, newCountRow: 40, newCountCol: 50 })
+      );
+    }
+
+    // }, []);
   }, [currentLabName]);
 
   return (
@@ -205,10 +227,9 @@ const MatrixEditor: React.FC<MatrixEditorProps> = () => {
                   Reset
                 </Button>
                 <Button onClick={() => setIsOpend(false)}>Back</Button>
-                
               </div>
-              <DragAndDrop WIDTH={400} HEIGHT={400} />
             </div>
+            {/* <DragAndDrop WIDTH={400} HEIGHT={400} /> */}
           </div>
         </>
       )}

@@ -55,6 +55,8 @@ const persistedReducer = persistReducer(persistConfig, rootReducer)
 export function makeStore() {
     return configureStore({
         reducer: persistedReducer,
+        // reducer: rootReducer,
+        devTools: true,
         middleware: (getDefaultMiddleware) => // react-persist and redux-toolkit configs
             getDefaultMiddleware({
                 serializableCheck: {

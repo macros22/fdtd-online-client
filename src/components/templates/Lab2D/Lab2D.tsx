@@ -17,6 +17,7 @@ import {
   Button,
   WithLabel,
   Canvas,
+  MatrixEditor,
 } from 'components';
 
 // import { dataType, LabNames } from 'types/types';
@@ -195,6 +196,10 @@ const Lab2D: React.FC = () => {
             value={refractiveIndex1}
             onChange={(e) => setrefractiveIndex1(+e.target.value)}
           />
+          <hr />
+            <WithLabel labelText='Матрица:'>
+              <MatrixEditor />
+            </WithLabel>
         </Sidebar>
 
         <div className={styles.content}>
