@@ -202,7 +202,7 @@ const MatrixEditor: React.FC<MatrixEditorProps> = () => {
       );
     } else {
       dispatch(
-        setEpsilonMatrix({ currentLabName, newCountRow: 40, newCountCol: 50 })
+        setEpsilonMatrix({ currentLabName, newCountRow: 40, newCountCol: 40 })
       );
     }
 

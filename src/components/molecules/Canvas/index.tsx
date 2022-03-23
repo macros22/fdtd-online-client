@@ -30,15 +30,15 @@ const ImageCanvas: React.FC<ImageCanvasProps> = ({
 
   const deltaX = minX >= 0 ? maxX : maxX - minX;
   // const deltaY = minY >= 0 ? maxY : maxY - minY;
-  // const deltaY = Math.max(Math.abs(minY), Math.abs(maxY))*2;
-  const deltaY = 2;
+  const deltaY = Math.max(Math.abs(minY), Math.abs(maxY))*2;
+  // const deltaY = 0.2;
 
   // const scaleX = WIDTH / deltaX;
   // const scaleY = HEIGHT / deltaY;
   // const pointRadius = 5;
 
-  const INTERVAL_X = 40;
-  const INTERVAL_Y = 40;
+  const INTERVAL_X = 30;
+  const INTERVAL_Y = 20;
 
   const CHART_WIDTH = WIDTH - PADDING * 8;
   const CHART_HEIGHT = HEIGHT - PADDING * 6;
@@ -48,11 +48,12 @@ const ImageCanvas: React.FC<ImageCanvasProps> = ({
 
   const TICK_MARKS_HEIGHT = 6;
 
-  const chartX0 = PADDING * 10;
-  const chartY0 = PADDING * 6;
+  const chartX0 = WIDTH - CHART_WIDTH;
+  const chartY0 = HEIGHT - CHART_HEIGHT;
 
   const x0 = chartX0;
-  const y0 = chartY0 - minY * scaleY;
+  // const y0 = chartY0 - minY * scaleY;
+  const y0 = chartY0 - (0 - deltaY/2) * scaleY ;
 
   // Transform browser Y-axis to real world.
   const tY = (y: number) => HEIGHT - y;
@@ -62,13 +63,13 @@ const ImageCanvas: React.FC<ImageCanvasProps> = ({
     y: number;
   };
 
-  const data1: dataType[] = [];
-  const data2: dataType[] = [];
+  // const data1: dataType[] = [];
+  // const data2: dataType[] = [];
 
-  for (let x = 0; x <= CHART_WIDTH; x += INTERVAL_X) {
-    data1.push({ x, y: Math.random() * 400 });
-    data2.push({ x, y: Math.random() * 350 });
-  }
+  // for (let x = 0; x <= CHART_WIDTH; x += INTERVAL_X) {
+  //   data1.push({ x, y: Math.random() * 400 });
+  //   data2.push({ x, y: Math.random() * 350 });
+  // }
 
   const draw: drawType  = (ctx) => {
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);

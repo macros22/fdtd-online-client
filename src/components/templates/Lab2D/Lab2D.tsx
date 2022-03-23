@@ -52,9 +52,12 @@ const Lab2D: React.FC = () => {
   const [pause, setPause] = React.useState<boolean>(false);
 
   const [minX, setMinX] = React.useState<number>(0);
-  const [minY, setMinY] = React.useState<number>(0);
+  const [minY, setMinY] = React.useState<number>(-1);
   const [maxX, setMaxX] = React.useState<number>(100);
   const [maxY, setMaxY] = React.useState<number>(0.001);
+
+  
+  
 
   const [currentDisplayingData, setCurrentDisplayingData] =
     React.useState<number>(0);
@@ -73,7 +76,8 @@ const Lab2D: React.FC = () => {
       socket.onmessage = (event: any) => {
         let data = JSON.parse(event.data);
         setStep(data.step || 0);
-        console.log(data);
+        
+        console.log(Math.min(...data.dataY));
 
         const tmpdata2DChart: DataChartType = [];
         for (let i = 0; i < data.col; i++) {
