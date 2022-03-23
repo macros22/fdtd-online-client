@@ -27,14 +27,17 @@ const Editor: React.FC = () => {
   const countRow = useAppSelector(selectEpsilonMatrixCountRow);
   const countCol = useAppSelector(selectEpsilonMatrixCountCol);
   const matrix = useAppSelector(selectEpsilonMatrix);
+  const rIndexes = useAppSelector(selectEpsilonMatrixValues);
+
+  
   React.useEffect(() => {
     console.log(matrix);
-  }, [matrix]);
+    console.log(rIndexes);
+  }, [matrix, rIndexes]);
 
   const rectWidth = width / countCol;
   const rectHeight = height / countRow;
 
-  const rIndexes = useAppSelector(selectEpsilonMatrixValues);
 
   const dispatch = useAppDispatch();
 
@@ -87,12 +90,12 @@ const Editor: React.FC = () => {
     const x = pageX - gridX - rectWidth / 2;
     const y = pageY - gridY - rectHeight / 2;
 
-    console.log('x, y:', x, y);
-    console.log(
-      'focusedCoord (i,j)',
-      Math.round((countRow * y) / height),
-      Math.round((countCol * x) / width)
-    );
+    // console.log('x, y:', x, y);
+    // console.log(
+    //   'focusedCoord (i,j)',
+    //   Math.round((countRow * y) / height),
+    //   Math.round((countCol * x) / width)
+    // );
     setFocusedCoord({
       j: Math.round((countCol * x) / width),
       i: Math.round((countRow * y) / height),

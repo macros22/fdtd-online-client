@@ -26,6 +26,8 @@ import {
 import { displayedData } from 'utils/displayed-data';
 import { SERVER_URL_LOCAL } from 'constants/url';
 import { DataChartType } from 'types/lab1';
+import { selectEpsilonMatrix } from 'app/reducers/epsilon-matrix.reducer';
+import { useAppSelector } from 'app/hooks';
 
 const Lab2D: React.FC = () => {
   const [isWSocketConnected, setIsWSocketConnected] =
@@ -109,13 +111,20 @@ const Lab2D: React.FC = () => {
     setSocket(socket);
   };
 
+  const matrix = useAppSelector(selectEpsilonMatrix);
+
   const startDataReceiving = () => {
     setPause(false);
 
+    console.log(matrix);
+    
     const message = {
       event: 'start',
       type: '2D',
-      condition: [lambda, tau, refractiveIndex1],
+      // condition: [lambda, tau, refractiveIndex1],
+      condition: [lambda, tau, 1],
+      matrix,
+      dataToReturn: "Hy"
     };
 
     if (socket) {
@@ -137,7 +146,9 @@ const Lab2D: React.FC = () => {
     const message = {
       event: 'continue',
       type: '2D',
-      condition: [lambda, tau, refractiveIndex1],
+      condition: [lambda, tau, 1],
+      matrix,
+      dataToReturn: "Hy"
     };
 
     if (socket !== null) {

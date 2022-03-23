@@ -11,7 +11,7 @@ export interface IEpsilonMatrixState {
   countCol: number;
 }
 
-const rIndexes = [1, 4, 6];
+const rIndexes = [4.85418e-12, (4.85418e-12)*3, (4.85418e-12)*5];
 
 // Epsilon matrix sizes.
 const countRow = 5;
@@ -109,8 +109,8 @@ export const epsilonMatrixSlice = createSlice({
       let eps: number[][] = [];
       switch (action.payload.currentLabName) {
         case LabNames.LAB_2D:
-          eps = make1DEpsilonMatrixEmpty(state.countRow);
-          console.log('epsL', eps, state.countRow);
+          eps = make1DEpsilonMatrixEmpty(state.countCol);
+          console.log('epsL', eps, state.countCol);
           break;
         case LabNames.DIFRACTION:
           eps = make2DEpsilonMatrixDifraction(state.countRow, state.countCol);
