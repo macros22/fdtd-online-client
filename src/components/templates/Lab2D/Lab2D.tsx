@@ -28,6 +28,7 @@ import { SERVER_URL_LOCAL } from 'constants/url';
 import { DataChartType } from 'types/lab1';
 import { selectEpsilonMatrix } from 'app/reducers/epsilon-matrix.reducer';
 import { useAppSelector } from 'app/hooks';
+import InputRange from 'components/atoms/InputRange/InputRange';
 
 const Lab2D: React.FC = () => {
   const [isWSocketConnected, setIsWSocketConnected] =
@@ -58,8 +59,8 @@ const Lab2D: React.FC = () => {
   const [maxX, setMaxX] = React.useState<number>(100);
   const [maxY, setMaxY] = React.useState<number>(0.001);
 
-  
-  
+  const [sourcePositionRelative, setSourcePositionRelative] =
+    React.useState(0.2);
 
   const [currentDisplayingData, setCurrentDisplayingData] =
     React.useState<number>(0);
@@ -78,7 +79,7 @@ const Lab2D: React.FC = () => {
       socket.onmessage = (event: any) => {
         let data = JSON.parse(event.data);
         setStep(data.step || 0);
-        
+
         // console.log(Math.min(...data.dataY));
 
         const tmpdata2DChart: DataChartType = [];
@@ -117,14 +118,15 @@ const Lab2D: React.FC = () => {
     setPause(false);
 
     console.log(matrix);
-    
+
     const message = {
       event: 'start',
       type: '2D',
       // condition: [lambda, tau, refractiveIndex1],
       condition: [lambda, tau, 1],
+      sourcePositionRelative: {x: sourcePositionRelative, y: 0},
       matrix,
-      dataToReturn: "Hy"
+      dataToReturn: 'Hy',
     };
 
     if (socket) {
@@ -147,8 +149,9 @@ const Lab2D: React.FC = () => {
       event: 'continue',
       type: '2D',
       condition: [lambda, tau, 1],
+      sourcePositionRelative: {x: sourcePositionRelative, y: 0},
       matrix,
-      dataToReturn: "Hy"
+      dataToReturn: 'Hy',
     };
 
     if (socket !== null) {
@@ -212,9 +215,16 @@ const Lab2D: React.FC = () => {
             onChange={(e) => setrefractiveIndex1(+e.target.value)}
           />
           <hr />
-            <WithLabel labelText='Матрица:'>
-              <MatrixEditor />
-            </WithLabel>
+          <WithLabel labelText={`Source position(${sourcePositionRelative})`}>
+            <InputRange
+              value={sourcePositionRelative}
+              setValue={setSourcePositionRelative}
+            />
+          </WithLabel>
+          <hr />
+          <WithLabel labelText='Матрица:'>
+            <MatrixEditor />
+          </WithLabel>
         </Sidebar>
 
         <div className={styles.content}>

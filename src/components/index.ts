@@ -8,6 +8,7 @@ export { default as MatrixEditor } from './organisms/MatrixEditor/MatrrixEditor'
 export { default as GradientScale } from './atoms/GradientScale/GradientScale';
 export { default as Canvas } from './molecules/Canvas';
 export { default as Tag } from './atoms/Tag/Tag';
+export { default as InputRange } from './atoms/InputRange/InputRange';
 export { default as ButtonGroup } from './molecules/ButtonGroup/ButtonGroup';
 export { default as Theory } from './templates/Theory/Theory';
 export { default as Lab3D } from './templates/Lab3D/Lab3D';

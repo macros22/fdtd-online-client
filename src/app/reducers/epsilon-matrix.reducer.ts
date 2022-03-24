@@ -9,13 +9,19 @@ export interface IEpsilonMatrixState {
   // Epsilon matrix size
   countRow: number;
   countCol: number;
+
+  // sourcePositionRelativeX: number;
+  // sourcePositionRelativeY: number;
 }
 
 const rIndexes = [4.85418e-12, (4.85418e-12)*3, (4.85418e-12)*5];
+// const rIndexes = [1,2,4];
 
 // Epsilon matrix sizes.
 const countRow = 5;
 const countCol = 5;
+// const sourcePositionRelativeX = 0.2;
+// const sourcePositionRelativeY = 0;
 
 const make2DEpsilonMatrixEmpty = (countRow: number, countCol: number) => {
   let eps: number[][] = [];
@@ -77,6 +83,8 @@ const initialState: IEpsilonMatrixState = {
   epsilonMatrix: [],
   countRow,
   countCol,
+  // sourcePositionRelativeX,
+  // sourcePositionRelativeY,
   rIndexes,
 };
 

@@ -32,8 +32,8 @@ const ImageCanvas: React.FC<ImageCanvasProps> = ({
 
   const deltaX = minX >= 0 ? maxX : maxX - minX;
   // const deltaY = minY >= 0 ? maxY : maxY - minY;
-  const deltaY = Math.max(Math.abs(minY), Math.abs(maxY))*2;
-  // const deltaY = 0.2;
+  // const deltaY = Math.max(Math.abs(minY), Math.abs(maxY))*2;
+  const deltaY = 0.2;
 
   // const scaleX = WIDTH / deltaX;
   // const scaleY = HEIGHT / deltaY;
@@ -73,7 +73,6 @@ const ImageCanvas: React.FC<ImageCanvasProps> = ({
   const minEpsilon = Math.min(...epsilonData);
   const epsilonScale = (CHART_HEIGHT / 2) / maxEpsilon;
 
-  let prevX = 0;
   let prevY = 0;
 
   for (let i = 0; i*epsilonDataInterval <= CHART_WIDTH; ++i) {
@@ -89,7 +88,7 @@ const ImageCanvas: React.FC<ImageCanvasProps> = ({
     }
 
      data1.push({ x: newX, y: newY });
-     prevX = newX;
+
      prevY = newY;
   
   }
