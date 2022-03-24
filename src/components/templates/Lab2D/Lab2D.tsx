@@ -79,7 +79,7 @@ const Lab2D: React.FC = () => {
         let data = JSON.parse(event.data);
         setStep(data.step || 0);
         
-        console.log(Math.min(...data.dataY));
+        // console.log(Math.min(...data.dataY));
 
         const tmpdata2DChart: DataChartType = [];
         for (let i = 0; i < data.col; i++) {
@@ -236,6 +236,7 @@ const Lab2D: React.FC = () => {
                   maxX={maxX}
                   WIDTH={CANVAS_WIDTH_2D}
                   HEIGHT={CANVAS_HEIGHT_2D}
+                  epsilonData={matrix[0]}
                 />
               </Paper>
             </div>

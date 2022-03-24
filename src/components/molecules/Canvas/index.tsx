@@ -15,6 +15,7 @@ type ImageCanvasProps = {
   minY: number;
   WIDTH: number;
   HEIGHT: number;
+  epsilonData: number[];
 };
 
 const ImageCanvas: React.FC<ImageCanvasProps> = ({
@@ -25,6 +26,7 @@ const ImageCanvas: React.FC<ImageCanvasProps> = ({
   minY,
   WIDTH,
   HEIGHT,
+  epsilonData,
 }) => {
   const PADDING = 5;
 
@@ -63,13 +65,35 @@ const ImageCanvas: React.FC<ImageCanvasProps> = ({
     y: number;
   };
 
-  // const data1: dataType[] = [];
+  const data1: dataType[] = [];
   // const data2: dataType[] = [];
 
-  // for (let x = 0; x <= CHART_WIDTH; x += INTERVAL_X) {
-  //   data1.push({ x, y: Math.random() * 400 });
-  //   data2.push({ x, y: Math.random() * 350 });
-  // }
+  const epsilonDataInterval = CHART_WIDTH / epsilonData.length;
+  const maxEpsilon = Math.max(...epsilonData);
+  const minEpsilon = Math.min(...epsilonData);
+  const epsilonScale = (CHART_HEIGHT / 2) / maxEpsilon;
+
+  let prevX = 0;
+  let prevY = 0;
+
+  for (let i = 0; i*epsilonDataInterval <= CHART_WIDTH; ++i) {
+    
+    const newX = i*epsilonDataInterval;
+    const newY = epsilonData[i]-minEpsilon;
+
+    // Make meander epsilon line profile.
+    if(i > 0) {
+      if(newY !== prevY){
+        data1.push({ x: newX, y: prevY });   
+      }
+    }
+
+     data1.push({ x: newX, y: newY });
+     prevX = newX;
+     prevY = newY;
+  
+  }
+  console.log(data1, data);
 
   const draw: drawType  = (ctx) => {
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
@@ -137,8 +161,8 @@ const ImageCanvas: React.FC<ImageCanvasProps> = ({
 
     // console.log(data)
     if(data[0])
-      drawLine(ctx, data, 'red', 2);
-    // drawLine(ctx, data1, 'blue', 2);
+      drawLine(ctx, data, 'red', 2, scaleX, scaleY);
+    drawLine(ctx, data1, 'blue', 1, 1, epsilonScale, true);
     // drawLine(ctx, data2, 'red', 2);
   };
 
@@ -156,11 +180,17 @@ const ImageCanvas: React.FC<ImageCanvasProps> = ({
     ctx: CanvasRenderingContext2D,
     data: dataType[],
     color: string = 'black',
-    width: number = 3
+    width: number = 3,
+    scaleX: number,
+    scaleY: number,
+    isDashedLine: boolean = false,
   ) => {
     ctx.save();
     //  transformContext();
     ctx.lineWidth = width;
+    if(isDashedLine) {
+      ctx.setLineDash([2]);
+    }
     ctx.strokeStyle = color;
     ctx.fillStyle = color;
     ctx.beginPath();
@@ -187,6 +217,8 @@ const ImageCanvas: React.FC<ImageCanvasProps> = ({
     }
     ctx.restore();
   };
+
+
 
   return (
     <>
