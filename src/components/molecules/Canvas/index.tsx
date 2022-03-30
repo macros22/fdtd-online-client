@@ -16,6 +16,7 @@ type ImageCanvasProps = {
   WIDTH: number;
   HEIGHT: number;
   epsilonData: number[];
+  sourcePositionRelative: number;
 };
 
 const ImageCanvas: React.FC<ImageCanvasProps> = ({
@@ -27,7 +28,11 @@ const ImageCanvas: React.FC<ImageCanvasProps> = ({
   WIDTH,
   HEIGHT,
   epsilonData,
+  sourcePositionRelative,
 }) => {
+
+
+
   const PADDING = 5;
 
   const deltaX = minX >= 0 ? maxX : maxX - minX;
@@ -92,7 +97,7 @@ const ImageCanvas: React.FC<ImageCanvasProps> = ({
      prevY = newY;
   
   }
-  console.log(data1, data);
+  // console.log(data1, data);
 
   const draw: drawType  = (ctx) => {
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
@@ -162,6 +167,11 @@ const ImageCanvas: React.FC<ImageCanvasProps> = ({
     if(data[0])
       drawLine(ctx, data, 'red', 2, scaleX, scaleY);
     drawLine(ctx, data1, 'blue', 1, 1, epsilonScale, true);
+
+    const srcRadius = 10;
+    const sourcePositionX = sourcePositionRelative * CHART_WIDTH;
+    const sourcePositionY = 0;
+    drawCircle(ctx, sourcePositionX, sourcePositionY, 'blue', 1, 1, epsilonScale, srcRadius, true);
     // drawLine(ctx, data2, 'red', 2);
   };
 
@@ -217,6 +227,34 @@ const ImageCanvas: React.FC<ImageCanvasProps> = ({
     ctx.restore();
   };
 
+
+  const drawCircle = (
+    ctx: CanvasRenderingContext2D,
+    x: number,
+    y: number,
+    color: string = 'black',
+    width: number = 3,
+    scaleX: number,
+    scaleY: number,
+    radius: number = 20,
+    isDashedLine: boolean = false,
+  ) => {
+    // ctx.save();
+    //  transformContext();
+    ctx.lineWidth = width;
+    if(isDashedLine) {
+      ctx.setLineDash([2]);
+    }
+    ctx.strokeStyle = color;
+    ctx.fillStyle = color;
+    ctx.globalAlpha= 0.3;
+    // ctx.beginPath();
+    // ctx.moveTo(x0 + data[0].x * scaleX, tY(y0 + data[0].y * scaleY));
+
+    ctx.arc(x0 + x * scaleX, tY(y0 + y * scaleY), radius, 0, 2 * Math.PI);
+    // ctx.restore();
+    ctx.fill();
+  };
 
 
   return (

@@ -26,7 +26,7 @@ import {
 import { displayedData } from 'utils/displayed-data';
 import { SERVER_URL_LOCAL } from 'constants/url';
 import { DataChartType } from 'types/lab1';
-import { selectEpsilonMatrix } from 'app/reducers/epsilon-matrix.reducer';
+import { selectEpsilonMatrix } from 'app/reducers/medium-matrix.reducer';
 import { useAppSelector } from 'app/hooks';
 import InputRange from 'components/atoms/InputRange/InputRange';
 
@@ -60,7 +60,7 @@ const Lab2D: React.FC = () => {
   const [maxY, setMaxY] = React.useState<number>(0.001);
 
   const [sourcePositionRelative, setSourcePositionRelative] =
-    React.useState(0.2);
+    React.useState(0.4);
 
   const [currentDisplayingData, setCurrentDisplayingData] =
     React.useState<number>(0);
@@ -247,6 +247,7 @@ const Lab2D: React.FC = () => {
                   WIDTH={CANVAS_WIDTH_2D}
                   HEIGHT={CANVAS_HEIGHT_2D}
                   epsilonData={matrix[0]}
+                  sourcePositionRelative={sourcePositionRelative}
                 />
               </Paper>
             </div>

@@ -28,7 +28,7 @@ import { displayedData } from 'utils/displayed-data';
 import { SERVER_URL_LOCAL } from 'constants/url';
 import { Lab3DProps } from './Lab3D.prop';
 import { useAppSelector } from 'app/hooks';
-import { selectEpsilonMatrix } from 'app/reducers/epsilon-matrix.reducer';
+import { selectEpsilonMatrix } from 'app/reducers/medium-matrix.reducer';
 
 const Lab3D: React.FC<Lab3DProps> = ({ currentLabName }) => {
   const [isWSocketConnected, setIsWSocketConnected] =

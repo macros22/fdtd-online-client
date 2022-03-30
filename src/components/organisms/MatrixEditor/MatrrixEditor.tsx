@@ -13,8 +13,10 @@ import {
   selectEpsilonMatrixCountCol,
   selectEpsilonMatrixValues,
   setEpsilonMatrix,
-  updateEpsilonMatrix,
-} from 'app/reducers/epsilon-matrix.reducer';
+  updateMediumMatrixes,
+  setRefractiveIndexes,
+  selectOmegaMatrixValues,
+} from 'app/reducers/medium-matrix.reducer';
 import DragAndDrop from './DragAndDrop';
 
 const colors = ['#fafafa', 'tomato', '#1a52aa'];
@@ -28,6 +30,7 @@ const Editor: React.FC = () => {
   const countCol = useAppSelector(selectEpsilonMatrixCountCol);
   const matrix = useAppSelector(selectEpsilonMatrix);
   const rIndexes = useAppSelector(selectEpsilonMatrixValues);
+  const omegas = useAppSelector(selectOmegaMatrixValues);
 
   
   React.useEffect(() => {
@@ -57,6 +60,7 @@ const Editor: React.FC = () => {
     width: rectWidth,
     height: rectHeight,
     rIndex: rIndexes[index],
+    omega: omegas[index],
     color: colors[index],
   }));
 
@@ -68,12 +72,13 @@ const Editor: React.FC = () => {
   const handleMouseClick = () => {
     const newJ = focusedCoord.j;
     const newI = focusedCoord.i;
-    console.log(newI, newJ, 'asdsd');
+    // console.log(newI, newJ, 'asdsd');
     dispatch(
-      updateEpsilonMatrix({
+      updateMediumMatrixes({
         i: newI,
         j: newJ,
         newEpsilonValue: panelShapes[currentShape].rIndex,
+        newOmegaValue: panelShapes[currentShape].omega,
       })
     );
   };
@@ -200,12 +205,15 @@ const MatrixEditor: React.FC<MatrixEditorProps> = () => {
 
   React.useEffect(() => {
     if (currentLabName == LabNames.LAB_2D) {
+  
+      dispatch(setRefractiveIndexes([4.85418e-12, (4.85418e-12)*3, (4.85418e-12)*5]))
       dispatch(
         setEpsilonMatrix({ currentLabName, newCountRow: 1, newCountCol: 25 })
       );
     } else {
+      dispatch(setRefractiveIndexes([1,10,14]))
       dispatch(
-        setEpsilonMatrix({ currentLabName, newCountRow: 10, newCountCol: 10 })
+        setEpsilonMatrix({ currentLabName, newCountRow: 40, newCountCol: 40 })
       );
     }
 
