@@ -26,7 +26,7 @@ import {
 import { displayedData } from 'utils/displayed-data';
 import { SERVER_URL_LOCAL } from 'constants/url';
 import { DataChartType } from 'types/lab1';
-import { selectEpsilonMatrix } from 'app/reducers/medium-matrix.reducer';
+import { selectEpsilonMatrix, selectOmegaMatrix } from 'app/reducers/medium-matrix.reducer';
 import { useAppSelector } from 'app/hooks';
 import InputRange from 'components/atoms/InputRange/InputRange';
 
@@ -36,7 +36,7 @@ const Lab2D: React.FC = () => {
 
   const [socket, setSocket] = React.useState<WebSocket | null>(null);
 
-  const CANVAS_HEIGHT_2D = 400;
+  const CANVAS_HEIGHT_2D = 200;
   const CANVAS_WIDTH_2D = 700;
   const data2DChart: DataChartType = [];
   for (let i = 0; i < CANVAS_WIDTH_2D * 0.9; i += 10) {
@@ -113,6 +113,7 @@ const Lab2D: React.FC = () => {
   };
 
   const matrix = useAppSelector(selectEpsilonMatrix);
+  const omegaMatrix = useAppSelector(selectOmegaMatrix);
 
   const startDataReceiving = () => {
     setPause(false);
@@ -127,6 +128,7 @@ const Lab2D: React.FC = () => {
       sourcePositionRelative: {x: sourcePositionRelative, y: 0},
       matrix,
       dataToReturn: 'Hy',
+      omegaMatrix,
     };
 
     if (socket) {
@@ -152,6 +154,7 @@ const Lab2D: React.FC = () => {
       sourcePositionRelative: {x: sourcePositionRelative, y: 0},
       matrix,
       dataToReturn: 'Hy',
+      omegaMatrix,
     };
 
     if (socket !== null) {
@@ -250,6 +253,19 @@ const Lab2D: React.FC = () => {
                   sourcePositionRelative={sourcePositionRelative}
                 />
               </Paper>
+              <Paper>
+                <Canvas
+                  data={allData}
+                  minY={minY}
+                  minX={minX}
+                  maxY={maxY}
+                  maxX={maxX}
+                  WIDTH={CANVAS_WIDTH_2D}
+                  HEIGHT={CANVAS_HEIGHT_2D}
+                  epsilonData={matrix[0]}
+                  sourcePositionRelative={sourcePositionRelative}
+                />
+              </Paper>
             </div>
           </div>
         </div>
@@ -283,3 +299,4 @@ const Lab2D: React.FC = () => {
 };
 
 export default Lab2D;
+

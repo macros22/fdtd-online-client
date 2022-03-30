@@ -211,6 +211,9 @@ export const { updateMediumMatrixes, setEpsilonMatrix, setRefractiveIndexes } =
 export const selectEpsilonMatrix = (state: AppState) =>
   state.mediumMatrixes.epsilonMatrix;
 
+  export const selectOmegaMatrix = (state: AppState) =>
+  state.mediumMatrixes.omegaMatrix;
+
 export const selectEpsilonMatrixCountRow = (state: AppState) =>
   state.mediumMatrixes.countRow;
 export const selectEpsilonMatrixCountCol = (state: AppState) =>

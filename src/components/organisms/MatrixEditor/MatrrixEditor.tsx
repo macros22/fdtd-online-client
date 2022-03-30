@@ -33,10 +33,10 @@ const Editor: React.FC = () => {
   const omegas = useAppSelector(selectOmegaMatrixValues);
 
   
-  React.useEffect(() => {
-    console.log(matrix);
-    console.log(rIndexes);
-  }, [matrix, rIndexes]);
+  // React.useEffect(() => {
+  //   console.log(matrix);
+  //   console.log(rIndexes);
+  // }, [matrix, rIndexes]);
 
   const rectWidth = width / countCol;
   const rectHeight = height / countRow;
@@ -139,7 +139,7 @@ const Editor: React.FC = () => {
                   x={j * rectWidth}
                   y={i * rectHeight}
                   fill={panelShapes[colorIndex].color}
-                  // element is invisible for clicks.
+                  // Element is invisible for clicks.
                   style={{ pointerEvents: 'none' }}
                 />
               );
