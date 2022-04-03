@@ -11,20 +11,21 @@
   font-family: inherit;
   font-size: var(--text-md);
 
-  outline: 0;
 
   padding: var(--space-xxxs);
-  transition: border-color 0.2s;
+  // transition: border-color 0.2s;
   width: 100%;
   z-index: 1;
 
   &:hover {
-    border: var(--border-width) solid var(--primary-color);
+    border: var(--border-width) solid var(--dark-color) !important;
+    // outline: none !important;
     transition: 0.5s;
   }
 
   &:focus {
-    outline: calc(2 * var(--border-width)) solid #000;
+    outline: none !important;
+    border: var(--border-width) solid var(--primary-color) !important;
   }
 
   &::placeholder {
