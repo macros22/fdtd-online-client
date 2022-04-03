@@ -23,7 +23,8 @@ export interface IMediumMatrixState {
 const rIndexes = [4.85418e-12, (4.85418e-12)*3, (4.85418e-12)*5];
 
 // Conductivity
-const omegas = [0, 0.04, 0.01];
+// const omegas = [0.01, 0.04, 0.01];
+const omegas = [0.0, 0.0, 0.0];
 // const rIndexes = [1,2,4];
 
 // Epsilon matrix sizes.
@@ -37,12 +38,13 @@ const make1DEpsilonMatrixEmpty = (countCol: number, rIndexes: number[] ) => {
   let eps: number[][] = [];
   eps[0] = [];
   for (let j = 0; j < countCol; j++) {
-    if (j < countCol / 2) {
+    if (j < countCol / 2 ) {
       eps[0][j] = rIndexes[0];
     } else {
       eps[0][j] = rIndexes[1];
     }
   }
+  eps[0][countCol-1] = rIndexes[0];
   return eps;
 };
 
@@ -56,6 +58,7 @@ const make1DOmegaMatrixEmpty = (countCol: number ) => {
       omega[0][j] = omegas[1];
     }
   }
+  omega[0][countCol-1] = omegas[0];
   return omega;
 };
 

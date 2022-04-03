@@ -80,7 +80,7 @@ const Lab2D: React.FC = () => {
         let data = JSON.parse(event.data);
         setStep(data.step || 0);
 
-        // console.log(Math.min(...data.dataY));
+        console.log(data);
 
         const tmpdata2DChart: DataChartType = [];
         for (let i = 0; i < data.col; i++) {
@@ -239,7 +239,7 @@ const Lab2D: React.FC = () => {
               </span>
             </h6>
 
-            <div className={styles.graph}>
+            <div className={styles.graph1D}>
               <Paper>
                 <Canvas
                   data={allData}

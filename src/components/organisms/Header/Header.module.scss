@@ -1,8 +1,8 @@
-.container {
-  display: grid;
-  grid-template-rows: 10vh 5vh;
-  max-height: 15vh;
-}
+// .container {
+//   display: grid;
+//   // grid-template-rows: 4rem 3rem;
+//   max-height: 7rem;
+// }
 
 .headerUp {
   display: grid;
@@ -10,7 +10,22 @@
   grid-template-areas: 'logo labContentType right';
   grid-template-columns: 28% auto 28%;
   z-index: 1001;
+  // padding: 0.3rem;
 }
+
+@media (max-width: 1200px) {
+  .headerUp {
+    display: grid;
+    grid-area: headerUp;
+    grid-template-areas: 'logo' 'labContentType' 'right';
+    justify-items: center;
+    grid-template-columns: auto;
+    z-index: 1001;
+    padding: var(--space-sm);
+    
+  }
+}
+
 
 .headerDown {
   background-color: var(--primary-color);
@@ -19,8 +34,24 @@
   grid-area: headerDown;
   grid-template-areas: 'label select .';
 
+  
   grid-template-columns: 27% auto 27%;
   z-index: 1000;
+}
+
+@media (max-width: 1200px) {
+  .headerDown {
+    background-color: var(--primary-color);
+    box-shadow: 0 var(--space-xxxs) var(--space-xxxs) var(--shadow-color-header) !important;
+    display: grid;
+    grid-area: headerDown;
+    grid-template-areas: 'label' 'select';
+    padding: var(--space-xs);
+  
+    justify-items: center;
+    grid-template-columns: auto;
+    z-index: 1000;
+  }
 }
 
 .activeLabContentType {

@@ -3,17 +3,17 @@
     display: grid;
     grid-area: content;
     grid-template-areas: 'sidebarLeft contentInner sidebarRight';
-    grid-template-columns: 17% auto 17%;
+    grid-template-columns: 16% auto 16%;
     height: 100%;
   }
   
-  @media (max-width: 900px) {
+  @media (max-width: 1200px) {
     .wrapper {
       background-color: var(--light);
       display: grid;
       grid-template-areas:
-        'sidebarLeft sidebarRight'
-        'contentInner contentInner';
+      'contentInner contentInner'
+        'sidebarLeft sidebarRight';
       grid-template-columns: 1fr 1fr;
       height: 100%;
     }
@@ -32,10 +32,16 @@
     padding: var(--space-sm);
   }
   
-  .graph {
+  .graph1D {
     display: inline-grid;
     // grid-template-columns: auto auto;
     grid-template-rows: auto auto;
+  }
+
+  .graph2D {
+    display: inline-grid;
+    grid-template-columns: auto auto;
+
   }
   
   .workArea {

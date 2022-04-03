@@ -223,7 +223,7 @@ const Lab3D: React.FC<Lab3DProps> = ({ currentLabName }) => {
               </span>
             </h6>
 
-            <div className={styles.graph}>
+            <div className={styles.graph2D}>
               <Paper>
                 <HeatMap
                   width={heatMapWidth}

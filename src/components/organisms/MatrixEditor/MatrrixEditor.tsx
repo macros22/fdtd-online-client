@@ -206,7 +206,8 @@ const MatrixEditor: React.FC<MatrixEditorProps> = () => {
   React.useEffect(() => {
     if (currentLabName == LabNames.LAB_2D) {
   
-      dispatch(setRefractiveIndexes([4.85418e-12, (4.85418e-12)*3, (4.85418e-12)*5]))
+      // dispatch(setRefractiveIndexes([4.85418e-12, (4.85418e-12)*3, (4.85418e-12)*5]))
+      dispatch(setRefractiveIndexes([1, 4, 6]))
       dispatch(
         setEpsilonMatrix({ currentLabName, newCountRow: 1, newCountCol: 25 })
       );

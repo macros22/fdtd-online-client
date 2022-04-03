@@ -5,9 +5,7 @@
   --xl: 1200px;
 
   --space-unit: 1em;
-}
 
-:root {
   --space-xxxxs: calc(0.125 * var(--space-unit));
   --space-xxxs: calc(0.25 * var(--space-unit));
   --space-xxs: calc(0.375 * var(--space-unit));
@@ -21,6 +19,7 @@
   --space-xxxxl: calc(13.75 * var(--space-unit));
   --component-padding: var(--space-md);
 }
+
 
 // @media (max-width: var(--md)) {
 //   :root {
