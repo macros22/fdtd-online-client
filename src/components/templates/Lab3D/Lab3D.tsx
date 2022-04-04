@@ -36,8 +36,39 @@ const Lab3D: React.FC<Lab3DProps> = ({ currentLabName }) => {
 
   const [socket, setSocket] = React.useState<WebSocket | null>(null);
 
-  const heatMapWidth = 430;
-  const heatMapHeight = 430;
+
+  const plotAreaRef = React.useRef<HTMLDivElement>(null);
+
+  const initialPlotWidth = 400;
+  const [plotWidth, setPlotWidth] = React.useState(initialPlotWidth);
+  const [plotHeight, setPlotHeight] = React.useState(initialPlotWidth);
+
+  const resizePlot = () => {
+    // if(plotAreaRef.current) {
+      // const newWidth = plotAreaRef.current.offsetWidth * 0.9;
+      let newWidth;
+      if(window.innerWidth > 1200){
+        newWidth = window.innerWidth * 0.3;
+      } else {
+        newWidth = window.innerWidth * 0.65;
+      }
+      
+      const newHeight = newWidth;
+      setPlotWidth(newWidth);
+      setPlotHeight(newHeight);
+    // }
+    
+  }
+
+  // React.useEffect(() => {
+  //   resizePlot();
+  //   window.addEventListener('resize', resizePlot)
+  //   return () => window.removeEventListener('resize', resizePlot)
+  // }, [])
+
+
+  // const heatMapWidth = 430;
+  // const heatMapHeight = 430;
 
   const [beamsize, setBeamsize] = React.useState<number>(3);
   const [lambda, setLambda] = React.useState<number>(1);
@@ -226,8 +257,8 @@ const Lab3D: React.FC<Lab3DProps> = ({ currentLabName }) => {
             <div className={styles.graph2D}>
               <Paper>
                 <HeatMap
-                  width={heatMapWidth}
-                  height={heatMapHeight}
+                  width={plotWidth}
+                  height={plotHeight}
                   minVal={Math.min(...allData.dataVal)}
                   maxVal={Math.max(...allData.dataVal)}
                   dataX={allData.dataX}
@@ -236,7 +267,7 @@ const Lab3D: React.FC<Lab3DProps> = ({ currentLabName }) => {
                 />
               </Paper>
               <Paper>
-                <GradientScale gradientHeight={heatMapHeight} />
+                <GradientScale gradientHeight={plotHeight} />
               </Paper>
             </div>
           </div>

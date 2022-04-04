@@ -29,6 +29,7 @@ import { DataChartType } from 'types/lab1';
 import { selectEpsilonMatrix, selectOmegaMatrix } from 'app/reducers/medium-matrix.reducer';
 import { useAppSelector } from 'app/hooks';
 import InputRange from 'components/atoms/InputRange/InputRange';
+import { useMediaQuery } from 'hooks/use-media-query';
 
 const Lab2D: React.FC = () => {
   const [isWSocketConnected, setIsWSocketConnected] =
@@ -36,13 +37,42 @@ const Lab2D: React.FC = () => {
 
   const [socket, setSocket] = React.useState<WebSocket | null>(null);
 
-  const CANVAS_HEIGHT_2D = 200;
-  const CANVAS_WIDTH_2D = 700;
+
+  const plotAreaRef = React.useRef<HTMLDivElement>(null);
+
+  const plotCoeff = 0.3;
+  const initialPlotWidth = 200;
+  const [plotWidth, setPlotWidth] = React.useState(initialPlotWidth);
+  const [plotHeight, setPlotHeight] = React.useState(initialPlotWidth * plotCoeff);
+
+  const resizePlot = () => {
+    // if(plotAreaRef.current) {
+      // const newWidth = plotAreaRef.current.offsetWidth * 0.9;
+      let newWidth;
+      if(window.innerWidth > 1200){
+        newWidth = window.innerWidth * 0.6;
+      } else {
+        newWidth = window.innerWidth * 0.85;
+      }
+      
+      const newHeight = newWidth * plotCoeff;
+      setPlotWidth(newWidth);
+      setPlotHeight(newHeight);
+    // }
+    
+  }
+
+  React.useEffect(() => {
+    resizePlot();
+    window.addEventListener('resize', resizePlot)
+    return () => window.removeEventListener('resize', resizePlot)
+  }, [])
+  
   const data2DChart: DataChartType = [];
-  for (let i = 0; i < CANVAS_WIDTH_2D * 0.9; i += 10) {
+  for (let i = 0; i < plotWidth * 0.9; i += 10) {
     data2DChart.push({
       x: i,
-      y: Math.random() * CANVAS_HEIGHT_2D * 0.8 + 20,
+      y: Math.random() * plotHeight * 0.8 + 20,
     });
   }
 
@@ -239,7 +269,10 @@ const Lab2D: React.FC = () => {
               </span>
             </h6>
 
-            <div className={styles.graph1D}>
+            <div className={styles.graph1D}
+                 ref={plotAreaRef}
+                >
+              
               <Paper>
                 <Canvas
                   data={allData}
@@ -247,8 +280,8 @@ const Lab2D: React.FC = () => {
                   minX={minX}
                   maxY={maxY}
                   maxX={maxX}
-                  WIDTH={CANVAS_WIDTH_2D}
-                  HEIGHT={CANVAS_HEIGHT_2D}
+                  WIDTH={plotWidth}
+                  HEIGHT={plotHeight}
                   epsilonData={matrix[0]}
                   sourcePositionRelative={sourcePositionRelative}
                 />
@@ -260,8 +293,8 @@ const Lab2D: React.FC = () => {
                   minX={minX}
                   maxY={maxY}
                   maxX={maxX}
-                  WIDTH={CANVAS_WIDTH_2D}
-                  HEIGHT={CANVAS_HEIGHT_2D}
+                  WIDTH={plotWidth}
+                  HEIGHT={plotHeight}
                   epsilonData={matrix[0]}
                   sourcePositionRelative={sourcePositionRelative}
                 />
