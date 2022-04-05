@@ -24,9 +24,12 @@ import {
 
 // import { useRefractionMatrix } from 'components/organisms/MatrixEditor/refraction-matrix.context';
 import { displayedData } from 'utils/displayed-data';
-import { SERVER_URL_LOCAL } from 'constants/url';
+import { SERVER_URL as SERVER_URL} from 'constants/url';
 import { DataChartType } from 'types/lab1';
-import { selectEpsilonMatrix, selectOmegaMatrix } from 'app/reducers/medium-matrix.reducer';
+import {
+  selectEpsilonMatrix,
+  selectOmegaMatrix,
+} from 'app/reducers/medium-matrix.reducer';
 import { useAppSelector } from 'app/hooks';
 import InputRange from 'components/atoms/InputRange/InputRange';
 import { useMediaQuery } from 'hooks/use-media-query';
@@ -37,37 +40,32 @@ const Lab2D: React.FC = () => {
 
   const [socket, setSocket] = React.useState<WebSocket | null>(null);
 
-
-  const plotAreaRef = React.useRef<HTMLDivElement>(null);
-
   const plotCoeff = 0.3;
   const initialPlotWidth = 200;
   const [plotWidth, setPlotWidth] = React.useState(initialPlotWidth);
-  const [plotHeight, setPlotHeight] = React.useState(initialPlotWidth * plotCoeff);
+  const [plotHeight, setPlotHeight] = React.useState(
+    initialPlotWidth * plotCoeff
+  );
 
   const resizePlot = () => {
-    // if(plotAreaRef.current) {
-      // const newWidth = plotAreaRef.current.offsetWidth * 0.9;
-      let newWidth;
-      if(window.innerWidth > 1200){
-        newWidth = window.innerWidth * 0.6;
-      } else {
-        newWidth = window.innerWidth * 0.85;
-      }
-      
-      const newHeight = newWidth * plotCoeff;
-      setPlotWidth(newWidth);
-      setPlotHeight(newHeight);
-    // }
-    
-  }
+    let newWidth;
+    if (window.innerWidth > 1200) {
+      newWidth = window.innerWidth * 0.6;
+    } else {
+      newWidth = window.innerWidth * 0.85;
+    }
+
+    const newHeight = newWidth * plotCoeff;
+    setPlotWidth(newWidth);
+    setPlotHeight(newHeight);
+  };
 
   React.useEffect(() => {
     resizePlot();
-    window.addEventListener('resize', resizePlot)
-    return () => window.removeEventListener('resize', resizePlot)
-  }, [])
-  
+    window.addEventListener('resize', resizePlot);
+    return () => window.removeEventListener('resize', resizePlot);
+  }, []);
+
   const data2DChart: DataChartType = [];
   for (let i = 0; i < plotWidth * 0.9; i += 10) {
     data2DChart.push({
@@ -99,7 +97,7 @@ const Lab2D: React.FC = () => {
 
   // Websocket ---- start.
   const connectWS = () => {
-    const socket = new WebSocket(SERVER_URL_LOCAL);
+    const socket = new WebSocket(SERVER_URL);
     // console.log(socket)
     if (socket) {
       socket.onopen = () => {
@@ -110,7 +108,7 @@ const Lab2D: React.FC = () => {
         let data = JSON.parse(event.data);
         setStep(data.step || 0);
 
-        console.log(data);
+        // console.log(data);
 
         const tmpdata2DChart: DataChartType = [];
         for (let i = 0; i < data.col; i++) {
@@ -148,14 +146,14 @@ const Lab2D: React.FC = () => {
   const startDataReceiving = () => {
     setPause(false);
 
-    console.log(matrix);
+    // console.log(matrix);
 
     const message = {
       event: 'start',
       type: '2D',
       // condition: [lambda, tau, refractiveIndex1],
       condition: [lambda, tau, 1],
-      sourcePositionRelative: {x: sourcePositionRelative, y: 0},
+      sourcePositionRelative: { x: sourcePositionRelative, y: 0 },
       matrix,
       dataToReturn: 'Hy',
       omegaMatrix,
@@ -181,7 +179,7 @@ const Lab2D: React.FC = () => {
       event: 'continue',
       type: '2D',
       condition: [lambda, tau, 1],
-      sourcePositionRelative: {x: sourcePositionRelative, y: 0},
+      sourcePositionRelative: { x: sourcePositionRelative, y: 0 },
       matrix,
       dataToReturn: 'Hy',
       omegaMatrix,
@@ -269,10 +267,7 @@ const Lab2D: React.FC = () => {
               </span>
             </h6>
 
-            <div className={styles.graph1D}
-                 ref={plotAreaRef}
-                >
-              
+            <div className={styles.graph1D}>
               <Paper>
                 <Canvas
                   data={allData}
@@ -332,4 +327,3 @@ const Lab2D: React.FC = () => {
 };
 
 export default Lab2D;
-

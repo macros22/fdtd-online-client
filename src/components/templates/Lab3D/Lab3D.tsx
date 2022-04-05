@@ -25,7 +25,7 @@ import {
 import { dataType, LabNames } from 'types/types';
 
 import { displayedData } from 'utils/displayed-data';
-import { SERVER_URL_LOCAL } from 'constants/url';
+import { SERVER_URL as SERVER_URL } from 'constants/url';
 import { Lab3DProps } from './Lab3D.prop';
 import { useAppSelector } from 'app/hooks';
 import { selectEpsilonMatrix } from 'app/reducers/medium-matrix.reducer';
@@ -36,39 +36,32 @@ const Lab3D: React.FC<Lab3DProps> = ({ currentLabName }) => {
 
   const [socket, setSocket] = React.useState<WebSocket | null>(null);
 
-
-  const plotAreaRef = React.useRef<HTMLDivElement>(null);
-
   const initialPlotWidth = 400;
   const [plotWidth, setPlotWidth] = React.useState(initialPlotWidth);
   const [plotHeight, setPlotHeight] = React.useState(initialPlotWidth);
 
   const resizePlot = () => {
-    // if(plotAreaRef.current) {
-      // const newWidth = plotAreaRef.current.offsetWidth * 0.9;
       let newWidth;
       if(window.innerWidth > 1200){
-        newWidth = window.innerWidth * 0.3;
+        newWidth = window.innerWidth * 0.35;
       } else {
-        newWidth = window.innerWidth * 0.65;
+        newWidth = window.innerWidth * 0.68;
       }
       
       const newHeight = newWidth;
       setPlotWidth(newWidth);
       setPlotHeight(newHeight);
-    // }
+    
+
     
   }
 
-  // React.useEffect(() => {
-  //   resizePlot();
-  //   window.addEventListener('resize', resizePlot)
-  //   return () => window.removeEventListener('resize', resizePlot)
-  // }, [])
+  React.useEffect(() => {
+    resizePlot();
+    window.addEventListener('resize', resizePlot)
+    return () => window.removeEventListener('resize', resizePlot)
+  }, [])
 
-
-  // const heatMapWidth = 430;
-  // const heatMapHeight = 430;
 
   const [beamsize, setBeamsize] = React.useState<number>(3);
   const [lambda, setLambda] = React.useState<number>(1);
@@ -95,11 +88,12 @@ const Lab3D: React.FC<Lab3DProps> = ({ currentLabName }) => {
 
   const matrix = useAppSelector(selectEpsilonMatrix);
 
-  console.log(matrix);
+  // console.log(matrix);
   // Websocket ---- start.
   const connectWS = () => {
-    const socket = new WebSocket(SERVER_URL_LOCAL);
+    const socket = new WebSocket(SERVER_URL);
     if (socket) {
+      console.log("[open] Connection established");
       socket.onopen = () => {
         setIsWSocketConnected(true);
       };
@@ -112,8 +106,18 @@ const Lab3D: React.FC<Lab3DProps> = ({ currentLabName }) => {
         socket.send(JSON.stringify({ step: data.step || 0 }));
       };
 
-      socket.onclose = () => {
+      socket.onclose = (event) => {
         console.log('Socket закрыт');
+        if (event.wasClean) {
+          console.log(); (`Websocket: [close] Connection closed cleanly, code=${event.code} reason=${event.reason}`);
+        } else {
+          // e.g. server process killed or network down
+          // event.code is usually 1006 in this case
+          console.log('Websocket:[close] Connection died');
+        }
+        setTimeout(() => {
+          connectWS();
+        }, 3000)
         setIsWSocketConnected(false);
       };
 
@@ -124,6 +128,7 @@ const Lab3D: React.FC<Lab3DProps> = ({ currentLabName }) => {
     }
     setSocket(socket);
   };
+
 
   const startDataReceiving = () => {
     setPause(false);
@@ -179,6 +184,7 @@ const Lab3D: React.FC<Lab3DProps> = ({ currentLabName }) => {
 
   React.useEffect(() => {
     connectWS();
+    socket?.OPEN
     return () => {
       if (socket !== null) {
         socket.close(1000, 'работа закончена');
@@ -292,7 +298,9 @@ const Lab3D: React.FC<Lab3DProps> = ({ currentLabName }) => {
           </WithLabel>
           <hr />
 
-          <Button onClick={clickStartPauseContinueBtnHandler}>
+          <Button 
+            appearance={isWSocketConnected ? 'primary' : 'ghost'}
+            onClick={clickStartPauseContinueBtnHandler}>
             {!simulation ? 'СТАРТ' : pause ? CONTINUE_NAME : PAUSE_NAME}
           </Button>
           <Button

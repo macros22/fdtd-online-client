@@ -4,6 +4,6 @@ export type HeatMapProps = {
     dataX: number[];
     dataY: number[];
     dataVal: number[];
-    width?: number;
-    height?: number;
+    width: number;
+    height: number;
 };

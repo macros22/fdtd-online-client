@@ -12,8 +12,8 @@ const NewHeatMap: React.FC<HeatMapProps> = ({
   dataX = [],
   dataY = [],
   dataVal = [],
-  width = 425,
-  height = 425,
+  width,
+  height,
 }) => {
   const canvasRef = React.useRef<HTMLCanvasElement | null>(null);
   const canvasBrushRef = React.useRef<HTMLCanvasElement | null>(null);
@@ -21,6 +21,8 @@ const NewHeatMap: React.FC<HeatMapProps> = ({
 
   let radiusInitial = width / 120 + 0.1;
   let blurInitial = radiusInitial * 1.45 + 0.1;
+  // let radiusInitial = 8;
+  // let blurInitial = radiusInitial * 1.45;
 
   // console.log('radiusInitial', radiusInitial);
 
@@ -46,7 +48,7 @@ const NewHeatMap: React.FC<HeatMapProps> = ({
         for (let i = 0; i < 3e3; ++i) {
           data[0].push(Math.random() * width);
           data[1].push(Math.random() * height);
-          data[2].push(Math.random() * 0.3);
+          data[2].push(Math.random() * 0.5);
         }
       } else {
         data = [dataX, dataY, dataVal];
@@ -66,7 +68,7 @@ const NewHeatMap: React.FC<HeatMapProps> = ({
 
   React.useEffect(() => {
     init();
-  }, [dataVal]);
+  }, [dataVal, width, height]);
 
   const radiusHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setRadius(+e.target.value);
