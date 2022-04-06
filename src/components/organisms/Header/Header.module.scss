@@ -7,22 +7,21 @@
 .headerUp {
   display: grid;
   grid-area: headerUp;
-  grid-template-areas: 'logo labContentType right';
-  grid-template-columns: 28% auto 28%;
+  grid-template-areas: 'logo labContentType';
+  grid-template-columns: auto auto;
   z-index: 1001;
   // padding: 0.3rem;
 }
 
-@media (max-width: 1200px) {
+@media (max-width: 600px) {
   .headerUp {
     display: grid;
     grid-area: headerUp;
-    grid-template-areas: 'logo' 'labContentType' 'right';
+    grid-template-areas: 'logo' 'labContentType';
     justify-items: center;
     grid-template-columns: auto;
     z-index: 1001;
     padding: var(--space-sm);
-    
   }
 }
 
@@ -32,22 +31,23 @@
   box-shadow: 0 var(--space-xxxs) var(--space-xxxs) var(--shadow-color-header) !important;
   display: grid;
   grid-area: headerDown;
-  grid-template-areas: 'label select .';
-
-  
-  grid-template-columns: 27% auto 27%;
+  grid-template-areas: 'select';
+  // height: 2rem;
+  padding: var(--space-xxxs);
+  text-align: center;
+  // grid-template-columns: auto;
   z-index: 1000;
 }
 
-@media (max-width: 1200px) {
+@media (max-width: 600px) {
   .headerDown {
     background-color: var(--primary-color);
     box-shadow: 0 var(--space-xxxs) var(--space-xxxs) var(--shadow-color-header) !important;
     display: grid;
     grid-area: headerDown;
-    grid-template-areas: 'label' 'select';
-    padding: var(--space-xs);
-  
+    grid-template-areas:  'select';
+    padding: var(--space-xxxs);
+    text-align: center;
     justify-items: center;
     grid-template-columns: auto;
     z-index: 1000;
@@ -60,15 +60,17 @@
 }
 
 .labContentType {
-  align-self: center;
   display: flex;
+ 
+  align-items: center;
   flex-direction: row;
   gap: var(--space-unit);
   grid-area: labContentType;
-  justify-self: center;
+  justify-self: end;
+  margin-right: var(--space-unit);
   a {
     border-bottom: 3px solid transparent;
-    box-sizing: content-box !important;
+    // box-sizing: content-box !important;
 
     color: var(--text-color);
     font-size: var(--text-md);
@@ -94,9 +96,9 @@
   &:hover {
     color: var(--danger-color);
   }
+
 }
 
 .verticalLine {
-  border-left: 2px solid var(--dark);
-  opacity: 33%;
+  border-left: 2px solid var(--gray-color);
 }

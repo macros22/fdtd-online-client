@@ -11,8 +11,8 @@ const defaultGradient: { [key: string]: string } = dGradient || {
 };
 
 const GradientScale: React.FC<GradientScaleProps> = ({
-  gradientWidth = 15,
-  gradientHeight = 400,
+  gradientWidth,
+  gradientHeight,
   max = 1,
   min = -1,
 }) => {
@@ -21,8 +21,9 @@ const GradientScale: React.FC<GradientScaleProps> = ({
   const init = () => {
     if (canvasRef.current) {
       let canvas = canvasRef.current;
-
-      const numberSpaceWidth = 40;
+      
+      console.log(gradientWidth)
+      const numberSpaceWidth = gradientWidth*2.8;
       const width = gradientWidth + numberSpaceWidth;
       const height = gradientHeight;
 
@@ -61,7 +62,7 @@ const GradientScale: React.FC<GradientScaleProps> = ({
         for (let y = 0; y <= height; y += INTERVAL_Y) {
           const label = (y * scaleCoeff + min).toFixed(1) + '';
           ctx.save();
-          ctx.translate(gradientWidth + 15, tY(y));
+          ctx.translate(width*0.55, tY(y));
           ctx.fillText(label, 0, 0);
           ctx.restore();
         }
@@ -71,7 +72,7 @@ const GradientScale: React.FC<GradientScaleProps> = ({
 
   React.useEffect(() => {
     init();
-  }, []);
+  }, [gradientWidth, gradientHeight]);
 
   return (
     <React.Fragment>

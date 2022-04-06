@@ -19,9 +19,9 @@ const Select: React.FC<{
 
   return (
     <>
-      <label htmlFor='select' className={styles.label}>
+      {/* <label htmlFor='select' className={styles.label}>
         {'ВЫБОР ЛАБОРАТОРНОЙ - - - >'}
-      </label>
+      </label> */}
       <div
         id='select'
         className={styles.selectContainer}

@@ -8,6 +8,10 @@ function Index() {
     <>
       {/* <Test /> */}
       {/* <Lab3D /> */}
+      wefwef
+      wefwefw
+      useEffectwef
+      wefwefw
     </>
   );
 }

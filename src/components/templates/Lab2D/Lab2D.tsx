@@ -40,7 +40,7 @@ const Lab2D: React.FC = () => {
 
   const [socket, setSocket] = React.useState<WebSocket | null>(null);
 
-  const plotCoeff = 0.3;
+  const plotCoeff = 0.27;
   const initialPlotWidth = 200;
   const [plotWidth, setPlotWidth] = React.useState(initialPlotWidth);
   const [plotHeight, setPlotHeight] = React.useState(

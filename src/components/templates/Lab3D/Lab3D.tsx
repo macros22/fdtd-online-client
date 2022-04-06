@@ -233,19 +233,20 @@ const Lab3D: React.FC<Lab3DProps> = ({ currentLabName }) => {
             onChange={(e) => setBeamsize(+e.target.value)}
           />
 
-          <NumberInput
-            label={REFRACTIVE_INDEX_NAME}
+          {/* <NumberInput
+            // label={REFRACTIVE_INDEX_NAME}
+            label={показат. преломления}
             value={refractiveIndex1}
             onChange={(e) => setrefractiveIndex1(+e.target.value)}
-          />
+          /> */}
           <>
-            <NumberInput
+            {/* <NumberInput
               label={REFRACTIVE_INDEX_NAME}
               value={refractiveIndex2}
               onChange={(e) => setRefractiveIndex2(+e.target.value)}
-            />
+            /> */}
             <hr />
-            <WithLabel labelText='Матрица:'>
+            <WithLabel labelText='Матрица мат-ов:'>
               <MatrixEditor />
             </WithLabel>
           </>
@@ -273,7 +274,7 @@ const Lab3D: React.FC<Lab3DProps> = ({ currentLabName }) => {
                 />
               </Paper>
               <Paper>
-                <GradientScale gradientHeight={plotHeight} />
+                <GradientScale gradientHeight={plotHeight} gradientWidth={plotHeight*0.03} />
               </Paper>
             </div>
           </div>

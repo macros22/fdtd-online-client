@@ -32,6 +32,9 @@ export default function Header(): JSX.Element {
         <Link href='/'>
           <a className={styles.logo}>{WAVE_OPTICS_NAME}</a>
         </Link>
+        {/* <div className={styles.verticalLine}></div> */}
+        
+        {/* <div className={styles.smallScreenLine}></div> */}
 
         <div className={styles.labContentType}>
           <Link href={`/${currentLabName}/${LabContentType.THEORY}`}>
@@ -56,7 +59,7 @@ export default function Header(): JSX.Element {
                   currentLabContentType == LabContentType.EXPERIMENT,
               })}
             >
-              Модель
+              Эксперимент
             </a>
           </Link>
         </div>
