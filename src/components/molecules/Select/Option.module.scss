@@ -2,6 +2,8 @@
   border-bottom: 1px solid #e4e4e4;
   cursor: pointer;
 
+  color: var(--text-color);
+
   font-size: 17px;
   list-style-type: none;
   padding: 6px 20px;
@@ -11,7 +13,7 @@
   }
 
   &:hover {
-    background-color: var(--primary);
+    background-color: var(--primary-color);
     color: white;
   }
 }

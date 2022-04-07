@@ -1,23 +1,26 @@
 import React from 'react';
-import Link from 'next/link';
-
 import cn from 'clsx';
-
-const WAVE_OPTICS_NAME = 'ВОЛНОВАЯ ОПТИКА';
-
-import styles from './Header.module.scss';
-
+import { Select, Option } from 'components';
+import { labTitles } from 'names/navbar.name';
+import { LabContentType, LabNames } from 'types/types';
+import { useAppSelector, useAppDispatch } from 'app/hooks';
 import {
   selectLabContentType,
   selectLabName,
   setLabContentType,
 } from 'app/reducers/labTypeSlice';
-import { useAppDispatch, useAppSelector } from 'app/hooks';
-import { LabContentType, LabNames } from 'types/types';
-import { Select, Option } from 'components';
-import { labTitles } from 'names/navbar.name';
+// import { StyledHamburger } from "./Hamburger.styled";
+import styles from './Header.module.scss';
+import Link from 'next/link';
+export type Props = {
+  open: boolean;
+  setOpen: (v: boolean) => void;
+};
+// import styles from './Hamburger.module.scss';
 
-export default function Header(): JSX.Element {
+// props: Props
+const Header = () => {
+  const WAVE_OPTICS_NAME = 'ВОЛНОВАЯ ОПТИКА';
   const currentLabContentType = useAppSelector(selectLabContentType);
   const currentLabName = useAppSelector(selectLabName);
 
@@ -25,57 +28,86 @@ export default function Header(): JSX.Element {
     Object.values(labTitles)[Object.values(LabNames).indexOf(currentLabName)];
 
   const dispatch = useAppDispatch();
-
+  const [opened, setOpened] = React.useState(false);
   return (
     <>
-      <nav className={styles.headerUp}>
-        <Link href='/'>
-          <a className={styles.logo}>{WAVE_OPTICS_NAME}</a>
-        </Link>
-        {/* <div className={styles.verticalLine}></div> */}
-        
-        {/* <div className={styles.smallScreenLine}></div> */}
+      <header className={styles.header}>
+        <div className={styles.container}>
+          <div className={styles.headerBody}>
+            <Link href='/'>
+              <a className={styles.logo}>{WAVE_OPTICS_NAME}</a>
+            </Link>
 
-        <div className={styles.labContentType}>
-          <Link href={`/${currentLabName}/${LabContentType.THEORY}`}>
-            <a
-              onClick={() => dispatch(setLabContentType(LabContentType.THEORY))}
-              className={cn({
-                [styles.activeLabContentType]:
-                  currentLabContentType === LabContentType.THEORY,
+            <div
+              onClick={() => setOpened((prev) => !prev)}
+              className={cn(styles.headerBurger, {
+                [styles.active]: opened,
               })}
             >
-              Теория
-            </a>
-          </Link>
-          <div className={styles.verticalLine}></div>
-          <Link href={`/${currentLabName}/${LabContentType.EXPERIMENT}`}>
-            <a
-              onClick={() =>
-                dispatch(setLabContentType(LabContentType.EXPERIMENT))
-              }
-              className={cn(styles.labContentType, {
-                [styles.activeLabContentType]:
-                  currentLabContentType == LabContentType.EXPERIMENT,
+              <span></span>
+            </div>
+            <nav
+              className={cn(styles.headerMenu, {
+                [styles.headerMenuActive]: opened,
               })}
             >
-              Эксперимент
-            </a>
-          </Link>
+              {/* <ul 
+              className={styles.headerList}
+              > */}
+                <li>
+                  <Link href={`/${currentLabName}/${LabContentType.THEORY}`}>
+                    <a
+                      onClick={() =>
+                        dispatch(setLabContentType(LabContentType.THEORY))
+                      }
+                      className={cn(styles.labContentType, {
+                        [styles.activeLabContentType]:
+                          currentLabContentType === LabContentType.THEORY,
+                      })}
+                    >
+                      Теория
+                    </a>
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href={`/${currentLabName}/${LabContentType.EXPERIMENT}`}
+                  >
+                    <a
+                      onClick={() =>
+                        dispatch(setLabContentType(LabContentType.EXPERIMENT))
+                      }
+                      className={cn(styles.labContentType, {
+                        [styles.activeLabContentType]:
+                          currentLabContentType == LabContentType.EXPERIMENT,
+                      })}
+                    >
+                      Эксперимент
+                    </a>
+                  </Link>
+                </li>
+              {/* </ul> */}
+            </nav>
+          </div>
         </div>
-      </nav>
-
-      <div className={styles.headerDown}>
-        <Select placeholder={currentLabTitle}>
-          {Object.values(LabNames).map((labName, index) => {
-            return (
-              <Option key={labName} value={labName}>
-                {Object.values(labTitles)[index]}
-              </Option>
-            );
-          })}
-        </Select>
-      </div>
+      </header>
+      <header className={styles.headerDown}>
+        <div className={styles.container}>
+          <div className={styles.headerBodyDown}>
+            <Select placeholder={currentLabTitle}>
+              {Object.values(LabNames).map((labName, index) => {
+                return (
+                  <Option key={labName} value={labName}>
+                    {Object.values(labTitles)[index]}
+                  </Option>
+                );
+              })}
+            </Select>
+          </div>
+        </div>
+      </header>
     </>
   );
-}
+};
+
+export default Header;

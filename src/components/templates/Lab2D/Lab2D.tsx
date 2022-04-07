@@ -240,11 +240,11 @@ const Lab2D: React.FC = () => {
             onChange={(e) => setTau(+e.target.value)}
           />
 
-          <NumberInput
+          {/* <NumberInput
             label={REFRACTIVE_INDEX_NAME}
             value={refractiveIndex1}
             onChange={(e) => setrefractiveIndex1(+e.target.value)}
-          />
+          /> */}
           <hr />
           <WithLabel labelText={`Source position(${sourcePositionRelative})`}>
             <InputRange
@@ -253,7 +253,7 @@ const Lab2D: React.FC = () => {
             />
           </WithLabel>
           <hr />
-          <WithLabel labelText='Матрица:'>
+          <WithLabel labelText='Medium editor:'>
             <MatrixEditor />
           </WithLabel>
         </Sidebar>

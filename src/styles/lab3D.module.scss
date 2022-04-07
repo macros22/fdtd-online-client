@@ -3,8 +3,10 @@
     display: grid;
     grid-area: content;
     grid-template-areas: 'sidebarLeft contentInner sidebarRight';
-    grid-template-columns: 16% auto 16%;
-    height: 100%;
+    grid-template-columns: 17% auto 17%;
+    // height: 100%;
+    height: calc( 100vh - (var(--header-up-height) + var(--header-down-height)));
+    // width: 100vw;
   }
   
   @media (max-width: 1200px) {
@@ -15,7 +17,10 @@
       'contentInner contentInner'
         'sidebarLeft sidebarRight';
       grid-template-columns: 1fr 1fr;
-      height: 100%;
+      // grid-template-columns: 45% 45%;
+      // height: calc( 100vh - (var(--header-up-height) + var(--header-down-height)));
+      min-height: 200vh;
+      // max-width: 100vw;
     }
   }
   
