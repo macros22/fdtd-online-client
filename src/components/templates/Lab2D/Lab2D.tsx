@@ -24,7 +24,7 @@ import {
 
 // import { useRefractionMatrix } from 'components/organisms/MatrixEditor/refraction-matrix.context';
 import { displayedData } from 'utils/displayed-data';
-import { SERVER_URL as SERVER_URL} from 'constants/url';
+import { SERVER_URL} from 'constants/url';
 import { DataChartType } from 'types/lab1';
 import {
   selectEpsilonMatrix,
@@ -39,6 +39,8 @@ const Lab2D: React.FC = () => {
     React.useState<boolean>(false);
 
   const [socket, setSocket] = React.useState<WebSocket | null>(null);
+
+  console.warn(process.env.SERVER_URL)
 
   const plotCoeff = 0.27;
   const initialPlotWidth = 200;
