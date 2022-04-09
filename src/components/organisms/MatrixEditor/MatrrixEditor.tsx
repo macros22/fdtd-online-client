@@ -41,6 +41,7 @@ const Editor: React.FC = () => {
   const rectWidth = width / countCol;
   const rectHeight = height / countRow;
 
+  const [mousePressed, setMousePressed] = React.useState(false);
 
   const dispatch = useAppDispatch();
 
@@ -72,7 +73,7 @@ const Editor: React.FC = () => {
   const handleMouseClick = () => {
     const newJ = focusedCoord.j;
     const newI = focusedCoord.i;
-    // console.log(newI, newJ, 'asdsd');
+    
     dispatch(
       updateMediumMatrixes({
         i: newI,
@@ -82,6 +83,18 @@ const Editor: React.FC = () => {
       })
     );
   };
+
+  const handleMouseDown = (e: React.MouseEvent) => {
+    if (!mousePressed){
+       setMousePressed(true);
+    }
+  }
+
+  const handleMouseUp = (e: React.MouseEvent) => {
+    if (mousePressed){
+       setMousePressed(false);
+    }
+  }
 
   const handleMouseMove = (e: React.MouseEvent) => {
     // Save the values of pageX and pageY and use it within setPosition.
@@ -95,16 +108,23 @@ const Editor: React.FC = () => {
     const x = pageX - gridX - rectWidth / 2;
     const y = pageY - gridY - rectHeight / 2;
 
-    // console.log('x, y:', x, y);
-    // console.log(
-    //   'focusedCoord (i,j)',
-    //   Math.round((countRow * y) / height),
-    //   Math.round((countCol * x) / width)
-    // );
+    const newFocusedCol = Math.round((countCol * x) / width);
+    const newFocusedRow = Math.round((countRow * y) / height);
     setFocusedCoord({
-      j: Math.round((countCol * x) / width),
-      i: Math.round((countRow * y) / height),
+      j: newFocusedCol,
+      i: newFocusedRow,
     });
+  
+    if(mousePressed){
+      dispatch(
+        updateMediumMatrixes({
+          i: newFocusedRow,
+          j: newFocusedCol,
+          newEpsilonValue: panelShapes[currentShape].rIndex,
+          newOmegaValue: panelShapes[currentShape].omega,
+        })
+      );
+    }
   };
 
   return (
@@ -122,7 +142,9 @@ const Editor: React.FC = () => {
           height={height}
           fill={colors[0]}
           onClick={handleMouseClick}
+          onMouseDown={handleMouseDown}
           onMouseMove={handleMouseMove}
+          onMouseUp={handleMouseUp}
         />
 
         {matrix.map((row, i) => {
@@ -155,7 +177,8 @@ const Editor: React.FC = () => {
           y={focusedCoord.i * rectHeight}
           fill='gray'
           opacity='0.4'
-          onClick={handleMouseClick}
+          // Element is invisible for clicks.
+          style={{ pointerEvents: 'none' }}
         />
 
         {panelShapes.map((shape, index) => {
