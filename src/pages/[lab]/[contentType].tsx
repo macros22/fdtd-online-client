@@ -111,10 +111,10 @@ export const getStaticProps: GetStaticProps<ILabPageProps> = async ({
 
     if (currentLabName && currentLabContentType) {
       if (currentLabContentType == LabContentType.THEORY) {
-        const files = fs.readdirSync(path.join('src/theory-posts'));
+        const files = fs.readdirSync(path.join('src/components/templates/theory-posts'));
 
         const markdownWithMeta = fs.readFileSync(
-          path.join('src/theory-posts', currentLabName + '.mdx'),
+          path.join('src/components/templates/theory-posts', currentLabName + '.mdx'),
           'utf-8'
         );
 
