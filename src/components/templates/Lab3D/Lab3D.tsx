@@ -82,11 +82,16 @@ const Lab3D: React.FC<Lab3DProps> = ({ currentLabName }) => {
     row: 0,
     col: 0,
     step: 0,
+    max: 0.0001,
+    min: -0.0001,
   };
 
   const [allData, setAllData] = React.useState<dataType>(initAllData);
 
   const matrix = useAppSelector(selectEpsilonMatrix);
+
+  const [maxVal, setMaxVal] = React.useState(1);
+  const [minVal, setMinVal] = React.useState(-1);
 
   // console.log(matrix);
   // Websocket ---- start.
@@ -101,6 +106,15 @@ const Lab3D: React.FC<Lab3DProps> = ({ currentLabName }) => {
       socket.onmessage = (event: any) => {
         let data = JSON.parse(event.data);
         setStep(data.step || 0);
+
+        console.log(data.max)
+        if(data.max > maxVal){
+          setMaxVal(data.max);
+        }
+        if(data.min < minVal){
+          setMinVal(data.min);
+        }
+  
         setAllData(data);
 
         socket.send(JSON.stringify({ step: data.step || 0 }));
@@ -266,8 +280,8 @@ const Lab3D: React.FC<Lab3DProps> = ({ currentLabName }) => {
                 <HeatMap
                   width={plotWidth}
                   height={plotHeight}
-                  minVal={Math.min(...allData.dataVal)}
-                  maxVal={Math.max(...allData.dataVal)}
+                  minVal={maxVal}
+                  maxVal={minVal}
                   dataX={allData.dataX}
                   dataY={allData.dataY}
                   dataVal={allData.dataVal}

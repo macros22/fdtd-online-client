@@ -5,6 +5,8 @@ export type dataType = {
   row: number;
   col: number;
   step: number;
+  max: number;
+  min: number;
 };
 
 export enum LabNames {

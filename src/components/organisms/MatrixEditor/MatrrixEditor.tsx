@@ -238,6 +238,7 @@ const MatrixEditor: React.FC<MatrixEditorProps> = () => {
       dispatch(setRefractiveIndexes([1,10,14]))
       dispatch(
         setEpsilonMatrix({ currentLabName, newCountRow: 40, newCountCol: 40 })
+        // setEpsilonMatrix({ currentLabName, newCountRow: 80, newCountCol: 80 })
       );
     }
 
