@@ -51,9 +51,9 @@ const Header = () => {
                 [styles.headerMenuActive]: opened,
               })}
             >
-              {/* <ul 
-              className={styles.headerList}
-              > */}
+             {/* <ul 
+              // className={styles.headerList}
+              >  */}
                 <li>
                   <Link href={`/${currentLabName}/${LabContentType.THEORY}`}>
                     <a

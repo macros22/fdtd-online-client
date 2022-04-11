@@ -32,9 +32,9 @@
 	align-items: center;
 
   li{
+    display: inline;
     list-style-type: none;
-    // text-decoration: none;
-    // margin: 0px 0px 20px 0px;
+    margin: 0px 0px 0 1rem;
   }
 	h3 {
 		color: white;
@@ -86,6 +86,12 @@
 	// }
 	.headerBody {
 		height: var(--header-up-height);
+
+    li{
+      display: block;
+      list-style-type: none;
+      margin: .5rem 0 0 0;
+    }
 	}
 
 	.headerBurger {
@@ -153,10 +159,9 @@
 		height: 100%;
 		overflow: auto;
 		transition: all 0.3s ease 0s;
-		background-color: var(--light);
-		padding: 70px 10px 20px 10px;
+		background-color: var(--substrate-color);
+		padding: 4rem 0 0 2rem;
 
-    // .active
 	}
 
 	.headerMenuActive{
@@ -192,7 +197,6 @@
   font-weight: bold;
   letter-spacing: var(--space-xxxxs);
 
-  // margin-left: var(--space-unit);
   text-decoration: none;
   text-transform: uppercase;
   z-index: 500;

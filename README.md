@@ -1,4 +1,5 @@
-stylelint scss - https://actionauta.com/notes/integrating-tailwind-css-modules-sass-stylelint-nextjs
+##stylelint scss:
+ - https://actionauta.com/notes/integrating-tailwind-css-modules-sass-stylelint-nextjs
 
 https://github.com/ebenezerdon/nextjs-mdx-blog/blob/main/pages/blog/%5Bslug%5D.js
 
