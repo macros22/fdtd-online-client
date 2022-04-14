@@ -177,16 +177,20 @@
 
 .activeLabContentType {
   border-bottom: 3px solid var(--danger-color) !important;
-  color: var(--text-color);
 }
 
 .labContentType {
   color: var(--text-color);
-  padding: 0.1rem 0;
+  // padding: 0.1rem 0.2rem;
+  padding: 0.3rem;
+
 
   &:hover {
     color: var(--text-color);
-    border-bottom: 3px solid var(--danger-color);
+    
+    // border-radius: 5px;
+    // background-color: rgba($color: #4e4e4e, $alpha: 0.05);
+    border-bottom: 3px solid var(--primary-color);
   }
 }
 

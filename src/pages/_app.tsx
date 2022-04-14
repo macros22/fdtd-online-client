@@ -1,6 +1,7 @@
 import { AppProps } from 'next/dist/next-server/lib/router/router';
 import Head from 'next/head';
 import React from 'react';
+import NextNProgress from 'nextjs-progressbar';
 
 // configuration of custom bootstrap on next.js
 // https://www.mikealche.com/software-development/setting-up-bootstrap-sass-on-next-js
@@ -52,7 +53,13 @@ function MyApp({ Component, pageProps }: AppProps): JSX.Element {
               crossOrigin='anonymous'
             />
           </Head>
-
+          <NextNProgress
+            color='#29D'
+            startPosition={0.3}
+            stopDelayMs={200}
+            height={3}
+            showOnShallow={true}
+          />
           <Component {...pageProps} />
         </PersistGate>
       </Provider>

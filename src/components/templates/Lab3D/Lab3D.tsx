@@ -131,7 +131,7 @@ const Lab3D: React.FC<Lab3DProps> = ({ currentLabName }) => {
         }
         setTimeout(() => {
           connectWS();
-        }, 3000)
+        }, 5000)
         setIsWSocketConnected(false);
       };
 
