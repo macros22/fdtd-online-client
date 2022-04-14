@@ -29,6 +29,7 @@ import { SERVER_URL as SERVER_URL } from 'constants/url';
 import { Lab3DProps } from './Lab3D.prop';
 import { useAppSelector } from 'app/hooks';
 import { selectEpsilonMatrix } from 'app/reducers/medium-matrix.reducer';
+import PreviewMatrixEditor from 'components/organisms/MatrixEditor/PreviewMatrixEditor';
 
 const Lab3D: React.FC<Lab3DProps> = ({ currentLabName }) => {
   const [isWSocketConnected, setIsWSocketConnected] =
@@ -261,7 +262,8 @@ const Lab3D: React.FC<Lab3DProps> = ({ currentLabName }) => {
             /> */}
             <hr />
             <WithLabel labelText='Матрица мат-ов:'>
-              <MatrixEditor />
+              {/* <MatrixEditor /> */}
+              <PreviewMatrixEditor />
             </WithLabel>
           </>
         </Sidebar>

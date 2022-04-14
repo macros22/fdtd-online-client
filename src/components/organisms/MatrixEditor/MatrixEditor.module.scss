@@ -8,8 +8,8 @@
 
 .matrixPreview {
   background: #eee;
-  height: 180px;
-  width: 180px;
+  height: 150px;
+  width: 150px;
 }
 
 .substrate {
@@ -40,14 +40,56 @@
   z-index: 1005;
 }
 
-.modal {
+.modalWrapper {
+  // align-items: center;
+  // background: #fff;
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  z-index: 1005;
+  display: grid;
+  grid-template-areas: 'matrixPicker editor materialPicker';
+  grid-template-columns: 2fr 3fr 2fr;
+  place-items: center;
+}
+
+
+
+.matrixPicker {
+  grid-area: matrixPicker;
+  min-height: 90vh;
+  max-height: 95vh;
+  background-color: bisque;
+
+  display: grid;
+  grid-auto-rows: min-content;
+  grid-gap: var(--space-sm);
+  grid-template-columns: 1;
+  overflow-y: auto;
+
+  padding: var(--space-sm);
+  
+}
+
+.editor {
+  grid-area: editor;
   background: white;
   display: flex;
   flex-direction: column;
-  height: 90vh;
+  min-height: 90vh;
   // padding: var(--space-md);
   width: max-content;
 }
+
+.materialPicker {
+  grid-area: materialPicker;
+  min-height: 90vh;
+  background-color: bisque;
+  
+}
+
 
 .buttons {
   display: flex;

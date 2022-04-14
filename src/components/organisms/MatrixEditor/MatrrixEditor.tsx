@@ -250,12 +250,17 @@ const MatrixEditor: React.FC<MatrixEditorProps> = () => {
       {/* <!-- Button trigger modal -->*/}
       <svg className={styles.matrixPreview} />
       <Button onClick={() => setIsOpend(true)}>Изменить</Button>
+
       {isOpened && (
         <>
           <div className={styles.substrate}></div>
 
           <div className={styles.modalWrapper}>
-            <div className={styles.modal}>
+
+          <div className={styles.matrixPicker}>
+              <h2>Matrix picker</h2>
+          </div>
+            <div className={styles.editor}>
               <h2>Editor</h2>
               <Editor />
               <div className={styles.buttons}>
@@ -265,6 +270,9 @@ const MatrixEditor: React.FC<MatrixEditorProps> = () => {
                 <Button onClick={() => setIsOpend(false)}>Back</Button>
               </div>
             </div>
+            <div className={styles.materialPicker}>
+              <h2>Material picker</h2>
+          </div>
             {/* <DragAndDrop WIDTH={400} HEIGHT={400} /> */}
           </div>
         </>

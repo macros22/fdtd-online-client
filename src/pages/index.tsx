@@ -6,12 +6,19 @@
 import NewHeader from 'components/organisms/Header/Header';
 import React from 'react';
 
+
+
+
 function Index() {
+
+
+
   return (
     <>
       {/* <Test /> */}
       {/* <Lab3D /> */}
       <NewHeader />
+     
     </>
   );
 }
