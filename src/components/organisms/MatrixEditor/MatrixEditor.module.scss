@@ -12,6 +12,7 @@
 
 .triggerMatrixBtn {
   width: 100%;
+  font-size: 17px;
   margin-top: var(--sidebar-padding);
 }
 
@@ -53,8 +54,9 @@
   width: 100%;
   z-index: 1005;
   display: grid;
-  grid-template-areas: 'matrixPicker editor materialPicker';
-  grid-template-columns: 2fr 3fr 2fr;
+  grid-template-areas: 'matrixPicker editor materialPicker .';
+  grid-template-columns: 1fr 2fr 1fr;
+  column-gap: 2rem;
   place-items: center;
 }
 
@@ -64,7 +66,7 @@
   grid-area: matrixPicker;
   min-height: 90vh;
   max-height: 95vh;
-  background-color: bisque;
+  background-color: rgb(255, 255, 255);
 
   display: grid;
   grid-auto-rows: min-content;
@@ -89,7 +91,44 @@
 .materialPicker {
   grid-area: materialPicker;
   min-height: 90vh;
-  background-color: bisque;
+  max-height: 95vh;
+  max-width: 20wh;
+  background-color: rgb(255, 255, 255);
+
+  display: grid;
+  grid-auto-rows: min-content;
+  grid-gap: var(--space-sm);
+  grid-template-columns: 1;
+  overflow-y: auto;
+
+  padding: var(--space-sm);
+}
+
+.oneMaterialPanel {
+  display: grid;
+  grid-template-areas: 'material' '.' 'materialNumberInputs';
+  // grid-template-columns: 1fr 3fr;
+
+  hr {
+    margin-top: 0.75rem;
+  }
+}
+
+.material {
+  grid-area: material;
+  display: flex;
+  flex-direction: row;
+  gap: var(--space-sm);
+  // margin-top: 0.75rem 0;
+}
+
+.materialNumberInputs {
+  grid-area: materialNumberInputs;
+  display: flex;
+  flex-direction: row;
+  gap: var(--space-sm);
+  margin-top: 1.5rem 0;
+
   
 }
 

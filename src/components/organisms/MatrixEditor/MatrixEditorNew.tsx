@@ -3,7 +3,7 @@
 import * as React from 'react';
 import styles from './MatrixEditor.module.scss';
 import { MatrixEditorProps } from './MatrixEditor.props';
-import { Button } from 'components';
+import { Button, NumberInput } from 'components';
 import { useAppDispatch, useAppSelector } from 'app/hooks';
 import { LabNames } from 'types/types';
 import { selectLabName } from 'app/reducers/labTypeSlice';
@@ -18,6 +18,7 @@ import {
   selectOmegaMatrixValues,
 } from 'app/reducers/medium-matrix.reducer';
 import DragAndDrop from './DragAndDrop';
+import Tag from 'components/atoms/Tag/Tag';
 
 const colors = ['#fafafa', 'tomato', '#1a52aa'];
 
@@ -79,21 +80,42 @@ const MatrixEditor: React.FC<MatrixEditorProps> = ({ setIsOpend }) => {
 
   const [currentShape, setCurrentShape] = React.useState(1);
 
-//   const panelPaddingY = height + Math.min(rectWidth, rectHeight) + 10;
-    const panelPaddingY = rectHeight * 5;
-  const panelPaddingX = rectHeight*8;
+  //   const panelPaddingY = height + Math.min(rectWidth, rectHeight) + 10;
+  const panelPaddingY = rectHeight * 5;
+  const panelPaddingX = rectHeight * 8;
 
   // Panel with refraction index shapes.
   let panelShapes = new Array(rIndexes.length).fill({}).map((_, index) => ({
     type: 'rect',
     x: panelPaddingX * (index + 1),
     y: panelPaddingY,
-    width: rectHeight*6,
-    height: rectHeight*6,
+    width: rectHeight * 6,
+    height: rectHeight * 6,
     rIndex: rIndexes[index],
     omega: omegas[index],
     color: colors[index],
   }));
+
+  const materials = [
+    {
+      name: "Free space",
+      eps: 1,
+      mu: 1,
+      sigma: 0.001,
+    },
+    {
+      name: "Blunium",
+      eps: 1.1,
+      mu: 1,
+      sigma: 0.004,
+    },
+    {
+      name: "Custom",
+      eps: 1.4,
+      mu: 1.6,
+      sigma: 0.001,
+    },
+  ]
 
   const initialFocusedCoords = { i: 0, j: 0 };
 
@@ -176,7 +198,7 @@ const MatrixEditor: React.FC<MatrixEditorProps> = ({ setIsOpend }) => {
 
           <svg className={styles.matrixPreview} />
           <svg className={styles.matrixPreview} />
-          
+
         </div>
         <div className={styles.editor}>
           <h2>Editor</h2>
@@ -245,7 +267,54 @@ const MatrixEditor: React.FC<MatrixEditorProps> = ({ setIsOpend }) => {
         </div>
         <div className={styles.materialPicker}>
           <h2>Material picker</h2>
-          <svg>
+
+          <hr />
+
+          {materials.map((material, index) => {
+
+            return (
+
+              <div className={styles.oneMaterialPanel} key={index}>
+                <div className={styles.material}>
+                <svg
+                  
+                  onClick={() => setCurrentShape(index)}
+                  width={"65px"}
+                  height={"65px"}
+                  style={{
+
+                    background: colors[index],
+                    border: `${index == currentShape ? '5' : '0'}px solid black`,
+                  }} />
+                <h3>{material.name}</h3>
+                </div>
+                <hr />
+                <div className={styles.materialNumberInputs}>
+                  <NumberInput
+                    value={material.eps}
+                    label={"permittivity"}
+                  // onChange={(e) => setLambda(+e.target.value)}
+                  />
+                  <NumberInput
+                    value={material.mu}
+                    label={"permiability"}
+                  // onChange={(e) => setLambda(+e.target.value)}
+                  />
+                  <NumberInput
+                    value={material.sigma}
+                    label={"condictivity"}
+                  // onChange={(e) => setLambda(+e.target.value)}
+                  />
+                </div>
+                 <hr />
+              </div>
+
+            );
+
+          })}
+
+          {/* <svg>
+            
           {panelShapes.map((shape, index) => {
             switch (shape.type) {
               case 'rect':
@@ -278,7 +347,7 @@ const MatrixEditor: React.FC<MatrixEditorProps> = ({ setIsOpend }) => {
                 );
             }
           })}
-          </svg>
+          </svg> */}
         </div>
         {/* <DragAndDrop WIDTH={400} HEIGHT={400} /> */}
       </div>

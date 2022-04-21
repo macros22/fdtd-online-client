@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styles from './MatrixEditor.module.scss';
 import { MatrixEditorProps } from './MatrixEditor.props';
-import { Button } from 'components';
+import { Button, Tag } from 'components';
 import MatrixEditorNew from './MatrixEditorNew';
 import { RefObject } from 'react';
 
@@ -10,12 +10,13 @@ type PreviewMatrixProps = {
   height: number;
 };
 
-const PreviewMatrixEditor: React.FC<PreviewMatrixProps> = ({ width, height }) => {
+const PreviewMatrixEditor: React.FC<PreviewMatrixProps> = ({
+  width,
+  height,
+}) => {
   const [isOpened, setIsOpend] = React.useState<boolean>(false);
 
-
-  console.log("~~Q~~", width);
-  
+  console.log('~~Q~~', width);
 
   return (
     <>
@@ -27,7 +28,12 @@ const PreviewMatrixEditor: React.FC<PreviewMatrixProps> = ({ width, height }) =>
           height: width + 'px',
         }}
       />
-      <Button className={styles.triggerMatrixBtn} onClick={() => setIsOpend(true)}>Edit material</Button>
+      <Button
+        className={styles.triggerMatrixBtn}
+        onClick={() => setIsOpend(true)}
+      >
+        Edit material
+      </Button>
 
       {isOpened && <MatrixEditorNew setIsOpend={setIsOpend} />}
     </>

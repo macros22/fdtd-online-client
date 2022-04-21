@@ -31,22 +31,22 @@ import { useAppSelector } from 'app/hooks';
 import { selectEpsilonMatrix } from 'app/reducers/medium-matrix.reducer';
 import PreviewMatrixEditor from 'components/organisms/MatrixEditor/PreviewMatrixEditor';
 
-import useResizeObserver from "use-resize-observer";
+import useResizeObserver from 'use-resize-observer';
 
 const Lab3D: React.FC<Lab3DProps> = ({ currentLabName }) => {
-
   const previewMatrixParentRef = React.useRef(null);
-  const { width: previewMatrixParentWidth = 150, height: previewMatrixParentHeight = 150 } = useResizeObserver<HTMLDivElement>({
+  const {
+    width: previewMatrixParentWidth = 150,
+    height: previewMatrixParentHeight = 150,
+  } = useResizeObserver<HTMLDivElement>({
     ref: previewMatrixParentRef,
   });
-  
 
   // React.useEffect(() => {
   //   console.log("wwwww", previewMatrixParentWidth);
   //   console.log("rrrrr", previewMatrixParentRef);
 
   // }, [previewMatrixParentRef, previewMatrixParentWidth])
-
 
   const [isWSocketConnected, setIsWSocketConnected] =
     React.useState<boolean>(false);
@@ -58,27 +58,23 @@ const Lab3D: React.FC<Lab3DProps> = ({ currentLabName }) => {
   const [plotHeight, setPlotHeight] = React.useState(initialPlotWidth);
 
   const resizePlot = () => {
-      let newWidth;
-      if(window.innerWidth > 1200){
-        newWidth = window.innerWidth * 0.35;
-      } else {
-        newWidth = window.innerWidth * 0.68;
-      }
-      
-      const newHeight = newWidth;
-      setPlotWidth(newWidth);
-      setPlotHeight(newHeight);
-    
+    let newWidth;
+    if (window.innerWidth > 1200) {
+      newWidth = window.innerWidth * 0.35;
+    } else {
+      newWidth = window.innerWidth * 0.68;
+    }
 
-    
-  }
+    const newHeight = newWidth;
+    setPlotWidth(newWidth);
+    setPlotHeight(newHeight);
+  };
 
   React.useEffect(() => {
     resizePlot();
-    window.addEventListener('resize', resizePlot)
-    return () => window.removeEventListener('resize', resizePlot)
-  }, [])
-
+    window.addEventListener('resize', resizePlot);
+    return () => window.removeEventListener('resize', resizePlot);
+  }, []);
 
   const [beamsize, setBeamsize] = React.useState<number>(3);
   const [lambda, setLambda] = React.useState<number>(1);
@@ -115,7 +111,7 @@ const Lab3D: React.FC<Lab3DProps> = ({ currentLabName }) => {
   const connectWS = () => {
     const socket = new WebSocket(SERVER_URL);
     if (socket) {
-      console.log("[open] Connection established");
+      console.log('[open] Connection established');
       socket.onopen = () => {
         setIsWSocketConnected(true);
       };
@@ -124,14 +120,14 @@ const Lab3D: React.FC<Lab3DProps> = ({ currentLabName }) => {
         let data = JSON.parse(event.data);
         setStep(data.step || 0);
 
-        console.log(data.max)
-        if(data.max > maxVal){
+        console.log(data.max);
+        if (data.max > maxVal) {
           setMaxVal(data.max);
         }
-        if(data.min < minVal){
+        if (data.min < minVal) {
           setMinVal(data.min);
         }
-  
+
         setAllData(data);
 
         socket.send(JSON.stringify({ step: data.step || 0 }));
@@ -140,7 +136,8 @@ const Lab3D: React.FC<Lab3DProps> = ({ currentLabName }) => {
       socket.onclose = (event) => {
         console.log('Socket закрыт');
         if (event.wasClean) {
-          console.log(); (`Websocket: [close] Connection closed cleanly, code=${event.code} reason=${event.reason}`);
+          console.log();
+          `Websocket: [close] Connection closed cleanly, code=${event.code} reason=${event.reason}`;
         } else {
           // e.g. server process killed or network down
           // event.code is usually 1006 in this case
@@ -148,7 +145,7 @@ const Lab3D: React.FC<Lab3DProps> = ({ currentLabName }) => {
         }
         setTimeout(() => {
           connectWS();
-        }, 5000)
+        }, 5000);
         setIsWSocketConnected(false);
       };
 
@@ -159,7 +156,6 @@ const Lab3D: React.FC<Lab3DProps> = ({ currentLabName }) => {
     }
     setSocket(socket);
   };
-
 
   const startDataReceiving = () => {
     setPause(false);
@@ -258,35 +254,25 @@ const Lab3D: React.FC<Lab3DProps> = ({ currentLabName }) => {
             onChange={(e) => setLambda(+e.target.value)}
           />
 
+          <hr />
+
           <NumberInput
             label={BEAMSIZE_NAME}
             value={beamsize}
             onChange={(e) => setBeamsize(+e.target.value)}
           />
 
-          {/* <NumberInput
-            // label={REFRACTIVE_INDEX_NAME}
-            label={показат. преломления}
-            value={refractiveIndex1}
-            onChange={(e) => setrefractiveIndex1(+e.target.value)}
-          /> */}
-          <>
-            {/* <NumberInput
-              label={REFRACTIVE_INDEX_NAME}
-              value={refractiveIndex2}
-              onChange={(e) => setRefractiveIndex2(+e.target.value)}
-            /> */}
-            <hr />
-            <div ref={previewMatrixParentRef} ></div>
-            {/* <WithLabel labelText='Матрица мат-ов:' ref={previewMatrixParentRef} ></WithLabel> */}
-            <WithLabel labelText='Матрица мат-ов:'  >
-              {/* <MatrixEditor /> */}
-              <PreviewMatrixEditor 
-                width={previewMatrixParentWidth || 100}
-                height={previewMatrixParentHeight || 100}
-               />
-            </WithLabel>
-          </>
+          <hr />
+          
+          <div ref={previewMatrixParentRef}></div>
+          {/* <WithLabel labelText='Матрица мат-ов:' ref={previewMatrixParentRef} > */}
+          <WithLabel labelText='Матрица мат-ов:'>
+            {/* <MatrixEditor /> */}
+            <PreviewMatrixEditor
+              width={previewMatrixParentWidth || 100}
+              height={previewMatrixParentHeight || 100}
+            />
+          </WithLabel>
         </Sidebar>
 
         <div className={styles.content}>
@@ -311,7 +297,10 @@ const Lab3D: React.FC<Lab3DProps> = ({ currentLabName }) => {
                 />
               </Paper>
               <Paper>
-                <GradientScale gradientHeight={plotHeight} gradientWidth={plotHeight*0.03} />
+                <GradientScale
+                  gradientHeight={plotHeight}
+                  gradientWidth={plotHeight * 0.03}
+                />
               </Paper>
             </div>
           </div>
@@ -334,6 +323,7 @@ const Lab3D: React.FC<Lab3DProps> = ({ currentLabName }) => {
               })}
             </ButtonGroup>
           </WithLabel>
+
           <hr />
 
           <WithLabel labelText={STEP_NUMBER_NAME}>
@@ -341,21 +331,25 @@ const Lab3D: React.FC<Lab3DProps> = ({ currentLabName }) => {
               {step}
             </Tag>
           </WithLabel>
+
           <hr />
 
-          <Button 
+          <Button
             appearance={isWSocketConnected ? 'primary' : 'ghost'}
-            onClick={clickStartPauseContinueBtnHandler}>
+            onClick={clickStartPauseContinueBtnHandler}
+          >
             {!simulation ? 'СТАРТ' : pause ? CONTINUE_NAME : PAUSE_NAME}
           </Button>
+
           <Button
             appearance={simulation ? 'primary' : 'ghost'}
             onClick={clickStopBtnHandler}
           >
             STOP
           </Button>
+
           <hr />
-          
+
           <WithLabel labelText='Server connection:'>
             <Tag size='l' color='primary' fullWidth>
               {isWSocketConnected + ''}
