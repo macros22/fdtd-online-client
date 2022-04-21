@@ -31,7 +31,23 @@ import { useAppSelector } from 'app/hooks';
 import { selectEpsilonMatrix } from 'app/reducers/medium-matrix.reducer';
 import PreviewMatrixEditor from 'components/organisms/MatrixEditor/PreviewMatrixEditor';
 
+import useResizeObserver from "use-resize-observer";
+
 const Lab3D: React.FC<Lab3DProps> = ({ currentLabName }) => {
+
+  const previewMatrixParentRef = React.useRef(null);
+  const { width: previewMatrixParentWidth = 150, height: previewMatrixParentHeight = 150 } = useResizeObserver<HTMLDivElement>({
+    ref: previewMatrixParentRef,
+  });
+  
+
+  // React.useEffect(() => {
+  //   console.log("wwwww", previewMatrixParentWidth);
+  //   console.log("rrrrr", previewMatrixParentRef);
+
+  // }, [previewMatrixParentRef, previewMatrixParentWidth])
+
+
   const [isWSocketConnected, setIsWSocketConnected] =
     React.useState<boolean>(false);
 
@@ -199,7 +215,7 @@ const Lab3D: React.FC<Lab3DProps> = ({ currentLabName }) => {
 
   React.useEffect(() => {
     connectWS();
-    socket?.OPEN
+    // socket?.OPEN
     return () => {
       if (socket !== null) {
         socket.close(1000, 'работа закончена');
@@ -261,9 +277,14 @@ const Lab3D: React.FC<Lab3DProps> = ({ currentLabName }) => {
               onChange={(e) => setRefractiveIndex2(+e.target.value)}
             /> */}
             <hr />
-            <WithLabel labelText='Матрица мат-ов:'>
+            <div ref={previewMatrixParentRef} ></div>
+            {/* <WithLabel labelText='Матрица мат-ов:' ref={previewMatrixParentRef} ></WithLabel> */}
+            <WithLabel labelText='Матрица мат-ов:'  >
               {/* <MatrixEditor /> */}
-              <PreviewMatrixEditor />
+              <PreviewMatrixEditor 
+                width={previewMatrixParentWidth || 100}
+                height={previewMatrixParentHeight || 100}
+               />
             </WithLabel>
           </>
         </Sidebar>

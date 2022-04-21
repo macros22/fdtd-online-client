@@ -8,8 +8,11 @@
 
 .matrixPreview {
   background: #eee;
-  height: 150px;
-  width: 150px;
+}
+
+.triggerMatrixBtn {
+  width: 100%;
+  margin-top: var(--sidebar-padding);
 }
 
 .substrate {

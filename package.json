@@ -29,7 +29,8 @@
     "stylelint": "^14.3.0",
     "stylelint-config-recommended-scss": "^5.0.2",
     "stylelint-order": "^5.0.0",
-    "stylelint-scss": "^4.1.0"
+    "stylelint-scss": "^4.1.0",
+    "use-resize-observer": "^8.0.0"
   },
   "scripts": {
     "dev": "next",
