@@ -315,6 +315,13 @@ const Lab3D: React.FC<Lab3DProps> = ({ currentLabName }) => {
           </WithLabel>
           <hr />
 
+          <WithLabel labelText={STEP_NUMBER_NAME}>
+            <Tag size='l' color='primary' fullWidth>
+              {step}
+            </Tag>
+          </WithLabel>
+          <hr />
+
           <Button 
             appearance={isWSocketConnected ? 'primary' : 'ghost'}
             onClick={clickStartPauseContinueBtnHandler}>
@@ -327,12 +334,7 @@ const Lab3D: React.FC<Lab3DProps> = ({ currentLabName }) => {
             STOP
           </Button>
           <hr />
-          <WithLabel labelText={STEP_NUMBER_NAME}>
-            <Tag size='l' color='primary' fullWidth>
-              {step}
-            </Tag>
-          </WithLabel>
-          <hr />
+          
           <WithLabel labelText='Server connection:'>
             <Tag size='l' color='primary' fullWidth>
               {isWSocketConnected + ''}

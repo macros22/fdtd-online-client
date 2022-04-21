@@ -300,7 +300,17 @@ const Lab2D: React.FC = () => {
           </div>
         </div>
 
+
+
         <Sidebar className={styles.sidebarRight}>
+
+        <WithLabel labelText={STEP_NUMBER_NAME}>
+            <Tag size='l' color='primary' fullWidth>
+              {step}
+            </Tag>
+          </WithLabel>
+          <hr />
+
           <Button onClick={clickStartPauseContinueBtnHandler}>
             {!simulation ? 'СТАРТ' : pause ? CONTINUE_NAME : PAUSE_NAME}
           </Button>
@@ -311,12 +321,7 @@ const Lab2D: React.FC = () => {
             STOP
           </Button>
           <hr />
-          <WithLabel labelText={STEP_NUMBER_NAME}>
-            <Tag size='l' color='primary' fullWidth>
-              {step}
-            </Tag>
-          </WithLabel>
-          <hr />
+          
           <WithLabel labelText='Server connection:'>
             <Tag size='l' color='primary' fullWidth>
               {isWSocketConnected + ''}

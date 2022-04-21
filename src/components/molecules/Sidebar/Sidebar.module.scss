@@ -6,10 +6,16 @@
 
   display: grid;
   grid-auto-rows: min-content;
-  grid-gap: var(--space-sm);
+  grid-gap: var(--sidebar-padding);
   grid-template-columns: 1;
   overflow-y: auto;
 
-  padding: var(--space-sm);
-  transition: all 0.6s; /*added*/
+  padding: var(--sidebar-padding);
+  transition: all 0.6s;
+
+  hr {
+    height: 1px;
+    margin: 0 calc(-1 * var(--sidebar-padding));
+    opacity: 0.15;
+  }
 }
