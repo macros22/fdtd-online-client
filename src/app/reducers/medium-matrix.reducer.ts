@@ -2,228 +2,307 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { LabNames } from 'types/types';
 import type { AppState } from '../store';
 
-export interface IMediumMatrixState {
+export type Medium = {
+
+  name: string;
+  color: string;
+
   // Electric permittivity.
-  epsilonMatrix: number[][];
+  eps: number;
+
+  // Permeability.
+  mu: number;
 
   // Conductivity.
-  omegaMatrix: number[][];
-
-  omegas: number[];
-  rIndexes: number[];
-
-  // Epsilon matrix size
-  countRow: number;
-  countCol: number;
-
-  // sourcePositionRelativeX: number;
-  // sourcePositionRelativeY: number;
+  sigma: number
 }
 
-const rIndexes = [4.85418e-12, (4.85418e-12)*3, (4.85418e-12)*5];
-
-// Conductivity
-// const omegas = [0.01, 0.04, 0.01];
-const omegas = [0.0, 0.0, 0.0];
-// const rIndexes = [1,2,4];
-
-// Epsilon matrix sizes.
-const countRow = 5;
-const countCol = 5;
-// const sourcePositionRelativeX = 0.2;
-// const sourcePositionRelativeY = 0;
-
-
-const make1DEpsilonMatrixEmpty = (countCol: number, rIndexes: number[] ) => {
-  let eps: number[][] = [];
-  eps[0] = [];
-  for (let j = 0; j < countCol; j++) {
-    if (j < countCol / 2 ) {
-      eps[0][j] = rIndexes[0];
-    } else {
-      eps[0][j] = rIndexes[1];
-    }
-  }
-  eps[0][countCol-1] = rIndexes[0];
-  return eps;
-};
-
-const make1DOmegaMatrixEmpty = (countCol: number ) => {
-  let omega: number[][] = [];
-  omega[0] = [];
-  for (let j = 0; j < countCol; j++) {
-    if (j < countCol / 2) {
-      omega[0][j] = omegas[0];
-    } else {
-      omega[0][j] = omegas[1];
-    }
-  }
-  omega[0][countCol-1] = omegas[0];
-  return omega;
-};
 
 
 
-const make2DEpsilonMatrixEmpty = (countRow: number, countCol: number, rIndexes: number[]) => {
-  let eps: number[][] = [];
+
+
+
+export const makeMatrixEmpty = (
+  countRow: number,
+  countCol: number,
+  mediums: Medium[]
+) => {
+  let mediumMatrix: string[][] = [[]];
 
   for (let i = 0; i < countRow; i++) {
-    eps[i] = [];
+    mediumMatrix[i] = [];
     for (let j = 0; j < countCol; j++) {
-      eps[i][j] = rIndexes[0];
+      mediumMatrix[i][j] = mediums[0].name;
     }
   }
-  return eps;
+  return mediumMatrix;
 };
 
-const make2DOmegaMatrixEmpty = (countRow: number, countCol: number) => {
-  let omega: number[][] = [];
+export const makeMatrixBorder = (
+  countRow: number,
+  countCol: number,
+  mediums: Medium[]
+) => {
+  let mediumMatrix: string[][] = [];
 
   for (let i = 0; i < countRow; i++) {
-    omega[i] = [];
-    for (let j = 0; j < countCol; j++) {
-      omega[i][j] = omegas[0];
-    }
-  }
-  return omega;
-};
-
-
-const make2DEpsilonMatrixBorder = (countRow: number, countCol: number, rIndexes: number[]) => {
-  let eps: number[][] = [];
-
-  for (let i = 0; i < countRow; i++) {
-    eps[i] = [];
+    mediumMatrix[i] = [];
     for (let j = 0; j < countCol; j++) {
       if (i > j) {
-        eps[i][j] = rIndexes[0];
+        mediumMatrix[i][j] = mediums[0].name;
       } else {
-        eps[i][j] = rIndexes[1];
+        mediumMatrix[i][j] = mediums[1].name;
       }
     }
   }
-  return eps;
+  return mediumMatrix;
 };
 
-const make2DEpsilonMatrixDifraction = (countRow: number, countCol: number, rIndexes: number[]) => {
-  let eps: number[][] = [];
+export const makeMatrixDifraction = (
+  countRow: number,
+  countCol: number,
+  mediums: Medium[]
+) => {
+  let mediumMatrix: string[][] = [];
 
   for (let i = 0; i < countRow; i++) {
-    eps[i] = [];
+    mediumMatrix[i] = [];
     for (let j = 0; j < countCol; j++) {
-      eps[i][j] = rIndexes[0];
+      mediumMatrix[i][j] = mediums[0].name;
     }
   }
   const difractionGridPosition = Math.floor(countRow / 8);
 
   for (let i = 0; i < countRow; i++) {
-    eps[i][difractionGridPosition] = rIndexes[1];
+    mediumMatrix[i][difractionGridPosition] = mediums[1].name;
   }
   for (let i = 0; i < countRow; i += 3) {
-    eps[i][difractionGridPosition] = rIndexes[0];
+    mediumMatrix[i][difractionGridPosition] = mediums[0].name;
   }
-  return eps;
+  return mediumMatrix;
 };
 
-const initialState: IMediumMatrixState = {
-  epsilonMatrix: [],
-  omegaMatrix: [],
-  countRow,
-  countCol,
-  // sourcePositionRelativeX,
-  // sourcePositionRelativeY,
-  omegas,
-  rIndexes,
+export const makeZebra = (
+  countRow: number,
+  countCol: number,
+  mediums: Medium[]
+) => {
+  let mediumMatrix: string[][] = [];
+
+  for (let i = 0; i < countRow; i++) {
+    mediumMatrix[i] = [];
+    for (let j = 0; j < countCol; j++) {
+      if (j % 2 === 0) {
+        mediumMatrix[i][j] = mediums[0].name;
+      } else {
+        mediumMatrix[i][j] = mediums[1].name;
+      }
+    }
+  }
+  return mediumMatrix;
 };
+
+
+export type SourcePosition = {
+  // 0 < x, y < 1.
+  relativeX: number;
+  relativeY: number;
+}
+
+export type ConfigMedium = {
+  mediumMatrix: string[][];
+  labName: LabNames;
+  sourcePosition: SourcePosition[];
+}
+
+export interface IMediumMatrixState {
+
+  // Medium matrix sizes.
+  countRow: number;
+  countCol: number;
+
+  mediums: Medium[];
+
+  mediumMatrix: string[][];
+
+  // Set of functions, that fill medium matrix.
+  configMediumSet: ConfigMedium[];
+
+  // mediumMatrixFillers: MediumMatrixFiller[];
+
+  // sourcePositionRelativeX: number;
+  // sourcePositionRelativeY: number;
+}
+
+const fillMediumMatrixes2D = (countRow: number, countCol: number, mediums: Medium[]): ConfigMedium[] => {
+  return [
+    {
+      labName: LabNames.LAB_3D,
+      sourcePosition: [{relativeX: 0.5, relativeY: 0.2}],
+      mediumMatrix: makeMatrixEmpty(countRow, countCol, mediums)
+    },
+    {
+      labName: LabNames.INTERFERENCE,
+      sourcePosition: [{relativeX: 0.5, relativeY: 0.2}, {relativeX: 0.3, relativeY: 0.5}],
+      mediumMatrix: makeMatrixEmpty(countRow, countCol, mediums)
+    },
+    {
+      labName: LabNames.DIFRACTION,
+      sourcePosition: [{relativeX: 0.5, relativeY: 0.2}],
+      mediumMatrix: makeMatrixDifraction(countRow, countCol, mediums)
+    },
+    {
+      labName: LabNames.BORDER,
+      sourcePosition: [{relativeX: 0.5, relativeY: 0.2}],
+      mediumMatrix: makeMatrixBorder(countRow, countCol, mediums)
+    },
+  ]
+}
+
+const fillMediumMatrixes1D = (countRow: number, countCol: number, mediums: Medium[]): ConfigMedium[] => {
+  return [
+    {
+      labName: LabNames.LAB_2D,
+      sourcePosition: [{relativeX: 0.5, relativeY: 0}],
+      mediumMatrix: makeMatrixEmpty(1, countCol, mediums)
+    },
+    {
+      labName: LabNames.LAB_1D_ZEBRA,
+      sourcePosition: [{relativeX: 0.1, relativeY: 0.2}],
+      mediumMatrix: makeZebra(countRow, countCol, mediums)
+    },
+  ]
+}
+
+
+
+// const mediumMatrixFillers = {
+//   makeMatrixEmpty,
+//   makeMatrixDifraction,
+//   makeMatrixBorder,
+// }
+
+const initialMatrixSize = 10;
+
+const mediums = [
+  {
+    name: "Free space",
+    eps: 1,
+    mu: 1,
+    sigma: 0,
+    color: '#fafafa',
+  },
+  {
+    name: "Medium 2",
+    eps: 1.3,
+    mu: 1.2,
+    sigma: 0.001,
+    color: 'tomato'
+  },
+  {
+    name: "Medium 3",
+    eps: 1.6,
+    mu: 1,
+    sigma: 0.02,
+    color: '#1a52aa'
+  }
+]
+
+const configMediumSet = fillMediumMatrixes2D(initialMatrixSize, initialMatrixSize, mediums);
+
+const initialState: IMediumMatrixState = {
+  countRow: initialMatrixSize,
+  countCol: initialMatrixSize,
+  mediums,
+  mediumMatrix: configMediumSet[0].mediumMatrix,
+  configMediumSet,
+};
+
+
 
 interface IUpdateEpslonMatrix {
   // Row index.
   i: number;
   // Column index.
   j: number;
-  newEpsilonValue: number;
-  newOmegaValue: number;
+  
+  newMediumName: string;
 }
 
-export const mediumMatrixesSlice = createSlice({
-  name: 'mediumMatrixes',
+export const mediumMatrixSlice = createSlice({
+  name: 'mediumMatrix',
   initialState,
   reducers: {
-    setEpsilonMatrix: (
+    
+    setMediumMatrix: (
+      state,
+      action: PayloadAction<{
+        newCountRow: number;
+        newCountCol: number;
+      }>
+    ) => {  
+      state.countCol = action.payload.newCountCol;
+      state.countRow = action.payload.newCountRow;
+      // if(state.mediumMatrixFillers.length)
+      // state.mediumMatrixSet =  mediumMatrixFillers.map(filler => filler(action.payload.newCountRow, action.payload.newCountCol, state.mediums))
+
+      // Check 1D case.
+      if(state.countRow == 1) {
+        state.configMediumSet = fillMediumMatrixes1D(action.payload.newCountRow, action.payload.newCountCol, state.mediums);
+      } 
+      // Check 2D case.
+      else{
+        
+        state.configMediumSet = fillMediumMatrixes2D(action.payload.newCountRow, action.payload.newCountCol, state.mediums);
+      }
+      
+
+    },
+
+
+    setCurrentMediumMatrix: (
       state,
       action: PayloadAction<{
         currentLabName: LabNames;
-        newCountRow?: number;
-        newCountCol?: number;
       }>
     ) => {
-      // console.log("sdasd", action.payload.newcountRow)
-      if (action.payload.newCountRow && action.payload.newCountCol) {
-        state.countRow = action.payload.newCountRow;
-        state.countCol = action.payload.newCountCol;
-      }
-
-      let eps: number[][] = [];
-      let omega: number[][] = [];
-      switch (action.payload.currentLabName) {
-        case LabNames.LAB_2D:
-          eps = make1DEpsilonMatrixEmpty(state.countCol, state.rIndexes);
-          omega = make1DOmegaMatrixEmpty(state.countCol);
-          // console.log('epsL', eps, state.countCol);
-          break;
-        case LabNames.DIFRACTION:
-          eps = make2DEpsilonMatrixDifraction(state.countRow, state.countCol, state.rIndexes);
-          omega = make2DOmegaMatrixEmpty(state.countRow, state.countCol);
-          break;
-        case LabNames.BORDER:
-          eps = make2DEpsilonMatrixBorder(state.countRow, state.countCol, state.rIndexes);
-          omega = make2DOmegaMatrixEmpty(state.countRow, state.countCol);
-          break;
-        default:
-          eps = make2DEpsilonMatrixEmpty(state.countRow, state.countCol, state.rIndexes);
-          omega = make2DOmegaMatrixEmpty(state.countRow, state.countCol);
-      }
-
-      state.epsilonMatrix = eps;
-      state.omegaMatrix = omega;
+      const currentMedium = state.configMediumSet.find(medium => medium.labName === action.payload.currentLabName)
+      state.mediumMatrix = currentMedium?.mediumMatrix || configMediumSet[0].mediumMatrix;
+      
     },
-    updateMediumMatrixes: (
+
+    updateMediumMatrix: (
       state,
       action: PayloadAction<IUpdateEpslonMatrix>
     ) => {
-      // console.log("Adasdqdqd", action.payload.i)
-      if (state.epsilonMatrix[action.payload.i]) {
-        state.epsilonMatrix[action.payload.i][action.payload.j] =
-          action.payload.newEpsilonValue;
-        state.omegaMatrix[action.payload.i][action.payload.j] =
-          action.payload.newOmegaValue;
+      
+      if (state.mediumMatrix[action.payload.i]) {
+        state.mediumMatrix[action.payload.i][action.payload.j] =
+          action.payload.newMediumName;
       }
     },
-    setRefractiveIndexes: (
-      state,
-      action: PayloadAction<number[]>
-    ) => {
-      state.rIndexes = action.payload;
-    }
   },
 });
 
-export const { updateMediumMatrixes, setEpsilonMatrix, setRefractiveIndexes } =
-  mediumMatrixesSlice.actions;
+export const { updateMediumMatrix, setCurrentMediumMatrix, setMediumMatrix } =
+  mediumMatrixSlice.actions;
 
-export const selectEpsilonMatrix = (state: AppState) =>
-  state.mediumMatrixes.epsilonMatrix;
+export const selectMediumMatrix = (state: AppState) =>
+  state.mediumMatrix.mediumMatrix;
 
-  export const selectOmegaMatrix = (state: AppState) =>
-  state.mediumMatrixes.omegaMatrix;
+  export const selectConfigMediumSet = (state: AppState) =>
+  state.mediumMatrix.configMediumSet;
 
-export const selectEpsilonMatrixCountRow = (state: AppState) =>
-  state.mediumMatrixes.countRow;
-export const selectEpsilonMatrixCountCol = (state: AppState) =>
-  state.mediumMatrixes.countCol;
-export const selectEpsilonMatrixValues = (state: AppState) =>
-  state.mediumMatrixes.rIndexes;
-  export const selectOmegaMatrixValues = (state: AppState) =>
-  state.mediumMatrixes.omegas;
+export const selectMediumMatrixCountRow = (state: AppState) =>
+  state.mediumMatrix.countRow;
 
-export default mediumMatrixesSlice.reducer;
+export const selectMediumMatrixCountCol = (state: AppState) =>
+  state.mediumMatrix.countCol;
+
+export const selectMediums = (state: AppState) =>
+  state.mediumMatrix.mediums;
+
+
+
+export default mediumMatrixSlice.reducer;

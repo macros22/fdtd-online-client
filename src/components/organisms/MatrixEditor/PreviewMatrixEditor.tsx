@@ -1,43 +1,135 @@
-import * as React from 'react';
+import { useAppDispatch, useAppSelector } from 'app/hooks';
+import { selectLabName } from 'app/reducers/labTypeSlice';
 import styles from './MatrixEditor.module.scss';
-import { MatrixEditorProps } from './MatrixEditor.props';
-import { Button, Tag } from 'components';
-import MatrixEditorNew from './MatrixEditorNew';
-import { RefObject } from 'react';
+import {
+  selectMediumMatrix,
+  selectMediumMatrixCountCol,
+  selectMediumMatrixCountRow,
+  selectMediums,
+} from 'app/reducers/medium-matrix.reducer';
+import { drawType } from 'components/molecules/Canvas/useCanvas';
+import React from 'react';
+import { LabNames } from 'types/types';
 
 type PreviewMatrixProps = {
   width: number;
   height: number;
+  labName: LabNames;
+  mediumMatrix: string[][];
 };
 
-const PreviewMatrixEditor: React.FC<PreviewMatrixProps> = ({
+const PreviewMatrix: React.FC<PreviewMatrixProps> = ({
   width,
   height,
+  labName,
+  mediumMatrix
 }) => {
-  const [isOpened, setIsOpend] = React.useState<boolean>(false);
+  // Matrix sizes.
+  //   const width = 400;
+  //   const height = 400;
 
-  console.log('~~Q~~', width);
+  const dispatch = useAppDispatch();
+
+  const countRow = useAppSelector(selectMediumMatrixCountRow);
+  const countCol = useAppSelector(selectMediumMatrixCountCol);
+  const mediums = useAppSelector(selectMediums);
+
+  // let index = 0;
+  // // React.useEffect(() => {
+  //   switch (labName) {
+  //     case LabNames.LAB_3D:
+  //     case LabNames.LAB_2D:
+  //     case LabNames.INTERFERENCE:
+  //         index = 0;
+  //       break;
+    
+  //     case LabNames.DIFRACTION:
+  //        index = 1;
+  //     break;
+  
+  //     case LabNames.BORDER:
+  //        index = 2;
+  //     break;
+  
+  //     default:
+  //       break;
+  //   }
+  
+   // }, [labName])
+  
+   // const mediumMatrix = useAppSelector(selectMediumMatrixSet)[index];
+
+  const canvasRef = React.useRef<HTMLCanvasElement | null>(null);
+
+  const rectwidth = width / countCol;
+  const rectheight = height / countRow;
+  
+  const draw: drawType = (ctx) => {
+    drawRect(ctx, 0, 0, '#eddede', width, height);
+    drawMatrix(ctx, mediumMatrix);
+  };
+
+
+  React.useEffect(() => {
+    if (canvasRef.current) {
+      const canvas = canvasRef.current;
+      const context: CanvasRenderingContext2D | null = canvas.getContext('2d');
+
+      canvas.setAttribute('width', '' + width);
+      canvas.setAttribute('height', '' + height);
+
+      if (context) {
+        draw(context);
+      }
+    }
+
+  }, [labName, mediumMatrix]);
+
+  const drawRect = (
+    ctx: CanvasRenderingContext2D,
+    x: number,
+    y: number,
+    color: string = 'black',
+    width: number,
+    height: number,
+  ) => {
+    ctx.beginPath();
+    ctx.fillStyle = color;
+    ctx.rect(x, y, width, height);
+    ctx.fill();
+  };
+
+  const drawMatrix = (ctx: CanvasRenderingContext2D, matrix: string[][]) => {
+    for (let i = 0; i < countRow; i++) {
+      for (let j = 0; j < countCol; j++) {
+        // console.log(i)
+        const colorIndex = mediums.findIndex(
+          (medium) => medium.name == matrix[i][j]
+        );
+
+        if (colorIndex > 0) {
+          drawRect(
+            ctx,
+            j * rectwidth,
+            i * rectheight,
+            mediums[colorIndex].color,
+            rectwidth,
+            rectheight
+          );
+        }
+      }
+    }
+  };
 
   return (
     <>
-      {/* <!-- Button trigger modal -->*/}
-      <svg
-        className={styles.matrixPreview}
-        style={{
-          width: width + 'px',
-          height: width + 'px',
-        }}
+      <canvas
+        // onClick={ handleMouseClick }
+        ref={ canvasRef }
       />
-      <Button
-        className={styles.triggerMatrixBtn}
-        onClick={() => setIsOpend(true)}
-      >
-        Edit material
-      </Button>
-
-      {isOpened && <MatrixEditorNew setIsOpend={setIsOpend} />}
     </>
   );
 };
 
-export default PreviewMatrixEditor;
+export default PreviewMatrix;
+

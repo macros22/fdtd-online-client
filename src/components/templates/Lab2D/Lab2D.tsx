@@ -26,10 +26,10 @@ import {
 import { displayedData } from 'utils/displayed-data';
 import { SERVER_URL} from 'constants/url';
 import { DataChartType } from 'types/lab1';
-import {
-  selectEpsilonMatrix,
-  selectOmegaMatrix,
-} from 'app/reducers/medium-matrix.reducer';
+// import {
+//   selectEpsilonMatrix,
+//   selectOmegaMatrix,
+// } from 'app/reducers/medium-matrix.reducer';
 import { useAppSelector } from 'app/hooks';
 import InputRange from 'components/atoms/InputRange/InputRange';
 import { useMediaQuery } from 'hooks/use-media-query';
@@ -95,7 +95,7 @@ const Lab2D: React.FC = () => {
   const [currentDisplayingData, setCurrentDisplayingData] =
     React.useState<number>(0);
 
-  const [allData, setAllData] = React.useState<DataChartType>(data2DChart);
+  const [allData, setAllData]= React.useState<DataChartType>(data2DChart);
 
   // Websocket ---- start.
   const connectWS = () => {
@@ -142,8 +142,8 @@ const Lab2D: React.FC = () => {
     setSocket(socket);
   };
 
-  const matrix = useAppSelector(selectEpsilonMatrix);
-  const omegaMatrix = useAppSelector(selectOmegaMatrix);
+  // const matrix = useAppSelector(selectEpsilonMatrix);
+  // const omegaMatrix = useAppSelector(selectOmegaMatrix);
 
   const startDataReceiving = () => {
     setPause(false);
@@ -156,9 +156,9 @@ const Lab2D: React.FC = () => {
       // condition: [lambda, tau, refractiveIndex1],
       condition: [lambda, tau, 1],
       sourcePositionRelative: { x: sourcePositionRelative, y: 0 },
-      matrix,
+      // matrix,
       dataToReturn: 'Hy',
-      omegaMatrix,
+      // omegaMatrix,
     };
 
     if (socket) {
@@ -182,9 +182,9 @@ const Lab2D: React.FC = () => {
       type: '2D',
       condition: [lambda, tau, 1],
       sourcePositionRelative: { x: sourcePositionRelative, y: 0 },
-      matrix,
+      // matrix,
       dataToReturn: 'Hy',
-      omegaMatrix,
+      // omegaMatrix,
     };
 
     if (socket !== null) {
@@ -283,19 +283,7 @@ const Lab2D: React.FC = () => {
                   sourcePositionRelative={sourcePositionRelative}
                 />
               </Paper>
-              <Paper>
-                <Canvas
-                  data={allData}
-                  minY={minY}
-                  minX={minX}
-                  maxY={maxY}
-                  maxX={maxX}
-                  WIDTH={plotWidth}
-                  HEIGHT={plotHeight}
-                  epsilonData={matrix[0]}
-                  sourcePositionRelative={sourcePositionRelative}
-                />
-              </Paper>
+              
             </div>
           </div>
         </div>

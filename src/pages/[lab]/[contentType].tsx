@@ -21,6 +21,7 @@ import markdown from 'remark-parse';
 import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
 import { Lab3D } from 'components';
+import Simulation from 'components/templates/Simulation/Simulation';
 
 const LabPage: React.FC<ILabPageProps> = ({
   currentLabName,
@@ -40,20 +41,25 @@ const LabPage: React.FC<ILabPageProps> = ({
         </Theory>
       );
     case LabContentType.EXPERIMENT:
-      switch (currentLabName) {
-        case LabNames.LAB_2D:
-          return (
-            <>
-              <Lab2D />
-            </>
-          );
-        default:
-          return (
-            <>
-              <Lab3D currentLabName={currentLabName}/>
-            </>
-          );
-      }
+      return (
+        <>
+          <Simulation currentLabName={currentLabName}/>
+        </>
+      );
+      // switch (currentLabName) {
+      //   case LabNames.LAB_2D:
+      //     return (
+      //       <>
+      //         <Lab2D />
+      //       </>
+      //     );
+      //   default:
+      //     return (
+      //       <>
+      //         <Lab3D currentLabName={currentLabName}/>
+      //       </>
+      //     );
+      // }
   }
 
   return <>Loading...</>;

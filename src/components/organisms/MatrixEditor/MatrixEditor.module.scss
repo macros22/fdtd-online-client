@@ -7,7 +7,7 @@
 }
 
 .matrixPreview {
-  background: #eee;
+  // background: #eddede;
 }
 
 .triggerMatrixBtn {
@@ -54,8 +54,8 @@
   width: 100%;
   z-index: 1005;
   display: grid;
-  grid-template-areas: 'matrixPicker editor materialPicker .';
-  grid-template-columns: 1fr 2fr 1fr;
+  grid-template-areas: '. matrixPicker editor materialPicker .';
+  grid-template-columns: auto auto auto;
   column-gap: 2rem;
   place-items: center;
 }
@@ -64,8 +64,8 @@
 
 .matrixPicker {
   grid-area: matrixPicker;
-  min-height: 90vh;
-  max-height: 95vh;
+  // min-height: 90vh;
+  height: 85vh;
   background-color: rgb(255, 255, 255);
 
   display: grid;
@@ -83,16 +83,17 @@
   background: white;
   display: flex;
   flex-direction: column;
-  min-height: 90vh;
+  // min-height: 90vh;
+  height: 85vh;
   // padding: var(--space-md);
   width: max-content;
 }
 
 .materialPicker {
   grid-area: materialPicker;
-  min-height: 90vh;
-  max-height: 95vh;
-  max-width: 20wh;
+  // min-height: 90vh;
+  // max-height: 95vh;
+  height: 85vh;
   background-color: rgb(255, 255, 255);
 
   display: grid;

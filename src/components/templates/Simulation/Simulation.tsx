@@ -20,20 +20,25 @@ import {
   ButtonGroup,
   Button,
   WithLabel,
+  Canvas,
 } from 'components';
 
 import { dataType, LabNames } from 'types/types';
 
 import { displayedData } from 'utils/displayed-data';
 import { SERVER_URL as SERVER_URL } from 'constants/url';
-import { Lab3DProps } from './Lab3D.prop';
+// import { Lab3DProps } from './Lab3D.prop';
 import { useAppSelector } from 'app/hooks';
 import PreviewMatrixEditor from 'components/organisms/MatrixEditor/PreviewMatrixEditor';
 
 import useResizeObserver from 'use-resize-observer';
 import PreviewMatrixSidebar from 'components/organisms/MatrixEditor/PreviewMatrixSidebar';
+import { Lab3DProps } from '../Lab3D/Lab3D.prop';
+import { DataChartType } from 'types/lab1';
+import { IsUnknown } from '@reduxjs/toolkit/dist/tsHelpers';
+import { selectMediumMatrix, selectMediums } from 'app/reducers/medium-matrix.reducer';
 
-const Lab3D: React.FC<Lab3DProps> = ({ currentLabName }) => {
+const Simulation: React.FC<Lab3DProps> = ({ currentLabName }) => {
   const previewMatrixParentRef = React.useRef(null);
   const {
     width: previewMatrixParentWidth = 150,
@@ -48,6 +53,9 @@ const Lab3D: React.FC<Lab3DProps> = ({ currentLabName }) => {
 
   // }, [previewMatrixParentRef, previewMatrixParentWidth])
 
+  const mediumMatrix = useAppSelector(selectMediumMatrix);
+  const mediums = useAppSelector(selectMediums);
+
   const [isWSocketConnected, setIsWSocketConnected] =
     React.useState<boolean>(false);
 
@@ -59,13 +67,25 @@ const Lab3D: React.FC<Lab3DProps> = ({ currentLabName }) => {
 
   const resizePlot = () => {
     let newWidth;
-    if (window.innerWidth > 1200) {
-      newWidth = window.innerWidth * 0.35;
+    let plotCoeff = 1;
+
+    if (currentLabName !== LabNames.LAB_2D) {
+      if (window.innerWidth > 1200) {
+        newWidth = window.innerWidth * 0.35;
+      } else {
+        newWidth = window.innerWidth * 0.68;
+      }
+      plotCoeff = 1;
     } else {
-      newWidth = window.innerWidth * 0.68;
+      if (window.innerWidth > 1200) {
+        newWidth = window.innerWidth * 0.6;
+      } else {
+        newWidth = window.innerWidth * 0.85;
+      }
+      plotCoeff = 0.27;
     }
 
-    const newHeight = newWidth;
+    const newHeight = newWidth * plotCoeff;
     setPlotWidth(newWidth);
     setPlotHeight(newHeight);
   };
@@ -76,17 +96,26 @@ const Lab3D: React.FC<Lab3DProps> = ({ currentLabName }) => {
     return () => window.removeEventListener('resize', resizePlot);
   }, []);
 
-  const [beamsize, setBeamsize] = React.useState<number>(3);
+  React.useEffect(() => {
+    resizePlot();
+  }, [currentLabName]);
+
   const [lambda, setLambda] = React.useState<number>(1);
+  // For 2D.
+  const [beamsize, setBeamsize] = React.useState<number>(3);
+  // For 1D.
+  const [tau, setTau] = React.useState<number>(10);
 
   const [step, setStep] = React.useState<number>(0);
   const [simulation, setSimulation] = React.useState<boolean>(false);
   const [pause, setPause] = React.useState<boolean>(false);
 
+  // For 2D.
   const [currentDisplayingData, setCurrentDisplayingData] =
     React.useState<number>(0);
 
-  const initAllData: dataType = {
+  // For 2D.
+  const initAllData2D: dataType = {
     dataX: [],
     dataY: [],
     dataVal: [],
@@ -97,12 +126,33 @@ const Lab3D: React.FC<Lab3DProps> = ({ currentLabName }) => {
     min: -0.0001,
   };
 
-  const [allData, setAllData] = React.useState<dataType>(initAllData);
+  const [allData2D, setAllData2D] = React.useState<dataType>(initAllData2D);
 
+  const [sourcePositionRelativeX, setSourcePositionRelativeX] =
+    React.useState(0.4);
+
+  const [sourcePositionRelativeY, setSourcePositionRelativeY] =
+    React.useState(0.4);
   // const matrix = useAppSelector(selectEpsilonMatrix);
 
+  // For 2D.
   const [maxVal, setMaxVal] = React.useState(1);
   const [minVal, setMinVal] = React.useState(-1);
+
+  // For 1D
+  const [minX, setMinX] = React.useState<number>(0);
+  const [minY, setMinY] = React.useState<number>(-1);
+  const [maxX, setMaxX] = React.useState<number>(100);
+  const [maxY, setMaxY] = React.useState<number>(0.001);
+
+  const data1DChart: DataChartType = [];
+  for (let i = 0; i < plotWidth * 0.9; i += 10) {
+    data1DChart.push({
+      x: i,
+      y: Math.random() * plotHeight * 0.8 + 20,
+    });
+  }
+  const [allData1D, setAllData1D] = React.useState<DataChartType>(data1DChart);
 
   // console.log(matrix);
   // Websocket ---- start.
@@ -118,15 +168,30 @@ const Lab3D: React.FC<Lab3DProps> = ({ currentLabName }) => {
         let data = JSON.parse(event.data);
         setStep(data.step || 0);
 
-        console.log(data.max);
-        if (data.max > maxVal) {
-          setMaxVal(data.max);
-        }
-        if (data.min < minVal) {
-          setMinVal(data.min);
-        }
+        if (currentLabName == LabNames.LAB_2D) {
+          const tmpdata2DChart: DataChartType = [];
+          for (let i = 0; i < data.col; i++) {
+            tmpdata2DChart.push({
+              x: data.dataX[i],
+              y: data.dataY[i],
+            });
+          }
+          setMinX(Math.min(...data.dataX));
+          setMinY(Math.min(...data.dataY));
+          setMaxX(Math.max(...data.dataX));
+          setMaxY(Math.max(...data.dataY));
 
-        setAllData(data);
+          setAllData1D(tmpdata2DChart);
+        } else {
+          if (data.max > maxVal) {
+            setMaxVal(data.max);
+          }
+          if (data.min < minVal) {
+            setMinVal(data.min);
+          }
+
+          setAllData2D(data);
+        }
 
         socket.send(JSON.stringify({ step: data.step || 0 }));
       };
@@ -158,20 +223,33 @@ const Lab3D: React.FC<Lab3DProps> = ({ currentLabName }) => {
   const startDataReceiving = () => {
     setPause(false);
 
-    const message = {
-      event: 'start',
-      type: (currentLabName == LabNames.INTERFERENCE
-        ? LabNames.INTERFERENCE
-        : LabNames.LAB_3D
-      ).toString(),
-      dataToReturn: displayedData[currentDisplayingData].type,
-      condition:
-        currentLabName == LabNames.INTERFERENCE
-          ? [lambda, beamsize, 1]
-          : [lambda, beamsize],
-      // matrix, 
-    };
-
+    let message: unknown;
+    if (currentLabName === LabNames.LAB_2D) {
+      message = {
+        event: 'start',
+        type: '2D',
+        // condition: [lambda, tau, refractiveIndex1],
+        condition: [lambda, tau, 1],
+        sourcePositionRelative: { x: sourcePositionRelativeX, y: 0 },
+        // matrix,
+        dataToReturn: 'Hy',
+        // omegaMatrix,
+      };
+    } else {
+      message = {
+        event: 'start',
+        type: (currentLabName == LabNames.INTERFERENCE
+          ? LabNames.INTERFERENCE
+          : LabNames.LAB_3D
+        ).toString(),
+        dataToReturn: displayedData[currentDisplayingData].type,
+        condition:
+          currentLabName == LabNames.INTERFERENCE
+            ? [lambda, beamsize, 1]
+            : [lambda, beamsize],
+        // matrix,
+      };
+    }
     if (socket) {
       socket.send(JSON.stringify(message));
     }
@@ -188,20 +266,32 @@ const Lab3D: React.FC<Lab3DProps> = ({ currentLabName }) => {
   };
 
   const continueDataReceiving = () => {
-    const message = {
-      event: 'continue',
-      type: (currentLabName == LabNames.INTERFERENCE
-        ? LabNames.INTERFERENCE
-        : LabNames.LAB_3D
-      ).toString(),
-      dataToReturn: displayedData[currentDisplayingData].type,
-      condition:
-        currentLabName == LabNames.INTERFERENCE
-          ? [lambda, beamsize, 1]
-          : [lambda, beamsize],
-      // matrix,
-    };
-
+    let message: unknown;
+    if (currentLabName === LabNames.LAB_2D) {
+      message = {
+        event: 'continue',
+        type: '2D',
+        condition: [lambda, tau, 1],
+        sourcePositionRelative: { x: sourcePositionRelativeX, y: 0 },
+        // matrix,
+        dataToReturn: 'Hy',
+        // omegaMatrix,
+      };
+    } else {
+      message = {
+        event: 'continue',
+        type: (currentLabName == LabNames.INTERFERENCE
+          ? LabNames.INTERFERENCE
+          : LabNames.LAB_3D
+        ).toString(),
+        dataToReturn: displayedData[currentDisplayingData].type,
+        condition:
+          currentLabName == LabNames.INTERFERENCE
+            ? [lambda, beamsize, 1]
+            : [lambda, beamsize],
+        // matrix,
+      };
+    }
     if (socket !== null) {
       socket.send(JSON.stringify(message));
     }
@@ -254,14 +344,22 @@ const Lab3D: React.FC<Lab3DProps> = ({ currentLabName }) => {
 
           <hr />
 
-          <NumberInput
-            label={BEAMSIZE_NAME}
-            value={beamsize}
-            onChange={(e) => setBeamsize(+e.target.value)}
-          />
+          {currentLabName === LabNames.LAB_2D ? (
+            <NumberInput
+              label={BEAMSIZE_NAME}
+              value={beamsize}
+              onChange={(e) => setBeamsize(+e.target.value)}
+            />
+          ) : (
+            <NumberInput
+              label={'tau'}
+              value={tau}
+              onChange={(e) => setTau(+e.target.value)}
+            />
+          )}
 
           <hr />
-          
+
           <div ref={previewMatrixParentRef}></div>
           {/* <WithLabel labelText='Матрица мат-ов:' ref={previewMatrixParentRef} > */}
           <WithLabel labelText='Матрица мат-ов:'>
@@ -282,46 +380,65 @@ const Lab3D: React.FC<Lab3DProps> = ({ currentLabName }) => {
               </span>
             </h6>
 
-            <div className={styles.graph2D}>
-              <Paper>
-                <HeatMap
-                  width={plotWidth}
-                  height={plotHeight}
-                  minVal={maxVal}
-                  maxVal={minVal}
-                  dataX={allData.dataX}
-                  dataY={allData.dataY}
-                  dataVal={allData.dataVal}
-                />
-              </Paper>
-              <Paper>
-                <GradientScale
-                  gradientHeight={plotHeight}
-                  gradientWidth={plotHeight * 0.03}
-                />
-              </Paper>
-            </div>
+            {currentLabName !== LabNames.LAB_2D ? (
+              <div className={styles.graph2D}>
+                <Paper>
+                  <HeatMap
+                    width={plotWidth}
+                    height={plotHeight}
+                    minVal={maxVal}
+                    maxVal={minVal}
+                    dataX={allData2D.dataX}
+                    dataY={allData2D.dataY}
+                    dataVal={allData2D.dataVal}
+                  />
+                </Paper>
+                <Paper>
+                  <GradientScale
+                    gradientHeight={plotHeight}
+                    gradientWidth={plotHeight * 0.03}
+                  />
+                </Paper>
+              </div>
+            ) : (
+              <div className={styles.graph1D}>
+                <Paper>
+                  <Canvas
+                    data={allData1D}
+                    minY={minY}
+                    minX={minX}
+                    maxY={maxY}
+                    maxX={maxX}
+                    WIDTH={plotWidth}
+                    HEIGHT={plotHeight}
+                    epsilonData={mediumMatrix[0].map(materialName => mediums.find(medium => medium.name === materialName)?.eps || 1)} //!!!!!!!!!!!
+                    sourcePositionRelative={sourcePositionRelativeX}
+                  />
+                </Paper>
+              </div>
+            )}
           </div>
         </div>
 
         <Sidebar className={styles.sidebarRight}>
-          <WithLabel labelText='Выбор данных:'>
-            <ButtonGroup activeButton={currentDisplayingData}>
-              {displayedData.map((item, index) => {
-                return (
-                  <button
-                    key={item.name}
-                    onClick={() => {
-                      setCurrentDisplayingData(index);
-                    }}
-                  >
-                    {item.name}
-                  </button>
-                );
-              })}
-            </ButtonGroup>
-          </WithLabel>
-
+          {currentLabName !== LabNames.LAB_2D && (
+            <WithLabel labelText='Выбор данных:'>
+              <ButtonGroup activeButton={currentDisplayingData}>
+                {displayedData.map((item, index) => {
+                  return (
+                    <button
+                      key={item.name}
+                      onClick={() => {
+                        setCurrentDisplayingData(index);
+                      }}
+                    >
+                      {item.name}
+                    </button>
+                  );
+                })}
+              </ButtonGroup>
+            </WithLabel>
+          )}
           <hr />
 
           <WithLabel labelText={STEP_NUMBER_NAME}>
@@ -359,4 +476,4 @@ const Lab3D: React.FC<Lab3DProps> = ({ currentLabName }) => {
   );
 };
 
-export default Lab3D;
+export default Simulation;

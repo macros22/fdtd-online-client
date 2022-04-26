@@ -11,11 +11,14 @@ export type dataType = {
 
 export enum LabNames {
   LAB_2D = '2D',
+  LAB_1D_ZEBRA = 'ZEBRA',
   LAB_3D = '3D',
   DIFRACTION = 'DIFRACTION',
   INTERFERENCE = 'INTERFERENCE',
   BORDER = 'BORDER',
 }
+
+
 
 export enum LabContentType {
   THEORY = 'THEORY',
