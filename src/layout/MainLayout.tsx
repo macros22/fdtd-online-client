@@ -36,9 +36,9 @@ export const withLayout = <T extends Record<string, unknown>>(
   return function withLayoutComponent(props: T): JSX.Element {
     const metaProps: MetaPropsType = {
       title: `Wave optics | Lab ${
-        (props?.currentLabName as string)?.toLowerCase() || ''
+        (props?.currentSimulationDimension as string)?.toLowerCase() || ''
       }`,
-      description: (props?.currentLabName as string)?.toLowerCase() || '',
+      description: (props?.currentSimulationDimension as string)?.toLowerCase() || '',
     };
     // console.log(props?.currentLabName as string);
 

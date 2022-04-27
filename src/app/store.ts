@@ -31,11 +31,11 @@ const storage = typeof window !== "undefined" ? createWebStorage("local") : crea
 
 // import storage from 'redux-persist/lib/storage' // defaults to localStorage for web
 
-import labTypeReducer from './reducers/labTypeSlice'
+import simulationDimensionReducer from './reducers/simulation-dimension.reducer'
 
 
 const rootReducer = combineReducers({
-    labType: labTypeReducer,
+    simulationDimension: simulationDimensionReducer,
     mediumMatrix: mediumMatrixReducer,
 });
 

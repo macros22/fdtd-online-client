@@ -3,7 +3,6 @@ import {
   CONTINUE_NAME,
   BEAMSIZE_NAME,
   PAUSE_NAME,
-  REFRACTIVE_INDEX_NAME,
   STEP_NUMBER_NAME,
   WAVE_LENGTH_NAME,
 } from 'names/lab2.name';
@@ -14,31 +13,33 @@ import {
   Sidebar,
   NumberInput,
   Paper,
-  MatrixEditor,
   Tag,
   GradientScale,
   ButtonGroup,
   Button,
   WithLabel,
   Canvas,
+  InputRange,
 } from 'components';
 
-import { dataType, LabNames } from 'types/types';
+import { dataType, SimulationDimension } from 'types/types';
 
 import { displayedData } from 'utils/displayed-data';
 import { SERVER_URL as SERVER_URL } from 'constants/url';
-// import { Lab3DProps } from './Lab3D.prop';
 import { useAppSelector } from 'app/hooks';
-import PreviewMatrixEditor from 'components/organisms/MatrixEditor/PreviewMatrixEditor';
 
 import useResizeObserver from 'use-resize-observer';
 import PreviewMatrixSidebar from 'components/organisms/MatrixEditor/PreviewMatrixSidebar';
-import { Lab3DProps } from '../Lab3D/Lab3D.prop';
 import { DataChartType } from 'types/lab1';
-import { IsUnknown } from '@reduxjs/toolkit/dist/tsHelpers';
-import { selectMediumMatrix, selectMediums } from 'app/reducers/medium-matrix.reducer';
+import {
+  selectMediumMatrix,
+  selectMediums,
+} from 'app/reducers/medium-matrix.reducer';
+import { SimulationProps } from './Simulation.props';
 
-const Simulation: React.FC<Lab3DProps> = ({ currentLabName }) => {
+const Simulation: React.FC<SimulationProps> = ({
+  currentSimulationDimension,
+}) => {
   const previewMatrixParentRef = React.useRef(null);
   const {
     width: previewMatrixParentWidth = 150,
@@ -69,7 +70,7 @@ const Simulation: React.FC<Lab3DProps> = ({ currentLabName }) => {
     let newWidth;
     let plotCoeff = 1;
 
-    if (currentLabName !== LabNames.LAB_2D) {
+    if (currentSimulationDimension !== SimulationDimension.SIMULATION_1D) {
       if (window.innerWidth > 1200) {
         newWidth = window.innerWidth * 0.35;
       } else {
@@ -98,7 +99,7 @@ const Simulation: React.FC<Lab3DProps> = ({ currentLabName }) => {
 
   React.useEffect(() => {
     resizePlot();
-  }, [currentLabName]);
+  }, [currentSimulationDimension]);
 
   const [lambda, setLambda] = React.useState<number>(1);
   // For 2D.
@@ -168,7 +169,7 @@ const Simulation: React.FC<Lab3DProps> = ({ currentLabName }) => {
         let data = JSON.parse(event.data);
         setStep(data.step || 0);
 
-        if (currentLabName == LabNames.LAB_2D) {
+        if (currentSimulationDimension == SimulationDimension.SIMULATION_1D) {
           const tmpdata2DChart: DataChartType = [];
           for (let i = 0; i < data.col; i++) {
             tmpdata2DChart.push({
@@ -224,7 +225,7 @@ const Simulation: React.FC<Lab3DProps> = ({ currentLabName }) => {
     setPause(false);
 
     let message: unknown;
-    if (currentLabName === LabNames.LAB_2D) {
+    if (currentSimulationDimension === SimulationDimension.SIMULATION_1D) {
       message = {
         event: 'start',
         type: '2D',
@@ -238,13 +239,10 @@ const Simulation: React.FC<Lab3DProps> = ({ currentLabName }) => {
     } else {
       message = {
         event: 'start',
-        type: (currentLabName == LabNames.INTERFERENCE
-          ? LabNames.INTERFERENCE
-          : LabNames.LAB_3D
-        ).toString(),
+        type: SimulationDimension.SIMULATION_2D,
         dataToReturn: displayedData[currentDisplayingData].type,
         condition:
-          currentLabName == LabNames.INTERFERENCE
+          currentSimulationDimension == SimulationDimension.SIMULATION_2D
             ? [lambda, beamsize, 1]
             : [lambda, beamsize],
         // matrix,
@@ -267,7 +265,7 @@ const Simulation: React.FC<Lab3DProps> = ({ currentLabName }) => {
 
   const continueDataReceiving = () => {
     let message: unknown;
-    if (currentLabName === LabNames.LAB_2D) {
+    if (currentSimulationDimension === SimulationDimension.SIMULATION_1D) {
       message = {
         event: 'continue',
         type: '2D',
@@ -280,13 +278,13 @@ const Simulation: React.FC<Lab3DProps> = ({ currentLabName }) => {
     } else {
       message = {
         event: 'continue',
-        type: (currentLabName == LabNames.INTERFERENCE
-          ? LabNames.INTERFERENCE
-          : LabNames.LAB_3D
+        type: (currentSimulationDimension == SimulationDimension.SIMULATION_2D
+          ? SimulationDimension.SIMULATION_2D
+          : SimulationDimension.SIMULATION_2D
         ).toString(),
         dataToReturn: displayedData[currentDisplayingData].type,
         condition:
-          currentLabName == LabNames.INTERFERENCE
+          currentSimulationDimension == SimulationDimension.SIMULATION_2D
             ? [lambda, beamsize, 1]
             : [lambda, beamsize],
         // matrix,
@@ -344,7 +342,7 @@ const Simulation: React.FC<Lab3DProps> = ({ currentLabName }) => {
 
           <hr />
 
-          {currentLabName === LabNames.LAB_2D ? (
+          {currentSimulationDimension === SimulationDimension.SIMULATION_1D ? (
             <NumberInput
               label={BEAMSIZE_NAME}
               value={beamsize}
@@ -359,6 +357,29 @@ const Simulation: React.FC<Lab3DProps> = ({ currentLabName }) => {
           )}
 
           <hr />
+          <WithLabel
+            labelText={`Source position X(${sourcePositionRelativeX})`}
+          >
+            <InputRange
+              value={sourcePositionRelativeX}
+              setValue={setSourcePositionRelativeX}
+            />
+          </WithLabel>
+          <hr />
+
+          {currentSimulationDimension === SimulationDimension.SIMULATION_2D && (
+            <>
+              <WithLabel
+                labelText={`Source position Y(${sourcePositionRelativeY})`}
+              >
+                <InputRange
+                  value={sourcePositionRelativeY}
+                  setValue={setSourcePositionRelativeY}
+                />
+              </WithLabel>
+              <hr />
+            </>
+          )}
 
           <div ref={previewMatrixParentRef}></div>
           {/* <WithLabel labelText='Матрица мат-ов:' ref={previewMatrixParentRef} > */}
@@ -380,7 +401,7 @@ const Simulation: React.FC<Lab3DProps> = ({ currentLabName }) => {
               </span>
             </h6>
 
-            {currentLabName !== LabNames.LAB_2D ? (
+            {currentSimulationDimension == SimulationDimension.SIMULATION_2D ? (
               <div className={styles.graph2D}>
                 <Paper>
                   <HeatMap
@@ -411,7 +432,11 @@ const Simulation: React.FC<Lab3DProps> = ({ currentLabName }) => {
                     maxX={maxX}
                     WIDTH={plotWidth}
                     HEIGHT={plotHeight}
-                    epsilonData={mediumMatrix[0].map(materialName => mediums.find(medium => medium.name === materialName)?.eps || 1)} //!!!!!!!!!!!
+                    epsilonData={mediumMatrix[0].map(
+                      (materialName) =>
+                        mediums.find((medium) => medium.name === materialName)
+                          ?.eps || 1
+                    )} //!!!!!!!!!!!
                     sourcePositionRelative={sourcePositionRelativeX}
                   />
                 </Paper>
@@ -421,7 +446,7 @@ const Simulation: React.FC<Lab3DProps> = ({ currentLabName }) => {
         </div>
 
         <Sidebar className={styles.sidebarRight}>
-          {currentLabName !== LabNames.LAB_2D && (
+          {currentSimulationDimension !== SimulationDimension.SIMULATION_1D && (
             <WithLabel labelText='Выбор данных:'>
               <ButtonGroup activeButton={currentDisplayingData}>
                 {displayedData.map((item, index) => {

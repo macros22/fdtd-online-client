@@ -9,15 +9,19 @@ export type dataType = {
   min: number;
 };
 
-export enum LabNames {
-  LAB_2D = '2D',
-  LAB_1D_ZEBRA = 'ZEBRA',
-  LAB_3D = '3D',
-  DIFRACTION = 'DIFRACTION',
-  INTERFERENCE = 'INTERFERENCE',
-  BORDER = 'BORDER',
-}
+// export enum LabNames {
+//   LAB_2D = '2D',
+//   LAB_1D_ZEBRA = 'ZEBRA',
+//   LAB_3D = '3D',
+//   DIFRACTION = 'DIFRACTION',
+//   INTERFERENCE = 'INTERFERENCE',
+//   BORDER = 'BORDER',
+// }
 
+export enum SimulationDimension {
+  SIMULATION_1D = '1D',
+  SIMULATION_2D = '2D',
+}
 
 
 export enum LabContentType {

@@ -5,8 +5,7 @@ import styles from './MatrixEditor.module.scss';
 import { MatrixEditorProps } from './MatrixEditor.props';
 import { Button, NumberInput } from 'components';
 import { useAppDispatch, useAppSelector } from 'app/hooks';
-import { LabNames } from 'types/types';
-import { selectLabName } from 'app/reducers/labTypeSlice';
+import { SimulationDimension } from 'types/types';
 
 // import DragAndDrop from './DragAndDrop';
 
@@ -18,25 +17,30 @@ import {
   selectMediumMatrixCountRow,
   selectMediums,
   setCurrentMediumMatrix,
-  setMediumMatrix,
 } from 'app/reducers/medium-matrix.reducer';
 import PreviewMatrix from './PreviewMatrixEditor';
+import { selectCurrentSimDimension } from 'app/reducers/simulation-dimension.reducer';
 
 const colors = ['#eddede', 'tomato', '#1a52aa'];
 
 const MatrixEditor: React.FC<MatrixEditorProps> = ({ setIsOpened }) => {
   const dispatch = useAppDispatch();
-  const currentLabName = useAppSelector(selectLabName);
+  const currentSimulationDimension = useAppSelector(selectCurrentSimDimension);
 
   const mediums = useAppSelector(selectMediums);
 
   const countRow = useAppSelector(selectMediumMatrixCountRow);
   const countCol = useAppSelector(selectMediumMatrixCountCol);
 
-  const resetMatrix = (currentLabName: LabNames) => {
-    // dispatch(setMediumMatrix({ newCountRow: countRow, newCountCol:countCol }));
-    dispatch(setCurrentMediumMatrix({ currentLabName }));
+  // Handlers.
+  const resetMatrix = (currentSimulationDimension: SimulationDimension) => {
+    dispatch(setCurrentMediumMatrix({ currentMediumMatrixConfigInSet: 0 }))
   };
+
+  const previewMediumConfigHandler = (mediumMatrixConfigInSet: number) => {
+    dispatch(setCurrentMediumMatrix({ currentMediumMatrixConfigInSet: mediumMatrixConfigInSet }))
+    console.log("DAPKUNAITE", mediumMatrixConfigInSet)
+  }
 
   const [currentMedium, setCurrentMedium] = React.useState(1);
 
@@ -54,20 +58,21 @@ const MatrixEditor: React.FC<MatrixEditorProps> = ({ setIsOpened }) => {
           {/* <div > */}
             {configMediumSet.map((medium, index) => (
               
-              <>
+              <div onClick={() => previewMediumConfigHandler(index)}>
               {/* { index > 0 && */}
               <>
-                <h4>{medium.labName}</h4>
+                <h4>{medium.name}</h4>
                 <PreviewMatrix
-                  key={index + medium.labName}
+                  key={index + medium.simulationDimension}
                   width={100}
                   height={100}
-                  labName={medium.labName}
+                  simulationDimension={medium.simulationDimension}
                   mediumMatrix={medium.mediumMatrix}
+                  
                 />
                 </>
               {/* // } */}
-              </>
+              </ div>
             
             ))}
           </div>
@@ -84,7 +89,7 @@ const MatrixEditor: React.FC<MatrixEditorProps> = ({ setIsOpened }) => {
           {/* Editor end */}
 
           <div className={styles.buttons}>
-            <Button onClick={() => resetMatrix(currentLabName)}>Reset</Button>
+            <Button onClick={() => resetMatrix(currentSimulationDimension)}>Reset</Button>
             <Button onClick={() => setIsOpened(false)}>Back</Button>
           </div>
         </div>

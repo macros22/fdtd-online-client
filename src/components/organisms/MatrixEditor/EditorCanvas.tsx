@@ -1,5 +1,6 @@
 import { useAppDispatch, useAppSelector } from 'app/hooks';
 import {
+  selectCurrentMediumMatrixConfigInSet,
   selectMediumMatrix,
   selectMediumMatrixCountCol,
   selectMediumMatrixCountRow,
@@ -29,7 +30,9 @@ const EditorCanvas: React.FC<EditorCanvasProps> = ({
   const countRow = useAppSelector(selectMediumMatrixCountRow);
   const countCol = useAppSelector(selectMediumMatrixCountCol);
   const mediumMatrix = useAppSelector(selectMediumMatrix);
+  const currentMediumMatrixConfigInSet = useAppSelector(selectCurrentMediumMatrixConfigInSet);
   const mediums = useAppSelector(selectMediums);
+  
 
   //   const countRow = 20;
   //   const countCol = 20;
@@ -128,7 +131,7 @@ const EditorCanvas: React.FC<EditorCanvasProps> = ({
         draw(context);
       }
     }
-  }, [focusedCoord.i, focusedCoord.j]);
+  }, [focusedCoord.i, focusedCoord.j, currentMediumMatrixConfigInSet]);
 
   const drawRect = (
     ctx: CanvasRenderingContext2D,

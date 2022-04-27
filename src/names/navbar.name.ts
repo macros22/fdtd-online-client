@@ -1,8 +1,5 @@
-export const labTitles = {
-    LAB_1_NAME: 'Одномерная волна',
-    LAB_2_NAME: 'Двумерная волна',
-    LAB_3_NAME: 'Дифракция электромагнитных волн',
-    LAB_4_NAME: 'Интерференция электромагнитных волн',
-    LAB_5_NAME: 'Граница раздела электромагнитных волн',
+export const simulationTitles = {
+    NAME_1D: 'One dimension wave(1D)',
+    NAME_2D: 'Two dimension wave(2D)',
 }
 

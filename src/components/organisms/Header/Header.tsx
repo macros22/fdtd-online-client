@@ -1,17 +1,14 @@
 import React from 'react';
 import cn from 'clsx';
 import { Select, Option } from 'components';
-import { labTitles } from 'names/navbar.name';
-import { LabContentType, LabNames } from 'types/types';
+import { simulationTitles} from 'names/navbar.name';
+import { SimulationDimension } from 'types/types';
 import { useAppSelector, useAppDispatch } from 'app/hooks';
-import {
-  selectLabContentType,
-  selectLabName,
-  setLabContentType,
-} from 'app/reducers/labTypeSlice';
+
 // import { StyledHamburger } from "./Hamburger.styled";
 import styles from './Header.module.scss';
 import Link from 'next/link';
+import { selectCurrentSimDimension } from 'app/reducers/simulation-dimension.reducer';
 export type Props = {
   open: boolean;
   setOpen: (v: boolean) => void;
@@ -20,12 +17,12 @@ export type Props = {
 
 // props: Props
 const Header = () => {
-  const WAVE_OPTICS_NAME = 'ВОЛНОВАЯ ОПТИКА';
-  const currentLabContentType = useAppSelector(selectLabContentType);
-  const currentLabName = useAppSelector(selectLabName);
+  const WAVE_OPTICS_NAME = 'WAVE OPTICS';
+  // const currentLabContentType = useAppSelector(selectLabContentType);
+  const currentSimDimension = useAppSelector(selectCurrentSimDimension);
 
-  const currentLabTitle =
-    Object.values(labTitles)[Object.values(LabNames).indexOf(currentLabName)];
+  const currentSimDimensionTitle =
+    Object.values(simulationTitles)[Object.values(SimulationDimension).indexOf(currentSimDimension)];
 
   const dispatch = useAppDispatch();
   const [opened, setOpened] = React.useState(false);
@@ -54,8 +51,8 @@ const Header = () => {
              {/* <ul 
               // className={styles.headerList}
               >  */}
-                <li>
-                  <Link href={`/${currentLabName}/${LabContentType.THEORY}`}>
+                {/* <li>
+                  <Link href={`/${currentsimDimension}/${LabContentType.THEORY}`}>
                     <a
                       onClick={() =>
                         dispatch(setLabContentType(LabContentType.THEORY))
@@ -68,21 +65,21 @@ const Header = () => {
                       Теория
                     </a>
                   </Link>
-                </li>
+                </li> */}
                 <li>
                   <Link
-                    href={`/${currentLabName}/${LabContentType.EXPERIMENT}`}
+                    href={`/simulation/${currentSimDimension}`}
                   >
                     <a
-                      onClick={() =>
-                        dispatch(setLabContentType(LabContentType.EXPERIMENT))
-                      }
-                      className={cn(styles.labContentType, {
-                        [styles.activeLabContentType]:
-                          currentLabContentType == LabContentType.EXPERIMENT,
-                      })}
+                      // onClick={() =>
+                      //   dispatch(setLabContentType(LabContentType.EXPERIMENT))
+                      // }
+                      // className={cn(styles.labContentType, {
+                      //   [styles.activeLabContentType]:
+                      //     currentLabContentType == LabContentType.EXPERIMENT,
+                      // })}
                     >
-                      Эксперимент
+                      Simulation
                     </a>
                   </Link>
                 </li>
@@ -94,11 +91,11 @@ const Header = () => {
       <header className={styles.headerDown}>
         <div className={styles.container}>
           <div className={styles.headerBodyDown}>
-            <Select placeholder={currentLabTitle}>
-              {Object.values(LabNames).map((labName, index) => {
+            <Select placeholder={currentSimDimensionTitle}>
+              {Object.values(SimulationDimension).map((simDimension, index) => {
                 return (
-                  <Option key={labName} value={labName}>
-                    {Object.values(labTitles)[index]}
+                  <Option key={simDimension} value={simDimension}>
+                    {Object.values(simulationTitles)[index]}
                   </Option>
                 );
               })}

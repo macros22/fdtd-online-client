@@ -1,5 +1,5 @@
 import { useAppDispatch, useAppSelector } from 'app/hooks';
-import { selectLabName } from 'app/reducers/labTypeSlice';
+// import { selectsimulationDimension} from 'app/reducers/labTypeSlice';
 import styles from './MatrixEditor.module.scss';
 import {
   selectMediumMatrix,
@@ -9,19 +9,25 @@ import {
 } from 'app/reducers/medium-matrix.reducer';
 import { drawType } from 'components/molecules/Canvas/useCanvas';
 import React from 'react';
-import { LabNames } from 'types/types';
+import { SimulationDimension } from 'types/types';
+import { SimulationDimensionState } from 'app/reducers/simulation-dimension.reducer';
 
-type PreviewMatrixProps = {
+
+import { DetailedHTMLProps, HTMLAttributes, MutableRefObject, ReactNode, RefObject } from 'react';
+
+export interface PreviewMatrixProps extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
   width: number;
   height: number;
-  labName: LabNames;
+  simulationDimension: SimulationDimension;
   mediumMatrix: string[][];
-};
+}
+
+
 
 const PreviewMatrix: React.FC<PreviewMatrixProps> = ({
   width,
   height,
-  labName,
+  simulationDimension,
   mediumMatrix
 }) => {
   // Matrix sizes.
@@ -36,18 +42,18 @@ const PreviewMatrix: React.FC<PreviewMatrixProps> = ({
 
   // let index = 0;
   // // React.useEffect(() => {
-  //   switch (labName) {
-  //     case LabNames.LAB_3D:
-  //     case LabNames.LAB_2D:
-  //     case LabNames.INTERFERENCE:
+  //   switch (simulationDimension {
+  //     case simulationDimension.LAB_3D:
+  //     case simulationDimension.LAB_2D:
+  //     case simulationDimension.INTERFERENCE:
   //         index = 0;
   //       break;
     
-  //     case LabNames.DIFRACTION:
+  //     case simulationDimension.DIFRACTION:
   //        index = 1;
   //     break;
   
-  //     case LabNames.BORDER:
+  //     case simulationDimension.BORDER:
   //        index = 2;
   //     break;
   
@@ -55,7 +61,7 @@ const PreviewMatrix: React.FC<PreviewMatrixProps> = ({
   //       break;
   //   }
   
-   // }, [labName])
+   // }, [simulationDimension)
   
    // const mediumMatrix = useAppSelector(selectMediumMatrixSet)[index];
 
@@ -83,7 +89,7 @@ const PreviewMatrix: React.FC<PreviewMatrixProps> = ({
       }
     }
 
-  }, [labName, mediumMatrix]);
+  }, [simulationDimension, mediumMatrix]);
 
   const drawRect = (
     ctx: CanvasRenderingContext2D,
