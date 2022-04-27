@@ -1,19 +1,31 @@
 import React from 'react';
 import cn from 'clsx';
 import { Select, Option } from 'components';
-import { simulationTitles} from 'names/navbar.name';
+import { simulationTitles } from 'names/navbar.name';
 import { ContentType, SimulationDimension } from 'types/types';
 import { useAppSelector, useAppDispatch } from 'app/hooks';
 
 // import { StyledHamburger } from "./Hamburger.styled";
 import styles from './Header.module.scss';
 import Link from 'next/link';
-import { selectCurrentContentType, selectCurrentSimulationDimension, setContentType } from 'app/reducers/app-config.reducer';
+import {
+  selectCurrentContentType,
+  selectCurrentSimulationDimension,
+  setContentType,
+} from 'app/reducers/app-config.reducer';
 export type Props = {
   open: boolean;
   setOpen: (v: boolean) => void;
 };
 // import styles from './Hamburger.module.scss';
+
+const postNames = [
+  'one-dimension',
+  'two-dimension',
+  'interference',
+  'difraction',
+  'border',
+];
 
 // props: Props
 const Header = () => {
@@ -22,7 +34,9 @@ const Header = () => {
   const currentSimDimension = useAppSelector(selectCurrentSimulationDimension);
 
   const currentSimDimensionTitle =
-    Object.values(simulationTitles)[Object.values(SimulationDimension).indexOf(currentSimDimension)];
+    Object.values(simulationTitles)[
+      Object.values(SimulationDimension).indexOf(currentSimDimension)
+    ];
 
   const dispatch = useAppDispatch();
   const [opened, setOpened] = React.useState(false);
@@ -48,41 +62,37 @@ const Header = () => {
                 [styles.headerMenuActive]: opened,
               })}
             >
-             {/* <ul 
+              {/* <ul 
               // className={styles.headerList}
               >  */}
-                <li>
-                  <Link href={`/theory/`}>
-                    <a
-                      onClick={() =>
-                        dispatch(setContentType(ContentType.THEORY))
-                      }
-                      className={cn(styles.labContentType, {
-                        [styles.activeLabContentType]:
-                          currentContentType === ContentType.THEORY,
-                      })}
-                    >
-                      Theory
-                    </a>
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href={`/simulation/${currentSimDimension}`}
+              <li>
+                <Link href={`/theory/`}>
+                  <a
+                    onClick={() => dispatch(setContentType(ContentType.THEORY))}
+                    className={cn(styles.labContentType, {
+                      [styles.activeLabContentType]:
+                        currentContentType === ContentType.THEORY,
+                    })}
                   >
-                    <a
-                      onClick={() =>
-                        dispatch(setContentType(ContentType.SIMULATION))
-                      }
-                      className={cn(styles.labContentType, {
-                        [styles.activeLabContentType]:
+                    Theory
+                  </a>
+                </Link>
+              </li>
+              <li>
+                <Link href={`/simulation/${currentSimDimension}`}>
+                  <a
+                    onClick={() =>
+                      dispatch(setContentType(ContentType.SIMULATION))
+                    }
+                    className={cn(styles.labContentType, {
+                      [styles.activeLabContentType]:
                         currentContentType === ContentType.SIMULATION,
-                      })}
-                    >
-                      Simulation
-                    </a>
-                  </Link>
-                </li>
+                    })}
+                  >
+                    Simulation
+                  </a>
+                </Link>
+              </li>
               {/* </ul> */}
             </nav>
           </div>
@@ -91,15 +101,33 @@ const Header = () => {
       <header className={styles.headerDown}>
         <div className={styles.container}>
           <div className={styles.headerBodyDown}>
-            <Select placeholder={currentSimDimensionTitle}>
-              {Object.values(SimulationDimension).map((simDimension, index) => {
-                return (
-                  <Option key={simDimension} value={simDimension}>
-                    {Object.values(simulationTitles)[index]}
-                  </Option>
-                );
-              })}
-            </Select>
+            {currentContentType === ContentType.SIMULATION ? (
+              <Select placeholder={currentSimDimensionTitle}>
+                {Object.values(SimulationDimension).map(
+                  (simDimension, index) => {
+                    return (
+                      <Option
+                        key={simDimension}
+                        path={'/simulation'}
+                        value={simDimension}
+                      >
+                        {Object.values(simulationTitles)[index]}
+                      </Option>
+                    );
+                  }
+                )}
+              </Select>
+            ) : (
+              <Select placeholder={'asdas'}>
+                {postNames.map((postName, index) => {
+                  return (
+                    <Option path={'/theory'} key={postName} value={postName}>
+                      {postNames[index]}
+                    </Option>
+                  );
+                })}
+              </Select>
+            )}
           </div>
         </div>
       </header>

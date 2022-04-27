@@ -1,19 +1,17 @@
 import React, { ReactNode } from 'react';
-// import { useSelectContext } from './selectContext';
 import styles from './Option.module.scss';
-import { useAppDispatch, useAppSelector } from 'app/hooks';
 
 import { useRouter } from 'next/router';
 
 const Option: React.FC<{
   children: ReactNode | ReactNode[];
   value: string;
-}> = ({ children, value }) => {
-
+  path: string;
+}> = ({ children, value, path }) => {
   const router = useRouter();
 
   const clickHandler = () => {
-    router.push(`/simulation/${value}`);
+    router.push(`${path}/${value}`);
   };
 
   return (
