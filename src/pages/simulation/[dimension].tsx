@@ -1,12 +1,12 @@
 import React from 'react';
 
 import { withLayout } from 'layout/MainLayout';
-import { LabContentType, SimulationDimension } from 'types/types';
+import { ContentType, SimulationDimension } from 'types/types';
 
 import { useAppDispatch } from 'app/hooks';
 
 import Simulation from 'components/templates/Simulation/Simulation';
-import { setSimDimension } from 'app/reducers/simulation-dimension.reducer';
+import { setSimulationDimension } from 'app/reducers/app-config.reducer';
 import { GetStaticPaths, GetStaticProps, GetStaticPropsContext } from 'next';
 import { ParsedUrlQuery } from 'querystring';
 
@@ -18,7 +18,8 @@ const SimulationPage: React.FC<ISimulationPageProps> = ({
   currentSimulationDimension,
 }) => {
   const dispatch = useAppDispatch();
-  dispatch(setSimDimension(currentSimulationDimension));
+  dispatch(setSimulationDimension(currentSimulationDimension));
+  
   return (
     <>
       <Simulation currentSimulationDimension={currentSimulationDimension} />

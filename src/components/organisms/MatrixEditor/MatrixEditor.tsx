@@ -19,13 +19,13 @@ import {
   setCurrentMediumMatrix,
 } from 'app/reducers/medium-matrix.reducer';
 import PreviewMatrix from './PreviewMatrixEditor';
-import { selectCurrentSimDimension } from 'app/reducers/simulation-dimension.reducer';
+import { selectCurrentSimulationDimension } from 'app/reducers/app-config.reducer';
 
 const colors = ['#eddede', 'tomato', '#1a52aa'];
 
 const MatrixEditor: React.FC<MatrixEditorProps> = ({ setIsOpened }) => {
   const dispatch = useAppDispatch();
-  const currentSimulationDimension = useAppSelector(selectCurrentSimDimension);
+  const currentSimulationDimension = useAppSelector(selectCurrentSimulationDimension);
 
   const mediums = useAppSelector(selectMediums);
 

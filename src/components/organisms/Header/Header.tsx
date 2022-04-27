@@ -2,13 +2,13 @@ import React from 'react';
 import cn from 'clsx';
 import { Select, Option } from 'components';
 import { simulationTitles} from 'names/navbar.name';
-import { SimulationDimension } from 'types/types';
+import { ContentType, SimulationDimension } from 'types/types';
 import { useAppSelector, useAppDispatch } from 'app/hooks';
 
 // import { StyledHamburger } from "./Hamburger.styled";
 import styles from './Header.module.scss';
 import Link from 'next/link';
-import { selectCurrentSimDimension } from 'app/reducers/simulation-dimension.reducer';
+import { selectCurrentContentType, selectCurrentSimulationDimension, setContentType } from 'app/reducers/app-config.reducer';
 export type Props = {
   open: boolean;
   setOpen: (v: boolean) => void;
@@ -18,8 +18,8 @@ export type Props = {
 // props: Props
 const Header = () => {
   const WAVE_OPTICS_NAME = 'WAVE OPTICS';
-  // const currentLabContentType = useAppSelector(selectLabContentType);
-  const currentSimDimension = useAppSelector(selectCurrentSimDimension);
+  const currentContentType = useAppSelector(selectCurrentContentType);
+  const currentSimDimension = useAppSelector(selectCurrentSimulationDimension);
 
   const currentSimDimensionTitle =
     Object.values(simulationTitles)[Object.values(SimulationDimension).indexOf(currentSimDimension)];
@@ -51,33 +51,33 @@ const Header = () => {
              {/* <ul 
               // className={styles.headerList}
               >  */}
-                {/* <li>
-                  <Link href={`/${currentsimDimension}/${LabContentType.THEORY}`}>
+                <li>
+                  <Link href={`/theory/`}>
                     <a
                       onClick={() =>
-                        dispatch(setLabContentType(LabContentType.THEORY))
+                        dispatch(setContentType(ContentType.THEORY))
                       }
                       className={cn(styles.labContentType, {
                         [styles.activeLabContentType]:
-                          currentLabContentType === LabContentType.THEORY,
+                          currentContentType === ContentType.THEORY,
                       })}
                     >
-                      Теория
+                      Theory
                     </a>
                   </Link>
-                </li> */}
+                </li>
                 <li>
                   <Link
                     href={`/simulation/${currentSimDimension}`}
                   >
                     <a
-                      // onClick={() =>
-                      //   dispatch(setLabContentType(LabContentType.EXPERIMENT))
-                      // }
-                      // className={cn(styles.labContentType, {
-                      //   [styles.activeLabContentType]:
-                      //     currentLabContentType == LabContentType.EXPERIMENT,
-                      // })}
+                      onClick={() =>
+                        dispatch(setContentType(ContentType.SIMULATION))
+                      }
+                      className={cn(styles.labContentType, {
+                        [styles.activeLabContentType]:
+                        currentContentType === ContentType.SIMULATION,
+                      })}
                     >
                       Simulation
                     </a>

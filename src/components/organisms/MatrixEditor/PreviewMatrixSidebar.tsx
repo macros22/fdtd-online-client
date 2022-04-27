@@ -9,7 +9,7 @@ import React from 'react';
 import { Button } from 'react-bootstrap';
 import MatrixEditor from './MatrixEditor';
 import PreviewMatrix from './PreviewMatrixEditor';
-import { selectCurrentSimDimension } from 'app/reducers/simulation-dimension.reducer';
+import { selectCurrentSimulationDimension } from 'app/reducers/app-config.reducer';
 import { SimulationDimension } from 'types/types';
 
 type PreviewMatrixSidebarProps = {
@@ -23,7 +23,7 @@ const PreviewMatrixSidebar: React.FC<PreviewMatrixSidebarProps> = ({
 }) => {
   const dispatch = useAppDispatch();
 
-  const currentSimulationDimension = useAppSelector(selectCurrentSimDimension);
+  const currentSimulationDimension = useAppSelector(selectCurrentSimulationDimension);
 
   const mediumMatrix = useAppSelector(selectMediumMatrix);
 
@@ -31,7 +31,7 @@ const PreviewMatrixSidebar: React.FC<PreviewMatrixSidebarProps> = ({
     if (currentSimulationDimension == SimulationDimension.SIMULATION_1D) {
       dispatch(setMediumMatrixSize({ newCountRow: 1, newCountCol: 40 }));
     } else {
-      dispatch(setMediumMatrixSize({ newCountRow: 200, newCountCol: 200 }));
+      dispatch(setMediumMatrixSize({ newCountRow: 50, newCountCol: 50 }));
     }
     dispatch(
       setCurrentMediumMatrix({ currentMediumMatrixConfigInSet: 0 })

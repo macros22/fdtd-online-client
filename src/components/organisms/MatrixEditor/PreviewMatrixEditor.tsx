@@ -10,7 +10,7 @@ import {
 import { drawType } from 'components/molecules/Canvas/useCanvas';
 import React from 'react';
 import { SimulationDimension } from 'types/types';
-import { SimulationDimensionState } from 'app/reducers/simulation-dimension.reducer';
+import { SimulationDimensionState } from 'app/reducers/app-config.reducer';
 
 
 import { DetailedHTMLProps, HTMLAttributes, MutableRefObject, ReactNode, RefObject } from 'react';

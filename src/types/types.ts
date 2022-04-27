@@ -24,7 +24,7 @@ export enum SimulationDimension {
 }
 
 
-export enum LabContentType {
+export enum ContentType {
   THEORY = 'THEORY',
-  EXPERIMENT = 'EXPERIMENT',
+  SIMULATION = 'SIMULATION',
 }
