@@ -6,9 +6,6 @@
   user-select: none; /* Standard */
 }
 
-.matrixPreview {
-  // background: #eddede;
-}
 
 .triggerMatrixBtn {
   width: 100%;
@@ -31,41 +28,32 @@
   z-index: 1004;
 }
 
-.modalWrapper {
-  align-items: center;
-  // background: #fff;
-  display: flex;
-  height: 100%;
-  justify-content: center;
-  left: 0;
-  position: fixed;
-  top: 0;
-  width: 100%;
-  z-index: 1005;
-}
+
 
 .modalWrapper {
-  // align-items: center;
-  // background: #fff;
+
   position: fixed;
   left: 0;
+  right: 0;
   top: 0;
-  height: 100%;
-  width: 100%;
+  bottom: 0;
+  height: 90vh;
+  width: 95wh;
+  margin: auto;
   z-index: 1005;
   display: grid;
-  grid-template-areas: '. matrixPicker editor materialPicker .';
-  grid-template-columns: auto auto auto;
+  grid-template-areas: 'matrixPicker editor materialPicker';
+  grid-template-columns: repeat(3, 1fr);
   column-gap: 2rem;
-  place-items: center;
+  padding: 2rem;
+  // place-items: center;
 }
 
 
 
 .matrixPicker {
   grid-area: matrixPicker;
-  // min-height: 90vh;
-  height: 85vh;
+  height: 100%;
   background-color: rgb(255, 255, 255);
 
   display: grid;
@@ -75,7 +63,6 @@
   overflow-y: auto;
 
   padding: var(--space-sm);
-  
 }
 
 .editor {
@@ -83,17 +70,14 @@
   background: white;
   display: flex;
   flex-direction: column;
-  // min-height: 90vh;
-  height: 85vh;
+  height: 100%;
   // padding: var(--space-md);
   width: max-content;
 }
 
 .materialPicker {
   grid-area: materialPicker;
-  // min-height: 90vh;
-  // max-height: 95vh;
-  height: 85vh;
+  height: 100%;
   background-color: rgb(255, 255, 255);
 
   display: grid;
@@ -128,13 +112,12 @@
   display: flex;
   flex-direction: row;
   gap: var(--space-sm);
-  margin-top: 1.5rem 0;
+  margin-top: 0.5rem;
 
-  
 }
-
 
 .buttons {
   display: flex;
+  padding: 0.5rem;
   justify-content: space-evenly;
 }

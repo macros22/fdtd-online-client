@@ -25,7 +25,9 @@ const colors = ['#eddede', 'tomato', '#1a52aa'];
 
 const MatrixEditor: React.FC<MatrixEditorProps> = ({ setIsOpened }) => {
   const dispatch = useAppDispatch();
-  const currentSimulationDimension = useAppSelector(selectCurrentSimulationDimension);
+  const currentSimulationDimension = useAppSelector(
+    selectCurrentSimulationDimension
+  );
 
   const mediums = useAppSelector(selectMediums);
 
@@ -34,13 +36,17 @@ const MatrixEditor: React.FC<MatrixEditorProps> = ({ setIsOpened }) => {
 
   // Handlers.
   const resetMatrix = (currentSimulationDimension: SimulationDimension) => {
-    dispatch(setCurrentMediumMatrix({ currentMediumMatrixConfigInSet: 0 }))
+    dispatch(setCurrentMediumMatrix({ currentMediumMatrixConfigInSet: 0 }));
   };
 
   const previewMediumConfigHandler = (mediumMatrixConfigInSet: number) => {
-    dispatch(setCurrentMediumMatrix({ currentMediumMatrixConfigInSet: mediumMatrixConfigInSet }))
-    console.log("DAPKUNAITE", mediumMatrixConfigInSet)
-  }
+    dispatch(
+      setCurrentMediumMatrix({
+        currentMediumMatrixConfigInSet: mediumMatrixConfigInSet,
+      })
+    );
+    console.log('DAPKUNAITE', mediumMatrixConfigInSet);
+  };
 
   const [currentMedium, setCurrentMedium] = React.useState(1);
 
@@ -55,25 +61,19 @@ const MatrixEditor: React.FC<MatrixEditorProps> = ({ setIsOpened }) => {
           <h2>Matrix picker</h2>
 
           <div className={styles.matrixPreview}>
-          {/* <div > */}
             {configMediumSet.map((medium, index) => (
-              
               <div onClick={() => previewMediumConfigHandler(index)}>
-              {/* { index > 0 && */}
-              <>
-                <h4>{medium.name}</h4>
-                <PreviewMatrix
-                  key={index + medium.simulationDimension}
-                  width={100}
-                  height={100}
-                  simulationDimension={medium.simulationDimension}
-                  mediumMatrix={medium.mediumMatrix}
-                  
-                />
+                <>
+                  <h4>{medium.name}</h4>
+                  <div style={{width: 180}}>
+                    <PreviewMatrix
+                      key={index + medium.simulationDimension}
+                      simulationDimension={medium.simulationDimension}
+                      mediumMatrix={medium.mediumMatrix}
+                    />
+                  </div>
                 </>
-              {/* // } */}
-              </ div>
-            
+              </div>
             ))}
           </div>
         </div>
@@ -89,8 +89,7 @@ const MatrixEditor: React.FC<MatrixEditorProps> = ({ setIsOpened }) => {
           {/* Editor end */}
 
           <div className={styles.buttons}>
-            <Button onClick={() => resetMatrix(currentSimulationDimension)}>Reset</Button>
-            <Button onClick={() => setIsOpened(false)}>Back</Button>
+            <Button onClick={() => setIsOpened(false)}>Back to Simulation</Button>
           </div>
         </div>
         <div className={styles.materialPicker}>
@@ -133,6 +132,7 @@ const MatrixEditor: React.FC<MatrixEditorProps> = ({ setIsOpened }) => {
                     // onChange={(e) => setLambda(+e.target.value)}
                   />
                 </div>
+                <hr />
                 <hr />
               </div>
             );

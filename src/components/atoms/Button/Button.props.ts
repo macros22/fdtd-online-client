@@ -5,4 +5,5 @@ export interface ButtonProps extends
 	children: ReactNode;
 	appearance?: 'primary' | 'ghost' | 'outline';
 	arrow?: 'right' | 'down' | 'none';
+	className?: string;
 }

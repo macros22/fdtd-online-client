@@ -39,8 +39,8 @@ const PreviewMatrix: React.FC<PreviewMatrixProps> = ({
 
   const canvasRef = React.useRef<HTMLCanvasElement | null>(null);
 
-  const rectwidth = width / countCol;
-  const rectheight = height / countRow;
+  let rectWidth = width / countCol;
+  let rectHeight = height / countRow;
   
   const draw: drawType = (ctx) => {
     drawRect(ctx, 0, 0, '#eddede', width, height);
@@ -59,6 +59,9 @@ const PreviewMatrix: React.FC<PreviewMatrixProps> = ({
 
       canvas.width  = newWidth;
       canvas.height = newWidth;
+
+      rectWidth = canvas.width / countCol
+      rectHeight = canvas.height / countRow;
 
       setWidth(canvas.width);
       setHeight(canvas.height);
@@ -79,7 +82,7 @@ const PreviewMatrix: React.FC<PreviewMatrixProps> = ({
       }
     }
 
-  }, [simulationDimension, mediumMatrix]);
+  }, [simulationDimension, mediumMatrix, width]);
 
   const drawRect = (
     ctx: CanvasRenderingContext2D,
@@ -106,11 +109,11 @@ const PreviewMatrix: React.FC<PreviewMatrixProps> = ({
         if (colorIndex > 0) {
           drawRect(
             ctx,
-            j * rectwidth,
-            i * rectheight,
+            j * rectWidth,
+            i * rectHeight,
             mediums[colorIndex].color,
-            rectwidth,
-            rectheight
+            rectWidth,
+            rectHeight
           );
         }
       }

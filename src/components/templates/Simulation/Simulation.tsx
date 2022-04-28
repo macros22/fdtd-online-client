@@ -7,7 +7,7 @@ import {
   WAVE_LENGTH_NAME,
 } from 'names/lab2.name';
 
-import styles from '../../../styles/lab3D.module.scss';
+import styles from './Simulation.module.scss';
 import {
   HeatMap,
   Sidebar,
@@ -28,7 +28,6 @@ import { displayedData } from 'utils/displayed-data';
 import { SERVER_URL as SERVER_URL } from 'constants/url';
 import { useAppSelector } from 'app/hooks';
 
-import useResizeObserver from 'use-resize-observer';
 import PreviewMatrixSidebar from 'components/organisms/MatrixEditor/PreviewMatrixSidebar';
 import { DataChartType } from 'types/lab1';
 import {
