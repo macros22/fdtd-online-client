@@ -10,60 +10,32 @@ import {
 import { drawType } from 'components/molecules/Canvas/useCanvas';
 import React from 'react';
 import { SimulationDimension } from 'types/types';
-import { SimulationDimensionState } from 'app/reducers/app-config.reducer';
+// import { SimulationDimensionState } from 'app/reducers/app-config.reducer';
 
 
 import { DetailedHTMLProps, HTMLAttributes, MutableRefObject, ReactNode, RefObject } from 'react';
 
 export interface PreviewMatrixProps extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
-  width: number;
-  height: number;
-  simulationDimension: SimulationDimension;
-  mediumMatrix: string[][];
+
+  simulationDimension: SimulationDimension;  mediumMatrix: string[][];
 }
 
 
 
 const PreviewMatrix: React.FC<PreviewMatrixProps> = ({
-  width,
-  height,
   simulationDimension,
   mediumMatrix
 }) => {
   // Matrix sizes.
-  //   const width = 400;
-  //   const height = 400;
-
-  const dispatch = useAppDispatch();
+  const [width, setWidth] = React.useState(100);
+  const [height, setHeight] = React.useState(100);
+  
+  
 
   const countRow = useAppSelector(selectMediumMatrixCountRow);
   const countCol = useAppSelector(selectMediumMatrixCountCol);
   const mediums = useAppSelector(selectMediums);
 
-  // let index = 0;
-  // // React.useEffect(() => {
-  //   switch (simulationDimension {
-  //     case simulationDimension.LAB_3D:
-  //     case simulationDimension.LAB_2D:
-  //     case simulationDimension.INTERFERENCE:
-  //         index = 0;
-  //       break;
-    
-  //     case simulationDimension.DIFRACTION:
-  //        index = 1;
-  //     break;
-  
-  //     case simulationDimension.BORDER:
-  //        index = 2;
-  //     break;
-  
-  //     default:
-  //       break;
-  //   }
-  
-   // }, [simulationDimension)
-  
-   // const mediumMatrix = useAppSelector(selectMediumMatrixSet)[index];
 
   const canvasRef = React.useRef<HTMLCanvasElement | null>(null);
 
@@ -75,14 +47,32 @@ const PreviewMatrix: React.FC<PreviewMatrixProps> = ({
     drawMatrix(ctx, mediumMatrix);
   };
 
+  const resizeCanvas = () => {
+    if (canvasRef.current) {
+      const canvas = canvasRef.current;
+
+      // Make square shape.
+      canvas.style.width ='100%';
+      canvas.style.height= canvas.offsetWidth + '';
+      
+      const newWidth = canvas.offsetWidth || 100; 
+
+      canvas.width  = newWidth;
+      canvas.height = newWidth;
+
+      setWidth(canvas.width);
+      setHeight(canvas.height);
+    }
+  }
+
+  React.useEffect(() => {
+    resizeCanvas();
+  }, []);
 
   React.useEffect(() => {
     if (canvasRef.current) {
       const canvas = canvasRef.current;
       const context: CanvasRenderingContext2D | null = canvas.getContext('2d');
-
-      canvas.setAttribute('width', '' + width);
-      canvas.setAttribute('height', '' + height);
 
       if (context) {
         draw(context);

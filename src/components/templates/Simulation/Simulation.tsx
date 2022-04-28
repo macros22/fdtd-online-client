@@ -40,19 +40,6 @@ import { SimulationProps } from './Simulation.props';
 const Simulation: React.FC<SimulationProps> = ({
   currentSimulationDimension,
 }) => {
-  const previewMatrixParentRef = React.useRef(null);
-  const {
-    width: previewMatrixParentWidth = 150,
-    height: previewMatrixParentHeight = 150,
-  } = useResizeObserver<HTMLDivElement>({
-    ref: previewMatrixParentRef,
-  });
-
-  // React.useEffect(() => {
-  //   console.log("wwwww", previewMatrixParentWidth);
-  //   console.log("rrrrr", previewMatrixParentRef);
-
-  // }, [previewMatrixParentRef, previewMatrixParentWidth])
 
   const mediumMatrix = useAppSelector(selectMediumMatrix);
   const mediums = useAppSelector(selectMediums);
@@ -381,14 +368,8 @@ const Simulation: React.FC<SimulationProps> = ({
             </>
           )}
 
-          <div ref={previewMatrixParentRef}></div>
-          {/* <WithLabel labelText='Матрица мат-ов:' ref={previewMatrixParentRef} > */}
-          <WithLabel labelText='Матрица мат-ов:'>
-            {/* <MatrixEditor /> */}
-            <PreviewMatrixSidebar
-              width={previewMatrixParentWidth || 100}
-              height={previewMatrixParentWidth || 100}
-            />
+          <WithLabel labelText='Medium matrix:'>
+            <PreviewMatrixSidebar />
           </WithLabel>
         </Sidebar>
 

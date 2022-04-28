@@ -13,14 +13,10 @@ import { selectCurrentSimulationDimension } from 'app/reducers/app-config.reduce
 import { SimulationDimension } from 'types/types';
 
 type PreviewMatrixSidebarProps = {
-  width: number;
-  height: number;
+
 };
 
-const PreviewMatrixSidebar: React.FC<PreviewMatrixSidebarProps> = ({
-  width,
-  height,
-}) => {
+const PreviewMatrixSidebar: React.FC<PreviewMatrixSidebarProps> = () => {
   const dispatch = useAppDispatch();
 
   const currentSimulationDimension = useAppSelector(selectCurrentSimulationDimension);
@@ -43,8 +39,7 @@ const PreviewMatrixSidebar: React.FC<PreviewMatrixSidebarProps> = ({
   return (
     <>
       <PreviewMatrix
-        width={width}
-        height={height}
+     
         simulationDimension={currentSimulationDimension}
         mediumMatrix={mediumMatrix}
       />
