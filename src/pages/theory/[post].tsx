@@ -7,7 +7,7 @@ import { ContentType} from 'types/types';
 import { GetStaticPaths, GetStaticProps, GetStaticPropsContext } from 'next';
 import { ParsedUrlQuery } from 'querystring';
 
-import { useAppDispatch } from 'app/hooks';
+import { useAppDispatch } from 'store/hooks';
 
 
 //@ts-ignore

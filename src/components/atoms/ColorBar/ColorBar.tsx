@@ -1,6 +1,6 @@
 import React from 'react';
 import { defaultGradient as dGradient } from 'utils/default-gradient';
-import { GradientScaleProps } from './GradientScale.props';
+import { ColorBarProps } from './ColorBar.props';
 
 const defaultGradient: { [key: string]: string } = dGradient || {
   0: 'blue',
@@ -10,7 +10,7 @@ const defaultGradient: { [key: string]: string } = dGradient || {
   1.0: 'red',
 };
 
-const GradientScale: React.FC<GradientScaleProps> = ({
+const ColorBar: React.FC<ColorBarProps> = ({
   gradientWidth,
   gradientHeight,
   max = 1,
@@ -81,4 +81,4 @@ const GradientScale: React.FC<GradientScaleProps> = ({
   );
 };
 
-export default GradientScale;
+export default ColorBar;

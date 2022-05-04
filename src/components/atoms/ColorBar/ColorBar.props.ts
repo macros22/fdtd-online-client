@@ -1,4 +1,4 @@
-export type GradientScaleProps = {
+export type ColorBarProps = {
     gradientWidth: number;
     gradientHeight: number;
     max?: number;

@@ -12,7 +12,7 @@ import '../styles/global.scss';
 import '../styles/github-markdown.css';
 
 import { Provider } from 'react-redux';
-import store, { persistor } from '../app/store';
+import store, { persistor } from '../store/store';
 import { PersistGate } from 'redux-persist/integration/react';
 
 function MyApp({ Component, pageProps }: AppProps): JSX.Element {

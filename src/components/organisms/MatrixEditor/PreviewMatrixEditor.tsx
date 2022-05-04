@@ -1,30 +1,30 @@
-import { useAppDispatch, useAppSelector } from 'app/hooks';
+import { useAppDispatch, useAppSelector } from 'store/hooks';
 // import { selectsimulationDimension} from 'app/reducers/labTypeSlice';
 import styles from './MatrixEditor.module.scss';
 import {
-  selectMediumMatrix,
-  selectMediumMatrixCountCol,
-  selectMediumMatrixCountRow,
-  selectMediums,
-} from 'app/reducers/medium-matrix.reducer';
+  selectMaterialMatrix,
+  selectMaterialMatrixCountCol,
+  selectMaterialMatrixCountRow,
+  selectMaterials,
+} from 'store/reducers/material-matrix.reducer';
 import { drawType } from 'components/molecules/Canvas/useCanvas';
 import React from 'react';
 import { SimulationDimension } from 'types/types';
-// import { SimulationDimensionState } from 'app/reducers/app-config.reducer';
 
 
-import { DetailedHTMLProps, HTMLAttributes, MutableRefObject, ReactNode, RefObject } from 'react';
+
+import { DetailedHTMLProps, HTMLAttributes} from 'react';
 
 export interface PreviewMatrixProps extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
 
-  simulationDimension: SimulationDimension;  mediumMatrix: string[][];
+  simulationDimension: SimulationDimension;  materialMatrix: number[][];
 }
 
 
 
 const PreviewMatrix: React.FC<PreviewMatrixProps> = ({
   simulationDimension,
-  mediumMatrix
+  materialMatrix
 }) => {
   // Matrix sizes.
   const [width, setWidth] = React.useState(100);
@@ -32,9 +32,9 @@ const PreviewMatrix: React.FC<PreviewMatrixProps> = ({
   
   
 
-  const countRow = useAppSelector(selectMediumMatrixCountRow);
-  const countCol = useAppSelector(selectMediumMatrixCountCol);
-  const mediums = useAppSelector(selectMediums);
+  const countRow = useAppSelector(selectMaterialMatrixCountRow);
+  const countCol = useAppSelector(selectMaterialMatrixCountCol);
+  const materials = useAppSelector(selectMaterials);
 
 
   const canvasRef = React.useRef<HTMLCanvasElement | null>(null);
@@ -44,7 +44,7 @@ const PreviewMatrix: React.FC<PreviewMatrixProps> = ({
   
   const draw: drawType = (ctx) => {
     drawRect(ctx, 0, 0, '#eddede', width, height);
-    drawMatrix(ctx, mediumMatrix);
+    drawMatrix(ctx, materialMatrix);
   };
 
   const resizeCanvas = () => {
@@ -82,7 +82,7 @@ const PreviewMatrix: React.FC<PreviewMatrixProps> = ({
       }
     }
 
-  }, [simulationDimension, mediumMatrix, width]);
+  }, [simulationDimension, materialMatrix, width]);
 
   const drawRect = (
     ctx: CanvasRenderingContext2D,
@@ -98,12 +98,12 @@ const PreviewMatrix: React.FC<PreviewMatrixProps> = ({
     ctx.fill();
   };
 
-  const drawMatrix = (ctx: CanvasRenderingContext2D, matrix: string[][]) => {
+  const drawMatrix = (ctx: CanvasRenderingContext2D, matrix: number[][]) => {
     for (let i = 0; i < countRow; i++) {
       for (let j = 0; j < countCol; j++) {
         // console.log(i)
-        const colorIndex = mediums.findIndex(
-          (medium) => medium.name == matrix[i][j]
+        const colorIndex = materials.findIndex(
+          (material) => material.id == matrix[i][j]
         );
 
         if (colorIndex > 0) {
@@ -111,7 +111,7 @@ const PreviewMatrix: React.FC<PreviewMatrixProps> = ({
             ctx,
             j * rectWidth,
             i * rectHeight,
-            mediums[colorIndex].color,
+            materials[colorIndex].color,
             rectWidth,
             rectHeight
           );

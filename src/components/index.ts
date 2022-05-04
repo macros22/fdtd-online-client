@@ -5,7 +5,7 @@ export { default as Sidebar } from './molecules/Sidebar/Sidebar';
 export { default as NumberInput } from './atoms/NumberInput/NumberInput';
 export { default as Paper } from './atoms/Paper/Paper';
 export { default as MatrixEditor } from './organisms/MatrixEditor/MatrixEditor';
-export { default as GradientScale } from './atoms/GradientScale/GradientScale';
+export { default as ColorBar } from './atoms/ColorBar/ColorBar';
 export { default as Canvas } from './molecules/Canvas';
 export { default as Tag } from './atoms/Tag/Tag';
 export { default as InputRange } from './atoms/InputRange/InputRange';

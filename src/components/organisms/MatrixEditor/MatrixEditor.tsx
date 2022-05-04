@@ -4,22 +4,22 @@ import * as React from 'react';
 import styles from './MatrixEditor.module.scss';
 import { MatrixEditorProps } from './MatrixEditor.props';
 import { Button, NumberInput } from 'components';
-import { useAppDispatch, useAppSelector } from 'app/hooks';
+import { useAppDispatch, useAppSelector } from 'store/hooks';
 import { SimulationDimension } from 'types/types';
 
 // import DragAndDrop from './DragAndDrop';
 
 import EditorCanvas from './EditorCanvas';
 import {
-  ConfigMedium,
-  selectConfigMediumSet,
-  selectMediumMatrixCountCol,
-  selectMediumMatrixCountRow,
-  selectMediums,
-  setCurrentMediumMatrix,
-} from 'app/reducers/medium-matrix.reducer';
+  ConfigMaterial,
+  selectConfigMaterialSet,
+  selectMaterialMatrixCountCol,
+  selectMaterialMatrixCountRow,
+  selectMaterials,
+  setCurrentMaterialMatrix,
+} from 'store/reducers/material-matrix.reducer';
 import PreviewMatrix from './PreviewMatrixEditor';
-import { selectCurrentSimulationDimension } from 'app/reducers/app-config.reducer';
+import { selectCurrentSimulationDimension } from 'store/reducers/app-config.reducer';
 
 const colors = ['#eddede', 'tomato', '#1a52aa'];
 
@@ -29,28 +29,28 @@ const MatrixEditor: React.FC<MatrixEditorProps> = ({ setIsOpened }) => {
     selectCurrentSimulationDimension
   );
 
-  const mediums = useAppSelector(selectMediums);
+  const materials = useAppSelector(selectMaterials);
 
-  const countRow = useAppSelector(selectMediumMatrixCountRow);
-  const countCol = useAppSelector(selectMediumMatrixCountCol);
+  const countRow = useAppSelector(selectMaterialMatrixCountRow);
+  const countCol = useAppSelector(selectMaterialMatrixCountCol);
 
   // Handlers.
   const resetMatrix = (currentSimulationDimension: SimulationDimension) => {
-    dispatch(setCurrentMediumMatrix({ currentMediumMatrixConfigInSet: 0 }));
+    dispatch(setCurrentMaterialMatrix({ currentMaterialMatrixConfigInSet: 0 }));
   };
 
-  const previewMediumConfigHandler = (mediumMatrixConfigInSet: number) => {
+  const previewMaterialConfigHandler = (materialMatrixConfigInSet: number) => {
     dispatch(
-      setCurrentMediumMatrix({
-        currentMediumMatrixConfigInSet: mediumMatrixConfigInSet,
+      setCurrentMaterialMatrix({
+        currentMaterialMatrixConfigInSet: materialMatrixConfigInSet,
       })
     );
-    console.log('DAPKUNAITE', mediumMatrixConfigInSet);
+    console.log('DAPKUNAITE', materialMatrixConfigInSet);
   };
 
-  const [currentMedium, setCurrentMedium] = React.useState(1);
+  const [currentMaterial, setCurrentMaterial] = React.useState(1);
 
-  const configMediumSet: ConfigMedium[] = useAppSelector(selectConfigMediumSet);
+  const configMaterialSet: ConfigMaterial[] = useAppSelector(selectConfigMaterialSet);
 
   return (
     <>
@@ -61,15 +61,15 @@ const MatrixEditor: React.FC<MatrixEditorProps> = ({ setIsOpened }) => {
           <h2>Matrix picker</h2>
 
           <div className={styles.matrixPreview}>
-            {configMediumSet.map((medium, index) => (
-              <div onClick={() => previewMediumConfigHandler(index)}>
+            {configMaterialSet.map((material, index) => (
+              <div onClick={() => previewMaterialConfigHandler(index)}>
                 <>
-                  <h4>{medium.name}</h4>
+                  <h4>{material.name}</h4>
                   <div style={{width: 180}}>
                     <PreviewMatrix
-                      key={index + medium.simulationDimension}
-                      simulationDimension={medium.simulationDimension}
-                      mediumMatrix={medium.mediumMatrix}
+                      key={index + material.simulationDimension}
+                      simulationDimension={material.simulationDimension}
+                      materialMatrix={material.materialMatrix}
                     />
                   </div>
                 </>
@@ -84,7 +84,7 @@ const MatrixEditor: React.FC<MatrixEditorProps> = ({ setIsOpened }) => {
           <EditorCanvas
             width={400}
             height={400}
-            currentMedium={currentMedium}
+            currentMaterial={currentMaterial}
           />
           {/* Editor end */}
 
@@ -97,18 +97,18 @@ const MatrixEditor: React.FC<MatrixEditorProps> = ({ setIsOpened }) => {
 
           <hr />
 
-          {mediums.map((material, index) => {
+          {materials.map((material, index) => {
             return (
               <div className={styles.oneMaterialPanel} key={index}>
                 <div className={styles.material}>
                   <svg
-                    onClick={() => setCurrentMedium(index)}
+                    onClick={() => setCurrentMaterial(index)}
                     width={'65px'}
                     height={'65px'}
                     style={{
                       background: colors[index],
                       border: `${
-                        index == currentMedium ? '5' : '0'
+                        index == currentMaterial ? '5' : '0'
                       }px solid black`,
                     }}
                   />

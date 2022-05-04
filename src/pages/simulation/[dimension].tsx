@@ -3,10 +3,10 @@ import React from 'react';
 import { withLayout } from 'layout/MainLayout';
 import { ContentType, SimulationDimension } from 'types/types';
 
-import { useAppDispatch } from 'app/hooks';
+import { useAppDispatch } from 'store/hooks';
 
 import Simulation from 'components/templates/Simulation/Simulation';
-import { setSimulationDimension } from 'app/reducers/app-config.reducer';
+import { setSimulationDimension } from 'store/reducers/app-config.reducer';
 import { GetStaticPaths, GetStaticProps, GetStaticPropsContext } from 'next';
 import { ParsedUrlQuery } from 'querystring';
 

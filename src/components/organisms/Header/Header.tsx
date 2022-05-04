@@ -3,7 +3,7 @@ import cn from 'clsx';
 import { Select, Option } from 'components';
 import { simulationTitles } from 'names/navbar.name';
 import { ContentType, SimulationDimension } from 'types/types';
-import { useAppSelector, useAppDispatch } from 'app/hooks';
+import { useAppSelector, useAppDispatch } from 'store/hooks';
 
 // import { StyledHamburger } from "./Hamburger.styled";
 import styles from './Header.module.scss';
@@ -12,7 +12,7 @@ import {
   selectCurrentContentType,
   selectCurrentSimulationDimension,
   setContentType,
-} from 'app/reducers/app-config.reducer';
+} from 'store/reducers/app-config.reducer';
 export type Props = {
   open: boolean;
   setOpen: (v: boolean) => void;

@@ -1,14 +1,14 @@
-import { useAppDispatch, useAppSelector } from 'app/hooks';
+import { useAppDispatch, useAppSelector } from 'store/hooks';
 import styles from './MatrixEditor.module.scss';
 import {
-  selectMediumMatrix,
-  setCurrentMediumMatrix,
-  setMediumMatrixSize,
-} from 'app/reducers/medium-matrix.reducer';
+  selectMaterialMatrix,
+  setCurrentMaterialMatrix,
+  setMaterialMatrixSize,
+} from 'store/reducers/material-matrix.reducer';
 import React from 'react';
 import MatrixEditor from './MatrixEditor';
 import PreviewMatrix from './PreviewMatrixEditor';
-import { selectCurrentSimulationDimension } from 'app/reducers/app-config.reducer';
+import { selectCurrentSimulationDimension } from 'store/reducers/app-config.reducer';
 import { SimulationDimension } from 'types/types';
 import { Button } from 'components';
 
@@ -21,15 +21,15 @@ const PreviewMatrixSidebar: React.FC<PreviewMatrixSidebarProps> = () => {
     selectCurrentSimulationDimension
   );
 
-  const mediumMatrix = useAppSelector(selectMediumMatrix);
+  const materialMatrix = useAppSelector(selectMaterialMatrix);
 
   React.useEffect(() => {
     if (currentSimulationDimension == SimulationDimension.SIMULATION_1D) {
-      dispatch(setMediumMatrixSize({ newCountRow: 1, newCountCol: 40 }));
+      dispatch(setMaterialMatrixSize({ newCountRow: 1, newCountCol: 40 }));
     } else {
-      dispatch(setMediumMatrixSize({ newCountRow: 50, newCountCol: 50 }));
+      dispatch(setMaterialMatrixSize({ newCountRow: 50, newCountCol: 50 }));
     }
-    dispatch(setCurrentMediumMatrix({ currentMediumMatrixConfigInSet: 0 }));
+    dispatch(setCurrentMaterialMatrix({ currentMaterialMatrixConfigInSet: 0 }));
   }, [currentSimulationDimension]);
 
   const [isOpened, setIsOpend] = React.useState<boolean>(false);
@@ -38,7 +38,7 @@ const PreviewMatrixSidebar: React.FC<PreviewMatrixSidebarProps> = () => {
     <>
       <PreviewMatrix
         simulationDimension={currentSimulationDimension}
-        mediumMatrix={mediumMatrix}
+        materialMatrix={materialMatrix}
       />
       <Button
         className={styles.triggerMatrixBtn}

@@ -14,7 +14,7 @@ import {
   NumberInput,
   Paper,
   Tag,
-  GradientScale,
+  ColorBar,
   ButtonGroup,
   Button,
   WithLabel,
@@ -26,22 +26,22 @@ import { dataType, SimulationDimension } from 'types/types';
 
 import { displayedData } from 'utils/displayed-data';
 import { SERVER_URL as SERVER_URL } from 'constants/url';
-import { useAppSelector } from 'app/hooks';
+import { useAppSelector } from 'store/hooks';
 
 import PreviewMatrixSidebar from 'components/organisms/MatrixEditor/PreviewMatrixSidebar';
 import { DataChartType } from 'types/lab1';
 import {
-  selectMediumMatrix,
-  selectMediums,
-} from 'app/reducers/medium-matrix.reducer';
+  selectMaterialMatrix,
+  selectMaterials,
+} from 'store/reducers/material-matrix.reducer';
 import { SimulationProps } from './Simulation.props';
 
 const Simulation: React.FC<SimulationProps> = ({
   currentSimulationDimension,
 }) => {
 
-  const mediumMatrix = useAppSelector(selectMediumMatrix);
-  const mediums = useAppSelector(selectMediums);
+  const materialMatrix = useAppSelector(selectMaterialMatrix);
+  const materials = useAppSelector(selectMaterials);
 
   const [isWSocketConnected, setIsWSocketConnected] =
     React.useState<boolean>(false);
@@ -214,7 +214,7 @@ const Simulation: React.FC<SimulationProps> = ({
     if (currentSimulationDimension === SimulationDimension.SIMULATION_1D) {
       message = {
         event: 'start',
-        type: '2D',
+        type: '1D',
         // condition: [lambda, tau, refractiveIndex1],
         condition: [lambda, tau, 1],
         sourcePositionRelative: { x: sourcePositionRelativeX, y: 0 },
@@ -231,7 +231,7 @@ const Simulation: React.FC<SimulationProps> = ({
           currentSimulationDimension == SimulationDimension.SIMULATION_2D
             ? [lambda, beamsize, 1]
             : [lambda, beamsize],
-        // matrix,
+        allData2D,
       };
     }
     if (socket) {
@@ -254,7 +254,7 @@ const Simulation: React.FC<SimulationProps> = ({
     if (currentSimulationDimension === SimulationDimension.SIMULATION_1D) {
       message = {
         event: 'continue',
-        type: '2D',
+        type: '1D',
         condition: [lambda, tau, 1],
         sourcePositionRelative: { x: sourcePositionRelativeX, y: 0 },
         // matrix,
@@ -273,7 +273,7 @@ const Simulation: React.FC<SimulationProps> = ({
           currentSimulationDimension == SimulationDimension.SIMULATION_2D
             ? [lambda, beamsize, 1]
             : [lambda, beamsize],
-        // matrix,
+        allData2D,
       };
     }
     if (socket !== null) {
@@ -367,7 +367,7 @@ const Simulation: React.FC<SimulationProps> = ({
             </>
           )}
 
-          <WithLabel labelText='Medium matrix:'>
+          <WithLabel labelText='Material matrix:'>
             <PreviewMatrixSidebar />
           </WithLabel>
         </Sidebar>
@@ -395,7 +395,7 @@ const Simulation: React.FC<SimulationProps> = ({
                   />
                 </Paper>
                 <Paper>
-                  <GradientScale
+                  <ColorBar
                     gradientHeight={plotHeight}
                     gradientWidth={plotHeight * 0.03}
                   />
@@ -412,9 +412,9 @@ const Simulation: React.FC<SimulationProps> = ({
                     maxX={maxX}
                     WIDTH={plotWidth}
                     HEIGHT={plotHeight}
-                    epsilonData={mediumMatrix[0].map(
-                      (materialName) =>
-                        mediums.find((medium) => medium.name === materialName)
+                    epsilonData={materialMatrix[0].map(
+                      (materialId) =>
+                        materials.find((material) => material.id === materialId)
                           ?.eps || 1
                     )} //!!!!!!!!!!!
                     sourcePositionRelative={sourcePositionRelativeX}

@@ -1,25 +1,25 @@
-import { useAppDispatch, useAppSelector } from 'app/hooks';
+import { useAppDispatch, useAppSelector } from 'store/hooks';
 import {
-  selectCurrentMediumMatrixConfigInSet,
-  selectMediumMatrix,
-  selectMediumMatrixCountCol,
-  selectMediumMatrixCountRow,
-  selectMediums,
-  updateMediumMatrix,
-} from 'app/reducers/medium-matrix.reducer';
+  selectCurrentMaterialMatrixConfigInSet,
+  selectMaterialMatrix,
+  selectMaterialMatrixCountCol,
+  selectMaterialMatrixCountRow,
+  selectMaterials,
+  updateMaterialMatrix,
+} from 'store/reducers/material-matrix.reducer';
 import { drawType } from 'components/molecules/Canvas/useCanvas';
 import React from 'react';
 
 type EditorCanvasProps = {
   width: number;
   height: number;
-  currentMedium: number;
+  currentMaterial: number;
 };
 
 const EditorCanvas: React.FC<EditorCanvasProps> = ({
   width,
   height,
-  currentMedium,
+  currentMaterial,
 }) => {
   // Matrix sizes.
   //   const width = 400;
@@ -27,11 +27,11 @@ const EditorCanvas: React.FC<EditorCanvasProps> = ({
 
   const dispatch = useAppDispatch();
 
-  const countRow = useAppSelector(selectMediumMatrixCountRow);
-  const countCol = useAppSelector(selectMediumMatrixCountCol);
-  const mediumMatrix = useAppSelector(selectMediumMatrix);
-  const currentMediumMatrixConfigInSet = useAppSelector(selectCurrentMediumMatrixConfigInSet);
-  const mediums = useAppSelector(selectMediums);
+  const countRow = useAppSelector(selectMaterialMatrixCountRow);
+  const countCol = useAppSelector(selectMaterialMatrixCountCol);
+  const materialMatrix = useAppSelector(selectMaterialMatrix);
+  const currentMaterialMatrixConfigInSet = useAppSelector(selectCurrentMaterialMatrixConfigInSet);
+  const materials = useAppSelector(selectMaterials);
   
 
   //   const countRow = 20;
@@ -53,10 +53,10 @@ const EditorCanvas: React.FC<EditorCanvasProps> = ({
     const newI = focusedCoord.i;
 
     dispatch(
-      updateMediumMatrix({
+      updateMaterialMatrix({
         i: newI,
         j: newJ,
-        newMediumName: mediums[currentMedium].name,
+        newMaterialId: materials[currentMaterial].id,
       })
     );
   };
@@ -94,10 +94,10 @@ const EditorCanvas: React.FC<EditorCanvasProps> = ({
 
     if (mousePressed) {
       dispatch(
-        updateMediumMatrix({
+        updateMaterialMatrix({
           i: newFocusedRow,
           j: newFocusedCol,
-          newMediumName: mediums[currentMedium].name,
+          newMaterialId: materials[currentMaterial].id,
         })
       );
     }
@@ -105,7 +105,7 @@ const EditorCanvas: React.FC<EditorCanvasProps> = ({
 
   const draw: drawType = (ctx) => {
     drawRect(ctx, 0, 0, '#eddede', width, height);
-    drawMatrix(ctx, mediumMatrix);
+    drawMatrix(ctx, materialMatrix);
 
     if (!mousePressed) {
       drawRect(
@@ -131,7 +131,7 @@ const EditorCanvas: React.FC<EditorCanvasProps> = ({
         draw(context);
       }
     }
-  }, [focusedCoord.i, focusedCoord.j, currentMediumMatrixConfigInSet]);
+  }, [focusedCoord.i, focusedCoord.j, currentMaterialMatrixConfigInSet]);
 
   const drawRect = (
     ctx: CanvasRenderingContext2D,
@@ -152,11 +152,11 @@ const EditorCanvas: React.FC<EditorCanvasProps> = ({
     // ctx.globalAlpha= 0.3;
   };
 
-  const drawMatrix = (ctx: CanvasRenderingContext2D, matrix: string[][]) => {
+  const drawMatrix = (ctx: CanvasRenderingContext2D, matrix: number[][]) => {
     for (let i = 0; i < countRow; ++i) {
       for (let j = 0; j < countCol; ++j) {
-        const colorIndex = mediums.findIndex(
-          (medium) => medium.name == matrix[i][j]
+        const colorIndex = materials.findIndex(
+          (material) => material.id == matrix[i][j]
         );
 
         if (colorIndex > 0) {
@@ -164,7 +164,7 @@ const EditorCanvas: React.FC<EditorCanvasProps> = ({
             ctx,
             j * rectwidth,
             i * rectheight,
-            mediums[colorIndex].color,
+            materials[colorIndex].color,
             rectwidth,
             rectheight
           );
