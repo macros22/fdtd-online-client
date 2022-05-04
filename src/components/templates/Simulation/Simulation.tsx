@@ -170,12 +170,12 @@ const Simulation: React.FC<SimulationProps> = ({
 
           setAllData1D(tmpdata2DChart);
         } else {
-          if (data.max > maxVal) {
+          // if (data.step > 40 && data.max > maxVal) {
             setMaxVal(data.max);
-          }
-          if (data.min < minVal) {
+          // }
+          // if (data.step > 40 && data.min < minVal) {
             setMinVal(data.min);
-          }
+          // }
 
           setAllData2D(data);
         }

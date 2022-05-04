@@ -20,8 +20,9 @@ const NewHeatMap: React.FC<HeatMapProps> = ({
   const canvasGradientRef = React.useRef<HTMLCanvasElement | null>(null);
 
   // let radiusInitial = width / 120 + 0.1;
-  let radiusInitial = 1.4 + 0.1;
+  let radiusInitial = 2.6;
   let blurInitial = radiusInitial * 1.4 + 0.1;
+  blurInitial = 0.1;
   // let radiusInitial = 8;
   // let blurInitial = radiusInitial * 1.45;
 
@@ -95,8 +96,8 @@ const NewHeatMap: React.FC<HeatMapProps> = ({
           id='radius'
           value={radius}
           step={0.02}
-          min={radiusInitial - 1.2}
-          max={radiusInitial + 1.2}
+          min={radiusInitial - 2.2}
+          max={radiusInitial + 2.2}
         />
         <br />
         <label>Blur </label>
@@ -106,8 +107,8 @@ const NewHeatMap: React.FC<HeatMapProps> = ({
           id='blur'
           value={blur}
           step={0.02}
-          min={blurInitial - 0.2}
-          max={blurInitial + 0.2}
+          min={0}
+          max={blurInitial + 2.2}
         />
       </div>
     </React.Fragment>
