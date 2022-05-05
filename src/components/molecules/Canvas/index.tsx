@@ -16,7 +16,7 @@ type ImageCanvasProps = {
   WIDTH: number;
   HEIGHT: number;
   epsilonData: number[];
-  sourcePositionRelative: number;
+  srcPositionRelative: number;
 };
 
 const ImageCanvas: React.FC<ImageCanvasProps> = ({
@@ -28,7 +28,7 @@ const ImageCanvas: React.FC<ImageCanvasProps> = ({
   WIDTH,
   HEIGHT,
   epsilonData,
-  sourcePositionRelative,
+  srcPositionRelative,
 }) => {
 
 
@@ -169,9 +169,9 @@ const ImageCanvas: React.FC<ImageCanvasProps> = ({
     drawLine(ctx, data1, 'blue', 1, 1, epsilonScale, true);
 
     const srcRadius = 10;
-    const sourcePositionX = sourcePositionRelative * CHART_WIDTH;
-    const sourcePositionY = 0;
-    drawCircle(ctx, sourcePositionX, sourcePositionY, 'blue', 1, 1, epsilonScale, srcRadius, true);
+    const srcPositionX = srcPositionRelative * CHART_WIDTH;
+    const srcPositionY = 0;
+    drawCircle(ctx, srcPositionX, srcPositionY, 'blue', 1, 1, epsilonScale, srcRadius, true);
     // drawLine(ctx, data2, 'red', 2);
   };
 

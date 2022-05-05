@@ -191,13 +191,13 @@ const materials = [
     id: 0,
     eps: 1,
     mu: 1,
-    sigma: 0,
+    sigma: 0.001,
     color: '#fafafa',
   },
   {
     name: 'Material 2',
     id: 1,
-    eps: 1.3,
+    eps: 3.3,
     mu: 1.2,
     sigma: 0.001,
     color: 'tomato',
@@ -223,7 +223,8 @@ const initialState: IMaterialMatrixState = {
   countRow: initialMatrixSize,
   countCol: initialMatrixSize,
   materials,
-  materialMatrix: configMaterialSet[currentMaterialMatrixConfigInSet].materialMatrix,
+  materialMatrix:
+    configMaterialSet[currentMaterialMatrixConfigInSet].materialMatrix,
   configMaterialSet,
   currentMaterialMatrixConfigInSet,
 };
@@ -275,14 +276,18 @@ export const materialMatrixSlice = createSlice({
         currentMaterialMatrixConfigInSet: number;
       }>
     ) => {
-      state.currentMaterialMatrixConfigInSet = action.payload.currentMaterialMatrixConfigInSet
+      state.currentMaterialMatrixConfigInSet =
+        action.payload.currentMaterialMatrixConfigInSet;
       state.materialMatrix =
         state.configMaterialSet[
           action.payload.currentMaterialMatrixConfigInSet
         ].materialMatrix;
     },
 
-    updateMaterialMatrix: (state, action: PayloadAction<IUpdateEpslonMatrix>) => {
+    updateMaterialMatrix: (
+      state,
+      action: PayloadAction<IUpdateEpslonMatrix>
+    ) => {
       if (state.materialMatrix[action.payload.i]) {
         state.materialMatrix[action.payload.i][action.payload.j] =
           action.payload.newMaterialId;
@@ -306,12 +311,13 @@ export const selectConfigMaterialSet = (state: AppState) =>
 export const selectMaterialMatrixCountRow = (state: AppState) =>
   state.materialMatrix.countRow;
 
-  export const selectCurrentMaterialMatrixConfigInSet = (state: AppState) =>
+export const selectCurrentMaterialMatrixConfigInSet = (state: AppState) =>
   state.materialMatrix.currentMaterialMatrixConfigInSet;
 
 export const selectMaterialMatrixCountCol = (state: AppState) =>
   state.materialMatrix.countCol;
 
-export const selectMaterials = (state: AppState) => state.materialMatrix.materials;
+export const selectMaterials = (state: AppState) =>
+  state.materialMatrix.materials;
 
 export default materialMatrixSlice.reducer;

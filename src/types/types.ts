@@ -1,4 +1,4 @@
-export type dataType = {
+export type DataType = {
   dataX: number[];
   dataY: number[];
   dataVal: number[];

@@ -22,7 +22,7 @@ import {
   InputRange,
 } from 'components';
 
-import { dataType, SimulationDimension } from 'types/types';
+import { DataType,  SimulationDimension } from 'types/types';
 
 import { displayedData } from 'utils/displayed-data';
 import { SERVER_URL as SERVER_URL } from 'constants/url';
@@ -35,6 +35,25 @@ import {
   selectMaterials,
 } from 'store/reducers/material-matrix.reducer';
 import { SimulationProps } from './Simulation.props';
+import { MaterialForBackend, transformMaterialForBackend } from 'utils/transform-materials-array';
+
+type SourcePosition = {
+  x: number;
+  y: number;
+}
+
+export type EventType = "start" | "pause" | "continue" | "close";
+
+export type MessageToBackend = {
+  event: EventType;
+  type: SimulationDimension;
+  dataToReturn: number;
+  condition: [number, number];
+  materialMatrix: number[][];
+  materials: MaterialForBackend[];
+  srcPositionRelative: SourcePosition[];
+};
+
 
 const Simulation: React.FC<SimulationProps> = ({
   currentSimulationDimension,
@@ -102,7 +121,7 @@ const Simulation: React.FC<SimulationProps> = ({
     React.useState<number>(0);
 
   // For 2D.
-  const initAllData2D: dataType = {
+  const initAllData2D: DataType = {
     dataX: [],
     dataY: [],
     dataVal: [],
@@ -113,12 +132,12 @@ const Simulation: React.FC<SimulationProps> = ({
     min: -0.0001,
   };
 
-  const [allData2D, setAllData2D] = React.useState<dataType>(initAllData2D);
+  const [allData2D, setAllData2D] = React.useState<DataType>(initAllData2D);
 
-  const [sourcePositionRelativeX, setSourcePositionRelativeX] =
+  const [srcPositionRelativeX, setSourcePositionRelativeX] =
     React.useState(0.4);
 
-  const [sourcePositionRelativeY, setSourcePositionRelativeY] =
+  const [srcPositionRelativeY, setSourcePositionRelativeY] =
     React.useState(0.4);
   // const matrix = useAppSelector(selectEpsilonMatrix);
 
@@ -177,7 +196,9 @@ const Simulation: React.FC<SimulationProps> = ({
             setMinVal(data.min);
           // }
 
-          setAllData2D(data);
+          console.log(data.min, data.max)
+          console.log('==============')
+          setAllData2D(data );
         }
 
         socket.send(JSON.stringify({ step: data.step || 0 }));
@@ -210,28 +231,26 @@ const Simulation: React.FC<SimulationProps> = ({
   const startDataReceiving = () => {
     setPause(false);
 
-    let message: unknown;
+    let message: MessageToBackend;
     if (currentSimulationDimension === SimulationDimension.SIMULATION_1D) {
       message = {
         event: 'start',
-        type: '1D',
-        // condition: [lambda, tau, refractiveIndex1],
-        condition: [lambda, tau, 1],
-        sourcePositionRelative: { x: sourcePositionRelativeX, y: 0 },
-        // matrix,
-        dataToReturn: 'Hy',
-        // omegaMatrix,
+        type: SimulationDimension.SIMULATION_1D,
+        condition: [lambda, tau],
+        srcPositionRelative: [{ x: srcPositionRelativeX, y: 0 }],
+        dataToReturn: 0,
+        materialMatrix,
+        materials: transformMaterialForBackend(materials),
       };
     } else {
       message = {
         event: 'start',
         type: SimulationDimension.SIMULATION_2D,
-        dataToReturn: displayedData[currentDisplayingData].type,
-        condition:
-          currentSimulationDimension == SimulationDimension.SIMULATION_2D
-            ? [lambda, beamsize, 1]
-            : [lambda, beamsize],
-        allData2D,
+        dataToReturn: currentDisplayingData,
+        condition: [lambda, beamsize],
+        materialMatrix,
+        materials: transformMaterialForBackend(materials),
+        srcPositionRelative : [{x: 0.5, y: 0.5}],
       };
     }
     if (socket) {
@@ -254,26 +273,22 @@ const Simulation: React.FC<SimulationProps> = ({
     if (currentSimulationDimension === SimulationDimension.SIMULATION_1D) {
       message = {
         event: 'continue',
-        type: '1D',
-        condition: [lambda, tau, 1],
-        sourcePositionRelative: { x: sourcePositionRelativeX, y: 0 },
-        // matrix,
-        dataToReturn: 'Hy',
-        // omegaMatrix,
+        type: SimulationDimension.SIMULATION_1D,
+        condition: [lambda, tau],
+        srcPositionRelative: [{ x: srcPositionRelativeX, y: 0 }],
+        dataToReturn: 0,
+        materialMatrix,
+        materials: transformMaterialForBackend(materials),
       };
     } else {
       message = {
         event: 'continue',
-        type: (currentSimulationDimension == SimulationDimension.SIMULATION_2D
-          ? SimulationDimension.SIMULATION_2D
-          : SimulationDimension.SIMULATION_2D
-        ).toString(),
-        dataToReturn: displayedData[currentDisplayingData].type,
-        condition:
-          currentSimulationDimension == SimulationDimension.SIMULATION_2D
-            ? [lambda, beamsize, 1]
-            : [lambda, beamsize],
-        allData2D,
+        type: SimulationDimension.SIMULATION_2D,
+        dataToReturn: currentDisplayingData,
+        condition: [lambda, beamsize],
+        materialMatrix,
+        materials: transformMaterialForBackend(materials),
+        srcPositionRelative : [{x: 0.5, y: 0.5}],
       };
     }
     if (socket !== null) {
@@ -344,10 +359,10 @@ const Simulation: React.FC<SimulationProps> = ({
 
           <hr />
           <WithLabel
-            labelText={`Source position X(${sourcePositionRelativeX})`}
+            labelText={`Source position X(${srcPositionRelativeX})`}
           >
             <InputRange
-              value={sourcePositionRelativeX}
+              value={srcPositionRelativeX}
               setValue={setSourcePositionRelativeX}
             />
           </WithLabel>
@@ -356,10 +371,10 @@ const Simulation: React.FC<SimulationProps> = ({
           {currentSimulationDimension === SimulationDimension.SIMULATION_2D && (
             <>
               <WithLabel
-                labelText={`Source position Y(${sourcePositionRelativeY})`}
+                labelText={`Source position Y(${srcPositionRelativeY})`}
               >
                 <InputRange
-                  value={sourcePositionRelativeY}
+                  value={srcPositionRelativeY}
                   setValue={setSourcePositionRelativeY}
                 />
               </WithLabel>
@@ -417,7 +432,7 @@ const Simulation: React.FC<SimulationProps> = ({
                         materials.find((material) => material.id === materialId)
                           ?.eps || 1
                     )} //!!!!!!!!!!!
-                    sourcePositionRelative={sourcePositionRelativeX}
+                    srcPositionRelative={srcPositionRelativeX}
                   />
                 </Paper>
               </div>
