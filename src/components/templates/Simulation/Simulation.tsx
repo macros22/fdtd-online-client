@@ -22,7 +22,7 @@ import {
   InputRange,
 } from 'components';
 
-import { DataType,  SimulationDimension } from 'types/types';
+import { DataType, SimulationDimension } from 'types/types';
 
 import { displayedData } from 'utils/displayed-data';
 import { SERVER_URL as SERVER_URL } from 'constants/url';
@@ -35,14 +35,17 @@ import {
   selectMaterials,
 } from 'store/reducers/material-matrix.reducer';
 import { SimulationProps } from './Simulation.props';
-import { MaterialForBackend, transformMaterialForBackend } from 'utils/transform-materials-array';
+import {
+  MaterialForBackend,
+  transformMaterialForBackend,
+} from 'utils/transform-materials-array';
 
 type SourcePosition = {
   x: number;
   y: number;
-}
+};
 
-export type EventType = "start" | "pause" | "continue" | "close";
+export type EventType = 'start' | 'pause' | 'continue' | 'close';
 
 export type MessageToBackend = {
   event: EventType;
@@ -54,11 +57,9 @@ export type MessageToBackend = {
   srcPositionRelative: SourcePosition[];
 };
 
-
 const Simulation: React.FC<SimulationProps> = ({
   currentSimulationDimension,
 }) => {
-
   const materialMatrix = useAppSelector(selectMaterialMatrix);
   const materials = useAppSelector(selectMaterials);
 
@@ -142,14 +143,14 @@ const Simulation: React.FC<SimulationProps> = ({
   // const matrix = useAppSelector(selectEpsilonMatrix);
 
   // For 2D.
-  const [maxVal, setMaxVal] = React.useState(1);
-  const [minVal, setMinVal] = React.useState(-1);
+  const [maxVal, setMaxVal] = React.useState(0.05);
+  const [minVal, setMinVal] = React.useState(-0.05);
 
   // For 1D
   const [minX, setMinX] = React.useState<number>(0);
   const [minY, setMinY] = React.useState<number>(-1);
   const [maxX, setMaxX] = React.useState<number>(100);
-  const [maxY, setMaxY] = React.useState<number>(0.001);
+  const [maxY, setMaxY] = React.useState<number>(1);
 
   const data1DChart: DataChartType = [];
   for (let i = 0; i < plotWidth * 0.9; i += 10) {
@@ -183,29 +184,27 @@ const Simulation: React.FC<SimulationProps> = ({
             });
           }
           setMinX(Math.min(...data.dataX));
-          setMinY(Math.min(...data.dataY));
           setMaxX(Math.max(...data.dataX));
+          setMinY(Math.min(...data.dataY));
           setMaxY(Math.max(...data.dataY));
 
           setAllData1D(tmpdata2DChart);
         } else {
-          // if (data.step > 40 && data.max > maxVal) {
+          if (data.step > 20 && data.max > maxVal) {
             setMaxVal(data.max);
-          // }
-          // if (data.step > 40 && data.min < minVal) {
+          }
+          if (data.step > 20 && data.min < minVal) {
             setMinVal(data.min);
-          // }
+          }
 
-          console.log(data.min, data.max)
-          console.log('==============')
-          setAllData2D(data );
+          setAllData2D(data);
         }
 
         socket.send(JSON.stringify({ step: data.step || 0 }));
       };
 
       socket.onclose = (event) => {
-        console.log('Socket закрыт');
+        console.log('Socket closed');
         if (event.wasClean) {
           console.log();
           `Websocket: [close] Connection closed cleanly, code=${event.code} reason=${event.reason}`;
@@ -221,7 +220,7 @@ const Simulation: React.FC<SimulationProps> = ({
       };
 
       socket.onerror = () => {
-        console.log('Socket произошла ошибка');
+        console.log('Socket error');
         setIsWSocketConnected(false);
       };
     }
@@ -236,11 +235,11 @@ const Simulation: React.FC<SimulationProps> = ({
       message = {
         event: 'start',
         type: SimulationDimension.SIMULATION_1D,
-        condition: [lambda, tau],
-        srcPositionRelative: [{ x: srcPositionRelativeX, y: 0 }],
         dataToReturn: 0,
+        condition: [lambda, beamsize],
         materialMatrix,
         materials: transformMaterialForBackend(materials),
+        srcPositionRelative: [{ x: 0.5, y: 0 }],
       };
     } else {
       message = {
@@ -250,7 +249,7 @@ const Simulation: React.FC<SimulationProps> = ({
         condition: [lambda, beamsize],
         materialMatrix,
         materials: transformMaterialForBackend(materials),
-        srcPositionRelative : [{x: 0.5, y: 0.5}],
+        srcPositionRelative: [{ x: 0.5, y: 0.5 }],
       };
     }
     if (socket) {
@@ -274,11 +273,11 @@ const Simulation: React.FC<SimulationProps> = ({
       message = {
         event: 'continue',
         type: SimulationDimension.SIMULATION_1D,
-        condition: [lambda, tau],
-        srcPositionRelative: [{ x: srcPositionRelativeX, y: 0 }],
         dataToReturn: 0,
+        condition: [lambda, beamsize],
         materialMatrix,
         materials: transformMaterialForBackend(materials),
+        srcPositionRelative: [{ x: 0.5, y: 0.5 }],
       };
     } else {
       message = {
@@ -288,7 +287,7 @@ const Simulation: React.FC<SimulationProps> = ({
         condition: [lambda, beamsize],
         materialMatrix,
         materials: transformMaterialForBackend(materials),
-        srcPositionRelative : [{x: 0.5, y: 0.5}],
+        srcPositionRelative: [{ x: 0.5, y: 0.5 }],
       };
     }
     if (socket !== null) {
@@ -298,10 +297,9 @@ const Simulation: React.FC<SimulationProps> = ({
 
   React.useEffect(() => {
     connectWS();
-    // socket?.OPEN
     return () => {
       if (socket !== null) {
-        socket.close(1000, 'работа закончена');
+        socket.close(1000, 'Socket work end');
       }
     };
   }, []);
@@ -351,16 +349,14 @@ const Simulation: React.FC<SimulationProps> = ({
             />
           ) : (
             <NumberInput
-              label={'tau'}
+              label={BEAMSIZE_NAME}
               value={tau}
               onChange={(e) => setTau(+e.target.value)}
             />
           )}
 
           <hr />
-          <WithLabel
-            labelText={`Source position X(${srcPositionRelativeX})`}
-          >
+          <WithLabel labelText={`Source position X(${srcPositionRelativeX})`}>
             <InputRange
               value={srcPositionRelativeX}
               setValue={setSourcePositionRelativeX}
@@ -389,12 +385,7 @@ const Simulation: React.FC<SimulationProps> = ({
 
         <div className={styles.content}>
           <div className={styles.workArea}>
-            <h6>
-              <span>
-                {'Пространственно-временная структура ' +
-                  displayedData[currentDisplayingData].title}
-              </span>
-            </h6>
+            <h5>{displayedData[currentDisplayingData].title + ' structure'}</h5>
 
             {currentSimulationDimension == SimulationDimension.SIMULATION_2D ? (
               <div className={styles.graph2D}>
@@ -413,6 +404,8 @@ const Simulation: React.FC<SimulationProps> = ({
                   <ColorBar
                     gradientHeight={plotHeight}
                     gradientWidth={plotHeight * 0.03}
+                    maxVal={maxVal}
+                    minVal={minVal}
                   />
                 </Paper>
               </div>
@@ -442,24 +435,26 @@ const Simulation: React.FC<SimulationProps> = ({
 
         <Sidebar className={styles.sidebarRight}>
           {currentSimulationDimension !== SimulationDimension.SIMULATION_1D && (
-            <WithLabel labelText='Выбор данных:'>
-              <ButtonGroup activeButton={currentDisplayingData}>
-                {displayedData.map((item, index) => {
-                  return (
-                    <button
-                      key={item.name}
-                      onClick={() => {
-                        setCurrentDisplayingData(index);
-                      }}
-                    >
-                      {item.name}
-                    </button>
-                  );
-                })}
-              </ButtonGroup>
-            </WithLabel>
+            <>
+              <WithLabel labelText='Choose data type:'>
+                <ButtonGroup activeButton={currentDisplayingData}>
+                  {displayedData.map((item, index) => {
+                    return (
+                      <button
+                        key={item.name}
+                        onClick={() => {
+                          setCurrentDisplayingData(index);
+                        }}
+                      >
+                        {item.name}
+                      </button>
+                    );
+                  })}
+                </ButtonGroup>
+              </WithLabel>
+              <hr />
+            </>
           )}
-          <hr />
 
           <WithLabel labelText={STEP_NUMBER_NAME}>
             <Tag size='l' color='primary' fullWidth>
@@ -473,7 +468,7 @@ const Simulation: React.FC<SimulationProps> = ({
             appearance={isWSocketConnected ? 'primary' : 'ghost'}
             onClick={clickStartPauseContinueBtnHandler}
           >
-            {!simulation ? 'СТАРТ' : pause ? CONTINUE_NAME : PAUSE_NAME}
+            {!simulation ? 'Start' : pause ? CONTINUE_NAME : PAUSE_NAME}
           </Button>
 
           <Button

@@ -9,6 +9,7 @@ import {
 } from 'store/reducers/material-matrix.reducer';
 import { drawType } from 'components/molecules/Canvas/useCanvas';
 import React from 'react';
+import { colors } from './colors';
 
 type EditorCanvasProps = {
   width: number;
@@ -104,7 +105,7 @@ const EditorCanvas: React.FC<EditorCanvasProps> = ({
   };
 
   const draw: drawType = (ctx) => {
-    drawRect(ctx, 0, 0, '#eddede', width, height);
+    drawRect(ctx, 0, 0, colors[0], width, height);
     drawMatrix(ctx, materialMatrix);
 
     if (!mousePressed) {

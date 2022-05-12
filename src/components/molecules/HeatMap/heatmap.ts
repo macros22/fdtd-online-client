@@ -1,4 +1,4 @@
-import { defaultGradient } from './default-gradient';
+import { defaultGradient } from '../../../utils/default-gradient';
 
 
 export type pointType = [number, number, number];
@@ -17,7 +17,7 @@ export class heatmap {
     _data: pointType[] = [[0, 0, 0]];
 
     // For scaling data.
-    _realGridSize: number = 400;
+    _realGridSize: number = 240;
 
     dataX: number[] = [];
     dataY: number[] = [];
@@ -45,9 +45,16 @@ export class heatmap {
     defaultRadius = 25;
 
     defaultGradient: { [key: string]: string } = defaultGradient || {
-        0: 'red',
-        0.5: 'white',
-        1: 'blue',
+        // 0: 'red',
+        // 0.5: 'white',
+        // 1: 'blue',
+        0.0: 'red',
+        0.25: 'orange',
+        0.45: 'yellow',
+        0.55: 'green',
+        0.75: 'blu',
+        1: 'violet',
+
     }
 
     data(newData: pointType[]) {

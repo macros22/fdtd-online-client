@@ -1,4 +1,4 @@
-export { default as HeatMap } from './atoms/HeatMap/HeatMap';
+export { default as HeatMap } from './molecules/HeatMap/HeatMap';
 export { default as Button } from './atoms/Button/Button';
 export { default as WithLabel } from './atoms/WithLabel/WithLabel';
 export { default as Sidebar } from './molecules/Sidebar/Sidebar';

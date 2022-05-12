@@ -197,7 +197,7 @@ const materials = [
   {
     name: 'Material 2',
     id: 1,
-    eps: 3.3,
+    eps: 13.3,
     mu: 1.2,
     sigma: 0.001,
     color: 'tomato',

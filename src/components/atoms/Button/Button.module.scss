@@ -39,14 +39,11 @@
 }
 
 .ghost {
-  color: var(--color-text);
+  background-color: '#e4e4e4';
+  color: var(--dark-gray-color);
   cursor: not-allowed !important;
 }
 
-// .ghost:hover {
-//   background-color: var(--primary);
-//   color: var(--white);
-// }
 
 .arrow {
   display: inline-block;

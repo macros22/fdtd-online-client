@@ -14,6 +14,7 @@ import { SimulationDimension } from 'types/types';
 
 
 import { DetailedHTMLProps, HTMLAttributes} from 'react';
+import { colors } from './colors';
 
 export interface PreviewMatrixProps extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
 
@@ -43,7 +44,7 @@ const PreviewMatrix: React.FC<PreviewMatrixProps> = ({
   let rectHeight = height / countRow;
   
   const draw: drawType = (ctx) => {
-    drawRect(ctx, 0, 0, '#eddede', width, height);
+    drawRect(ctx, 0, 0, colors[0], width, height);
     drawMatrix(ctx, materialMatrix);
   };
 

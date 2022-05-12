@@ -27,7 +27,7 @@ const PreviewMatrixSidebar: React.FC<PreviewMatrixSidebarProps> = () => {
     if (currentSimulationDimension == SimulationDimension.SIMULATION_1D) {
       dispatch(setMaterialMatrixSize({ newCountRow: 1, newCountCol: 40 }));
     } else {
-      dispatch(setMaterialMatrixSize({ newCountRow: 50, newCountCol: 50 }));
+      dispatch(setMaterialMatrixSize({ newCountRow: 55, newCountCol: 55 }));
     }
     dispatch(setCurrentMaterialMatrix({ currentMaterialMatrixConfigInSet: 0 }));
   }, [currentSimulationDimension]);

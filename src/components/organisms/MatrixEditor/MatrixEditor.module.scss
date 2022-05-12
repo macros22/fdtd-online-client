@@ -10,7 +10,7 @@
 .triggerMatrixBtn {
   width: 100%;
   font-size: 17px;
-  margin-top: var(--sidebar-padding);
+  margin-top: calc(0.35*var(--sidebar-padding));
 }
 
 .substrate {

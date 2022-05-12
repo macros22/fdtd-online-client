@@ -1,6 +1,6 @@
 export type ColorBarProps = {
     gradientWidth: number;
     gradientHeight: number;
-    max?: number;
-    min?: number;
+    maxVal?: number;
+    minVal?: number;
 };

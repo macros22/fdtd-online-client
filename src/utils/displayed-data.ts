@@ -6,22 +6,22 @@ export type DisplayedDataType = {
 
 export const displayedData: DisplayedDataType = [
     {
-        title: "напряженности электрического поля Ez (проекция на ось Z)",
+        title: "Electric field(Ez)",
         name: "Ez",
         type: "Ez",
     },
     {
-        title: "напряженности магнитного поля Hy (проекция на ось Y)",
+        title: "Magnetic field(Hy)",
         name: "Hy",
         type: "Hy",
     },
     {
-        title: "проекции на ось X напряженности магнитного поля (Hx)",
+        title: "Electric field(Hx)",
         name: "Hx",
         type: "Hx",
     },
     {
-        title: "плотности энергии электромагнагнитного поля",
+        title: "Energy",
         name: "w",
         type: "Energy",
     },

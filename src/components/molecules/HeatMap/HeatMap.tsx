@@ -3,7 +3,7 @@
 import React from 'react';
 
 import styles from './HeatMap.module.scss';
-import { heatmap } from 'utils/heatmap';
+import { heatmap } from './heatmap';
 import { HeatMapProps } from './HeatMap.props';
 
 const NewHeatMap: React.FC<HeatMapProps> = ({
@@ -56,7 +56,7 @@ const NewHeatMap: React.FC<HeatMapProps> = ({
         data = [dataX, dataY, dataVal];
       }
 
-      const gridSizeFromBackend = 200;
+      const gridSizeFromBackend = 220;
 
       let heat = new heatmap(canvas, canvasBrush, canvasGradient)
         .newData(...data)
@@ -88,7 +88,7 @@ const NewHeatMap: React.FC<HeatMapProps> = ({
       <canvas style={{ display: 'none' }} ref={canvasGradientRef} />
       <canvas ref={canvasRef} />
       
-      <div className={styles.options}>
+      {/* <div className={styles.options}>
         <label>Radius </label>
         <input
           onChange={radiusHandler}
@@ -110,7 +110,7 @@ const NewHeatMap: React.FC<HeatMapProps> = ({
           min={0}
           max={blurInitial + 2.2}
         />
-      </div>
+      </div> */}
     </React.Fragment>
   );
 };

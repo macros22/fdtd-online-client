@@ -1,4 +1,4 @@
-import { pointType } from '../../../utils/heatmap';
+import { pointType } from './heatmap';
 
 export const data2: pointType[] = [[78, 120, 10], [88, 190, 15], [68, 130, 2]];
 

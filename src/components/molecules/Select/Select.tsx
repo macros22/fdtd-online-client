@@ -51,6 +51,7 @@ const Select: React.FC<{
               ? `${styles.selectOptions} ${styles.showDropdownOptions}`
               : `${styles.selectOptions} ${styles.hideDropdownOptions}`
           }
+          onClick={() => setShowDropdown(false)}
         >
           {children}
         </ul>

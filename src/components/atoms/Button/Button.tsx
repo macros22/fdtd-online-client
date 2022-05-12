@@ -17,6 +17,7 @@ const Button = ({
         [styles.ghost]: appearance == 'ghost',
         [styles.outline]: appearance == 'outline',
       })}
+      disabled={appearance == 'ghost'}
       {...props}
     >
       {children}

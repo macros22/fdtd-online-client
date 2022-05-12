@@ -20,8 +20,8 @@ import {
 } from 'store/reducers/material-matrix.reducer';
 import PreviewMatrix from './PreviewMatrixEditor';
 import { selectCurrentSimulationDimension } from 'store/reducers/app-config.reducer';
+import { colors } from './colors';
 
-const colors = ['#eddede', 'tomato', '#1a52aa'];
 
 const MatrixEditor: React.FC<MatrixEditorProps> = ({ setIsOpened }) => {
   const dispatch = useAppDispatch();

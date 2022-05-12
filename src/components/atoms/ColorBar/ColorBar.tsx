@@ -13,8 +13,8 @@ const defaultGradient: { [key: string]: string } = dGradient || {
 const ColorBar: React.FC<ColorBarProps> = ({
   gradientWidth,
   gradientHeight,
-  max = 1,
-  min = -1,
+  maxVal = 0.4,
+  minVal = -0.4,
 }) => {
   const canvasRef = React.useRef<HTMLCanvasElement | null>(null);
 
@@ -22,12 +22,12 @@ const ColorBar: React.FC<ColorBarProps> = ({
     if (canvasRef.current) {
       let canvas = canvasRef.current;
       
-      console.log(gradientWidth)
-      const numberSpaceWidth = gradientWidth*2.8;
+
+      const numberSpaceWidth = gradientWidth * 4.2;
       const width = gradientWidth + numberSpaceWidth;
       const height = gradientHeight;
 
-      const scaleCoeff = (max - min) / gradientHeight;
+      const scaleCoeff = (maxVal - minVal) / gradientHeight;
 
       canvas.width = width;
       canvas.height = height;
@@ -60,9 +60,9 @@ const ColorBar: React.FC<ColorBarProps> = ({
         // ctx.textBaseline = 'middle';
         const tY = (y: number) => height - y;
         for (let y = 0; y <= height; y += INTERVAL_Y) {
-          const label = (y * scaleCoeff + min).toFixed(1) + '';
+          const label = (y * scaleCoeff + minVal).toFixed(2) + '';
           ctx.save();
-          ctx.translate(width*0.55, tY(y));
+          ctx.translate(width*0.65, tY(y));
           ctx.fillText(label, 0, 0);
           ctx.restore();
         }
