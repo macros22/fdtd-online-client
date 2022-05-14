@@ -6,17 +6,17 @@ export type DisplayedDataType = {
 
 export const displayedData: DisplayedDataType = [
     {
-        title: "Electric field(Ez)",
+        title: "Ez. Electric field",
         name: "Ez",
         type: "Ez",
     },
     {
-        title: "Magnetic field(Hy)",
+        title: "Hy. Magnetic field",
         name: "Hy",
         type: "Hy",
     },
     {
-        title: "Electric field(Hx)",
+        title: "Hx. Electric field",
         name: "Hx",
         type: "Hx",
     },
