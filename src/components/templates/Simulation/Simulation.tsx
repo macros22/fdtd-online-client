@@ -143,8 +143,8 @@ const Simulation: React.FC<SimulationProps> = ({
   // const matrix = useAppSelector(selectEpsilonMatrix);
 
   // For 2D.
-  const [maxVal, setMaxVal] = React.useState(0.05);
-  const [minVal, setMinVal] = React.useState(-0.05);
+  const [maxVal, setMaxVal] = React.useState(0.04);
+  const [minVal, setMinVal] = React.useState(-0.06);
 
   // For 1D
   const [minX, setMinX] = React.useState<number>(0);

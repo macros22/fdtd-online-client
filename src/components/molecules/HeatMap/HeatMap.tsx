@@ -1,12 +1,8 @@
-// import { data } from './data';
-
 import React from 'react';
-
-import styles from './HeatMap.module.scss';
-import { heatmap } from './heatmap';
+import { HeatMapBuilder } from './heatmap.class';
 import { HeatMapProps } from './HeatMap.props';
 
-const NewHeatMap: React.FC<HeatMapProps> = ({
+const HeatMap: React.FC<HeatMapProps> = ({
   minVal = -1,
   maxVal = 1,
   dataX = [],
@@ -23,10 +19,7 @@ const NewHeatMap: React.FC<HeatMapProps> = ({
   let radiusInitial = 2.6;
   let blurInitial = radiusInitial * 1.4 + 0.1;
   blurInitial = 0.1;
-  // let radiusInitial = 8;
-  // let blurInitial = radiusInitial * 1.45;
-
-  // console.log('radiusInitial', radiusInitial);
+  
 
   const [radius, setRadius] = React.useState<number>(radiusInitial);
   const [blur, setBlur] = React.useState<number>(blurInitial);
@@ -50,7 +43,7 @@ const NewHeatMap: React.FC<HeatMapProps> = ({
         for (let i = 0; i < 3e3; ++i) {
           data[0].push(Math.random() * width);
           data[1].push(Math.random() * height);
-          data[2].push(Math.random() * 0.5);
+          data[2].push(Math.random() * 0.3);
         }
       } else {
         data = [dataX, dataY, dataVal];
@@ -58,13 +51,13 @@ const NewHeatMap: React.FC<HeatMapProps> = ({
 
       const gridSizeFromBackend = 220;
 
-      let heat = new heatmap(canvas, canvasBrush, canvasGradient)
+      let heatMap = new HeatMapBuilder(canvas, canvasBrush, canvasGradient)
         .newData(...data)
         .min(minVal)
         .max(maxVal)
         .radius(radius, blur)
         .realGridSize(gridSizeFromBackend);
-      heat.draw();
+      heatMap.draw();
     }
   };
 
@@ -115,4 +108,4 @@ const NewHeatMap: React.FC<HeatMapProps> = ({
   );
 };
 
-export default NewHeatMap;
+export default HeatMap;

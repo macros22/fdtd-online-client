@@ -1,9 +1,9 @@
 import { defaultGradient } from '../../../utils/default-gradient';
 
 
-export type pointType = [number, number, number];
+export type Point = [number, number, number];
 
-export class heatmap {
+export class HeatMapBuilder {
 
     private grad: Uint8ClampedArray | null = null;
     private ctx: CanvasRenderingContext2D | null = null;
@@ -14,7 +14,6 @@ export class heatmap {
 
     _max: number = 1;
     _min: number = -1;
-    _data: pointType[] = [[0, 0, 0]];
 
     // For scaling data.
     _realGridSize: number = 240;
@@ -25,17 +24,12 @@ export class heatmap {
 
 
     constructor(private readonly canvas: HTMLCanvasElement, private readonly brushCanvas: HTMLCanvasElement, private readonly gradientCanvas: HTMLCanvasElement) {
-
         this.ctx = canvas.getContext('2d') || null;
         this.width = canvas.width;
         this.height = canvas.height;
-
-
-        // this.max(1);
-        // this.data([]);
     }
 
-    newData(dataX: number[], dataY: number[], dataVal: number[]) {
+    newData(dataX: number[], dataY: number[], dataVal: number[]): this {
         this.dataX = dataX;
         this.dataY = dataY;
         this.dataVal = dataVal;
@@ -57,13 +51,9 @@ export class heatmap {
 
     }
 
-    data(newData: pointType[]) {
-        this._data = newData;
-        return this;
-    }
 
     // For scaling data.
-    realGridSize(gridSize: number) {
+    realGridSize(gridSize: number): this {
         this._realGridSize = gridSize;
         return this;
     }
@@ -78,43 +68,47 @@ export class heatmap {
         return (y * this.height) / this._realGridSize;
     }
 
-    max(max: number) {
+    max(max: number): this {
         this._max = max;
         return this;
     }
 
-    min(min: number) {
+    min(min: number): this {
         this._min = min;
         return this;
     }
 
-    add(point: pointType) {
-        this._data.push(point);
+    addPoint(point: Point): this {
+        this.dataX.push(point[0])
+        this.dataY.push(point[1])
+        this.dataVal.push(point[2])
         return this;
     }
 
-    clear() {
-        this._data = [[0, 0, 0]];
+    clear(): this {
+        this.dataX = [];
+        this.dataY = [];
+        this.dataVal = [];
         return this;
     }
 
-    radius(r: number, blur: number) {
+    radius(r: number, blur: number): this {
 
         blur = blur === undefined ? 15 : blur;
 
         // create a grayscale blurred circle image that we'll use for drawing points
         let circle = this.brushCanvas;
         let ctx = circle.getContext('2d');
-        let r2 = (this.brushRadius = r + blur);
+        this.brushRadius = r + blur;
         if (ctx) {
-            circle.width = circle.height = r2 * 2;
+            circle.width = circle.height = this.brushRadius * 2;
 
-            ctx.shadowOffsetX = ctx.shadowOffsetY = r2 * 2;
+            ctx.shadowOffsetX = ctx.shadowOffsetY = this.brushRadius * 2;
             ctx.shadowBlur = blur;
             ctx.shadowColor = 'black';
 
             ctx.beginPath();
-            ctx.arc(-r2, -r2, r, 0, Math.PI * 2, true);
+            ctx.arc(-this.brushRadius, -this.brushRadius, r, 0, Math.PI * 2, true);
             ctx.closePath();
             ctx.fill();
         }
@@ -128,7 +122,7 @@ export class heatmap {
 
     gradient(grad: {
         [key: string]: string;
-    }) {
+    }): this {
         // create a 256x1 gradient that we'll use to turn a grayscale heatmap into a colored one
         let canvas = this.gradientCanvas;
         let ctx = canvas.getContext('2d');
@@ -151,7 +145,7 @@ export class heatmap {
         return this;
     }
 
-    draw(minOpacity: number = 0.05) {
+    draw(minOpacity: number = 0.05): this {
         // if (!this._circle) this.radius(this.defaultRadius);
         if (!this.grad) this.gradient(this.defaultGradient);
 
