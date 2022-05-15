@@ -148,9 +148,9 @@ const Simulation: React.FC<SimulationProps> = ({
 
   // For 1D
   const [minX, setMinX] = React.useState<number>(0);
-  const [minY, setMinY] = React.useState<number>(-1);
-  const [maxX, setMaxX] = React.useState<number>(100);
-  const [maxY, setMaxY] = React.useState<number>(1);
+  const [minY, setMinY] = React.useState<number>(-0.01);
+  const [maxX, setMaxX] = React.useState<number>(0.1);
+  const [maxY, setMaxY] = React.useState<number>(0.01);
 
   const data1DChart: DataChartType = [];
   for (let i = 0; i < plotWidth * 0.9; i += 10) {
@@ -174,7 +174,7 @@ const Simulation: React.FC<SimulationProps> = ({
       socket.onmessage = (event: any) => {
         let data = JSON.parse(event.data);
         setStep(data.step || 0);
-
+        
         if (currentSimulationDimension == SimulationDimension.SIMULATION_1D) {
           const tmpdata2DChart: DataChartType = [];
           for (let i = 0; i < data.col; i++) {
@@ -185,9 +185,17 @@ const Simulation: React.FC<SimulationProps> = ({
           }
           setMinX(Math.min(...data.dataX));
           setMaxX(Math.max(...data.dataX));
-          setMinY(Math.min(...data.dataY));
-          setMaxY(Math.max(...data.dataY));
 
+          const maxYServer = Math.max(...data.dataY);
+          const minYServer = Math.min(...data.dataY);
+          if (maxYServer > maxY) {
+            setMaxY(maxYServer);
+          }
+          if (minYServer > minY) {
+            setMinY(minYServer);
+          }
+          setMaxY(maxYServer);
+          setMinY(minYServer);
           setAllData1D(tmpdata2DChart);
         } else {
           if (data.step > 20 && data.max > maxVal) {
@@ -239,7 +247,7 @@ const Simulation: React.FC<SimulationProps> = ({
         condition: [lambda, beamsize],
         materialMatrix,
         materials: transformMaterialForBackend(materials),
-        srcPositionRelative: [{ x: 0.5, y: 0 }],
+        srcPositionRelative: [{ x: srcPositionRelativeX, y: 0 }],
       };
     } else {
       message = {
@@ -249,7 +257,7 @@ const Simulation: React.FC<SimulationProps> = ({
         condition: [lambda, beamsize],
         materialMatrix,
         materials: transformMaterialForBackend(materials),
-        srcPositionRelative: [{ x: 0.5, y: 0.5 }],
+        srcPositionRelative: [{ x: srcPositionRelativeX, y: srcPositionRelativeY }],
       };
     }
     if (socket) {
