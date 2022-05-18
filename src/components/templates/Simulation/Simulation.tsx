@@ -107,11 +107,11 @@ const Simulation: React.FC<SimulationProps> = ({
     resizePlot();
   }, [currentSimulationDimension]);
 
-  const [lambda, setLambda] = React.useState<number>(1);
+  const [lambda, setLambda] = React.useState<number>(3);
   // For 2D.
-  const [beamsize, setBeamsize] = React.useState<number>(3);
+  const [beamsize, setBeamsize] = React.useState<number>(8);
   // For 1D.
-  const [tau, setTau] = React.useState<number>(10);
+  const [tau, setTau] = React.useState<number>(3);
 
   const [step, setStep] = React.useState<number>(0);
   const [simulation, setSimulation] = React.useState<boolean>(false);
@@ -148,9 +148,9 @@ const Simulation: React.FC<SimulationProps> = ({
 
   // For 1D
   const [minX, setMinX] = React.useState<number>(0);
-  const [minY, setMinY] = React.useState<number>(-0.01);
   const [maxX, setMaxX] = React.useState<number>(0.1);
-  const [maxY, setMaxY] = React.useState<number>(0.01);
+  const [minY, setMinY] = React.useState<number>(-0.2);
+  const [maxY, setMaxY] = React.useState<number>(0.2);
 
   const data1DChart: DataChartType = [];
   for (let i = 0; i < plotWidth * 0.9; i += 10) {
@@ -191,11 +191,11 @@ const Simulation: React.FC<SimulationProps> = ({
           if (maxYServer > maxY) {
             setMaxY(maxYServer);
           }
-          if (minYServer > minY) {
+          if (minYServer < minY) {
             setMinY(minYServer);
           }
-          setMaxY(maxYServer);
-          setMinY(minYServer);
+          // setMaxY(maxYServer);
+          // setMinY(minYServer);
           setAllData1D(tmpdata2DChart);
         } else {
           if (data.step > 20 && data.max > maxVal) {

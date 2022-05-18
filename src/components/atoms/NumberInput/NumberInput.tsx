@@ -1,4 +1,4 @@
-import ButtonGroup from 'components/molecules/ButtonGroup/ButtonGroup';
+
 import * as React from 'react';
 import WithLabel from '../WithLabel/WithLabel';
 import styles from './NumberInput.module.scss';
@@ -45,10 +45,10 @@ const NumberInput: React.FC<NumberInputProps> = ({
         readOnly={readOnly}
         required
       />
-      <div className={styles.btns}>
+      {/* <div className={styles.btns}>
         <button onClick={plusBtnHandler} className={styles.btn + ' ' + styles.btnPlus}>+</button>
         <button onClick={minusBtnHandler} className={styles.btn + ' ' + styles.btnMinus}>-</button>
-      </div>
+      </div> */}
     </div>
     </ WithLabel>
   );

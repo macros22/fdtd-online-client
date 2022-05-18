@@ -17,11 +17,13 @@ import {
   selectMaterialMatrixCountRow,
   selectMaterials,
   setCurrentMaterialMatrix,
+  updateMaterialEps,
+  updateMaterialMu,
+  updateMaterialSigma,
 } from 'store/reducers/material-matrix.reducer';
 import PreviewMatrix from './PreviewMatrixEditor';
 import { selectCurrentSimulationDimension } from 'store/reducers/app-config.reducer';
 import { colors } from './colors';
-
 
 const MatrixEditor: React.FC<MatrixEditorProps> = ({ setIsOpened }) => {
   const dispatch = useAppDispatch();
@@ -45,12 +47,13 @@ const MatrixEditor: React.FC<MatrixEditorProps> = ({ setIsOpened }) => {
         currentMaterialMatrixConfigInSet: materialMatrixConfigInSet,
       })
     );
-    console.log('DAPKUNAITE', materialMatrixConfigInSet);
   };
 
   const [currentMaterial, setCurrentMaterial] = React.useState(1);
 
-  const configMaterialSet: ConfigMaterial[] = useAppSelector(selectConfigMaterialSet);
+  const configMaterialSet: ConfigMaterial[] = useAppSelector(
+    selectConfigMaterialSet
+  );
 
   return (
     <>
@@ -65,7 +68,7 @@ const MatrixEditor: React.FC<MatrixEditorProps> = ({ setIsOpened }) => {
               <div onClick={() => previewMaterialConfigHandler(index)}>
                 <>
                   <h4>{material.name}</h4>
-                  <div style={{width: 180}}>
+                  <div style={{ width: 180 }}>
                     <PreviewMatrix
                       key={index + material.simulationDimension}
                       simulationDimension={material.simulationDimension}
@@ -89,7 +92,9 @@ const MatrixEditor: React.FC<MatrixEditorProps> = ({ setIsOpened }) => {
           {/* Editor end */}
 
           <div className={styles.buttons}>
-            <Button onClick={() => setIsOpened(false)}>Back to Simulation</Button>
+            <Button onClick={() => setIsOpened(false)}>
+              Back to Simulation
+            </Button>
           </div>
         </div>
         <div className={styles.materialPicker}>
@@ -119,17 +124,38 @@ const MatrixEditor: React.FC<MatrixEditorProps> = ({ setIsOpened }) => {
                   <NumberInput
                     value={material.eps}
                     label={'permittivity'}
-                    // onChange={(e) => setLambda(+e.target.value)}
+                    onChange={(e) =>
+                      dispatch(
+                        updateMaterialEps({
+                          materialId: material.id,
+                          newEps: +e.target.value,
+                        })
+                      )
+                    }
                   />
                   <NumberInput
                     value={material.mu}
                     label={'permiability'}
-                    // onChange={(e) => setLambda(+e.target.value)}
+                    onChange={(e) =>
+                      dispatch(
+                        updateMaterialMu({
+                          materialId: material.id,
+                          newMu: +e.target.value,
+                        })
+                      )
+                    }
                   />
                   <NumberInput
                     value={material.sigma}
-                    label={'condictivity'}
-                    // onChange={(e) => setLambda(+e.target.value)}
+                    label={'conductivity'}
+                    onChange={(e) =>
+                      dispatch(
+                        updateMaterialSigma({
+                          materialId: material.id,
+                          newSigma: +e.target.value,
+                        })
+                      )
+                    }
                   />
                 </div>
                 <hr />

@@ -191,21 +191,21 @@ const materials = [
     id: 0,
     eps: 1,
     mu: 1,
-    sigma: 0.001,
+    sigma: 0.0,
     color: '#fafafa',
   },
   {
     name: 'Material 2',
     id: 1,
-    eps: 13.3,
-    mu: 1.2,
-    sigma: 0.001,
+    eps: 2.3,
+    mu: 1,
+    sigma: 0,
     color: 'tomato',
   },
   {
     name: 'Material 3',
     id: 2,
-    eps: 1.6,
+    eps: 4.6,
     mu: 1,
     sigma: 0.02,
     color: '#1a52aa',
@@ -229,13 +229,33 @@ const initialState: IMaterialMatrixState = {
   currentMaterialMatrixConfigInSet,
 };
 
-interface IUpdateEpslonMatrix {
+interface UpdateEpslonMatrix {
   // Row index.
   i: number;
   // Column index.
   j: number;
 
   newMaterialId: number;
+}
+
+interface UpdateMaterialName {
+  materialId: number;
+  newName: string;
+}
+
+interface UpdateMaterialEps {
+  materialId: number;
+  newEps: number;
+}
+
+interface UpdateMaterialMu {
+  materialId: number;
+  newMu: number;
+}
+
+interface UpdateMaterialSigma {
+  materialId: number;
+  newSigma: number;
 }
 
 export const materialMatrixSlice = createSlice({
@@ -286,18 +306,58 @@ export const materialMatrixSlice = createSlice({
 
     updateMaterialMatrix: (
       state,
-      action: PayloadAction<IUpdateEpslonMatrix>
+      action: PayloadAction<UpdateEpslonMatrix>
     ) => {
       if (state.materialMatrix[action.payload.i]) {
         state.materialMatrix[action.payload.i][action.payload.j] =
           action.payload.newMaterialId;
       }
     },
+
+    updateMaterialName: (
+      state,
+      action: PayloadAction<UpdateMaterialName>
+    ) => {
+
+      const materialIndex = state.materials.findIndex(material => material.id === action.payload.materialId);
+      state.materials[materialIndex].name = action.payload.newName;
+    },
+    updateMaterialEps: (
+      state,
+      action: PayloadAction<UpdateMaterialEps>
+    ) => {
+
+      const materialIndex = state.materials.findIndex(material => material.id === action.payload.materialId);
+      console.log("index", materialIndex)
+      state.materials[materialIndex].eps = action.payload.newEps;
+    },
+
+    updateMaterialMu: (
+      state,
+      action: PayloadAction<UpdateMaterialMu>
+    ) => {
+
+      const materialIndex = state.materials.findIndex(material => material.id === action.payload.materialId);
+      state.materials[materialIndex].mu = action.payload.newMu;
+    },
+
+    updateMaterialSigma: (
+      state,
+      action: PayloadAction<UpdateMaterialSigma>
+    ) => {
+
+      const materialIndex = state.materials.findIndex(material => material.id === action.payload.materialId);
+      state.materials[materialIndex].sigma = action.payload.newSigma;
+    },
   },
 });
 
 export const {
   updateMaterialMatrix,
+  updateMaterialName,
+  updateMaterialEps,
+  updateMaterialMu,
+  updateMaterialSigma,
   setCurrentMaterialMatrix,
   setMaterialMatrixSize,
 } = materialMatrixSlice.actions;
