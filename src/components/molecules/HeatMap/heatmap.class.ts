@@ -10,6 +10,9 @@ export class HeatMapBuilder {
     private width: number = 0;
     private height: number = 0;
 
+    private srcPositionRelativeX: number = 0;
+    private srcPositionRelativeY: number = 0;
+
     brushRadius: number = 25;
 
     _max: number = 1;
@@ -120,6 +123,12 @@ export class HeatMapBuilder {
         this.height = this.canvas.height;
     }
 
+    setSourcePosition(srcPositionRelativeX: number, srcPositionRelativeY: number): this  {
+        this.srcPositionRelativeX = srcPositionRelativeX;
+        this.srcPositionRelativeY = srcPositionRelativeY;
+        return this;
+    }
+
     gradient(grad: {
         [key: string]: string;
     }): this {
@@ -188,6 +197,16 @@ export class HeatMapBuilder {
 
             this.colorize(colored.data, this.grad);
             ctx.putImageData(colored, 0, 0);
+
+            // Draw source position.
+            ctx.beginPath();
+            ctx.fillStyle = "blue";
+            ctx.globalAlpha= 0.65;
+            const radius = 14;
+            ctx.arc(this.width*this.srcPositionRelativeX, this.height - this.height*this.srcPositionRelativeY, radius, 0, 2 * Math.PI);
+            ctx.fill();
+            ctx.closePath();
+
 
         }
         return this;

@@ -6,4 +6,7 @@ export type HeatMapProps = {
     dataVal: number[];
     width: number;
     height: number;
+    srcPositionRelativeX: number;
+    srcPositionRelativeY: number;
 };
+

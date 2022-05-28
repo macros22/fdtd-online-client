@@ -406,6 +406,8 @@ const Simulation: React.FC<SimulationProps> = ({
                     dataX={allData2D.dataX}
                     dataY={allData2D.dataY}
                     dataVal={allData2D.dataVal}
+                    srcPositionRelativeX={srcPositionRelativeX}
+                    srcPositionRelativeY={srcPositionRelativeY}
                   />
                 </Paper>
                 <Paper>
