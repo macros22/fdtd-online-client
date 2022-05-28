@@ -1,14 +1,7 @@
 import React from 'react';
-import { defaultGradient as dGradient } from 'utils/default-gradient';
+import { defaultGradient  } from 'utils/default-gradient';
 import { ColorBarProps } from './ColorBar.props';
 
-const defaultGradient: { [key: string]: string } = dGradient || {
-  0: 'blue',
-  0.4: 'cyan',
-  0.5: 'lime',
-  0.6: 'yellow',
-  1.0: 'red',
-};
 
 const ColorBar: React.FC<ColorBarProps> = ({
   gradientWidth,
@@ -35,20 +28,17 @@ const ColorBar: React.FC<ColorBarProps> = ({
       let ctx: CanvasRenderingContext2D | null =
         canvas.getContext('2d') || null;
 
-      // Создание линейного градиента
-      // Точка начала линии градиента: x=20, y=0
-      // Точка конца линии градиента: x=220, y=0
+    
       if (ctx) {
-        // let gradient = ctx.createLinearGradient(70, 0, 220, 0);
+  
         let gradient = ctx.createLinearGradient(0, 0, 0, height);
 
-        // Добавление трёх контрольных точек
+        // Add main points.
         const grad = defaultGradient;
         for (let i in grad) {
           gradient.addColorStop(+i, grad[i]);
         }
 
-        // Установка стиля заливки и отрисовка прямоугольника градиента
         ctx.fillStyle = gradient;
         ctx.fillRect(numberSpaceWidth, 0, gradientWidth, gradientHeight);
 
@@ -57,6 +47,7 @@ const ColorBar: React.FC<ColorBarProps> = ({
         ctx.textAlign = 'right';
         ctx.font = '12pt Roboto bold';
         ctx.fillStyle = '#4a4a4a';
+        
         // ctx.textBaseline = 'middle';
         const tY = (y: number) => height - y;
         for (let y = 0; y <= height; y += INTERVAL_Y) {

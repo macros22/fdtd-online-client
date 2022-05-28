@@ -61,27 +61,31 @@ const MatrixEditor: React.FC<MatrixEditorProps> = ({ setIsOpened }) => {
 
       <div className={styles.modalWrapper}>
         <div className={styles.matrixPicker}>
-          <h2>Matrix picker</h2>
-
-          <div className={styles.matrixPreview}>
+          <h2 className={styles.title}>Matrix picker</h2>
+          <hr/>
             {configMaterialSet.map((material, index) => (
-              <div onClick={() => previewMaterialConfigHandler(index)}>
-                <>
+              <>
+              <div onClick={() => previewMaterialConfigHandler(index)}
+              style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+               
                   <h4>{material.name}</h4>
-                  <div style={{ width: 180 }}>
+                  <div style={{ width: 280 }}>
                     <PreviewMatrix
                       key={index + material.simulationDimension}
                       simulationDimension={material.simulationDimension}
                       materialMatrix={material.materialMatrix}
                     />
                   </div>
-                </>
+  
+                
               </div>
+              <hr/>
+              </>
             ))}
-          </div>
+         
         </div>
         <div className={styles.editor}>
-          <h2>Editor</h2>
+          <h2 className={styles.title}>Material editor</h2>
           {/* Editor start */}
           <hr />
           <EditorCanvas
@@ -98,7 +102,7 @@ const MatrixEditor: React.FC<MatrixEditorProps> = ({ setIsOpened }) => {
           </div>
         </div>
         <div className={styles.materialPicker}>
-          <h2>Material picker</h2>
+          <h2 className={styles.title}>Material picker</h2>
 
           <hr />
 
@@ -158,6 +162,7 @@ const MatrixEditor: React.FC<MatrixEditorProps> = ({ setIsOpened }) => {
                     }
                   />
                 </div>
+                <hr />
                 <hr />
                 <hr />
               </div>

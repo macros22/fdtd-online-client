@@ -37,19 +37,23 @@
   right: 0;
   top: 0;
   bottom: 0;
-  height: 90vh;
+  height: 95vh;
   width: 95wh;
   margin: auto;
   z-index: 1005;
   display: grid;
   grid-template-areas: 'matrixPicker editor materialPicker';
   grid-template-columns: repeat(3, 1fr);
-  column-gap: 2rem;
+  column-gap: 1.2rem;
   padding: 2rem;
   // place-items: center;
+  text-align: center;
+ 
 }
 
-
+.title {
+  margin: 0.75rem;
+}
 
 .matrixPicker {
   grid-area: matrixPicker;
@@ -61,6 +65,9 @@
   grid-gap: var(--space-sm);
   grid-template-columns: 1;
   overflow-y: auto;
+  overflow-x: hidden;
+
+  align-items: center;
 
   padding: var(--space-sm);
 }
@@ -87,6 +94,7 @@
   overflow-y: auto;
 
   padding: var(--space-sm);
+  overflow-x: hidden;
 }
 
 .oneMaterialPanel {
@@ -118,6 +126,6 @@
 
 .buttons {
   display: flex;
-  padding: 0.5rem;
+  padding: 1.5rem;
   justify-content: space-evenly;
 }

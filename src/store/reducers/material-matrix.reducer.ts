@@ -77,7 +77,34 @@ export const makeMatrixDifraction = (
   return materialMatrix;
 };
 
-export const makeZebra = (
+export const makeWaveGuide = (
+  countRow: number,
+  countCol: number,
+  materials: Material[]
+) => {
+  let materialMatrix: number[][] = [];
+
+
+  // Empty material matrix(only with base material).
+  for (let i = 0; i < countRow; i++) {
+    materialMatrix[i] = [];
+    for (let j = 0; j < countCol; j++) {
+      materialMatrix[i][j] = materials[0].id;
+    }
+  }
+
+  // Make wave guide borders
+  for (let j = 0; j < countCol; j++) {
+    const upBorder = Math.floor(countRow * 0.4)
+    const downBorder = Math.floor(countRow * 0.6)
+    materialMatrix[upBorder][j] = materials[2].id;
+    materialMatrix[downBorder][j] = materials[2].id;
+  }
+
+  return materialMatrix;
+};
+
+export const makeBarrier = (
   countRow: number,
   countCol: number,
   materials: Material[]
@@ -87,10 +114,10 @@ export const makeZebra = (
   for (let i = 0; i < countRow; i++) {
     materialMatrix[i] = [];
     for (let j = 0; j < countCol; j++) {
-      if (j % 2 === 0) {
-        materialMatrix[i][j] = materials[0].id;
-      } else {
+      if (j > countCol*0.5 && j < countCol*0.75) {
         materialMatrix[i][j] = materials[1].id;
+      } else {
+        materialMatrix[i][j] = materials[0].id;
       }
     }
   }
@@ -133,19 +160,19 @@ const fillMaterialMatrixes2D = (
 ): ConfigMaterial[] => {
   return [
     {
-      name: 'Default',
+      name: 'Default(empty)',
       simulationDimension: SimulationDimension.SIMULATION_2D,
       sourcePosition: [{ relativeX: 0.5, relativeY: 0.2 }],
       materialMatrix: makeMatrixEmpty(countRow, countCol, materials),
     },
     {
-      name: 'Interference',
+      name: 'Wave guide',
       simulationDimension: SimulationDimension.SIMULATION_2D,
       sourcePosition: [
         { relativeX: 0.5, relativeY: 0.2 },
         { relativeX: 0.3, relativeY: 0.5 },
       ],
-      materialMatrix: makeMatrixEmpty(countRow, countCol, materials),
+      materialMatrix: makeWaveGuide(countRow, countCol, materials),
     },
     {
       name: 'Difraction',
@@ -169,16 +196,16 @@ const fillMaterialMatrixes1D = (
 ): ConfigMaterial[] => {
   return [
     {
-      name: 'Default',
+      name: 'Default(empty)',
       simulationDimension: SimulationDimension.SIMULATION_1D,
       sourcePosition: [{ relativeX: 0.5, relativeY: 0 }],
       materialMatrix: makeMatrixEmpty(1, countCol, materials),
     },
     {
-      name: 'Zebra',
+      name: 'Barrier',
       simulationDimension: SimulationDimension.SIMULATION_1D,
       sourcePosition: [{ relativeX: 0.1, relativeY: 0.2 }],
-      materialMatrix: makeZebra(countRow, countCol, materials),
+      materialMatrix: makeBarrier(countRow, countCol, materials),
     },
   ];
 };
@@ -205,7 +232,7 @@ const materials = [
   {
     name: 'Material 3',
     id: 2,
-    eps: 4.6,
+    eps: 40.6,
     mu: 1,
     sigma: 0.02,
     color: '#1a52aa',
