@@ -25,7 +25,11 @@ import PreviewMatrix from './PreviewMatrixEditor';
 import { selectCurrentSimulationDimension } from 'store/reducers/app-config.reducer';
 import { colors } from './colors';
 
-const MatrixEditor: React.FC<MatrixEditorProps> = ({ setIsOpened }) => {
+const MatrixEditor: React.FC<MatrixEditorProps> = ({
+  setIsOpened,
+  srcPositionRelativeX,
+  srcPositionRelativeY,
+}) => {
   const dispatch = useAppDispatch();
   const currentSimulationDimension = useAppSelector(
     selectCurrentSimulationDimension
@@ -62,27 +66,31 @@ const MatrixEditor: React.FC<MatrixEditorProps> = ({ setIsOpened }) => {
       <div className={styles.modalWrapper}>
         <div className={styles.matrixPicker}>
           <h2 className={styles.title}>Matrix picker</h2>
-          <hr/>
-            {configMaterialSet.map((material, index) => (
-              <>
-              <div onClick={() => previewMaterialConfigHandler(index)}
-              style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-               
-                  <h4>{material.name}</h4>
-                  <div style={{ width: 280 }}>
-                    <PreviewMatrix
-                      key={index + material.simulationDimension}
-                      simulationDimension={material.simulationDimension}
-                      materialMatrix={material.materialMatrix}
-                    />
-                  </div>
-  
-                
+          <hr />
+          {configMaterialSet.map((material, index) => (
+            <>
+              <div
+                onClick={() => previewMaterialConfigHandler(index)}
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                }}
+              >
+                <h4>{material.name}</h4>
+                <div style={{ width: 280 }}>
+                  <PreviewMatrix
+                    key={index + material.simulationDimension}
+                    simulationDimension={material.simulationDimension}
+                    materialMatrix={material.materialMatrix}
+                    srcPositionRelativeX={srcPositionRelativeX}
+                    srcPositionRelativeY={srcPositionRelativeY}
+                  />
+                </div>
               </div>
-              <hr/>
-              </>
-            ))}
-         
+              <hr />
+            </>
+          ))}
         </div>
         <div className={styles.editor}>
           <h2 className={styles.title}>Material editor</h2>
@@ -92,6 +100,8 @@ const MatrixEditor: React.FC<MatrixEditorProps> = ({ setIsOpened }) => {
             width={400}
             height={400}
             currentMaterial={currentMaterial}
+            srcPositionRelativeX={srcPositionRelativeX}
+            srcPositionRelativeY={srcPositionRelativeY}
           />
           {/* Editor end */}
 

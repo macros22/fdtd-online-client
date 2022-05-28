@@ -199,13 +199,13 @@ export class HeatMapBuilder {
             ctx.putImageData(colored, 0, 0);
 
             // Draw source position.
-            ctx.beginPath();
-            ctx.fillStyle = "blue";
-            ctx.globalAlpha= 0.65;
-            const radius = 14;
-            ctx.arc(this.width*this.srcPositionRelativeX, this.height - this.height*this.srcPositionRelativeY, radius, 0, 2 * Math.PI);
-            ctx.fill();
-            ctx.closePath();
+            // ctx.beginPath();
+            // ctx.fillStyle = "blue";
+            // ctx.globalAlpha= 0.65;
+            // const radius = 14;
+            // ctx.arc(this.width*this.srcPositionRelativeX, this.height - this.height*this.srcPositionRelativeY, radius, 0, 2 * Math.PI);
+            // ctx.fill();
+            // ctx.closePath();
 
 
         }

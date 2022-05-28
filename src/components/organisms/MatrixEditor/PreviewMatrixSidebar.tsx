@@ -5,16 +5,23 @@ import {
   setCurrentMaterialMatrix,
   setMaterialMatrixSize,
 } from 'store/reducers/material-matrix.reducer';
-import React from 'react';
+import React, { DetailedHTMLProps, HTMLAttributes } from 'react';
 import MatrixEditor from './MatrixEditor';
 import PreviewMatrix from './PreviewMatrixEditor';
 import { selectCurrentSimulationDimension } from 'store/reducers/app-config.reducer';
 import { SimulationDimension } from 'types/types';
 import { Button } from 'components';
 
-type PreviewMatrixSidebarProps = {};
+export interface PreviewMatrixSidebarProps
+  extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
+  srcPositionRelativeX: number;
+  srcPositionRelativeY: number;
+}
 
-const PreviewMatrixSidebar: React.FC<PreviewMatrixSidebarProps> = () => {
+const PreviewMatrixSidebar: React.FC<PreviewMatrixSidebarProps> = ({
+  srcPositionRelativeX,
+  srcPositionRelativeY
+}) => {
   const dispatch = useAppDispatch();
 
   const currentSimulationDimension = useAppSelector(
@@ -39,6 +46,8 @@ const PreviewMatrixSidebar: React.FC<PreviewMatrixSidebarProps> = () => {
       <PreviewMatrix
         simulationDimension={currentSimulationDimension}
         materialMatrix={materialMatrix}
+        srcPositionRelativeX={srcPositionRelativeX}
+        srcPositionRelativeY={srcPositionRelativeY}
       />
       <Button
         className={styles.triggerMatrixBtn}
@@ -47,7 +56,13 @@ const PreviewMatrixSidebar: React.FC<PreviewMatrixSidebarProps> = () => {
         Edit material
       </Button>
 
-      {isOpened && <MatrixEditor setIsOpened={setIsOpend} />}
+      {isOpened && (
+        <MatrixEditor
+          setIsOpened={setIsOpend}
+          srcPositionRelativeX={srcPositionRelativeX}
+          srcPositionRelativeY={srcPositionRelativeY}
+        />
+      )}
     </>
   );
 };

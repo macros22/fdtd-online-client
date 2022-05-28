@@ -15,12 +15,16 @@ type EditorCanvasProps = {
   width: number;
   height: number;
   currentMaterial: number;
+  srcPositionRelativeX:number,
+  srcPositionRelativeY:number,
 };
 
 const EditorCanvas: React.FC<EditorCanvasProps> = ({
   width,
   height,
   currentMaterial,
+  srcPositionRelativeX,
+  srcPositionRelativeY,
 }) => {
   // Matrix sizes.
   //   const width = 400;
@@ -107,6 +111,7 @@ const EditorCanvas: React.FC<EditorCanvasProps> = ({
   const draw: drawType = (ctx) => {
     drawRect(ctx, 0, 0, colors[0], width, height);
     drawMatrix(ctx, materialMatrix);
+    drawCircle(ctx, srcPositionRelativeX*width, srcPositionRelativeY*height, 'blue');
 
     if (!mousePressed) {
       drawRect(
@@ -118,6 +123,26 @@ const EditorCanvas: React.FC<EditorCanvasProps> = ({
         rectheight
       );
     }
+  };
+
+  const drawCircle = (
+    ctx: CanvasRenderingContext2D,
+    x: number,
+    y: number,
+    color: string = 'black',
+    scaleX: number = 1,
+    scaleY: number = 1,
+    radius: number = 10
+  ) => {
+    // ctx.lineWidth = width;
+    // ctx.strokeStyle = color;
+    ctx.fillStyle = color;
+    // ctx.globalAlpha = 0.3;
+    ctx.beginPath();
+
+    ctx.arc(x * scaleX, height -(y * scaleY), radius, 0, 2 * Math.PI);
+    ctx.fill();
+    // ctx.closePath();
   };
 
   React.useEffect(() => {

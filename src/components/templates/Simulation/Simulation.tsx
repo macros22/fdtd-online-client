@@ -143,8 +143,8 @@ const Simulation: React.FC<SimulationProps> = ({
   // const matrix = useAppSelector(selectEpsilonMatrix);
 
   // For 2D.
-  const [maxVal, setMaxVal] = React.useState(0.04);
-  const [minVal, setMinVal] = React.useState(-0.06);
+  const [maxVal, setMaxVal] = React.useState(0.02);
+  const [minVal, setMinVal] = React.useState(-0.02);
 
   // For 1D
   const [minX, setMinX] = React.useState<number>(0);
@@ -174,7 +174,7 @@ const Simulation: React.FC<SimulationProps> = ({
       socket.onmessage = (event: any) => {
         let data = JSON.parse(event.data);
         setStep(data.step || 0);
-        
+
         if (currentSimulationDimension == SimulationDimension.SIMULATION_1D) {
           const tmpdata2DChart: DataChartType = [];
           for (let i = 0; i < data.col; i++) {
@@ -257,7 +257,9 @@ const Simulation: React.FC<SimulationProps> = ({
         condition: [lambda, beamsize],
         materialMatrix,
         materials: transformMaterialForBackend(materials),
-        srcPositionRelative: [{ x: srcPositionRelativeX, y: srcPositionRelativeY }],
+        srcPositionRelative: [
+          { x: srcPositionRelativeX, y: 1 - srcPositionRelativeY },
+        ],
       };
     }
     if (socket) {
@@ -285,7 +287,7 @@ const Simulation: React.FC<SimulationProps> = ({
         condition: [lambda, beamsize],
         materialMatrix,
         materials: transformMaterialForBackend(materials),
-        srcPositionRelative: [{ x: srcPositionRelativeX, y: srcPositionRelativeY }],
+        srcPositionRelative: [{ x: srcPositionRelativeX, y: 0 }],
       };
     } else {
       message = {
@@ -295,7 +297,9 @@ const Simulation: React.FC<SimulationProps> = ({
         condition: [lambda, beamsize],
         materialMatrix,
         materials: transformMaterialForBackend(materials),
-        srcPositionRelative: [{ x: srcPositionRelativeX, y: srcPositionRelativeY }],
+        srcPositionRelative: [
+          { x: srcPositionRelativeX, y: 1 - srcPositionRelativeY },
+        ],
       };
     }
     if (socket !== null) {
@@ -387,7 +391,10 @@ const Simulation: React.FC<SimulationProps> = ({
           )}
 
           <WithLabel labelText='Material matrix:'>
-            <PreviewMatrixSidebar />
+            <PreviewMatrixSidebar
+              srcPositionRelativeX={srcPositionRelativeX}
+              srcPositionRelativeY={srcPositionRelativeY}
+            />
           </WithLabel>
         </Sidebar>
 
