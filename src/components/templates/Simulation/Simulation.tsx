@@ -285,7 +285,7 @@ const Simulation: React.FC<SimulationProps> = ({
         condition: [lambda, beamsize],
         materialMatrix,
         materials: transformMaterialForBackend(materials),
-        srcPositionRelative: [{ x: 0.5, y: 0.5 }],
+        srcPositionRelative: [{ x: srcPositionRelativeX, y: srcPositionRelativeY }],
       };
     } else {
       message = {
@@ -295,7 +295,7 @@ const Simulation: React.FC<SimulationProps> = ({
         condition: [lambda, beamsize],
         materialMatrix,
         materials: transformMaterialForBackend(materials),
-        srcPositionRelative: [{ x: 0.5, y: 0.5 }],
+        srcPositionRelative: [{ x: srcPositionRelativeX, y: srcPositionRelativeY }],
       };
     }
     if (socket !== null) {
