@@ -13,10 +13,12 @@ import EditorCanvas from './EditorCanvas';
 import {
   ConfigMaterial,
   selectConfigMaterialSet,
+  selectCurrentMaterialMatrixConfigInSet,
   selectMaterialMatrixCountCol,
   selectMaterialMatrixCountRow,
   selectMaterials,
   setCurrentMaterialMatrix,
+  setMaterialMatrixSize,
   updateMaterialEps,
   updateMaterialMu,
   updateMaterialSigma,
@@ -24,6 +26,9 @@ import {
 import PreviewMatrix from './PreviewMatrixEditor';
 import { selectCurrentSimulationDimension } from 'store/reducers/app-config.reducer';
 import { colors } from './colors';
+
+const gridSizes1D = [5, 50, 100, 200];
+const gridSizes2D = [11, 55, 110, 220];
 
 const MatrixEditor: React.FC<MatrixEditorProps> = ({
   setIsOpened,
@@ -36,6 +41,10 @@ const MatrixEditor: React.FC<MatrixEditorProps> = ({
   );
 
   const materials = useAppSelector(selectMaterials);
+
+  const currentMaterialMatrixConfigInSet = useAppSelector(
+    selectCurrentMaterialMatrixConfigInSet
+  );
 
   const countRow = useAppSelector(selectMaterialMatrixCountRow);
   const countCol = useAppSelector(selectMaterialMatrixCountCol);
@@ -106,10 +115,53 @@ const MatrixEditor: React.FC<MatrixEditorProps> = ({
           {/* Editor end */}
 
           <div className={styles.buttons}>
-            <Button onClick={() => setIsOpened(false)}>
-              Back to Simulation
-            </Button>
+            {currentSimulationDimension === SimulationDimension.SIMULATION_1D
+              ? gridSizes1D.map((size) => {
+                  return (
+                    <Button
+                      onClick={() => {
+                        dispatch(
+                          setMaterialMatrixSize({
+                            newCountRow: 1,
+                            newCountCol: size,
+                          })
+                        );
+                        dispatch(
+                          setCurrentMaterialMatrix({
+                            currentMaterialMatrixConfigInSet,
+                          })
+                        );
+                      }}
+                    >
+                      {size}
+                    </Button>
+                  );
+                })
+              : gridSizes2D.map((size) => {
+                  return (
+                    <Button
+                      onClick={() => {
+                        dispatch(
+                          setMaterialMatrixSize({
+                            newCountRow: size,
+                            newCountCol: size,
+                          })
+                        );
+                        dispatch(
+                          setCurrentMaterialMatrix({
+                            currentMaterialMatrixConfigInSet,
+                          })
+                        );
+                      }}
+                    >
+                      {size}
+                    </Button>
+                  );
+                })}
           </div>
+        </div>
+        <div className={styles.backButton}>
+          <Button onClick={() => setIsOpened(false)}>Back to Simulation</Button>
         </div>
         <div className={styles.materialPicker}>
           <h2 className={styles.title}>Material picker</h2>

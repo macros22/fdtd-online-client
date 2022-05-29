@@ -42,9 +42,12 @@
   margin: auto;
   z-index: 1005;
   display: grid;
-  grid-template-areas: 'matrixPicker editor materialPicker';
+  grid-template-areas: 'matrixPicker editor materialPicker'
+                       'matrixPicker backButton materialPicker';
   grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: auto;
   column-gap: 1.2rem;
+  // row-gap: 1.2rem;
   padding: 2rem;
   // place-items: center;
   text-align: center;
@@ -53,6 +56,11 @@
 
 .title {
   margin: 0.75rem;
+}
+
+.backButton {
+  grid-area: backButton;
+  background-color: rgb(255, 255, 255);
 }
 
 .matrixPicker {
