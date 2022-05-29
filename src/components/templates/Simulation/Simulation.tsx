@@ -104,6 +104,7 @@ const Simulation: React.FC<SimulationProps> = ({
   }, []);
 
   React.useEffect(() => {
+    stopSimulation();
     resizePlot();
   }, [currentSimulationDimension]);
 
@@ -156,7 +157,7 @@ const Simulation: React.FC<SimulationProps> = ({
   for (let i = 0; i < plotWidth * 0.9; i += 10) {
     data1DChart.push({
       x: i,
-      y: Math.random() * plotHeight * 0.8 + 20,
+      y: i//Math.random()* (minY + maxY) + minY,
     });
   }
   const [allData1D, setAllData1D] = React.useState<DataChartType>(data1DChart);
@@ -174,7 +175,9 @@ const Simulation: React.FC<SimulationProps> = ({
       socket.onmessage = (event: any) => {
         let data = JSON.parse(event.data);
         setStep(data.step || 0);
+        
 
+        console.log(data)
         if (currentSimulationDimension == SimulationDimension.SIMULATION_1D) {
           const tmpdata2DChart: DataChartType = [];
           for (let i = 0; i < data.col; i++) {
@@ -185,7 +188,7 @@ const Simulation: React.FC<SimulationProps> = ({
           }
           setMinX(Math.min(...data.dataX));
           setMaxX(Math.max(...data.dataX));
-
+          
           const maxYServer = Math.max(...data.dataY);
           const minYServer = Math.min(...data.dataY);
           if (maxYServer > maxY) {
@@ -194,8 +197,8 @@ const Simulation: React.FC<SimulationProps> = ({
           if (minYServer < minY) {
             setMinY(minYServer);
           }
-          // setMaxY(maxYServer);
-          // setMinY(minYServer);
+          setMaxY(maxYServer);
+          setMinY(minYServer);
           setAllData1D(tmpdata2DChart);
         } else {
           if (data.step > 20 && data.max > maxVal) {
@@ -311,6 +314,7 @@ const Simulation: React.FC<SimulationProps> = ({
     connectWS();
     return () => {
       if (socket !== null) {
+        stopSimulation();
         socket.close(1000, 'Socket work end');
       }
     };
@@ -332,13 +336,17 @@ const Simulation: React.FC<SimulationProps> = ({
     }
   };
 
-  const clickStopBtnHandler = (e: React.MouseEvent) => {
+  const stopSimulation = () => {
     if (simulation) {
       pauseDataReceiving();
       setPause(false);
       setSimulation(false);
       setStep(0);
     }
+  }
+
+  const clickStopBtnHandler = (e: React.MouseEvent) => {
+    stopSimulation();
   };
 
   return (
@@ -451,7 +459,7 @@ const Simulation: React.FC<SimulationProps> = ({
         </div>
 
         <Sidebar className={styles.sidebarRight}>
-          {currentSimulationDimension !== SimulationDimension.SIMULATION_1D && (
+          {currentSimulationDimension == SimulationDimension.SIMULATION_2D && (
             <>
               <WithLabel labelText='Choose data type:'>
                 <ButtonGroup activeButton={currentDisplayingData}>

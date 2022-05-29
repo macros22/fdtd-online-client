@@ -3,7 +3,7 @@
 import * as React from 'react';
 import styles from './MatrixEditor.module.scss';
 import { MatrixEditorProps } from './MatrixEditor.props';
-import { Button, NumberInput } from 'components';
+import { Button, ButtonGroup, NumberInput, WithLabel } from 'components';
 import { useAppDispatch, useAppSelector } from 'store/hooks';
 import { SimulationDimension } from 'types/types';
 
@@ -35,6 +35,9 @@ const MatrixEditor: React.FC<MatrixEditorProps> = ({
   srcPositionRelativeX,
   srcPositionRelativeY,
 }) => {
+
+  const [currentMatrixSizeIndex, setCurrentMatrixSizeIndex] = React.useState(1);
+
   const dispatch = useAppDispatch();
   const currentSimulationDimension = useAppSelector(
     selectCurrentSimulationDimension
@@ -115,32 +118,39 @@ const MatrixEditor: React.FC<MatrixEditorProps> = ({
           {/* Editor end */}
 
           <div className={styles.buttons}>
-            {currentSimulationDimension === SimulationDimension.SIMULATION_1D
-              ? gridSizes1D.map((size) => {
+  
+                <WithLabel labelText='Choose matrix size:'>
+                <ButtonGroup activeButton={currentMatrixSizeIndex}>
+                {currentSimulationDimension === SimulationDimension.SIMULATION_1D
+                  ? gridSizes1D.map((size, index) => {
+                    return (
+                      <button
+                        key={size}
+                        onClick={() => {
+                          setCurrentMatrixSizeIndex(index);
+                          dispatch(
+                            setMaterialMatrixSize({
+                              newCountRow: 1,
+                              newCountCol: size,
+                            })
+                          );
+                          dispatch(
+                            setCurrentMaterialMatrix({
+                              currentMaterialMatrixConfigInSet,
+                            })
+                          );
+                        }}
+                      >
+                        {size}
+                      </button>
+                    );
+                  })
+                : gridSizes2D.map((size, index) => {
                   return (
-                    <Button
+                    <button
+                      key={size}
                       onClick={() => {
-                        dispatch(
-                          setMaterialMatrixSize({
-                            newCountRow: 1,
-                            newCountCol: size,
-                          })
-                        );
-                        dispatch(
-                          setCurrentMaterialMatrix({
-                            currentMaterialMatrixConfigInSet,
-                          })
-                        );
-                      }}
-                    >
-                      {size}
-                    </Button>
-                  );
-                })
-              : gridSizes2D.map((size) => {
-                  return (
-                    <Button
-                      onClick={() => {
+                        setCurrentMatrixSizeIndex(index);
                         dispatch(
                           setMaterialMatrixSize({
                             newCountRow: size,
@@ -155,14 +165,17 @@ const MatrixEditor: React.FC<MatrixEditorProps> = ({
                       }}
                     >
                       {size}
-                    </Button>
+                    </button>
                   );
                 })}
+                </ButtonGroup>
+              </WithLabel>
+              <hr />
+
+                 <Button style={{marginTop: "1rem"}} onClick={() => setIsOpened(false)}>Back to Simulation</Button>
           </div>
         </div>
-        <div className={styles.backButton}>
-          <Button onClick={() => setIsOpened(false)}>Back to Simulation</Button>
-        </div>
+        
         <div className={styles.materialPicker}>
           <h2 className={styles.title}>Material picker</h2>
 

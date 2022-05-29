@@ -37,18 +37,16 @@
   right: 0;
   top: 0;
   bottom: 0;
-  height: 95vh;
-  width: 95wh;
-  margin: auto;
+  height: 90vh;
+  width: 90wh;
+  margin: 2rem;
   z-index: 1005;
   display: grid;
-  grid-template-areas: 'matrixPicker editor materialPicker'
-                       'matrixPicker backButton materialPicker';
+  grid-template-areas: 'matrixPicker editor materialPicker';
   grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: auto;
+  
   column-gap: 1.2rem;
-  // row-gap: 1.2rem;
-  padding: 2rem;
+  // padding: 1rem;
   // place-items: center;
   text-align: center;
  
@@ -58,14 +56,11 @@
   margin: 0.75rem;
 }
 
-.backButton {
-  grid-area: backButton;
-  background-color: rgb(255, 255, 255);
-}
 
 .matrixPicker {
   grid-area: matrixPicker;
   height: 100%;
+  width: 100%;
   background-color: rgb(255, 255, 255);
 
   display: grid;
@@ -93,6 +88,7 @@
 .materialPicker {
   grid-area: materialPicker;
   height: 100%;
+  width: 100%;
   background-color: rgb(255, 255, 255);
 
   display: grid;
@@ -134,6 +130,51 @@
 
 .buttons {
   display: flex;
-  padding: 1.5rem;
-  justify-content: space-evenly;
+  flex-direction: column;
+  padding: 1rem;
+  justify-content: space-between;
+  // justify-content: space-evenly;
+}
+
+
+@media (max-width:1100px){
+
+  .modalWrapper {
+
+    // position:sticky;
+    // position: fixed;
+    // left: 0;
+    // right: 0;
+    // top: 0;
+    // bottom: 0;
+    // height: 90vh;
+    height: 100%;
+  width: min-content;
+  background-color: rgb(255, 255, 255);
+
+  display: grid;
+  grid-auto-rows: min-content;
+  grid-gap: var(--space-sm);
+  grid-template-columns: 1;
+  overflow-y: auto;
+
+  padding: var(--space-md);
+  overflow-x: hidden;
+
+ 
+    margin: 2rem;
+    z-index: 1005;
+   
+    grid-template-areas: 'editor' 
+                          'matrixPicker' 
+                         'materialPicker';
+    // grid-template-rows: repeat(3, 1fr);
+    
+   
+    // padding: 1rem;
+    // place-items: center;
+    text-align: center;
+  
+   
+  }
 }
