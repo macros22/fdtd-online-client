@@ -145,8 +145,8 @@ const Simulation: React.FC<SimulationProps> = ({
   // const matrix = useAppSelector(selectEpsilonMatrix);
 
   // For 2D.
-  const [maxVal, setMaxVal] = React.useState(0.02);
-  const [minVal, setMinVal] = React.useState(-0.02);
+  const [maxVal, setMaxVal] = React.useState(0.04);
+  const [minVal, setMinVal] = React.useState(-0.04);
 
   // For 1D
   const [minX, setMinX] = React.useState<number>(0);
@@ -198,14 +198,14 @@ const Simulation: React.FC<SimulationProps> = ({
           if (minYServer < minY) {
             setMinY(minYServer);
           }
-          setMaxY(maxYServer);
-          setMinY(minYServer);
+          // setMaxY(maxYServer);
+          // setMinY(minYServer);
           setAllData1D(tmpdata2DChart);
         } else {
-          if (data.step > 20 && data.max > maxVal) {
+          if (data.step > 5 && data.max > maxVal) {
             setMaxVal(data.max);
           }
-          if (data.step > 20 && data.min < minVal) {
+          if (data.step > 5 && data.min < minVal) {
             setMinVal(data.min);
           }
 
@@ -357,7 +357,7 @@ const Simulation: React.FC<SimulationProps> = ({
           <NumberInput
             value={typeof lambda === 'number' ? lambda : 0}
             label={WAVE_LENGTH_NAME}
-            onChange={(e) => setLambda(+e.target.value)}
+            onChange={(e) => setLambda(parseInt(e.target.value))}
           />
 
           <hr />
@@ -366,13 +366,13 @@ const Simulation: React.FC<SimulationProps> = ({
             <NumberInput
               label={BEAMSIZE_NAME}
               value={beamsize}
-              onChange={(e) => setBeamsize(+e.target.value)}
+              onChange={(e) => setBeamsize(parseInt(e.target.value))}
             />
           ) : (
             <NumberInput
               label={BEAMSIZE_NAME}
               value={tau}
-              onChange={(e) => setTau(+e.target.value)}
+              onChange={(e) => setTau(parseInt(e.target.value))}
             />
           )}
 
