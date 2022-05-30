@@ -1,5 +1,5 @@
 import React from 'react';
-import { DataChartType } from 'types/lab1';
+import { Plot1DProps } from './Plot1D.props';
 import useCanvas, { drawType } from './useCanvas';
 
 // https://medium.com/@pdx.lucasm/canvas-with-react-js-32e133c05258
@@ -7,19 +7,9 @@ import useCanvas, { drawType } from './useCanvas';
 // Line chart tutorial.
 // https://www.c-sharpcorner.com/UploadFile/18ddf7/html5-line-graph-using-canvas/
 
-type ImageCanvasProps = {
-  data: DataChartType;
-  maxX: number;
-  maxY: number;
-  minX: number;
-  minY: number;
-  WIDTH: number;
-  HEIGHT: number;
-  epsilonData: number[];
-  srcPositionRelative: number;
-};
 
-const ImageCanvas: React.FC<ImageCanvasProps> = ({
+
+const Plot1D: React.FC<Plot1DProps> = ({
   data,
   maxX,
   maxY,
@@ -112,23 +102,30 @@ const ImageCanvas: React.FC<ImageCanvasProps> = ({
     ctx.moveTo(chartX0, tY(chartY0));
     ctx.lineTo(chartX0, tY(chartY0 + CHART_HEIGHT));
 
-    ctx.lineWidth = 2;
+    ctx.setLineDash([2]);
+    ctx.lineWidth = 1;
+    ctx.strokeStyle = 'rgba(0,0,0,0.1)';
 
     // Draw Ox tick marks.
     for (let x = chartX0; x <= chartX0 + CHART_WIDTH; x += INTERVAL_X) {
+      // ctx.moveTo(x, tY(chartY0) - TICK_MARKS_HEIGHT / 2);
+      // ctx.lineTo(x, tY(chartY0) + TICK_MARKS_HEIGHT / 2);
       ctx.moveTo(x, tY(chartY0) - TICK_MARKS_HEIGHT / 2);
-      ctx.lineTo(x, tY(chartY0) + TICK_MARKS_HEIGHT / 2);
+      ctx.lineTo(x, tY(chartY0 + CHART_HEIGHT));
     }
+    
 
     // Draw Oy tick marks.
     for (let y = chartY0; y <= chartY0 + CHART_HEIGHT; y += INTERVAL_Y) {
+      // ctx.moveTo(chartX0 - TICK_MARKS_HEIGHT / 2, tY(y));
+      // ctx.lineTo(chartX0 + TICK_MARKS_HEIGHT / 2, tY(y));
       ctx.moveTo(chartX0 - TICK_MARKS_HEIGHT / 2, tY(y));
-      ctx.lineTo(chartX0 + TICK_MARKS_HEIGHT / 2, tY(y));
+      ctx.lineTo(chartX0 + CHART_WIDTH, tY(y));
     }
-
-    // set line color
-    ctx.strokeStyle = '#ccc';
     ctx.stroke();
+    // set line color
+    
+    // ctx.stroke();
     // ctx.arc(50, 100, 40 * Math.sin(frameCount * 0.025) ** 2, 0, 3 * Math.PI);
     // ctx.fill();
 
@@ -139,8 +136,8 @@ const ImageCanvas: React.FC<ImageCanvasProps> = ({
 
     // Draw Ox tick marks numbers.
     ctx.textAlign = 'center';
-    for (let x = chartX0; x <= chartX0 + CHART_WIDTH; x += INTERVAL_X * 2) {
-      const label = String(Math.round(x - chartX0));
+    for (let x = chartX0; x < chartX0 + CHART_WIDTH; x += INTERVAL_X * 2) {
+      const label = String(Math.round((x - chartX0)).toFixed());
       // const label2 = data[0].x;
       ctx.save();
       ctx.translate(x, tY(chartY0 - PADDING * 3));
@@ -155,13 +152,15 @@ const ImageCanvas: React.FC<ImageCanvasProps> = ({
     // Draw Oy tick marks numbers.
     ctx.textAlign = 'right';
     for (let y = chartY0; y <= chartY0 + CHART_HEIGHT; y += INTERVAL_Y * 2) {
-      const label = (y0 + y).toFixed() + '';
+      const label = ((y0 + y)/scaleY).toFixed(2) + '';
       ctx.save();
       ctx.translate(chartX0 - PADDING * 2, tY(y));
       ctx.fillText(label, 0, 0);
       ctx.restore();
     }
     ctx.restore();
+
+    ctx.setLineDash([]);
 
     // console.log(data)
     if(data[0])
@@ -223,6 +222,7 @@ const ImageCanvas: React.FC<ImageCanvasProps> = ({
       ctx.beginPath();
       // console.log(y0, chartY0);
       ctx.moveTo(chartX0 + point.x * scaleX, tY(y0 + point.y * scaleY));
+      ctx.closePath();
     }
     ctx.restore();
   };
@@ -277,4 +277,4 @@ const Canvas: React.FC<CanvasProps> = ({ rest, draw, width, height }) => {
   return <canvas ref={canvasRef} {...rest} />;
 };
 
-export default ImageCanvas;
+export default Plot1D;

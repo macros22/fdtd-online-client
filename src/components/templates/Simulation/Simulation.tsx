@@ -18,7 +18,7 @@ import {
   ButtonGroup,
   Button,
   WithLabel,
-  Canvas,
+  Plot1D,
   InputRange,
 } from 'components';
 
@@ -439,7 +439,7 @@ const Simulation: React.FC<SimulationProps> = ({
             ) : (
               <div className={styles.graph1D}>
                 <Paper>
-                  <Canvas
+                  <Plot1D
                     data={allData1D}
                     minY={minY}
                     minX={minX}

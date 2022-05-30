@@ -1,6 +1,6 @@
 import React from 'react';
 import { DataChartType } from 'types/lab1';
-import useCanvas, { drawType } from '../../molecules/Canvas/useCanvas';
+import useCanvas, { drawType } from '../../molecules/Plot1D/useCanvas';
 
 // https://medium.com/@pdx.lucasm/canvas-with-react-js-32e133c05258
 
