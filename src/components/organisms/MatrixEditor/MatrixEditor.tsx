@@ -175,7 +175,7 @@ const MatrixEditor: React.FC<MatrixEditorProps> = ({
             <hr />
 
             <Button
-              style={{ marginTop: '1rem' }}
+              style={{ marginTop: '.61rem' }}
               onClick={() => setIsOpened(false)}
             >
               Back to Simulation
@@ -243,7 +243,6 @@ const MatrixEditor: React.FC<MatrixEditorProps> = ({
                           })
                         )
                        
-                        console.log("changed conduct");
                       }
                       }
                     />

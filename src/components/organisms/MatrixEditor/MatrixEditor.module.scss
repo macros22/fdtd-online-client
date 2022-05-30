@@ -33,14 +33,15 @@
   right: 0;
   top: 0;
   bottom: 0;
-  height: 80vh;
-  width: 90wh;
-  margin: 1rem 2rem;
+  // height: 70vh;
+  // width: 90wh;
+  margin: 1.5rem 2rem;
   z-index: 1005;
   display: grid;
   grid-template-areas: 'matrixPicker editor materialPicker';
   grid-template-columns: repeat(3, 1fr);
 
+  overflow-y: auto;
   column-gap: 1.2rem;
 }
 
@@ -70,6 +71,7 @@
   background-color: rgb(255, 255, 255);
   overflow-y: auto;
   overflow-x: hidden;
+
 }
 
 .editor {
@@ -125,13 +127,14 @@
 @media (max-width: 1100px) {
   .modalWrapper {
     // position:sticky;
-    // position: fixed;
-    // left: 0;
-    // right: 0;
-    // top: 0;
-    // bottom: 0;
-    // height: 90vh;
-    height: 100%;
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    height: 90vh;
+    place-items: center;
+
     width: min-content;
     background-color: rgb(255, 255, 255);
 
@@ -151,10 +154,7 @@
       'editor'
       'matrixPicker'
       'materialPicker';
-    // grid-template-rows: repeat(3, 1fr);
-
-    // padding: 1rem;
-    // place-items: center;
+  
     text-align: center;
   }
 }
