@@ -105,6 +105,7 @@ const Simulation: React.FC<SimulationProps> = ({
 
   React.useEffect(() => {
     stopSimulation();
+    connectWS();
     resizePlot();
   }, [currentSimulationDimension]);
 
