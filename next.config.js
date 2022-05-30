@@ -24,4 +24,13 @@ module.exports = withMDX({
         // !! WARN !!
         ignoreBuildErrors: true,
     },
+    async redirects() {
+        return [
+          {
+            source: '/',
+            destination: '/simulation/1D',
+            permanent: true,
+          },
+        ]
+      },
 })
