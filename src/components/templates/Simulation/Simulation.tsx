@@ -116,6 +116,7 @@ const Simulation: React.FC<SimulationProps> = ({
   const [tau, setTau] = React.useState<number>(3);
 
   const [step, setStep] = React.useState<number>(0);
+  console.log(typeof setStep)
   const [simulation, setSimulation] = React.useState<boolean>(false);
   const [pause, setPause] = React.useState<boolean>(false);
 
@@ -345,7 +346,7 @@ const Simulation: React.FC<SimulationProps> = ({
       setStep(0);
     }
   }
-
+  // : React.FormEvent<HTMLInputElement>
   const clickStopBtnHandler = (e: React.MouseEvent) => {
     stopSimulation();
   };

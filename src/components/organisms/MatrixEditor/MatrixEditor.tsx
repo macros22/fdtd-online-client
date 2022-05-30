@@ -70,6 +70,7 @@ const MatrixEditor: React.FC<MatrixEditorProps> = ({
     selectConfigMaterialSet
   );
 
+
   return (
     <>
       <div className={styles.substrate}></div>
@@ -234,13 +235,16 @@ const MatrixEditor: React.FC<MatrixEditorProps> = ({
                     <NumberInput
                       value={material.sigma}
                       label={'conductivity'}
-                      onChange={(e) =>
+                      onChange={(e) => {
                         dispatch(
                           updateMaterialSigma({
                             materialId: material.id,
                             newSigma: +e.target.value,
                           })
                         )
+                       
+                        console.log("changed conduct");
+                      }
                       }
                     />
                   </div>

@@ -17,15 +17,40 @@ const NumberInput: React.FC<NumberInputProps> = ({
 
   const plusBtnHandler = () => {
     if (inputRef.current) {
-      inputRef.current.stepUp();
+      triggerInputChange(inputRef.current, (+value+1).toString())
     }
   };
 
   const minusBtnHandler = () => {
+    // if (inputRef.current) {
+    //   inputRef.current.stepDown();
+    // }
     if (inputRef.current) {
-      inputRef.current.stepDown();
+      triggerInputChange(inputRef.current, (+value-1).toString())
     }
   };
+
+  // Must be updated for actual React version
+  // https://stackoverflow.com/questions/39065010/why-react-event-handler-is-not-called-on-dispatchevent
+  const triggerInputChange = (node: HTMLInputElement, inputValue: string) => {
+    const descriptor = Object.getOwnPropertyDescriptor(node, 'value');
+
+    node.value = `${inputValue}#`;
+    
+    if (descriptor && descriptor.configurable) {
+      //@ts-ignore
+      delete node.value;
+    }
+    node.value = inputValue;
+
+    const e = document.createEvent('HTMLEvents');
+    e.initEvent('change', true, false);
+    node.dispatchEvent(e);
+
+    if (descriptor) {
+      Object.defineProperty(node, 'value', descriptor);
+    }
+};
 
   return (
     <WithLabel labelText={label} >
