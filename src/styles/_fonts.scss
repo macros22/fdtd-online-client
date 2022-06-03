@@ -3,8 +3,10 @@
   --text-scale-ratio: 1.2;
   --text-xs: calc((var(--text-base-size) * var(--text-scale-ratio) * 0.6));
   --text-sm: calc(var(--text-xs) * var(--text-scale-ratio));
-  --text-md: calc(
-    var(--text-sm) * var(--text-scale-ratio));
+  --text-md:
+    calc(
+      var(--text-sm) * var(--text-scale-ratio)
+    );
   --text-lg: calc(var(--text-md) * var(--text-scale-ratio));
   --text-xl: calc(var(--text-lg) * var(--text-scale-ratio));
   --text-xxl: calc(var(--text-xl) * var(--text-scale-ratio));

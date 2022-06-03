@@ -1,4 +1,4 @@
-import { Material } from 'store/reducers/material-matrix.reducer';
+import { Material } from "store/reducers/material-matrix.reducer";
 
 // export const make1DMatrixEmpty = (countRow: number, countCol: number, materials: Material[]) => {
 //   let materialMatrix: string[][] = [[]];
@@ -19,7 +19,7 @@ export const makeMatrixEmpty = (
   countCol: number,
   materials: Material[]
 ) => {
-  let materialMatrix: string[][] = [[]];
+  const materialMatrix: string[][] = [[]];
 
   for (let i = 0; i < countRow; i++) {
     materialMatrix[i] = [];
@@ -35,7 +35,7 @@ export const makeMatrixBorder = (
   countCol: number,
   materials: Material[]
 ) => {
-  let materialMatrix: string[][] = [];
+  const materialMatrix: string[][] = [];
 
   for (let i = 0; i < countRow; i++) {
     materialMatrix[i] = [];
@@ -55,7 +55,7 @@ export const makeMatrixDifraction = (
   countCol: number,
   materials: Material[]
 ) => {
-  let materialMatrix: string[][] = [];
+  const materialMatrix: string[][] = [];
 
   for (let i = 0; i < countRow; i++) {
     materialMatrix[i] = [];

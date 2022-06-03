@@ -1,37 +1,36 @@
-import Header from 'components/organisms/Header/Header';
-import { withLayout } from 'layout/MainLayout';
-import Link from 'next/link';
-import React from 'react';
-
+import Header from "components/organisms/header/Header";
+import { withLayout } from "layout/MainLayout";
+import Link from "next/link";
+import React from "react";
 
 const postNames = [
-  'one-dimension',
-  'two-dimension',
-  'interference',
-  'difraction',
-  'border',
-]
+  "one-dimension",
+  "two-dimension",
+  "interference",
+  "difraction",
+  "border",
+];
 
 function TheoryPage() {
   return (
     <>
       <Header />
 
-      {postNames.map(postName => {
+      {postNames.map((postName) => {
         return (
           <li key={postName}>
-                  <Link href={`/theory/${postName}`}>
-                    <a
-                    
-                      // className={cn(styles.labContentType, {
-                      //   [styles.activeLabContentType]:
-                      //     currentContentType === ContentType.THEORY,
-                      // })}
-                    >
-                      {postName}
-                    </a>
-                  </Link>
-                </li>
+            <Link href={`/theory/${postName}`}>
+              <a
+
+              // className={cn(styles.labContentType, {
+              //   [styles.activeLabContentType]:
+              //     currentContentType === ContentType.THEORY,
+              // })}
+              >
+                {postName}
+              </a>
+            </Link>
+          </li>
         );
       })}
     </>

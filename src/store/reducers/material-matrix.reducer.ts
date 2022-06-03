@@ -1,6 +1,6 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { SimulationDimension } from 'types/types';
-import type { AppState } from '../store';
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { SimulationDimension } from "types/types";
+import type { AppState } from "../store";
 
 export type Material = {
   name: string;
@@ -22,7 +22,7 @@ export const makeMatrixEmpty = (
   countCol: number,
   materials: Material[]
 ) => {
-  let materialMatrix: number[][] = [[]];
+  const materialMatrix: number[][] = [[]];
 
   for (let i = 0; i < countRow; i++) {
     materialMatrix[i] = [];
@@ -38,7 +38,7 @@ export const makeMatrixBorder = (
   countCol: number,
   materials: Material[]
 ) => {
-  let materialMatrix: number[][] = [];
+  const materialMatrix: number[][] = [];
 
   for (let i = 0; i < countRow; i++) {
     materialMatrix[i] = [];
@@ -58,7 +58,7 @@ export const makeMatrixDifraction = (
   countCol: number,
   materials: Material[]
 ) => {
-  let materialMatrix: number[][] = [];
+  const materialMatrix: number[][] = [];
 
   for (let i = 0; i < countRow; i++) {
     materialMatrix[i] = [];
@@ -82,8 +82,7 @@ export const makeWaveGuide = (
   countCol: number,
   materials: Material[]
 ) => {
-  let materialMatrix: number[][] = [];
-
+  const materialMatrix: number[][] = [];
 
   // Empty material matrix(only with base material).
   for (let i = 0; i < countRow; i++) {
@@ -95,8 +94,8 @@ export const makeWaveGuide = (
 
   // Make wave guide borders
   for (let j = 0; j < countCol; j++) {
-    const upBorder = Math.floor(countRow * 0.4)
-    const downBorder = Math.floor(countRow * 0.6)
+    const upBorder = Math.floor(countRow * 0.4);
+    const downBorder = Math.floor(countRow * 0.6);
     materialMatrix[upBorder][j] = materials[2].id;
     materialMatrix[downBorder][j] = materials[2].id;
   }
@@ -109,12 +108,12 @@ export const makeBarrier = (
   countCol: number,
   materials: Material[]
 ) => {
-  let materialMatrix: number[][] = [];
+  const materialMatrix: number[][] = [];
 
   for (let i = 0; i < countRow; i++) {
     materialMatrix[i] = [];
     for (let j = 0; j < countCol; j++) {
-      if (j > countCol*0.5 && j < countCol*0.75) {
+      if (j > countCol * 0.5 && j < countCol * 0.75) {
         materialMatrix[i][j] = materials[1].id;
       } else {
         materialMatrix[i][j] = materials[0].id;
@@ -160,13 +159,13 @@ const fillMaterialMatrixes2D = (
 ): ConfigMaterial[] => {
   return [
     {
-      name: 'Default(empty)',
+      name: "Default(empty)",
       simulationDimension: SimulationDimension.SIMULATION_2D,
       sourcePosition: [{ relativeX: 0.5, relativeY: 0.2 }],
       materialMatrix: makeMatrixEmpty(countRow, countCol, materials),
     },
     {
-      name: 'Wave guide',
+      name: "Wave guide",
       simulationDimension: SimulationDimension.SIMULATION_2D,
       sourcePosition: [
         { relativeX: 0.5, relativeY: 0.2 },
@@ -175,13 +174,13 @@ const fillMaterialMatrixes2D = (
       materialMatrix: makeWaveGuide(countRow, countCol, materials),
     },
     {
-      name: 'Difraction',
+      name: "Difraction",
       simulationDimension: SimulationDimension.SIMULATION_2D,
       sourcePosition: [{ relativeX: 0.5, relativeY: 0.2 }],
       materialMatrix: makeMatrixDifraction(countRow, countCol, materials),
     },
     {
-      name: 'Material border',
+      name: "Material border",
       simulationDimension: SimulationDimension.SIMULATION_2D,
       sourcePosition: [{ relativeX: 0.5, relativeY: 0.2 }],
       materialMatrix: makeMatrixBorder(countRow, countCol, materials),
@@ -196,13 +195,13 @@ const fillMaterialMatrixes1D = (
 ): ConfigMaterial[] => {
   return [
     {
-      name: 'Default(empty)',
+      name: "Default(empty)",
       simulationDimension: SimulationDimension.SIMULATION_1D,
       sourcePosition: [{ relativeX: 0.5, relativeY: 0 }],
       materialMatrix: makeMatrixEmpty(1, countCol, materials),
     },
     {
-      name: 'Barrier',
+      name: "Barrier",
       simulationDimension: SimulationDimension.SIMULATION_1D,
       sourcePosition: [{ relativeX: 0.1, relativeY: 0.2 }],
       materialMatrix: makeBarrier(countRow, countCol, materials),
@@ -214,28 +213,28 @@ const initialMatrixSize = 10;
 
 const materials = [
   {
-    name: 'Free space',
+    name: "Free space",
     id: 0,
     eps: 1,
     mu: 1,
     sigma: 0.0,
-    color: '#fafafa',
+    color: "#fafafa",
   },
   {
-    name: 'Material 2',
+    name: "Material 2",
     id: 1,
     eps: 2.3,
     mu: 1,
     sigma: 0,
-    color: 'tomato',
+    color: "tomato",
   },
   {
-    name: 'Material 3',
+    name: "Material 3",
     id: 2,
     eps: 40.6,
     mu: 1,
     sigma: 0.02,
-    color: '#1a52aa',
+    color: "#1a52aa",
   },
 ];
 
@@ -286,7 +285,7 @@ interface UpdateMaterialSigma {
 }
 
 export const materialMatrixSlice = createSlice({
-  name: 'materialMatrix',
+  name: "materialMatrix",
   initialState,
   reducers: {
     setMaterialMatrixSize: (
@@ -341,30 +340,24 @@ export const materialMatrixSlice = createSlice({
       }
     },
 
-    updateMaterialName: (
-      state,
-      action: PayloadAction<UpdateMaterialName>
-    ) => {
-
-      const materialIndex = state.materials.findIndex(material => material.id === action.payload.materialId);
+    updateMaterialName: (state, action: PayloadAction<UpdateMaterialName>) => {
+      const materialIndex = state.materials.findIndex(
+        (material) => material.id === action.payload.materialId
+      );
       state.materials[materialIndex].name = action.payload.newName;
     },
-    updateMaterialEps: (
-      state,
-      action: PayloadAction<UpdateMaterialEps>
-    ) => {
-
-      const materialIndex = state.materials.findIndex(material => material.id === action.payload.materialId);
-      console.log("index", materialIndex)
+    updateMaterialEps: (state, action: PayloadAction<UpdateMaterialEps>) => {
+      const materialIndex = state.materials.findIndex(
+        (material) => material.id === action.payload.materialId
+      );
+      console.log("index", materialIndex);
       state.materials[materialIndex].eps = action.payload.newEps;
     },
 
-    updateMaterialMu: (
-      state,
-      action: PayloadAction<UpdateMaterialMu>
-    ) => {
-
-      const materialIndex = state.materials.findIndex(material => material.id === action.payload.materialId);
+    updateMaterialMu: (state, action: PayloadAction<UpdateMaterialMu>) => {
+      const materialIndex = state.materials.findIndex(
+        (material) => material.id === action.payload.materialId
+      );
       state.materials[materialIndex].mu = action.payload.newMu;
     },
 
@@ -372,8 +365,9 @@ export const materialMatrixSlice = createSlice({
       state,
       action: PayloadAction<UpdateMaterialSigma>
     ) => {
-
-      const materialIndex = state.materials.findIndex(material => material.id === action.payload.materialId);
+      const materialIndex = state.materials.findIndex(
+        (material) => material.id === action.payload.materialId
+      );
       state.materials[materialIndex].sigma = action.payload.newSigma;
     },
   },

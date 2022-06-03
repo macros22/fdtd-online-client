@@ -1,0 +1,18 @@
+.wrapper {
+  width: 100%;
+
+  color: var(--text-secondary-color);
+
+  .label {
+    display: block;
+
+    margin-bottom: var(--space-xxxs);
+
+    transition: 0.2s;
+    letter-spacing: var(--space-xxxxs);
+
+    color: inherit;
+
+    font-size: var(--text-xs);
+  }
+}

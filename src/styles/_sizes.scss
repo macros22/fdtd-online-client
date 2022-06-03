@@ -3,9 +3,7 @@
   --md: 768px;
   --lg: 992px;
   --xl: 1200px;
-
   --space-unit: 0.75rem;
-
   --space-xxxxs: calc(0.125 * var(--space-unit));
   --space-xxxs: calc(0.25 * var(--space-unit));
   --space-xxs: calc(0.375 * var(--space-unit));
@@ -17,15 +15,11 @@
   --space-xxl: calc(5.25 * var(--space-unit));
   --space-xxxl: calc(8.5 * var(--space-unit));
   --space-xxxxl: calc(13.75 * var(--space-unit));
-  
   --component-padding: var(--space-md);
-
   --sidebar-padding: calc(1.15 * var(--space-sm));
-
   --header-up-height: 3.5rem;
   --header-down-height: 2.2rem;
 }
-
 
 // @media (max-width: var(--md)) {
 //   :root {

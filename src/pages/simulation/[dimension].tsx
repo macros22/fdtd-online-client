@@ -1,14 +1,14 @@
-import React from 'react';
+import React from "react";
 
-import { withLayout } from 'layout/MainLayout';
-import { ContentType, SimulationDimension } from 'types/types';
+import { withLayout } from "layout/MainLayout";
+import { ContentType, SimulationDimension } from "types/types";
 
-import { useAppDispatch } from 'store/hooks';
+import { useAppDispatch } from "store/hooks";
 
-import Simulation from 'components/templates/Simulation/Simulation';
-import { setSimulationDimension } from 'store/reducers/app-config.reducer';
-import { GetStaticPaths, GetStaticProps, GetStaticPropsContext } from 'next';
-import { ParsedUrlQuery } from 'querystring';
+import Simulation from "components/templates/simulation/Simulation";
+import { setSimulationDimension } from "store/reducers/app-config.reducer";
+import { GetStaticPaths, GetStaticProps, GetStaticPropsContext } from "next";
+import { ParsedUrlQuery } from "querystring";
 
 export interface ISimulationPageProps extends Record<string, unknown> {
   currentSimulationDimension: SimulationDimension;
@@ -19,7 +19,7 @@ const SimulationPage: React.FC<ISimulationPageProps> = ({
 }) => {
   const dispatch = useAppDispatch();
   dispatch(setSimulationDimension(currentSimulationDimension));
-  
+
   return (
     <>
       <Simulation currentSimulationDimension={currentSimulationDimension} />
@@ -36,13 +36,15 @@ export const getStaticPaths: GetStaticPaths = async () => {
     };
   }[] = [];
 
-  (Object.values(SimulationDimension) as Array<SimulationDimension>).map((dimension) => {
-    paths.push({
-      params: {
-        dimension
-      },
-    });
-  });
+  (Object.values(SimulationDimension) as Array<SimulationDimension>).map(
+    (dimension) => {
+      paths.push({
+        params: {
+          dimension,
+        },
+      });
+    }
+  );
 
   return {
     paths,
@@ -53,7 +55,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export const getStaticProps: GetStaticProps<ISimulationPageProps> = async ({
   params,
 }: GetStaticPropsContext<ParsedUrlQuery>) => {
-  if (typeof params?.dimension === 'string') {
+  if (typeof params?.dimension === "string") {
     const currentSimulationDimension: SimulationDimension | null =
       Object.values(SimulationDimension).find(
         (l) => l == params.dimension?.toString().toUpperCase()

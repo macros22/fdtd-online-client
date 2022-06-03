@@ -1,13 +1,24 @@
-## stylelint scss:
- - https://actionauta.com/notes/integrating-tailwind-css-modules-sass-stylelint-nextjs
+# Components structure:
 
-- https://github.com/ebenezerdon/nextjs-mdx-blog/blob/main/pages/blog/%5Bslug%5D.js
+- Atomic design
+- atoms -> molecules -> organisms -> templates -> pages
+- https://atomicdesign.bradfrost.com/chapter-2/
 
+# Eslint + stylelint:
 
-## css and css vars:
-- https://habr.com/ru/company/skyeng/blog/459194/
-- https://habr.com/ru/post/456302/
+- https://medium.com/dayoneteams/next-js-series-part-1-setting-up-codebase-63e98fffe2cb
 
-## canvas:
-- http://zhangwenli.com/blog/2015/06/12/drawing-heatmap-with-html-canvas/
-- https://github.com/mourner/simpleheat/blob/86af1384db714ab32626ed25aeb396fd0869d56d/simpleheat.js
+- Allow(stylelint) all types of cases: kebab, snake, camel, mixes
+
+"rules": {
+    "selector-class-pattern": "^[a-z][a-zA-Z0-9_-]+$",
+    "selector-id-pattern": "^[a-z][a-zA-Z0-9_-]+$"
+  }
+
+# Redux toolkit + redux-persist:
+
+- https://www.boag.online/blog/simple-redux-setup-react-native-next-js
+
+# Modal example:
+- https://github.com/rapaccinim/react-stuff/blob/main/src/components/ScrollableYModal/ScrollableYModal.js
+- https://rapaccinim.medium.com/how-to-create-a-custom-resizable-modal-with-scrollable-and-fixed-content-21adb2adda28

@@ -1,0 +1,43 @@
+.buttonGroup {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+
+  button {
+    padding: 8px;
+
+    letter-spacing: var(--space-xxxxs);
+
+    color: var(--primary-color);
+    border: var(--border-width) solid var(--primary-color);
+    border-radius: 0;
+    background: transparent;
+
+    font-size: 15px;
+  }
+
+  button:hover {
+    color: var(--white-color);
+    background-color: var(--primary-color);
+  }
+
+  .active {
+    color: var(--white-color);
+    background-color: var(--primary-color);
+  }
+
+  & > *:not(:first-child) {
+    margin-left: calc(0px - var(--border-width));
+  }
+
+  & > *:first-child {
+    border-radius: var(--border-radius) 0 0 var(--border-radius);
+  }
+
+  & > *:last-child {
+    border-radius: 0 var(--border-radius) var(--border-radius) 0;
+  }
+
+  & > *:only-child {
+    border-radius: var(--border-radius);
+  }
+}

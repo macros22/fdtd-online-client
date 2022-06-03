@@ -1,0 +1,29 @@
+.options {
+  padding: 10px;
+
+  background: rgb(255 255 255 / 60%);
+
+  line-height: 1;
+}
+
+.options input {
+  width: 200px;
+}
+
+.options label {
+  float: left;
+
+  width: 60px;
+  margin-right: 10px;
+
+  text-align: right;
+
+  color: #555;
+}
+
+.ghbtns {
+  position: relative;
+  top: 4px;
+
+  margin-left: 5px;
+}

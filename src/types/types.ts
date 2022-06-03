@@ -19,12 +19,11 @@ export type DataType = {
 // }
 
 export enum SimulationDimension {
-  SIMULATION_1D = '1D',
-  SIMULATION_2D = '2D',
+  SIMULATION_1D = "1D",
+  SIMULATION_2D = "2D",
 }
 
-
 export enum ContentType {
-  THEORY = 'THEORY',
-  SIMULATION = 'SIMULATION',
+  THEORY = "THEORY",
+  SIMULATION = "SIMULATION",
 }

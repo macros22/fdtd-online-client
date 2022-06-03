@@ -1,0 +1,51 @@
+.tag {
+  display: inline-block;
+
+  box-sizing: border-box;
+  margin-right: 5px;
+
+  text-align: center;
+
+  border-radius: var(--border-radius);
+}
+
+.sm {
+  padding: 5px 10px;
+
+  font-size: 12px;
+  line-height: 12px;
+}
+
+.md {
+  padding: 5px 10px;
+
+  font-size: 14px;
+  line-height: 14px;
+}
+
+.lg {
+  padding: 6px 12px;
+
+  font-size: 24px;
+  line-height: 24px;
+}
+
+.ghost {
+  border: 1px solid var(--info-color);
+}
+
+.fullWidth {
+  width: 100%;
+}
+
+.green {
+  color: var(--green-color);
+  background: var(--success-color);
+
+  font-weight: bold;
+}
+
+.primary {
+  color: rgb(237 237 237);
+  background: var(--primary-color);
+}

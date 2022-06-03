@@ -1,0 +1,21 @@
+.selectOption {
+  padding: 6px 20px;
+
+  list-style-type: none;
+
+  cursor: pointer;
+
+  color: var(--text-color);
+  border-bottom: 1px solid #e4e4e4;
+
+  font-size: 17px;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &:hover {
+    color: white;
+    background-color: var(--primary-color);
+  }
+}

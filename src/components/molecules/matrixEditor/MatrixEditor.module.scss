@@ -1,0 +1,219 @@
+.text {
+  user-select: none;
+
+  font: bold 10px sans-serif;
+}
+
+.triggerMatrixBtn {
+  width: 100%;
+  margin-top: calc(0.35 * var(--sidebar-padding));
+
+  font-size: 17px;
+}
+
+.substrate {
+  position: fixed;
+  z-index: var(--z-index-modal-substrate);
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 100%;
+
+  opacity: 0.75;
+  background: black;
+}
+
+.modalWrapper {
+  position: fixed;
+  z-index: var(--z-index-modal);
+  top: 1rem;
+  bottom: 1rem;
+  left: 0;
+}
+
+.modalContent {
+  display: grid;
+  grid-template-areas: "matrixPicker editor materialPicker";
+  grid-template-columns:repeat(3, 1fr);
+  column-gap: 1.2rem;
+
+  width: 100%;
+  height: 100%;
+}
+
+.title {
+  margin: 0.65rem;
+
+  text-align: center;
+}
+
+.scrollPanel {
+  display: grid;
+  overflow-x: hidden;
+  overflow-y: auto;
+  align-items: center;
+
+  width: 100%;
+  height: 100%;
+  padding: var(--space-sm);
+  grid-auto-rows: min-content;
+  grid-gap: var(--space-sm);
+  grid-template-columns: 1;
+}
+
+.nonScrollableContent{
+  margin: 10px;
+  display: grid;
+  text-align: center;
+grid-template-areas: "matrixPickerTitle editorTitle materialPickerTitle";
+grid-template-columns:repeat(3, 1fr);
+//   column-gap: 1.2rem;
+
+  place-content: center;
+
+width: 100%;
+height: 100%;
+}
+
+
+
+.matrixPickerTitle {
+  grid-area: matrixPickerTitle;
+}
+
+.editorTitle {
+  grid-area: editorTitle;
+}
+
+.materialPickerTitle {
+  grid-area: materialPickerTitle;
+}
+
+.scrollableContent {
+  position: absolute;
+  width: auto;
+  height: 85%;
+  // overflow-y: auto; // uncomment for one element !!!!
+  // margin: 2px 3px 3px 3px;
+  // padding: 0px 1px 0px 0px;
+  /* scroll bar width */
+  &::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+  /* scroll bar track */
+  &::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 2px #333; 
+    border-radius: 10px;
+  }
+   
+  /* scroll bar handle */
+  &::-webkit-scrollbar-thumb {
+    background: rgba(51,51,51,0.8);
+    opacity: 0.6;
+    border-radius: 10px;
+  }
+  
+  /* scroll bar handle on hover */
+  &::-webkit-scrollbar-thumb:hover {
+    background: rgba(51,51,51,1);
+  }
+}
+
+.matrixPicker {
+  overflow-x: hidden;
+  overflow-y: auto;
+
+  background-color: rgb(255 255 255);
+  grid-area: matrixPicker;
+}
+
+.editor {
+  display: flex;
+  flex-direction: column;
+
+  width: max-content;
+  height: 100%;
+
+  background: white;
+  grid-area: editor;
+}
+
+
+.materialPicker {
+  overflow-x: hidden;
+  overflow-y: auto;
+
+  background-color: rgb(255 255 255);
+  grid-area: materialPicker;
+}
+
+.oneMaterialPanel {
+  display: grid;
+  grid-template-areas: "material" "." "materialNumberInputs";
+
+  hr {
+    margin-top: 0.75rem;
+  }
+}
+
+.material {
+  grid-area: material;
+
+  display: flex;
+  flex-direction: row;
+  gap: var(--space-sm);
+
+  // margin-top: 0.75rem 0;
+}
+
+.materialNumberInputs {
+  grid-area: materialNumberInputs;
+
+  display: flex;
+  flex-direction: row;
+  gap: var(--space-sm);
+
+  margin-top: 0.5rem;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  padding: 1rem;
+}
+
+@media (max-width: 1100px) {
+  .modalContent {
+    position: fixed;
+    z-index: var(--z-index-modal);
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+
+    display: grid;
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    width: min-content;
+    height: 90vh;
+    margin: 2rem;
+    padding: var(--space-md);
+
+    text-align: center;
+
+    background-color: rgb(255 255 255);
+    place-items: center;
+    grid-auto-rows: min-content;
+    grid-gap: var(--space-sm);
+    grid-template-columns: 1;
+    grid-template-areas:
+      "editor"
+      "matrixPicker"
+      "materialPicker";
+  }
+}

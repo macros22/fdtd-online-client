@@ -1,8 +1,8 @@
-import * as React from 'react';
-import Head from 'next/head';
-import styles from './MainLayout.module.scss';
-import { MainLayoutProps } from './MainLayout.props';
-import Header from 'components/organisms/Header/Header';
+import * as React from "react";
+import Head from "next/head";
+import styles from "./MainLayout.module.scss";
+import { MainLayoutProps } from "./MainLayout.props";
+import Header from "components/organisms/header/Header";
 
 const MainLayout: React.FC<MainLayoutProps> = ({
   children,
@@ -13,11 +13,11 @@ const MainLayout: React.FC<MainLayoutProps> = ({
   return (
     <>
       <Head>
-        <title>{title || 'Wave optics'}</title>
-        <meta name='description' content={`Wave optics.` + description} />
-        <meta name='robots' content='index, follow' />
-        <meta name='keywords' content={keywords || 'physics, wave, optics'} />
-        <meta name='viewport' content='width=device-width, initial-scale=1' />
+        <title>{title || "Wave optics"}</title>
+        <meta name="description" content={`Wave optics.` + description} />
+        <meta name="robots" content="index, follow" />
+        <meta name="keywords" content={keywords || "physics, wave, optics"} />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       <div className={styles.wrapper}>
         <Header />
@@ -27,7 +27,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({
   );
 };
 
-export type MetaPropsType = Omit<MainLayoutProps, 'children'>;
+export type MetaPropsType = Omit<MainLayoutProps, "children">;
 
 export const withLayout = <T extends Record<string, unknown>>(
   Component: React.FC<T>
@@ -35,16 +35,17 @@ export const withLayout = <T extends Record<string, unknown>>(
   return function withLayoutComponent(props: T): JSX.Element {
     const metaProps: MetaPropsType = {
       title: `Wave optics | Lab ${
-        (props?.currentSimulationDimension as string)?.toLowerCase() || ''
+        (props?.currentSimulationDimension as string)?.toLowerCase() || ""
       }`,
-      description: (props?.currentSimulationDimension as string)?.toLowerCase() || '',
+      description:
+        (props?.currentSimulationDimension as string)?.toLowerCase() || "",
     };
     // console.log(props?.currentLabName as string);
 
     return (
-        <MainLayout {...metaProps}>
-          <Component {...props} />
-        </MainLayout>
+      <MainLayout {...metaProps}>
+        <Component {...props} />
+      </MainLayout>
     );
   };
 };

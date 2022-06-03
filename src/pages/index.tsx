@@ -1,10 +1,7 @@
-import Header from 'components/organisms/Header/Header';
-
-import React from 'react';
+import React from "react";
 
 function Index() {
-  return <Header />;
+  return <></>;
 }
 
 export default Index;
-// export default withLayout(Index);

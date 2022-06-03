@@ -1,0 +1,53 @@
+:root {
+  --sm: 576px;
+  --md: 768px;
+  --lg: 992px;
+  --xl: 1200px;
+
+  --space-unit: 0.75rem;
+
+  --space-xxxxs: calc(0.125 * var(--space-unit));
+  --space-xxxs: calc(0.25 * var(--space-unit));
+  --space-xxs: calc(0.375 * var(--space-unit));
+  --space-xs: calc(0.5 * var(--space-unit));
+  --space-sm: calc(0.8 * var(--space-unit));
+  --space-md: calc(1.25 * var(--space-unit));
+  --space-lg: calc(2 * var(--space-unit));
+  --space-xl: calc(3.25 * var(--space-unit));
+  --space-xxl: calc(5.25 * var(--space-unit));
+  --space-xxxl: calc(8.5 * var(--space-unit));
+  --space-xxxxl: calc(13.75 * var(--space-unit));
+  
+  --component-padding: var(--space-md);
+
+  --sidebar-padding: calc(1.15 * var(--space-sm));
+
+  --header-up-height: 3.5rem;
+  --header-down-height: 2.2rem;
+}
+
+
+// @media (max-width: var(--md)) {
+//   :root {
+//     --space-unit: 1.5em; // 👈 [2/2]
+//   }
+// }
+
+// // Extra small devices (portrait phones, less than 576px)
+// // No media query since this is the default in Bootstrap
+
+// // Small devices (landscape phones, 576px and up)
+// @media (min-width: var(--sm)) {
+// }
+
+// // Medium devices (tablets, 768px and up)
+// @media (min-width: var(--md)) {
+// }
+
+// // Large devices (desktops, 992px and up)
+// @media (min-width: var(--lg)) {
+// }
+
+// // Extra large devices (large desktops, 1200px and up)
+// @media (min-width: var(--xl)) {
+// }
