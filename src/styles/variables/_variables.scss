@@ -1,10 +1,13 @@
 :root {
+  // Border.
   --border-radius: 4px;
   --border-width: 1px;
+
+  // Z-indexes.
   --z-index-work-area: 10;
   --z-index-sidebar: 20;
   --z-index-header: 30;
   --z-index-header-body: 31;
-  --z-index-modal-substrate: 40;
-  --z-index-modal: 50;
+  --z-index-modal-overlay: 40;
+  --z-index-modal: 41;
 }
