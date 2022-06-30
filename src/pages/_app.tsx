@@ -4,11 +4,7 @@ import Head from "next/head";
 import React from "react";
 import NextNProgress from "nextjs-progressbar";
 
-// configuration of custom bootstrap on next.js
-// https://www.mikealche.com/software-development/setting-up-bootstrap-sass-on-next-js
-// https://www.ravsam.in/blog/setup-and-customize-bootstrap-in-nextjs/
 
-// import 'bootstrap/dist/css/bootstrap.css'; // Add this line
 import "styles/global.scss";
 // import '../styles/github-markdown.css';
 
@@ -17,12 +13,6 @@ import store, { persistor } from "../store/store";
 import { PersistGate } from "redux-persist/integration/react";
 
 function MyApp({ Component, pageProps }: AppProps): JSX.Element {
-  // Place this in the pages/_app.js file
-  // React.useEffect(() => {
-  //   //@ts-ignore
-  //   import('bootstrap/dist/js/bootstrap');
-  // }, []);
-
   return (
     <>
       <Provider store={store}>

@@ -40,7 +40,7 @@ import {
   transformMaterialForBackend,
 } from "utils/transform-materials-array";
 import Modal from "components/molecules/modal/Modal";
-import PreviewMatrixSidebar from "components/molecules/matrixEditor/preview/PreviewMatrixSidebar";
+import PreviewMatrixSidebar from "components/organisms/matrixEditor/preview/PreviewMatrixSidebar";
 
 type SourcePosition = {
   x: number;

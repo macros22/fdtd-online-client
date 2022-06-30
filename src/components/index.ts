@@ -4,7 +4,7 @@ export { default as WithLabel } from "./atoms/withLabel/WithLabel";
 export { default as Sidebar } from "./molecules/sidebar/Sidebar";
 export { default as NumberInput } from "./atoms/numberInput/NumberInput";
 export { default as Paper } from "./atoms/paper/Paper";
-export { default as MatrixEditor } from "./molecules/matrixEditor/editor/MatrixEditor";
+export { default as MatrixEditor } from "./organisms/matrixEditor/editor/MatrixEditor";
 export { default as ColorBar } from "./atoms/colorBar/ColorBar";
 export { default as Plot1D } from "./molecules/plot1D/Plot1D";
 export { default as Tag } from "./atoms/tag/Tag";

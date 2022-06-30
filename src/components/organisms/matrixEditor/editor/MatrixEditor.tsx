@@ -26,7 +26,7 @@ import {
 import PreviewMatrix from "../preview/PreviewMatrixEditor";
 import { selectCurrentSimulationDimension } from "store/reducers/app-config.reducer";
 import { colors } from "../colors";
-import Modal from "../../modal/Modal";
+import Modal from "../../../molecules/modal/Modal";
 import Divider from "components/atoms/divider/Divider";
 
 const gridSizes1D = [5, 50, 100, 200];
