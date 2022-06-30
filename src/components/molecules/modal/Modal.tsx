@@ -5,12 +5,12 @@ import { ModalProps } from "./Modal.props";
 
 const Modal: React.FC<ModalProps> = ({ children, className, ...props }) => {
   return (
-    <div>
+    <div {...props}>
       <div className={styles.modalOverlay} />
 
       <div className={styles.modalBoxContainer}>
         <div className={styles.modalBoxControl}>
-          <button>sd</button>
+          <button>close</button>
         </div>
 
         <div className={styles.modalBoxContent}>{children}</div>

@@ -1,4 +1,7 @@
-export type HeatMapProps = {
+import { DetailedHTMLProps, HTMLAttributes } from "react";
+
+export interface HeatMapProps
+  extends DetailedHTMLProps<HTMLAttributes<HTMLCanvasElement>, HTMLCanvasElement> {
   minVal: number;
   maxVal: number;
   dataX: number[];
@@ -8,4 +11,5 @@ export type HeatMapProps = {
   height: number;
   srcPositionRelativeX: number;
   srcPositionRelativeY: number;
+  withOptions?: boolean,
 };

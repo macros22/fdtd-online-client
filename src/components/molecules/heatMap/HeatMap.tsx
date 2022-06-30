@@ -12,6 +12,7 @@ const HeatMap: React.FC<HeatMapProps> = ({
   height,
   srcPositionRelativeX = 0,
   srcPositionRelativeY = 0,
+  withOptions = false,
 }) => {
   const canvasRef = React.useRef<HTMLCanvasElement | null>(null);
   const canvasBrushRef = React.useRef<HTMLCanvasElement | null>(null);
@@ -90,35 +91,37 @@ const HeatMap: React.FC<HeatMapProps> = ({
   };
 
   return (
-    <React.Fragment>
+    <>
       <canvas style={{ display: "none" }} ref={canvasBrushRef} />
       <canvas style={{ display: "none" }} ref={canvasGradientRef} />
       <canvas ref={canvasRef} />
 
-      {/* <div className={styles.options}>
-        <label>Radius </label>
-        <input
-          onChange={radiusHandler}
-          type='range'
-          id='radius'
-          value={radius}
-          step={0.02}
-          min={radiusInitial - 2.2}
-          max={radiusInitial + 2.2}
-        />
-        <br />
-        <label>Blur </label>
-        <input
-          onChange={blurHandler}
-          type='range'
-          id='blur'
-          value={blur}
-          step={0.02}
-          min={0}
-          max={blurInitial + 2.2}
-        />
-      </div> */}
-    </React.Fragment>
+      {withOptions && (
+        <div>
+          <label>Radius </label>
+          <input
+            onChange={radiusHandler}
+            type="range"
+            id="radius"
+            value={radius}
+            step={0.02}
+            min={radiusInitial - 2.2}
+            max={radiusInitial + 2.2}
+          />
+          <br />
+          <label>Blur </label>
+          <input
+            onChange={blurHandler}
+            type="range"
+            id="blur"
+            value={blur}
+            step={0.02}
+            min={0}
+            max={blurInitial + 2.2}
+          />
+        </div>
+      )}
+    </>
   );
 };
 
