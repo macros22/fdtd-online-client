@@ -11,10 +11,10 @@ const WithLabel = ({
 }: WithLabelProps): JSX.Element => {
   return (
     <div className={cn(styles.wrapper, className)} {...props}>
-      <label htmlFor="name" className={styles.label}>
+      <label className={styles.label}>
         {labelText}
       </label>
-      <span id="name">{children}</span>
+      {children}
     </div>
   );
 };

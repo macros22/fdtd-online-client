@@ -1,4 +1,4 @@
-import { PProps } from "./Tag.props";
+import { TagProps } from "./Tag.props";
 import styles from "./Tag.module.scss";
 import cn from "clsx";
 
@@ -10,7 +10,7 @@ const Tag = ({
   fullWidth = false,
   className,
   ...props
-}: PProps): JSX.Element => {
+}: TagProps): JSX.Element => {
   return (
     <div
       className={cn(styles.tag, className, {

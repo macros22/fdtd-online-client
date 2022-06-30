@@ -10,6 +10,7 @@ const NumberInput: React.FC<NumberInputProps> = ({
   label,
   onChange,
   readOnly = false,
+  ...props
 }) => {
   const inputRef = React.useRef<HTMLInputElement>(null);
 
@@ -64,6 +65,7 @@ const NumberInput: React.FC<NumberInputProps> = ({
           max="100"
           readOnly={readOnly}
           required
+          {...props}
         />
         <div className={styles.buttons}>
           <button
