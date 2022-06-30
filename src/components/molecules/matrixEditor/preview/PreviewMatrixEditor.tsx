@@ -1,18 +1,18 @@
 import { DetailedHTMLProps, HTMLAttributes } from "react";
 import { useAppDispatch, useAppSelector } from "store/hooks";
 // import { selectsimulationDimension} from 'app/reducers/labTypeSlice';
-import styles from "./MatrixEditor.module.scss";
 import {
   selectMaterialMatrix,
   selectMaterialMatrixCountCol,
   selectMaterialMatrixCountRow,
   selectMaterials,
 } from "store/reducers/material-matrix.reducer";
-import { drawType } from "components/molecules/Canvas/useCanvas";
+// import { drawType } from "components/molecules/Canvas/useCanvas";
 import React from "react";
 import { SimulationDimension } from "types/types";
 
-import { colors } from "./colors";
+import { colors } from "../colors";
+import { drawType } from "components/molecules/plot1D/useCanvas";
 
 export interface PreviewMatrixProps
   extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {

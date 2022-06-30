@@ -9,7 +9,7 @@ import { SimulationDimension } from "types/types";
 
 // import DragAndDrop from './DragAndDrop';
 
-import EditorCanvas from "./EditorCanvas";
+import EditorCanvas from "../EditorCanvas";
 import {
   ConfigMaterial,
   selectConfigMaterialSet,
@@ -23,10 +23,10 @@ import {
   updateMaterialMu,
   updateMaterialSigma,
 } from "store/reducers/material-matrix.reducer";
-import PreviewMatrix from "./PreviewMatrixEditor";
+import PreviewMatrix from "../preview/PreviewMatrixEditor";
 import { selectCurrentSimulationDimension } from "store/reducers/app-config.reducer";
-import { colors } from "./colors";
-import Modal from "../modal/Modal";
+import { colors } from "../colors";
+import Modal from "../../modal/Modal";
 import Divider from "components/atoms/divider/Divider";
 
 const gridSizes1D = [5, 50, 100, 200];

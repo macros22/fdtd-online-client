@@ -1,12 +1,12 @@
 import { useAppDispatch, useAppSelector } from "store/hooks";
-import styles from "./MatrixEditor.module.scss";
+import styles from "../editor/MatrixEditor.module.scss";
 import {
   selectMaterialMatrix,
   setCurrentMaterialMatrix,
   setMaterialMatrixSize,
 } from "store/reducers/material-matrix.reducer";
 import React, { DetailedHTMLProps, HTMLAttributes } from "react";
-import MatrixEditor from "./MatrixEditor";
+import MatrixEditor from "../editor/MatrixEditor";
 import PreviewMatrix from "./PreviewMatrixEditor";
 import { selectCurrentSimulationDimension } from "store/reducers/app-config.reducer";
 import { SimulationDimension } from "types/types";

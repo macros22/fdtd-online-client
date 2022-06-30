@@ -28,7 +28,7 @@ import { displayedData } from "utils/displayed-data";
 import { SERVER_URL as SERVER_URL } from "constants/url";
 import { useAppSelector } from "store/hooks";
 
-import PreviewMatrixSidebar from "components/molecules/matrixEditor/PreviewMatrixSidebar";
+// import PreviewMatrixSidebar from "components/molecules/matrixEditor/PreviewMatrixSidebar";
 import { DataChartType } from "types/lab1";
 import {
   selectMaterialMatrix,
@@ -40,6 +40,7 @@ import {
   transformMaterialForBackend,
 } from "utils/transform-materials-array";
 import Modal from "components/molecules/modal/Modal";
+import PreviewMatrixSidebar from "components/molecules/matrixEditor/preview/PreviewMatrixSidebar";
 
 type SourcePosition = {
   x: number;

@@ -109,7 +109,7 @@ const EditorCanvas: React.FC<EditorCanvasProps> = ({
     }
   };
 
-  const draw: drawType = (ctx) => {
+  const draw: drawType = (ctx: CanvasRenderingContext2D) => {
     drawRect(ctx, 0, 0, colors[0], width, height);
     drawMatrix(ctx, materialMatrix);
     drawCircle(
