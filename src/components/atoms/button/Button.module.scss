@@ -1,7 +1,4 @@
 .button {
-  display: inline-block;
-
-  box-sizing: border-box;
   padding: 10px;
 
   cursor: pointer;
@@ -14,11 +11,6 @@
   font-size: 14px;
 }
 
-.maxWidth {
-  display: block;
-
-  width: 100%;
-}
 
 .primary {
   color: var(--white-color);
@@ -26,7 +18,7 @@
 }
 
 .primary:hover {
-  background-color: var(--primary-darken-color);
+  background-color: var(--primary-dark-color);
 }
 
 .outline {
@@ -41,24 +33,9 @@
 }
 
 .ghost {
-  cursor: not-allowed !important;
+  cursor: not-allowed;
 
   color: var(--dark-gray-color);
-  background-color: "#e4e4e4";
+  background-color: var(--substrate-color);
 }
 
-.arrow {
-  display: inline-block;
-
-  margin-left: 10px;
-}
-
-.down {
-  transition: all 0.2s;
-  transform: rotate(90deg);
-}
-
-.primary svg,
-.ghost:hover svg {
-  fill: var(--white-color);
-}

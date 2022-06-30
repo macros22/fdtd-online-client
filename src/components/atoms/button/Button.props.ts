@@ -7,6 +7,5 @@ export interface ButtonProps
   > {
   children: ReactNode;
   appearance?: "primary" | "ghost" | "outline";
-  arrow?: "right" | "down" | "none";
   className?: string;
 }
