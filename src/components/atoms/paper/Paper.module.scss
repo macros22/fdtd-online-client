@@ -1,12 +1,8 @@
 .paper {
-  display: inline-block;
-
   width: max-content;
-  margin: 0.5rem;
-  padding: 0.5rem;
-
-  border: 1.52px solid #eee;
-  border-radius: 0.25rem;
-  background-color: #fff;
+  margin: 0.65rem;
+  padding: 0.65rem;
+  border-radius: var(--border-radius);
+  background-color: var(--white-color);
   box-shadow: 0 var(--space-xxxxs) var(--space-xxxs) rgb(0 0 0 / 7.5%) !important;
 }
