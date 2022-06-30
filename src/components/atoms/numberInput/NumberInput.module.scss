@@ -21,7 +21,6 @@
     width: 100%;
     height: 42px;
 
-    // padding: 0;
     margin: 0;
     padding: var(--space-xxxs);
     padding-left: 10px;
@@ -36,7 +35,6 @@
     line-height: 1.65;
 
     &:hover {
-      // outline: none !important;
       transition: 0.5s;
 
       border: var(--border-width) solid var(--dark-color) !important;
@@ -55,7 +53,7 @@
   }
 }
 
-.btns {
+.buttons {
   position: relative;
 
   float: left;
@@ -63,7 +61,7 @@
   height: 42px;
 }
 
-.btn {
+.button {
   position: relative;
 
   width: 20px;
@@ -75,17 +73,17 @@
   text-align: center;
   vertical-align: middle;
 
-  color: #333;
+  color: var(--text-color);
   border: none;
   border-left: var(--border-width) solid var(--gray-color);
   background-color: transparent;
 
-  font-family: "Trebuchet MS", Helvetica, sans-serif !important;
+  // font-family: "Trebuchet MS", Helvetica, sans-serif !important;
   font-size: 15px;
   line-height: 1;
 }
 
-.btnPlus {
+.buttonPlus {
   position: absolute;
   top: 0;
 
@@ -94,7 +92,7 @@
   border-bottom: var(--border-width) solid var(--gray-color);
 }
 
-.btnMinus {
+.buttonMinus {
   position: absolute;
   bottom: 0;
 

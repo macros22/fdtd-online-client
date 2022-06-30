@@ -13,7 +13,7 @@
   outline: none;
   background-color: var(--gray-light-color);
   appearance: none;
-  
+
   &::-webkit-slider-thumb,
   &::-moz-range-thumb {
     width: 20px;
@@ -25,7 +25,6 @@
     border-radius: 50%;
     background: var(--primary-color);
    
-
     &:hover {
       background: var(--primary-dark-color);
     }

@@ -29,3 +29,8 @@
 
 # React Typescript cheatsheets
 - https://react-typescript-cheatsheet.netlify.app/docs/basic/setup
+
+
+# How to style arrows number input:
+- https://snipp.ru/html-css/input-type-number
+- https://codepen.io/komarovdesign/pen/PPRbgb

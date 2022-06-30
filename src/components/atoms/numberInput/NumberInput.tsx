@@ -2,10 +2,8 @@ import * as React from "react";
 import WithLabel from "../withLabel/WithLabel";
 import styles from "./NumberInput.module.scss";
 import { NumberInputProps } from "./NumberInput.props";
+import cn from 'clsx';
 
-// How to style arrows.
-// https://snipp.ru/html-css/input-type-number
-// https://codepen.io/komarovdesign/pen/PPRbgb
 
 const NumberInput: React.FC<NumberInputProps> = ({
   value,
@@ -15,18 +13,18 @@ const NumberInput: React.FC<NumberInputProps> = ({
 }) => {
   const inputRef = React.useRef<HTMLInputElement>(null);
 
-  const plusBtnHandler = () => {
+  const plusButtonHandler = () => {
     if (inputRef.current) {
-      triggerInputChange(inputRef.current, (+value + 1).toString());
+      triggerInputChange(inputRef.current, (Number(value) + 1).toString());
     }
   };
 
-  const minusBtnHandler = () => {
+  const minusButtonHandler = () => {
     // if (inputRef.current) {
     //   inputRef.current.stepDown();
     // }
     if (inputRef.current) {
-      triggerInputChange(inputRef.current, (+value - 1).toString());
+      triggerInputChange(inputRef.current, (Number(value) - 1).toString());
     }
   };
 
@@ -43,9 +41,9 @@ const NumberInput: React.FC<NumberInputProps> = ({
     }
     node.value = inputValue;
 
-    const e = document.createEvent("HTMLEvents");
-    e.initEvent("change", true, false);
-    node.dispatchEvent(e);
+    const event = document.createEvent("HTMLEvents");
+    event.initEvent("change", true, false);
+    node.dispatchEvent(event);
 
     if (descriptor) {
       Object.defineProperty(node, "value", descriptor);
@@ -67,16 +65,16 @@ const NumberInput: React.FC<NumberInputProps> = ({
           readOnly={readOnly}
           required
         />
-        <div className={styles.btns}>
+        <div className={styles.buttons}>
           <button
-            onClick={plusBtnHandler}
-            className={styles.btn + " " + styles.btnPlus}
+            onClick={plusButtonHandler}
+            className={cn(styles.button, styles.buttonPlus)}
           >
             +
           </button>
           <button
-            onClick={minusBtnHandler}
-            className={styles.btn + " " + styles.btnMinus}
+            onClick={minusButtonHandler}
+            className={cn(styles.button, styles.buttonMinus)}
           >
             -
           </button>
