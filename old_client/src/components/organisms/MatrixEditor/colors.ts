@@ -1,1 +1,0 @@
-export const colors = ['#e4e4e4', 'tomato', '#1a52aa'];
