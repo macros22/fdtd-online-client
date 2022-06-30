@@ -1,6 +1,5 @@
 import styles from "./ButtonGroup.module.scss";
 import { ButtonGroupProps } from "./ButtonGroup.props";
-// import ArrowIcon from './arrow.svg';
 import cn from "clsx";
 import React from "react";
 

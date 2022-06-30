@@ -5,7 +5,6 @@ import { simulationTitles } from "names/navbar.name";
 import { ContentType, SimulationDimension } from "types/types";
 import { useAppSelector, useAppDispatch } from "store/hooks";
 
-// import { StyledHamburger } from "./Hamburger.styled";
 import styles from "./Header.module.scss";
 import Link from "next/link";
 import {
@@ -17,7 +16,6 @@ export type Props = {
   open: boolean;
   setOpen: (v: boolean) => void;
 };
-// import styles from './Hamburger.module.scss';
 
 const postNames = [
   "one-dimension",

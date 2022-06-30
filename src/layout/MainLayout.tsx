@@ -40,7 +40,6 @@ export const withLayout = <T extends Record<string, unknown>>(
       description:
         (props?.currentSimulationDimension as string)?.toLowerCase() || "",
     };
-    // console.log(props?.currentLabName as string);
 
     return (
       <MainLayout {...metaProps}>
