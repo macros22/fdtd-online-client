@@ -1,7 +1,7 @@
 import { InputRangeProps } from "./InputRange.props";
 import styles from "./InputRange.module.scss";
 import React from "react";
-import cn from 'clsx';
+import cn from "clsx";
 
 const InputRange = ({
   className,

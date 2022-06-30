@@ -11,8 +11,6 @@
   font-size: 17px;
 }
 
-
-
 .modalWrapper {
   position: fixed;
   z-index: var(--z-index-modal);
@@ -24,7 +22,7 @@
 .modalContent {
   display: grid;
   grid-template-areas: "matrixPicker editor materialPicker";
-  grid-template-columns:repeat(3, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   column-gap: 1.2rem;
 
   width: 100%;
@@ -51,21 +49,21 @@
   grid-template-columns: 1;
 }
 
-.nonScrollableContent{
-  margin: 1rem;
+.nonScrollableContent {
   display: grid;
+
+  width: 100%;
+  height: 100%;
+  margin: 1rem;
+
   text-align: center;
-grid-template-areas: "matrixPickerTitle editorTitle materialPickerTitle";
-grid-template-columns:repeat(3, 1fr);
-//   column-gap: 1.2rem;
+  grid-template-areas: "matrixPickerTitle editorTitle materialPickerTitle";
+  grid-template-columns: repeat(3, 1fr);
+
+  //   column-gap: 1.2rem;
 
   place-content: center;
-
-width: 100%;
-height: 100%;
 }
-
-
 
 .matrixPickerTitle {
   grid-area: matrixPickerTitle;
@@ -80,34 +78,38 @@ height: 100%;
 }
 
 .scrollableContent {
-  border-top: var(--border-width) solid var(--border-color);
   position: absolute;
+
   width: auto;
   height: 85%;
+
+  border-top: var(--border-width) solid var(--border-color);
+
   // overflow-y: auto; // uncomment for one element !!!!
   // margin: 2px 3px 3px 3px;
   // padding: 0px 1px 0px 0px;
+
   /* scroll bar width */
   &::-webkit-scrollbar {
     width: 10px;
   }
-  
+
   /* scroll bar track */
   &::-webkit-scrollbar-track {
-    box-shadow: inset 0 0 2px #333; 
     border-radius: 10px;
+    box-shadow: inset 0 0 2px #333;
   }
-   
+
   /* scroll bar handle */
   &::-webkit-scrollbar-thumb {
-    background: rgba(51,51,51,0.8);
     opacity: 0.6;
     border-radius: 10px;
+    background: rgb(51 51 51 / 80%);
   }
-  
+
   /* scroll bar handle on hover */
   &::-webkit-scrollbar-thumb:hover {
-    background: rgba(51,51,51,1);
+    background: rgb(51 51 51 / 100%);
   }
 }
 
@@ -115,9 +117,10 @@ height: 100%;
   overflow-x: hidden;
   overflow-y: auto;
 
+  border-right: var(--border-width) solid var(--border-color);
+
   background-color: rgb(255 255 255);
   grid-area: matrixPicker;
-  border-right: var(--border-width) solid var(--border-color);
 }
 
 .editor {
@@ -129,28 +132,24 @@ height: 100%;
 
   background: white;
   grid-area: editor;
-  
 }
-
 
 .materialPicker {
   overflow-x: hidden;
   overflow-y: auto;
 
+  border-left: var(--border-width) solid var(--border-color);
+
   background-color: rgb(255 255 255);
   grid-area: materialPicker;
-
-  border-left: var(--border-width) solid var(--border-color);
 }
 
 .oneMaterialPanel {
   display: grid;
   grid-template-areas: "material" "." "materialNumberInputs";
-
-  
 }
 
-.divider{
+.divider {
   margin-top: 0.75rem;
 }
 

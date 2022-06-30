@@ -2,7 +2,6 @@ import * as React from "react";
 import styles from "./Modal.module.scss";
 import { ModalProps } from "./Modal.props";
 
-
 const Modal: React.FC<ModalProps> = ({ children, className, ...props }) => {
   return (
     <div {...props}>

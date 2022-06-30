@@ -2,8 +2,7 @@ import * as React from "react";
 import WithLabel from "../withLabel/WithLabel";
 import styles from "./NumberInput.module.scss";
 import { NumberInputProps } from "./NumberInput.props";
-import cn from 'clsx';
-
+import cn from "clsx";
 
 const NumberInput: React.FC<NumberInputProps> = ({
   value,

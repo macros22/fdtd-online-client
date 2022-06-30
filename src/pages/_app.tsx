@@ -4,7 +4,6 @@ import Head from "next/head";
 import React from "react";
 import NextNProgress from "nextjs-progressbar";
 
-
 import "styles/global.scss";
 // import '../styles/github-markdown.css';
 

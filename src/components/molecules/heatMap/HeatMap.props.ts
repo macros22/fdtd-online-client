@@ -1,7 +1,10 @@
 import { DetailedHTMLProps, HTMLAttributes } from "react";
 
 export interface HeatMapProps
-  extends DetailedHTMLProps<HTMLAttributes<HTMLCanvasElement>, HTMLCanvasElement> {
+  extends DetailedHTMLProps<
+    HTMLAttributes<HTMLCanvasElement>,
+    HTMLCanvasElement
+  > {
   minVal: number;
   maxVal: number;
   dataX: number[];
@@ -11,5 +14,5 @@ export interface HeatMapProps
   height: number;
   srcPositionRelativeX: number;
   srcPositionRelativeY: number;
-  withOptions?: boolean,
-};
+  withOptions?: boolean;
+}

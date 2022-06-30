@@ -5,7 +5,7 @@ import cn from "clsx";
 const Divider = ({ className, ...props }: DividerProps): JSX.Element => {
   return (
     <>
-      <hr className={cn(styles.divider, className)} {...props}/>
+      <hr className={cn(styles.divider, className)} {...props} />
     </>
   );
 };

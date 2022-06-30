@@ -413,7 +413,6 @@ const Simulation: React.FC<SimulationProps> = ({
           <div className={styles.workArea}>
             <h5>{displayedData[currentDisplayingData].title + " structure"}</h5>
 
-            
             {currentSimulationDimension == SimulationDimension.SIMULATION_2D ? (
               <div className={styles.graph2D}>
                 <Paper>
@@ -515,7 +514,6 @@ const Simulation: React.FC<SimulationProps> = ({
             </Tag>
           </WithLabel>
         </Sidebar>
-
       </div>
     </>
   );

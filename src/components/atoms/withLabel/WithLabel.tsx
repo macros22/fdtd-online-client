@@ -11,9 +11,7 @@ const WithLabel = ({
 }: WithLabelProps): JSX.Element => {
   return (
     <div className={cn(styles.wrapper, className)} {...props}>
-      <label className={styles.label}>
-        {labelText}
-      </label>
+      <label className={styles.label}>{labelText}</label>
       {children}
     </div>
   );
