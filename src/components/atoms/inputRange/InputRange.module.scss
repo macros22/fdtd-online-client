@@ -1,4 +1,4 @@
-.slideContainer {
+.sliderContainer {
   width: 100%;
 }
 
@@ -11,25 +11,10 @@
 
   border: none !important;
   outline: none;
-  background-color: var(--gray-lighten-color);
+  background-color: var(--gray-light-color);
   appearance: none;
-
-  &::-webkit-slider-thumb {
-    width: 20px;
-    height: 20px;
-
-    cursor: pointer;
-
-    border: 0;
-    border-radius: 50%;
-    background: var(--primary-color);
-    appearance: none;
-
-    &:hover {
-      background: var(--primary-darken-color);
-    }
-  }
-
+  
+  &::-webkit-slider-thumb,
   &::-moz-range-thumb {
     width: 20px;
     height: 20px;
@@ -39,9 +24,10 @@
     border: 0;
     border-radius: 50%;
     background: var(--primary-color);
+   
 
     &:hover {
-      background: var(--primary-darken-color);
+      background: var(--primary-dark-color);
     }
   }
 }

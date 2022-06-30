@@ -22,3 +22,10 @@
 # Modal example:
 - https://github.com/rapaccinim/react-stuff/blob/main/src/components/ScrollableYModal/ScrollableYModal.js
 - https://rapaccinim.medium.com/how-to-create-a-custom-resizable-modal-with-scrollable-and-fixed-content-21adb2adda28
+
+
+# Divider:
+-https://github.com/mlaursen/react-md/blob/main/packages/divider/src/Divider.tsx
+
+# React Typescript cheatsheets
+- https://react-typescript-cheatsheet.netlify.app/docs/basic/setup
