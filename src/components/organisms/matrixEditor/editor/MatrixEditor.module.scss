@@ -14,8 +14,8 @@
 .modalWrapper {
   position: fixed;
   z-index: var(--z-index-modal);
-  top: 1rem;
-  bottom: 1rem;
+  top: var(--size-md);
+  bottom: var(--size-md);
   left: 0;
 }
 
@@ -23,14 +23,14 @@
   display: grid;
   grid-template-areas: "matrixPicker editor materialPicker";
   grid-template-columns: repeat(3, 1fr);
-  column-gap: 1.2rem;
+  column-gap: var(--size-md);
 
   width: 100%;
   height: 100%;
 }
 
 .title {
-  margin: 0.45rem;
+  margin: var(--size-sm);
 
   text-align: center;
 }
@@ -43,9 +43,9 @@
 
   width: 100%;
   height: 100%;
-  padding: var(--space-sm);
+  padding: var(--size-sm);
   grid-auto-rows: min-content;
-  grid-gap: var(--space-sm);
+  grid-gap: var(--size-sm);
   grid-template-columns: 1;
 }
 
@@ -85,9 +85,6 @@
 
   border-top: var(--border-width) solid var(--border-color);
 
-  // overflow-y: auto; // uncomment for one element !!!!
-  // margin: 2px 3px 3px 3px;
-  // padding: 0px 1px 0px 0px;
 
   /* scroll bar width */
   &::-webkit-scrollbar {
@@ -113,13 +110,14 @@
   }
 }
 
+
 .matrixPicker {
   overflow-x: hidden;
   overflow-y: auto;
 
   border-right: var(--border-width) solid var(--border-color);
 
-  background-color: rgb(255 255 255);
+  background-color: var(--white-color);
   grid-area: matrixPicker;
 }
 
@@ -130,7 +128,7 @@
   width: max-content;
   height: 100%;
 
-  background: white;
+  background: var(--white-color);
   grid-area: editor;
 }
 
@@ -140,7 +138,7 @@
 
   border-left: var(--border-width) solid var(--border-color);
 
-  background-color: rgb(255 255 255);
+  background-color: var(--white-color);
   grid-area: materialPicker;
 }
 
@@ -150,7 +148,7 @@
 }
 
 .divider {
-  margin-top: 0.75rem;
+  padding: 0 var(--sidebar-padding) !important;
 }
 
 .material {
@@ -158,9 +156,7 @@
 
   display: flex;
   flex-direction: row;
-  gap: var(--space-sm);
-
-  // margin-top: 0.75rem 0;
+  gap: var(--size-sm);
 }
 
 .materialNumberInputs {
@@ -168,17 +164,17 @@
 
   display: flex;
   flex-direction: row;
-  gap: var(--space-sm);
+  gap: var(--size-sm);
 
-  margin-top: 0.5rem;
+  margin-top: var(--size-sm);
 }
 
 .buttons {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-
-  padding: 1rem;
+  gap: var(--size-sm);
+  padding: var(--size-md);
 }
 
 @media (max-width: 1100px) {
@@ -197,14 +193,14 @@
     width: min-content;
     height: 90vh;
     margin: 2rem;
-    padding: var(--space-md);
+    padding: var(--size-md);
 
     text-align: center;
 
-    background-color: rgb(255 255 255);
+    background-color: var(--white-color);
     place-items: center;
     grid-auto-rows: min-content;
-    grid-gap: var(--space-sm);
+    grid-gap: var(--size-sm);
     grid-template-columns: 1;
     grid-template-areas:
       "editor"

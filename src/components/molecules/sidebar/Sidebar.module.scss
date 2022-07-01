@@ -8,7 +8,7 @@
 
   background-color: var(--white-color);
   box-shadow:
-    var(--space-xxxxs) 0 calc(var(--space-xxxs) * 2)
+    var(--size-sm) 0 var(--size-md)
     var(--shadow-color) !important;
   grid-auto-rows: min-content;
   grid-gap: var(--sidebar-padding);

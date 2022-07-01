@@ -411,7 +411,7 @@ const Simulation: React.FC<SimulationProps> = ({
 
         <div className={styles.content}>
           <div className={styles.workArea}>
-            <h5>{displayedData[currentDisplayingData].title + " structure"}</h5>
+            <h2>{displayedData[currentDisplayingData].title + " structure"}</h2>
 
             {currentSimulationDimension == SimulationDimension.SIMULATION_2D ? (
               <div className={styles.graph2D}>

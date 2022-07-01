@@ -2,6 +2,7 @@
 @import "variables/variables";
 @import "fonts";
 @import "sizes";
+@import "./normalize.scss";
 
 html,
 body {
@@ -34,4 +35,29 @@ a {
 *::before,
 *::after {
   box-sizing: border-box;
+}
+
+
+h1{
+  font-size: var(--text-xxl);
+}
+
+h2{
+  font-size: var(--text-xl);
+}
+
+h3{
+  font-size: var(--text-lg);
+}
+
+h4{
+  font-size: var(--text-md);
+}
+
+h5{
+  font-size: var(--text-sm);
+}
+
+h5{
+  font-size: var(--text-xs);
 }

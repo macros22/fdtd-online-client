@@ -6,10 +6,10 @@
   .label {
     display: block;
 
-    margin-bottom: var(--space-xxxs);
+    margin-bottom: var(--size-xs);
 
     transition: 0.2s;
-    letter-spacing: var(--space-xxxxs);
+    letter-spacing: calc(0.35 * var(--size-xs));
 
     color: inherit;
 

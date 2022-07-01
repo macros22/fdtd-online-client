@@ -1,0 +1,117 @@
+@import './variables';
+@import './mixins';
+
+@mixin h1 {
+  color: $dark500;
+  font-family: 'Poppins';
+  font-size: 46px;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 58px;
+  margin: 0;
+}
+
+@mixin h2 {
+  color: $dark500;
+  font-family: 'Poppins';
+  font-size: 32px;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 40px;
+  margin: 0;
+}
+
+@mixin h3 {
+  color: $dark500;
+  font-family: 'Poppins';
+  font-size: 28px;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 36px;
+  margin: 0;
+}
+
+@mixin h4 {
+  color: $dark500;
+  font-family: 'Poppins';
+  font-size: 22px;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 32px;
+  margin: 0;
+}
+
+@mixin h5 {
+  color: $dark500;
+  font-family: 'Poppins';
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 24px;
+  margin: 0;
+}
+
+@mixin h6 {
+  color: $dark500;
+  font-family: 'Poppins';
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 20px;
+  margin: 0;
+}
+
+@mixin h7 {
+  color: $dark500;
+  font-family: 'Poppins';
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 18px;
+  margin: 0;
+}
+
+@mixin caption {
+  color: $dark300;
+  font-family: 'Poppins';
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 15px;
+  margin: 0;
+}
+
+@mixin body-small {
+  color: $dark300;
+  font-family: 'Poppins';
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 18px;
+  margin: 0;
+}
+
+@mixin body {
+  color: $dark300;
+  font-family: 'Poppins';
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px;
+  margin: 0;
+}
+
+@mixin body-big {
+  color: $dark300;
+  font-family: 'Poppins';
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px;
+  margin: 0;
+}
+

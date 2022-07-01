@@ -7,8 +7,6 @@ import { Button, ButtonGroup, NumberInput, WithLabel } from "components";
 import { useAppDispatch, useAppSelector } from "store/hooks";
 import { SimulationDimension } from "types/types";
 
-// import DragAndDrop from './DragAndDrop';
-
 import EditorCanvas from "../EditorCanvas";
 import {
   ConfigMaterial,
@@ -106,7 +104,7 @@ const MatrixEditor: React.FC<MatrixEditorProps> = ({
                         />
                       </div>
                     </div>
-                    <Divider />
+                    <Divider className={styles.divider}/>
                   </>
                 ))}
               </div>
@@ -176,10 +174,8 @@ const MatrixEditor: React.FC<MatrixEditorProps> = ({
                         })}
                   </ButtonGroup>
                 </WithLabel>
-                <Divider />
 
                 <Button
-                  style={{ marginTop: ".61rem" }}
                   onClick={() => setIsOpened(false)}
                 >
                   Back to Simulation
@@ -207,7 +203,7 @@ const MatrixEditor: React.FC<MatrixEditorProps> = ({
                           />
                           <h3>{material.name}</h3>
                         </div>
-                        <Divider />
+                  
                         <div className={styles.materialNumberInputs}>
                           <NumberInput
                             value={material.eps}
@@ -216,7 +212,7 @@ const MatrixEditor: React.FC<MatrixEditorProps> = ({
                               dispatch(
                                 updateMaterialEps({
                                   materialId: material.id,
-                                  newEps: +e.target.value,
+                                  newEps: Number(e.target.value),
                                 })
                               )
                             }
@@ -228,7 +224,7 @@ const MatrixEditor: React.FC<MatrixEditorProps> = ({
                               dispatch(
                                 updateMaterialMu({
                                   materialId: material.id,
-                                  newMu: +e.target.value,
+                                  newMu: Number(e.target.value),
                                 })
                               )
                             }
@@ -236,24 +232,24 @@ const MatrixEditor: React.FC<MatrixEditorProps> = ({
                           <NumberInput
                             value={material.sigma}
                             label={"conductivity"}
-                            onChange={(e) => {
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                               dispatch(
                                 updateMaterialSigma({
                                   materialId: material.id,
-                                  newSigma: +e.target.value,
+                                  newSigma: Number(e.target.value ),
                                 })
                               );
                             }}
                           />
                         </div>
-                        <Divider />
+                        
                       </div>
+                      <Divider className={styles.divider}/>
                     </>
                   );
                 })}
               </div>
             </div>
-            {/* <DragAndDrop WIDTH={400} HEIGHT={400} /> */}
           </div>
         </div>
       </Modal>
