@@ -60,8 +60,6 @@
   grid-template-areas: "matrixPickerTitle editorTitle materialPickerTitle";
   grid-template-columns: repeat(3, 1fr);
 
-  //   column-gap: 1.2rem;
-
   place-content: center;
 }
 
@@ -106,6 +104,7 @@
 
   /* scroll bar handle on hover */
   &::-webkit-scrollbar-thumb:hover {
+    border-radius: 10px;
     background: rgb(51 51 51 / 100%);
   }
 }

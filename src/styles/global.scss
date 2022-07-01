@@ -11,18 +11,8 @@ body {
 
   color: var(--text-color);
 
-  font-family:
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    Roboto,
-    Oxygen,
-    Ubuntu,
-    Cantarell,
-    "Fira Sans",
-    "Droid Sans",
-    "Helvetica Neue",
-    sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
 }
 
 a {
@@ -37,27 +27,28 @@ a {
   box-sizing: border-box;
 }
 
-
-h1{
+h1 {
   font-size: var(--text-xxl);
 }
 
-h2{
+h2 {
   font-size: var(--text-xl);
 }
 
-h3{
+h3 {
   font-size: var(--text-lg);
 }
 
-h4{
+h4 {
   font-size: var(--text-md);
 }
 
-h5{
+h5 {
   font-size: var(--text-sm);
 }
 
-h5{
+h5 {
   font-size: var(--text-xs);
 }
+
+

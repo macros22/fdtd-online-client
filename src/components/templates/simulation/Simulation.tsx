@@ -41,6 +41,7 @@ import {
 } from "utils/transform-materials-array";
 import Modal from "components/molecules/modal/Modal";
 import PreviewMatrixSidebar from "components/organisms/matrixEditor/preview/PreviewMatrixSidebar";
+import Divider from "components/atoms/divider/Divider";
 
 type SourcePosition = {
   x: number;
@@ -362,7 +363,7 @@ const Simulation: React.FC<SimulationProps> = ({
             onChange={(e) => setLambda(parseInt(e.target.value))}
           />
 
-          <hr />
+          <Divider className={styles.divider} />
 
           {currentSimulationDimension === SimulationDimension.SIMULATION_1D ? (
             <NumberInput
@@ -378,14 +379,14 @@ const Simulation: React.FC<SimulationProps> = ({
             />
           )}
 
-          <hr />
+          <Divider className={styles.divider} />
           <WithLabel labelText={`Source position X(${srcPositionRelativeX})`}>
             <InputRange
               value={srcPositionRelativeX}
               setValue={setSourcePositionRelativeX}
             />
           </WithLabel>
-          <hr />
+          <Divider className={styles.divider} />
 
           {currentSimulationDimension === SimulationDimension.SIMULATION_2D && (
             <>
@@ -397,7 +398,7 @@ const Simulation: React.FC<SimulationProps> = ({
                   setValue={setSourcePositionRelativeY}
                 />
               </WithLabel>
-              <hr />
+              <Divider className={styles.divider} />
             </>
           )}
 
@@ -480,7 +481,7 @@ const Simulation: React.FC<SimulationProps> = ({
                   })}
                 </ButtonGroup>
               </WithLabel>
-              <hr />
+              <Divider className={styles.divider} />
             </>
           )}
 
@@ -490,7 +491,7 @@ const Simulation: React.FC<SimulationProps> = ({
             </Tag>
           </WithLabel>
 
-          <hr />
+          <Divider className={styles.divider} />
 
           <Button
             appearance={isWSocketConnected ? "primary" : "ghost"}
@@ -506,7 +507,7 @@ const Simulation: React.FC<SimulationProps> = ({
             STOP
           </Button>
 
-          <hr />
+          <Divider className={styles.divider} />
 
           <WithLabel labelText="Server connection:">
             <Tag size="lg" color="primary" fullWidth>

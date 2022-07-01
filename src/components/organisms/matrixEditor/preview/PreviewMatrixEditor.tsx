@@ -155,6 +155,7 @@ const PreviewMatrix: React.FC<PreviewMatrixProps> = ({
     <>
       <canvas
         // onClick={ handleMouseClick }
+        style={{borderRadius: "5px"}}
         ref={canvasRef}
       />
     </>
