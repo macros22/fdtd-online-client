@@ -1,54 +1,49 @@
-@import "colors/colors";
-@import "variables/variables";
-@import "fonts";
-@import "sizes";
-@import "./normalize.scss";
+@import 'colors/colors';
+@import 'variables/variables';
+@import 'fonts';
+@import 'sizes';
+@import './normalize.scss';
+@import 'typography';
 
 html,
 body {
-  margin: 0;
-  padding: 0;
+	margin: 0;
+	padding: 0;
 
-  color: var(--text-color);
+	color: var(--text-color);
 
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
-    Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+		Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+
+	h1 {
+		@include h1;
+	}
+
+	h2 {
+		@include h2;
+	}
+
+	h3 {
+		@include h3;
+	}
+
+	h4 {
+		@include h4;
+	}
+
+	p {
+		margin: 0;
+	}
 }
 
 a {
-  text-decoration: none;
+	text-decoration: none;
 
-  color: inherit;
+	color: inherit;
 }
 
 *,
 *::before,
 *::after {
-  box-sizing: border-box;
+	box-sizing: border-box;
 }
-
-h1 {
-  font-size: var(--text-xxl);
-}
-
-h2 {
-  font-size: var(--text-xl);
-}
-
-h3 {
-  font-size: var(--text-lg);
-}
-
-h4 {
-  font-size: var(--text-md);
-}
-
-h5 {
-  font-size: var(--text-sm);
-}
-
-h5 {
-  font-size: var(--text-xs);
-}
-
-
