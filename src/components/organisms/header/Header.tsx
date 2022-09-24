@@ -27,7 +27,7 @@ const postNames = [
 
 // props: Props
 const Header = () => {
-  const WAVE_OPTICS_NAME = "WAVE OPTICS";
+  const LOGO_TEXT = "FDTD";
   const currentContentType = useAppSelector(selectCurrentContentType);
   const currentSimDimension = useAppSelector(selectCurrentSimulationDimension);
 
@@ -44,7 +44,7 @@ const Header = () => {
         <div className={styles.container}>
           <div className={styles.headerBody}>
             <Link href="/">
-              <a className={styles.logo}>{WAVE_OPTICS_NAME}</a>
+              <a className={styles.logo}>{LOGO_TEXT}</a>
             </Link>
 
             <div

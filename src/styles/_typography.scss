@@ -1,6 +1,6 @@
 @mixin h1 {
   color: var(--text-color);
-  font-family: 'Roboto';
+  font-family: 'Inter';
   font-size: 46px;
   font-style: normal;
   font-weight: 500;
@@ -11,7 +11,7 @@
 
 @mixin h2 {
   color: var(--text-color);
-  font-family: 'Roboto';
+  font-family: 'Inter';
   font-size: 32px;
   font-style: normal;
   font-weight: 500;
@@ -22,7 +22,7 @@
 
 @mixin h3 {
   color: var(--text-color);
-  font-family: 'Roboto';
+  font-family: 'Inter';
   font-size: 28px;
   font-style: normal;
   font-weight: 500;
@@ -33,7 +33,7 @@
 
 @mixin h4 {
   color: var(--text-color);
-  font-family: 'Roboto';
+  font-family: 'Inter';
   font-size: 22px;
   font-style: normal;
   font-weight: 500;
@@ -44,7 +44,7 @@
 
 @mixin h5 {
   color: var(--text-color);
-  font-family: 'Roboto';
+  font-family: 'Inter';
   font-size: 16px;
   font-style: normal;
   font-weight: 500;
@@ -54,7 +54,7 @@
 
 @mixin h6 {
   color: var(--text-color);
-  font-family: 'Roboto';
+  font-family: 'Inter';
   font-size: 14px;
   font-style: normal;
   font-weight: 500;
@@ -64,7 +64,7 @@
 
 @mixin h7 {
   color: var(--text-color);
-  font-family: 'Roboto';
+  font-family: 'Inter';
   font-size: 12px;
   font-style: normal;
   font-weight: 500;
@@ -74,7 +74,7 @@
 
 @mixin caption {
   color: $dark300;
-  font-family: 'Roboto';
+  font-family: 'Inter';
   font-size: 10px;
   font-style: normal;
   font-weight: 400;

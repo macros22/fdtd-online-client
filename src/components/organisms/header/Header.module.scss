@@ -32,6 +32,9 @@
   position: relative;
   z-index: var(--z-index-header-body);
 
+  margin: 0 auto;
+  width: 90%;
+
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -228,12 +231,12 @@
   align-self: center;
 
   text-decoration: none;
-  letter-spacing: var(--space-xxxxs);
+  letter-spacing: var(--space-xxxs);
   text-transform: uppercase;
 
   color: var(--text-color);
 
-  font-size: var(--text-lg);
+  font-size: var(--text-md);
   font-weight: bold;
 
   &:hover {
