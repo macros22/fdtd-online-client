@@ -1,24 +1,22 @@
 import { useAppDispatch, useAppSelector } from "store/hooks";
-import styles from "../editor/MatrixEditor.module.scss";
+import styles from "../../editor/MatrixEditor.module.scss";
 import {
   selectMaterialMatrix,
   setCurrentMaterialMatrix,
   setMaterialMatrixSize,
 } from "store/reducers/material-matrix.reducer";
-import React, { DetailedHTMLProps, HTMLAttributes } from "react";
-import MatrixEditor from "../editor/MatrixEditor";
-import PreviewMatrix from "./PreviewMatrixEditor";
+import React from "react";
+import MatrixEditor from "../../editor/MatrixEditor";
+import PreviewMatrix from "../inEditor/PreviewMatrixEditor";
 import { selectCurrentSimulationDimension } from "store/reducers/app-config.reducer";
 import { SimulationDimension } from "types/types";
 import { Button } from "components";
+import { IPreviewMatrixSidebarProps } from "./PreviewMatrixSidebar.interface";
 
-export interface PreviewMatrixSidebarProps
-  extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
-  srcPositionRelativeX: number;
-  srcPositionRelativeY: number;
-}
 
-const PreviewMatrixSidebar: React.FC<PreviewMatrixSidebarProps> = ({
+export const PreviewMatrixSidebar: React.FC<IPreviewMatrixSidebarProps> = ({
+  isModalOpen,
+  setIsModalOpen,
   srcPositionRelativeX,
   srcPositionRelativeY,
 }) => {
@@ -39,8 +37,6 @@ const PreviewMatrixSidebar: React.FC<PreviewMatrixSidebarProps> = ({
     dispatch(setCurrentMaterialMatrix({ currentMaterialMatrixConfigInSet: 0 }));
   }, [currentSimulationDimension]);
 
-  const [isOpened, setIsOpend] = React.useState<boolean>(false);
-
   return (
     <>
       <PreviewMatrix
@@ -51,14 +47,14 @@ const PreviewMatrixSidebar: React.FC<PreviewMatrixSidebarProps> = ({
       />
       <Button
         className={styles.triggerMatrixBtn}
-        onClick={() => setIsOpend(true)}
+        onClick={() => setIsModalOpen(true)}
       >
         Edit material
       </Button>
 
-      {isOpened && (
+      {isModalOpen && (
         <MatrixEditor
-          setIsOpened={setIsOpend}
+          setIsModalOpen={setIsModalOpen}
           srcPositionRelativeX={srcPositionRelativeX}
           srcPositionRelativeY={srcPositionRelativeY}
         />
@@ -66,5 +62,3 @@ const PreviewMatrixSidebar: React.FC<PreviewMatrixSidebarProps> = ({
     </>
   );
 };
-
-export default PreviewMatrixSidebar;

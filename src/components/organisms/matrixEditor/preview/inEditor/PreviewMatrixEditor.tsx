@@ -11,7 +11,7 @@ import {
 import React from "react";
 import { SimulationDimension } from "types/types";
 
-import { colors } from "../colors";
+import { colors } from "../../colors";
 import { drawType } from "components/molecules/plot1D/useCanvas";
 
 export interface PreviewMatrixProps

@@ -2,7 +2,7 @@ import { DetailedHTMLProps, HTMLAttributes } from "react";
 
 export interface MatrixEditorProps
   extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
-  setIsOpened: (value: React.SetStateAction<boolean>) => void;
+  setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>,
   srcPositionRelativeX: number;
   srcPositionRelativeY: number;
 }

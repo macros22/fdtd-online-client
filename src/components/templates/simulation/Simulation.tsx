@@ -39,9 +39,8 @@ import {
   MaterialForBackend,
   transformMaterialForBackend,
 } from "utils/transform-materials-array";
-import Modal from "components/molecules/modal/Modal";
-import PreviewMatrixSidebar from "components/organisms/matrixEditor/preview/PreviewMatrixSidebar";
 import Divider from "components/atoms/divider/Divider";
+import { PreviewMatrixSidebar } from "components/organisms/matrixEditor/preview/inSidebar/PreviewMatrixSidebar";
 
 type SourcePosition = {
   x: number;
@@ -65,6 +64,8 @@ const Simulation: React.FC<SimulationProps> = ({
 }) => {
   const materialMatrix = useAppSelector(selectMaterialMatrix);
   const materials = useAppSelector(selectMaterials);
+
+  const [isMatrixEditorOpen, setIsMatrixEditorOpen] = React.useState(false);
 
   const [isWSocketConnected, setIsWSocketConnected] =
     React.useState<boolean>(false);
@@ -404,6 +405,8 @@ const Simulation: React.FC<SimulationProps> = ({
 
           <WithLabel labelText="Material matrix:">
             <PreviewMatrixSidebar
+              isModalOpen={isMatrixEditorOpen}
+              setIsModalOpen={setIsMatrixEditorOpen}
               srcPositionRelativeX={srcPositionRelativeX}
               srcPositionRelativeY={srcPositionRelativeY}
             />
