@@ -1,6 +1,9 @@
 .tag {
   display: inline-block;
 
+  font-weight: 500;
+  letter-spacing: 1.25px;
+
   box-sizing: border-box;
   margin-right: 5px;
 
@@ -8,6 +11,7 @@
 
   border-radius: var(--border-radius);
 }
+
 
 .sm {
   padding: 5px 10px;
@@ -46,6 +50,6 @@
 }
 
 .primary {
-  color: rgb(237 237 237);
+  color: var(--white);
   background: var(--primary-color);
 }

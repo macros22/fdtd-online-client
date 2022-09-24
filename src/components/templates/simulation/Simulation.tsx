@@ -415,7 +415,12 @@ const Simulation: React.FC<SimulationProps> = ({
 
         <div className={styles.content}>
           <div className={styles.workArea}>
-            <h3>{displayedData[currentDisplayingData].title + " structure"}</h3>
+            <span>
+              <Tag color="primary" size="lg" className={styles.title}>
+                {displayedData[currentDisplayingData].name}
+              </Tag>
+              <span className={styles.subTitle}> structure</span>
+            </span>
 
             {currentSimulationDimension == SimulationDimension.SIMULATION_2D ? (
               <div className={styles.graph2D}>

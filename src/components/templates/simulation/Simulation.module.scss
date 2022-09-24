@@ -11,6 +11,17 @@
   grid-template-columns: 17% auto 17%;
 }
 
+.subTitle {
+  color: var(--gray-600);
+  font-size: 28px;
+  font-weight: 600;
+}
+
+.title{
+  font-weight: 600;
+  color: var(--white);
+}
+
 @media (max-width: 1200px) {
   .wrapper {
     display: grid;
@@ -58,6 +69,6 @@
 }
 
 
-.divider{
+.divider {
   padding: 0 var(--sidebar-padding);
 }
