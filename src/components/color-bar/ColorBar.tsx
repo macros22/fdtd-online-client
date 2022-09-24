@@ -1,5 +1,5 @@
+import { defaultGradient } from "libs/utils/default-gradient";
 import React from "react";
-import { defaultGradient } from "utils/default-gradient";
 import { ColorBarProps } from "./ColorBar.props";
 
 const ColorBar: React.FC<ColorBarProps> = ({

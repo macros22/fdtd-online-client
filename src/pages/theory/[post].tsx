@@ -1,8 +1,7 @@
 import React from "react";
 import { Theory } from "components";
 
-import { withLayout } from "layout/MainLayout";
-import { ContentType } from "types/types";
+import { ContentType } from "libs/types/types";
 
 import { GetStaticPaths, GetStaticProps, GetStaticPropsContext } from "next";
 import { ParsedUrlQuery } from "querystring";
@@ -19,6 +18,7 @@ import matter from "gray-matter";
 import markdown from "remark-parse";
 import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
+import { MainLayout } from "components/layout/main-layout/MainLayout";
 
 const TheoryPage: React.FC<ITheoryPageProps> = ({
   // frontMatter: { title, date },
@@ -29,13 +29,16 @@ const TheoryPage: React.FC<ITheoryPageProps> = ({
   //   dispatch(setLabContentType(currentLabContentType));
 
   return (
-    <Theory>
-      <MDXRemote {...mdxSource} />
-    </Theory>
+    <MainLayout>
+      <Theory>
+        <MDXRemote {...mdxSource} />
+      </Theory>
+    </MainLayout>
   );
 };
 
-export default withLayout(TheoryPage);
+export default 
+TheoryPage;
 
 const postNames = [
   "one-dimension",

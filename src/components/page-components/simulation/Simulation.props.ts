@@ -1,4 +1,4 @@
-import { SimulationDimension } from "types/types";
+import { SimulationDimension } from "libs/types/types";
 
 export interface SimulationProps {
   currentSimulationDimension: SimulationDimension;

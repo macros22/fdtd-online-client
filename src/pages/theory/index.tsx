@@ -1,5 +1,5 @@
-import Header from "components/organisms/header/Header";
-import { withLayout } from "layout/MainLayout";
+import { Header } from "components/layouts/header/Header";
+import { MainLayout } from "components/layouts/main-layout/MainLayout";
 import Link from "next/link";
 import React from "react";
 
@@ -13,7 +13,7 @@ const postNames = [
 
 function TheoryPage() {
   return (
-    <>
+    <MainLayout>
       <Header />
 
       {postNames.map((postName) => {
@@ -33,9 +33,8 @@ function TheoryPage() {
           </li>
         );
       })}
-    </>
+    </MainLayout>
   );
 }
-// export default TheoryPage;
+export default TheoryPage;
 
-export default withLayout(TheoryPage);

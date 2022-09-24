@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { ContentType, SimulationDimension } from "types/types";
+import { ContentType, SimulationDimension } from "libs/types/types";
 
 import type { AppState } from "../store";
 

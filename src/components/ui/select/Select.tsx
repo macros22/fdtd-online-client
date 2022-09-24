@@ -1,5 +1,5 @@
 import React, { ReactNode, useState, useRef } from "react";
-import useOnClickOutside from "hooks/use-on-click-outside";
+import useOnClickOutside from "libs/hooks/use-on-click-outside";
 import styles from "./Select.module.scss";
 
 const Select: React.FC<{

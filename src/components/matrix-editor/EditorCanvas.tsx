@@ -7,9 +7,9 @@ import {
   selectMaterials,
   updateMaterialMatrix,
 } from "store/reducers/material-matrix.reducer";
-import { drawType } from "components/molecules/Canvas/useCanvas";
 import React from "react";
 import { colors } from "./colors";
+import { drawType } from "components/plot-line/useCanvas";
 
 type EditorCanvasProps = {
   width: number;

@@ -1,14 +1,11 @@
 import React from "react";
-
-import { withLayout } from "layout/MainLayout";
-import { ContentType, SimulationDimension } from "types/types";
-
+import { ContentType, SimulationDimension } from "libs/types/types";
 import { useAppDispatch } from "store/hooks";
-
-import Simulation from "components/templates/simulation/Simulation";
 import { setSimulationDimension } from "store/reducers/app-config.reducer";
 import { GetStaticPaths, GetStaticProps, GetStaticPropsContext } from "next";
 import { ParsedUrlQuery } from "querystring";
+import { MainLayout } from "components/layouts/main-layout/MainLayout";
+import Simulation from "components/page-components/simulation/Simulation";
 
 export interface ISimulationPageProps extends Record<string, unknown> {
   currentSimulationDimension: SimulationDimension;
@@ -21,13 +18,13 @@ const SimulationPage: React.FC<ISimulationPageProps> = ({
   dispatch(setSimulationDimension(currentSimulationDimension));
 
   return (
-    <>
+    <MainLayout>
       <Simulation currentSimulationDimension={currentSimulationDimension} />
-    </>
+    </MainLayout>
   );
 };
 
-export default withLayout(SimulationPage);
+export default SimulationPage;
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const paths: {

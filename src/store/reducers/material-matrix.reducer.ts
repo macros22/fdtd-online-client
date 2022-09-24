@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { SimulationDimension } from "types/types";
+import { SimulationDimension } from "libs/types/types";
 import type { AppState } from "../store";
 
 export type Material = {

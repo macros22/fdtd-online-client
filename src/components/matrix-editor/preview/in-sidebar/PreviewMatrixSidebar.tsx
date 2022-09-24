@@ -7,9 +7,9 @@ import {
 } from "store/reducers/material-matrix.reducer";
 import React from "react";
 import MatrixEditor from "../../editor/MatrixEditor";
-import PreviewMatrix from "../inEditor/PreviewMatrixEditor";
+import PreviewMatrix from "../in-editor/PreviewMatrixEditor";
 import { selectCurrentSimulationDimension } from "store/reducers/app-config.reducer";
-import { SimulationDimension } from "types/types";
+import { SimulationDimension } from "libs/types/types";
 import { Button } from "components";
 import { IPreviewMatrixSidebarProps } from "./PreviewMatrixSidebar.interface";
 

@@ -1,8 +1,8 @@
 import React from "react";
 import cn from "clsx";
 import { Select, Option } from "components";
-import { simulationTitles } from "names/navbar.name";
-import { ContentType, SimulationDimension } from "types/types";
+import { simulationTitles } from "libs/names/navbar.name";
+import { ContentType, SimulationDimension } from "libs/types/types";
 import { useAppSelector, useAppDispatch } from "store/hooks";
 
 import styles from "./Header.module.scss";
@@ -26,7 +26,7 @@ const postNames = [
 ];
 
 // props: Props
-const Header = () => {
+export const Header = () => {
   const LOGO_TEXT = "FDTD";
   const currentContentType = useAppSelector(selectCurrentContentType);
   const currentSimDimension = useAppSelector(selectCurrentSimulationDimension);
@@ -43,7 +43,7 @@ const Header = () => {
       <header className={styles.header}>
         <div className={styles.container}>
           <div className={styles.headerBody}>
-            <Link href="/">
+            <Link href="/simulation/1d">
               <a className={styles.logo}>{LOGO_TEXT}</a>
             </Link>
 
@@ -133,4 +133,3 @@ const Header = () => {
   );
 };
 
-export default Header;

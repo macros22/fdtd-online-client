@@ -5,7 +5,7 @@ import styles from "./MatrixEditor.module.scss";
 import { MatrixEditorProps } from "./MatrixEditor.props";
 import { Button, ButtonGroup, NumberInput, WithLabel } from "components";
 import { useAppDispatch, useAppSelector } from "store/hooks";
-import { SimulationDimension } from "types/types";
+import { SimulationDimension } from "libs/types/types";
 
 import EditorCanvas from "../EditorCanvas";
 import {
@@ -21,11 +21,11 @@ import {
   updateMaterialMu,
   updateMaterialSigma,
 } from "store/reducers/material-matrix.reducer";
-import PreviewMatrix from "../preview/inEditor/PreviewMatrixEditor";
+import PreviewMatrix from "../preview/in-editor/PreviewMatrixEditor";
 import { selectCurrentSimulationDimension } from "store/reducers/app-config.reducer";
 import { colors } from "../colors";
-import Modal from "../../../molecules/modal/Modal";
-import Divider from "components/atoms/divider/Divider";
+import Modal from "../../ui/modal/Modal";
+import Divider from "components/ui/divider/Divider";
 
 const gridSizes1D = [5, 50, 100, 200];
 const gridSizes2D = [11, 55, 110, 220];

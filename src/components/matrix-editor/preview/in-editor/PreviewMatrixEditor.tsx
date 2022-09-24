@@ -9,10 +9,10 @@ import {
 } from "store/reducers/material-matrix.reducer";
 // import { drawType } from "components/molecules/Canvas/useCanvas";
 import React from "react";
-import { SimulationDimension } from "types/types";
+import { SimulationDimension } from "libs/types/types";
 
 import { colors } from "../../colors";
-import { drawType } from "components/molecules/plot1D/useCanvas";
+import { drawType } from "components/plot-line/useCanvas";
 
 export interface PreviewMatrixProps
   extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {

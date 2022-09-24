@@ -1,4 +1,4 @@
-import { defaultGradient } from "utils/default-gradient";
+import { defaultGradient } from "libs/utils/default-gradient";
 
 export type Point = [number, number, number];
 

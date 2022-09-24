@@ -1,4 +1,4 @@
-import { DataChartType } from "types/lab1";
+import { DataChartType } from "libs/types/lab1";
 
 export type Plot1DProps = {
   data: DataChartType;

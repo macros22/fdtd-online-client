@@ -2,9 +2,9 @@ import * as React from "react";
 import Head from "next/head";
 import styles from "./MainLayout.module.scss";
 import { MainLayoutProps } from "./MainLayout.props";
-import Header from "components/organisms/header/Header";
+import { Header } from "../header/Header";
 
-const MainLayout: React.FC<MainLayoutProps> = ({
+export const MainLayout: React.FC<MainLayoutProps> = ({
   children,
   title,
   description,
@@ -25,26 +25,4 @@ const MainLayout: React.FC<MainLayoutProps> = ({
       </div>
     </>
   );
-};
-
-export type MetaPropsType = Omit<MainLayoutProps, "children">;
-
-export const withLayout = <T extends Record<string, unknown>>(
-  Component: React.FC<T>
-) => {
-  return function withLayoutComponent(props: T): JSX.Element {
-    const metaProps: MetaPropsType = {
-      title: `Wave optics | Lab ${
-        (props?.currentSimulationDimension as string)?.toLowerCase() || ""
-      }`,
-      description:
-        (props?.currentSimulationDimension as string)?.toLowerCase() || "",
-    };
-
-    return (
-      <MainLayout {...metaProps}>
-        <Component {...props} />
-      </MainLayout>
-    );
-  };
 };

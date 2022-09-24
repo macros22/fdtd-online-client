@@ -1,5 +1,5 @@
 import * as React from "react";
-import WithLabel from "../withLabel/WithLabel";
+import WithLabel from "../with-label/WithLabel";
 import styles from "./NumberInput.module.scss";
 import { NumberInputProps } from "./NumberInput.props";
 import cn from "clsx";

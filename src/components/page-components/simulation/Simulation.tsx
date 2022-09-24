@@ -5,7 +5,7 @@ import {
   PAUSE_NAME,
   STEP_NUMBER_NAME,
   WAVE_LENGTH_NAME,
-} from "names/lab2.name";
+} from "libs/names/lab2.name";
 
 import styles from "./Simulation.module.scss";
 import {
@@ -22,14 +22,14 @@ import {
   InputRange,
 } from "components";
 
-import { DataType, SimulationDimension } from "types/types";
+import { DataType, SimulationDimension } from "libs/types/types";
 
-import { displayedData } from "utils/displayed-data";
-import { SERVER_URL as SERVER_URL } from "constants/url";
+import { displayedData } from "libs/utils/displayed-data";
+import { SERVER_URL as SERVER_URL } from "libs/constants/url";
 import { useAppSelector } from "store/hooks";
 
 // import PreviewMatrixSidebar from "components/molecules/matrixEditor/PreviewMatrixSidebar";
-import { DataChartType } from "types/lab1";
+import { DataChartType } from "libs/types/lab1";
 import {
   selectMaterialMatrix,
   selectMaterials,
@@ -38,9 +38,9 @@ import { SimulationProps } from "./Simulation.props";
 import {
   MaterialForBackend,
   transformMaterialForBackend,
-} from "utils/transform-materials-array";
-import Divider from "components/atoms/divider/Divider";
-import { PreviewMatrixSidebar } from "components/organisms/matrixEditor/preview/inSidebar/PreviewMatrixSidebar";
+} from "libs/utils/transform-materials-array";
+import Divider from "components/ui/divider/Divider";
+import { PreviewMatrixSidebar } from "components/matrix-editor/preview/in-sidebar/PreviewMatrixSidebar";
 
 type SourcePosition = {
   x: number;
