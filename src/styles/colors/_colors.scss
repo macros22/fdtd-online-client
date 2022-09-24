@@ -1,10 +1,37 @@
 // https://www.easel.ly/
 :root {
-  --primary-color: rgb(62 106 227);
-  --primary-dark-color: rgb(58 95 197);
+  --white: #fff;
+  --gray-100: #f0f2f4;
+  --gray-200: #e9ecef;
+  --gray-300: #ddd;
+  --gray-400: #ced4da;
+  --gray-500: #adb5bd;
+  --gray-600: #868e96;
+  --gray-700: #495057;
+  --gray-800: #343a40;
+  --gray-900: #212529;
+  --black: #000;
+
+  --blue: #3e6ae3;
+  --dark-blue: #3a5fc5;
+  --indigo: #6610f2;
+  --purple: #6f42c1;
+  --pink: #e83e8c;
+  --red: #ff6347;
+  --orange: #fd7e14;
+  --yellow: #f2c231;
+  --light-yellow: #f8e384;
+  --green: #09a180;
+  --teal: #20c997;
+  --cyan: #17a2b8;
+
+
+
+  --primary-color: var(--blue);
+  --primary-dark-color: var(--dark-blue);
   --secondary-color: #7a7e82;
   --success-color: rgb(29 203 139);
-  --danger-color: rgb(255 99 71);
+  --danger-color: var(--red);
   --info-color: rgb(147 147 212);
   --warning-color: #f2c231;
   --light-color: #f5f5f5;
@@ -13,7 +40,7 @@
   --gray-light-color: rgb(214 214 214);
   --white-color: #fff;
   --text-color: #3b3b3b;
-  --text-secondary-color: rgb(121 121 121 / 78%);
+  --text-secondary-color: var(--gray-600);
   --border-color: #dbdbdb;
-  --substrate-color: #f5f5f5;
+  --substrate-color: var(--gray-100);
 }
