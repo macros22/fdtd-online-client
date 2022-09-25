@@ -18,8 +18,9 @@ import {
   ButtonGroup,
   Button,
   WithLabel,
-  Plot1D,
+  PlotLine,
   InputRange,
+  Divider,
 } from "components";
 
 import { DataType, SimulationDimension } from "libs/types/types";
@@ -39,7 +40,6 @@ import {
   MaterialForBackend,
   transformMaterialForBackend,
 } from "libs/utils/transform-materials-array";
-import Divider from "components/ui/divider/Divider";
 import { PreviewMatrixSidebar } from "components/matrix-editor/preview/in-sidebar/PreviewMatrixSidebar";
 
 type SourcePosition = {
@@ -59,7 +59,7 @@ export type MessageToBackend = {
   srcPositionRelative: SourcePosition[];
 };
 
-const Simulation: React.FC<SimulationProps> = ({
+export const Simulation: React.FC<SimulationProps> = ({
   currentSimulationDimension,
 }) => {
   const materialMatrix = useAppSelector(selectMaterialMatrix);
@@ -449,7 +449,7 @@ const Simulation: React.FC<SimulationProps> = ({
             ) : (
               <div className={styles.graph1D}>
                 <Paper>
-                  <Plot1D
+                  <PlotLine
                     data={allData1D}
                     minY={minY}
                     minX={minX}
@@ -502,14 +502,14 @@ const Simulation: React.FC<SimulationProps> = ({
           <Divider className={styles.divider} />
 
           <Button
-            appearance={isWSocketConnected ? "primary" : "ghost"}
+            variant={isWSocketConnected ? "primary" : "ghost"}
             onClick={clickStartPauseContinueBtnHandler}
           >
             {!simulation ? "Start" : pause ? CONTINUE_NAME : PAUSE_NAME}
           </Button>
 
           <Button
-            appearance={simulation ? "primary" : "ghost"}
+            variant={simulation ? "primary" : "ghost"}
             onClick={clickStopBtnHandler}
           >
             STOP
@@ -528,4 +528,3 @@ const Simulation: React.FC<SimulationProps> = ({
   );
 };
 
-export default Simulation;

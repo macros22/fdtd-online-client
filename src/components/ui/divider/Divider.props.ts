@@ -1,6 +1,6 @@
 import { DetailedHTMLProps, HTMLAttributes } from "react";
 
-export interface DividerProps
+export interface IDividerProps
   extends DetailedHTMLProps<HTMLAttributes<HTMLHRElement>, HTMLHRElement> {
   className?: string;
 }

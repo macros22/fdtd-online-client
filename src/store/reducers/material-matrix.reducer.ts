@@ -229,12 +229,20 @@ const materials = [
     color: "tomato",
   },
   {
-    name: "Material 3",
+    name: "Argentum",
     id: 2,
     eps: 40.6,
     mu: 1,
     sigma: 0.02,
     color: "#1a52aa",
+  },
+  {
+    name: "Aurum",
+    id: 3,
+    eps: 10.9,
+    mu: 3,
+    sigma: 0.01,
+    color: "#1b21cc",
   },
 ];
 

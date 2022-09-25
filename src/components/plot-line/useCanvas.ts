@@ -3,7 +3,7 @@ import React from "react";
 // type drawType = (ctx: CanvasRenderingContext2D, frameCount: number) => void;
 export type drawType = (ctx: CanvasRenderingContext2D) => void;
 
-const useCanvas = (draw: drawType, width: number, height: number) => {
+export const useCanvas = (draw: drawType, width: number, height: number) => {
   const canvasRef = React.useRef<HTMLCanvasElement | null>(null);
 
   React.useEffect(() => {
@@ -39,5 +39,3 @@ const useCanvas = (draw: drawType, width: number, height: number) => {
 
   return canvasRef;
 };
-
-export default useCanvas;

@@ -1,6 +1,6 @@
 import { InputHTMLAttributes } from "react";
 
-export interface NumberInputProps
+export interface INumberInputProps
   extends InputHTMLAttributes<HTMLInputElement> {
   value: number | string;
   label: string;

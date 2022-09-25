@@ -1,8 +1,8 @@
-import { TagProps } from "./Tag.props";
-import styles from "./Tag.module.scss";
 import cn from "clsx";
+import styles from "./Tag.module.scss";
+import { ITagProps } from "./Tag.props";
 
-const Tag = ({
+export const Tag = ({
   size = "sm",
   children,
   color = "ghost",
@@ -10,7 +10,7 @@ const Tag = ({
   fullWidth = false,
   className,
   ...props
-}: TagProps): JSX.Element => {
+}: ITagProps): JSX.Element => {
   return (
     <div
       className={cn(styles.tag, className, {
@@ -28,5 +28,3 @@ const Tag = ({
     </div>
   );
 };
-
-export default Tag;

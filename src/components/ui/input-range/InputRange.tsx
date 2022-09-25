@@ -1,14 +1,14 @@
-import { InputRangeProps } from "./InputRange.props";
+import { IInputRangeProps } from "./InputRange.props";
 import styles from "./InputRange.module.scss";
 import React from "react";
 import cn from "clsx";
 
-const InputRange = ({
+export const InputRange = ({
   className,
   value,
   setValue,
   ...props
-}: InputRangeProps): JSX.Element => {
+}: IInputRangeProps): JSX.Element => {
   return (
     <div className={cn(styles.sliderContainer, className)}>
       <input
@@ -25,5 +25,3 @@ const InputRange = ({
     </div>
   );
 };
-
-export default InputRange;

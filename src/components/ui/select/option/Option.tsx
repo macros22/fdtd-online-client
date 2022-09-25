@@ -1,13 +1,9 @@
-import React, { ReactNode } from "react";
+import React from "react";
 import styles from "./Option.module.scss";
-
 import { useRouter } from "next/router";
+import { IOptionProps } from "./Option.props";
 
-const Option: React.FC<{
-  children: ReactNode | ReactNode[];
-  value: string;
-  path: string;
-}> = ({ children, value, path }) => {
+export const Option = ({ children, value, path }: IOptionProps): JSX.Element => {
   const router = useRouter();
 
   const clickHandler = () => {
@@ -20,5 +16,3 @@ const Option: React.FC<{
     </li>
   );
 };
-
-export default Option;

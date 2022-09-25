@@ -12,6 +12,7 @@
     background: transparent;
 
     font-size: 15px;
+    font-weight: 500;
   }
 
   button:hover {
@@ -24,19 +25,19 @@
     background-color: var(--primary-color);
   }
 
-  & > *:not(:first-child) {
+  &>*:not(:first-child) {
     margin-left: calc(0px - var(--border-width));
   }
 
-  & > *:first-child {
+  &>*:first-child {
     border-radius: var(--border-radius) 0 0 var(--border-radius);
   }
 
-  & > *:last-child {
+  &>*:last-child {
     border-radius: 0 var(--border-radius) var(--border-radius) 0;
   }
 
-  & > *:only-child {
+  &>*:only-child {
     border-radius: var(--border-radius);
   }
 }

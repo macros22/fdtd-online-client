@@ -8,7 +8,7 @@ import {
   updateMaterialMatrix,
 } from "store/reducers/material-matrix.reducer";
 import React from "react";
-import { colors } from "./colors";
+import { colors } from "../colors";
 import { drawType } from "components/plot-line/useCanvas";
 
 type EditorCanvasProps = {

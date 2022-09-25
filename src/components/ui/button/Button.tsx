@@ -1,21 +1,21 @@
 import styles from "./Button.module.scss";
-import { ButtonProps } from "./Button.props";
+import { IButtonProps } from "./Button.props";
 import cn from "clsx";
 
-const Button = ({
-  appearance = "primary",
+export const Button = ({
+  variant = "primary",
   children,
   className,
   ...props
-}: ButtonProps): JSX.Element => {
+}: IButtonProps): JSX.Element => {
   return (
     <button
       className={cn(styles.button, className, {
-        [styles.primary]: appearance == "primary",
-        [styles.ghost]: appearance == "ghost",
-        [styles.outline]: appearance == "outline",
+        [styles.primary]: variant == "primary",
+        [styles.ghost]: variant == "ghost",
+        [styles.outline]: variant == "outline",
       })}
-      disabled={appearance == "ghost"}
+      disabled={variant == "ghost"}
       {...props}
     >
       {children}
@@ -23,4 +23,3 @@ const Button = ({
   );
 };
 
-export default Button;

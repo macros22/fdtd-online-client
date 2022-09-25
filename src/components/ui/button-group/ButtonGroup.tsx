@@ -1,22 +1,21 @@
 import styles from "./ButtonGroup.module.scss";
-import { ButtonGroupProps } from "./ButtonGroup.props";
+import { IButtonGroupProps } from "./ButtonGroup.props";
 import cn from "clsx";
 import React from "react";
 
-const ButtonGroup = ({
+export const ButtonGroup = ({
   children,
   className,
   activeButton,
   ...props
-}: ButtonGroupProps): JSX.Element => {
+}: IButtonGroupProps): JSX.Element => {
   const wrapChildren = () => {
     return React.Children.map(children, (child, index) =>
       //@ts-ignore
       React.cloneElement(child, {
         //@ts-ignore
-        className: `${child.props.className} ${
-          index === activeButton ? styles.active : ""
-        }`,
+        className: `${child.props.className} ${index === activeButton ? styles.active : ""
+          }`,
       })
     );
   };
@@ -27,5 +26,3 @@ const ButtonGroup = ({
     </div>
   );
 };
-
-export default ButtonGroup;

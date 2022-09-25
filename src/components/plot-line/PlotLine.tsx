@@ -1,13 +1,13 @@
 import React from "react";
-import { Plot1DProps } from "./Plot1D.props";
-import useCanvas, { drawType } from "./useCanvas";
+import { ICanvasProps, IPlotLineProps } from "./PlotLine.props";
+import { useCanvas, drawType } from "./useCanvas";
 
 // https://medium.com/@pdx.lucasm/canvas-with-react-js-32e133c05258
 
 // Line chart tutorial.
 // https://www.c-sharpcorner.com/UploadFile/18ddf7/html5-line-graph-using-canvas/
 
-const Plot1D: React.FC<Plot1DProps> = ({
+export const PlotLine = ({
   data,
   maxX,
   maxY,
@@ -17,7 +17,7 @@ const Plot1D: React.FC<Plot1DProps> = ({
   HEIGHT,
   epsilonData,
   srcPositionRelative,
-}) => {
+}: IPlotLineProps) => {
   const PADDING = 5;
 
   const deltaX = minX >= 0 ? maxX : maxX - minX;
@@ -257,23 +257,16 @@ const Plot1D: React.FC<Plot1DProps> = ({
   };
 
   return (
-    <>
-      <Canvas draw={draw} width={WIDTH} height={HEIGHT} />
-    </>
+    <Canvas draw={draw} width={WIDTH} height={HEIGHT} />
   );
 };
 
-type CanvasProps = {
-  draw: drawType;
-  width: number;
-  height: number;
-  rest?: any;
-};
 
-const Canvas: React.FC<CanvasProps> = ({ rest, draw, width, height }) => {
+const Canvas = ({ rest, draw, width, height }: ICanvasProps): JSX.Element => {
   const canvasRef = useCanvas(draw, width, height);
 
-  return <canvas ref={canvasRef} {...rest} />;
+  return (
+    <canvas ref={canvasRef} {...rest} />
+  );
 };
 
-export default Plot1D;

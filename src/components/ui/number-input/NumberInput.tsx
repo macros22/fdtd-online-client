@@ -1,16 +1,16 @@
 import * as React from "react";
-import WithLabel from "../with-label/WithLabel";
 import styles from "./NumberInput.module.scss";
-import { NumberInputProps } from "./NumberInput.props";
+import { INumberInputProps } from "./NumberInput.props";
 import cn from "clsx";
+import { WithLabel } from "components";
 
-const NumberInput: React.FC<NumberInputProps> = ({
+export const NumberInput = ({
   value,
   label,
   onChange,
   readOnly = false,
   ...props
-}) => {
+}: INumberInputProps): JSX.Element => {
   const inputRef = React.useRef<HTMLInputElement>(null);
 
   const plusButtonHandler = () => {
@@ -84,5 +84,3 @@ const NumberInput: React.FC<NumberInputProps> = ({
     </WithLabel>
   );
 };
-
-export default NumberInput;

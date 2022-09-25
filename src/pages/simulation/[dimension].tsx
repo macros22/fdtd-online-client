@@ -5,7 +5,7 @@ import { setSimulationDimension } from "store/reducers/app-config.reducer";
 import { GetStaticPaths, GetStaticProps, GetStaticPropsContext } from "next";
 import { ParsedUrlQuery } from "querystring";
 import { MainLayout } from "components/layouts/main-layout/MainLayout";
-import Simulation from "components/page-components/simulation/Simulation";
+import { Simulation } from "components/page-components/simulation/Simulation";
 
 export interface ISimulationPageProps extends Record<string, unknown> {
   currentSimulationDimension: SimulationDimension;

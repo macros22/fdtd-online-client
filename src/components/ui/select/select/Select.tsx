@@ -1,12 +1,9 @@
-import React, { ReactNode, useState, useRef } from "react";
+import React, { useState, useRef } from "react";
 import useOnClickOutside from "libs/hooks/use-on-click-outside";
 import styles from "./Select.module.scss";
+import { ISelectProps } from "./Select.props";
 
-const Select: React.FC<{
-  children: ReactNode | ReactNode[];
-  defaultValue?: string;
-  placeholder?: string;
-}> = ({ children, defaultValue, placeholder }) => {
+export const Select = ({ children, defaultValue, placeholder }: ISelectProps): JSX.Element => {
   const [selectedOption, setSelectedOption] = useState(defaultValue || "");
   const [showDropdown, setShowDropdown] = useState(false);
   const showDropdownHandler = () => setShowDropdown(!showDropdown);
@@ -19,9 +16,6 @@ const Select: React.FC<{
 
   return (
     <>
-      {/* <label htmlFor='select' className={styles.label}>
-        {'ВЫБОР ЛАБОРАТОРНОЙ - - - >'}
-      </label> */}
       <div
         id="select"
         className={styles.selectContainer}
@@ -59,5 +53,3 @@ const Select: React.FC<{
     </>
   );
 };
-
-export default Select;

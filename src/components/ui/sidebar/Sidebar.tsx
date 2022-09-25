@@ -1,9 +1,9 @@
 import * as React from "react";
-import styles from "./Sidebar.module.scss";
-import { SidebarProps } from "./Sidebar.props";
 import cn from "clsx";
+import styles from "./Sidebar.module.scss";
+import { ISidebarProps } from "./Sidebar.props";
 
-const Sidebar: React.FC<SidebarProps> = ({ children, className, ...props }) => {
+export const Sidebar = ({ children, className, ...props }: ISidebarProps): JSX.Element => {
   return (
     <div className={cn(className, styles.sidebar)} {...props}>
       {children}
@@ -11,4 +11,3 @@ const Sidebar: React.FC<SidebarProps> = ({ children, className, ...props }) => {
   );
 };
 
-export default Sidebar;
