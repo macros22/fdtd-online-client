@@ -1,8 +1,3 @@
-# Components structure:
-
-- Atomic design
-- atoms -> molecules -> organisms -> templates -> pages
-- https://atomicdesign.bradfrost.com/chapter-2/
 
 # Eslint + stylelint:
 
@@ -10,10 +5,10 @@
 
 - Allow(stylelint) all types of cases: kebab, snake, camel, mixes
 
-"rules": {
-    "selector-class-pattern": "^[a-z][a-zA-Z0-9_-]+$",
-    "selector-id-pattern": "^[a-z][a-zA-Z0-9_-]+$"
-  }
+    "rules": {
+        "selector-class-pattern": "^[a-z][a-zA-Z0-9_-]+$",
+        "selector-id-pattern": "^[a-z][a-zA-Z0-9_-]+$"
+      }
 
 # Redux toolkit + redux-persist:
 
@@ -25,7 +20,7 @@
 
 
 # Divider:
--https://github.com/mlaursen/react-md/blob/main/packages/divider/src/Divider.tsx
+- https://github.com/mlaursen/react-md/blob/main/packages/divider/src/Divider.tsx
 
 # React Typescript cheatsheets
 - https://react-typescript-cheatsheet.netlify.app/docs/basic/setup
