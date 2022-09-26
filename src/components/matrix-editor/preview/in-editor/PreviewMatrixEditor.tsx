@@ -1,3 +1,4 @@
+import { DrawType } from "components/plot-line/PlotLine.interface";
 import React from "react";
 import { useAppDispatch, useAppSelector } from "store/hooks";
 import {
@@ -7,7 +8,6 @@ import {
   selectMaterials,
 } from "store/reducers/material-matrix.reducer";
 import { colors } from "../../colors";
-import { drawType } from "components/plot-line/useCanvas";
 import { IPreviewMatrixProps } from "./PreviewMatrixEditor.props";
 
 export const PreviewMatrix = ({
@@ -29,7 +29,7 @@ export const PreviewMatrix = ({
   let rectWidth = width / countCol;
   let rectHeight = height / countRow;
 
-  const draw: drawType = (ctx: CanvasRenderingContext2D) => {
+  const draw: DrawType = (ctx: CanvasRenderingContext2D) => {
     drawRect(ctx, 0, 0, colors[0], width, height);
     drawMatrix(ctx, materialMatrix);
     drawCircle(

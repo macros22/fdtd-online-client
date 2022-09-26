@@ -1,9 +1,7 @@
 import React from "react";
+import { DrawType } from "./PlotLine.interface";
 
-// type drawType = (ctx: CanvasRenderingContext2D, frameCount: number) => void;
-export type drawType = (ctx: CanvasRenderingContext2D) => void;
-
-export const useCanvas = (draw: drawType, width: number, height: number) => {
+export const useCanvas = (draw: DrawType, width: number, height: number) => {
   const canvasRef = React.useRef<HTMLCanvasElement | null>(null);
 
   React.useEffect(() => {
@@ -11,28 +9,11 @@ export const useCanvas = (draw: drawType, width: number, height: number) => {
       const canvas = canvasRef.current;
       const context: CanvasRenderingContext2D | null = canvas.getContext("2d");
 
-      canvas.setAttribute("width", "" + width);
-      canvas.setAttribute("height", "" + height);
+      canvas.setAttribute("width", width.toString());
+      canvas.setAttribute("height", height.toString());
 
-      //  console.log(canvas.width, canvas.height);
-
-      //Our first draw
       if (context) {
-        // let frameCount = 0;
-        // let animationFrameId: any;
-
-        //Our draw came here
-        // const render = () => {
-        //   frameCount++;
-        //   draw(context, frameCount);
-        //   animationFrameId = window.requestAnimationFrame(render);
-        // };
-        // render();
-        // draw(context, 5);
         draw(context);
-        // return () => {
-        //   window.cancelAnimationFrame(animationFrameId);
-        // };
       }
     }
   }, [draw]);

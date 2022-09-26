@@ -35,7 +35,7 @@ import {
   selectMaterialMatrix,
   selectMaterials,
 } from "store/reducers/material-matrix.reducer";
-import { SimulationProps } from "./Simulation.props";
+import { ISimulationProps } from "./Simulation.props";
 import {
   MaterialForBackend,
   transformMaterialForBackend,
@@ -59,9 +59,9 @@ export type MessageToBackend = {
   srcPositionRelative: SourcePosition[];
 };
 
-export const Simulation: React.FC<SimulationProps> = ({
+export const Simulation = ({
   currentSimulationDimension,
-}) => {
+}: ISimulationProps): JSX.Element => {
   const materialMatrix = useAppSelector(selectMaterialMatrix);
   const materials = useAppSelector(selectMaterials);
 
@@ -182,7 +182,6 @@ export const Simulation: React.FC<SimulationProps> = ({
         const data = JSON.parse(event.data);
         setStep(data.step || 0);
 
-        console.log(data);
         if (currentSimulationDimension == SimulationDimension.SIMULATION_1D) {
           const tmpdata2DChart: DataChartType = [];
           for (let i = 0; i < data.col; i++) {
@@ -222,7 +221,7 @@ export const Simulation: React.FC<SimulationProps> = ({
       socket.onclose = (event) => {
         console.log("Socket closed");
         if (event.wasClean) {
-          console.log();
+
           `Websocket: [close] Connection closed cleanly, code=${event.code} reason=${event.reason}`;
         } else {
           // e.g. server process killed or network down
@@ -505,7 +504,7 @@ export const Simulation: React.FC<SimulationProps> = ({
             variant={isWSocketConnected ? "primary" : "ghost"}
             onClick={clickStartPauseContinueBtnHandler}
           >
-            {!simulation ? "Start" : pause ? CONTINUE_NAME : PAUSE_NAME}
+            {!simulation ? "START" : pause ? CONTINUE_NAME : PAUSE_NAME}
           </Button>
 
           <Button

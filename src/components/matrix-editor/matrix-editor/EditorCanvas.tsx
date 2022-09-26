@@ -1,3 +1,5 @@
+import { DrawType } from "components/plot-line/PlotLine.interface";
+import { drawCircle, drawRect } from "libs/utils/canvas-draw";
 import React from "react";
 import { useAppDispatch, useAppSelector } from "store/hooks";
 import {
@@ -9,8 +11,7 @@ import {
   updateMaterialMatrix,
 } from "store/reducers/material-matrix.reducer";
 import { colors } from "../colors";
-import { drawType } from "components/plot-line/useCanvas";
-import { IEditorCanvasProps } from "./EditorCanvas.props";
+import { IEditorCanvasProps } from "./MatrixEditor.props";
 
 export const EditorCanvas = ({
   width,
@@ -102,13 +103,13 @@ export const EditorCanvas = ({
     }
   };
 
-  const draw: drawType = (ctx: CanvasRenderingContext2D) => {
-    drawRect(ctx, 0, 0, colors[0], width, height);
+  const draw: DrawType = (ctx: CanvasRenderingContext2D) => {
+    drawRect(ctx, 0, 0, width, height, colors[0]);
     drawMatrix(ctx, materialMatrix);
     drawCircle(
       ctx,
       srcPositionRelativeX * width,
-      srcPositionRelativeY * height,
+      height - srcPositionRelativeY * height,
       "blue"
     );
 
@@ -117,32 +118,13 @@ export const EditorCanvas = ({
         ctx,
         focusedCoord.j * rectwidth,
         focusedCoord.i * rectheight,
-        "green",
         rectwidth,
-        rectheight
+        rectheight,
+        "green",
       );
     }
   };
 
-  const drawCircle = (
-    ctx: CanvasRenderingContext2D,
-    x: number,
-    y: number,
-    color = "black",
-    scaleX = 1,
-    scaleY = 1,
-    radius = 10
-  ) => {
-    // ctx.lineWidth = width;
-    // ctx.strokeStyle = color;
-    ctx.fillStyle = color;
-    // ctx.globalAlpha = 0.3;
-    ctx.beginPath();
-
-    ctx.arc(x * scaleX, height - y * scaleY, radius, 0, 2 * Math.PI);
-    ctx.fill();
-    // ctx.closePath();
-  };
 
   React.useEffect(() => {
     const canvas: HTMLCanvasElement | null = canvasRef.current;
@@ -158,24 +140,7 @@ export const EditorCanvas = ({
     }
   }, [focusedCoord.i, focusedCoord.j, currentMaterialMatrixConfigInSet]);
 
-  const drawRect = (
-    ctx: CanvasRenderingContext2D,
-    x: number,
-    y: number,
-    color = "black",
-    width: number,
-    height: number
-    // scaleX: number = 1,
-    // scaleY: number = 1
-  ) => {
-    ctx.beginPath();
-    ctx.fillStyle = color;
-    // ctx.rect(x, tY(y + height), width, height)
-    ctx.rect(x, y, width, height);
-    ctx.fill();
 
-    // ctx.globalAlpha= 0.3;
-  };
 
   const drawMatrix = (ctx: CanvasRenderingContext2D, matrix: number[][]) => {
     for (let i = 0; i < countRow; ++i) {
@@ -189,9 +154,9 @@ export const EditorCanvas = ({
             ctx,
             j * rectwidth,
             i * rectheight,
-            materials[colorIndex].color,
             rectwidth,
-            rectheight
+            rectheight,
+            materials[colorIndex].color,
           );
         }
       }

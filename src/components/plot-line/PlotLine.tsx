@@ -1,6 +1,8 @@
+import { drawCircle } from "libs/utils/canvas-draw";
 import React from "react";
+import { DrawType } from "./PlotLine.interface";
 import { ICanvasProps, IPlotLineProps } from "./PlotLine.props";
-import { useCanvas, drawType } from "./useCanvas";
+import { useCanvas } from "./useCanvas";
 
 // https://medium.com/@pdx.lucasm/canvas-with-react-js-32e133c05258
 
@@ -44,19 +46,18 @@ export const PlotLine = ({
   const chartY0 = HEIGHT - CHART_HEIGHT;
 
   const x0 = chartX0;
-  // const y0 = chartY0 - minY * scaleY;
   const y0 = chartY0 - (0 - deltaY / 2) * scaleY;
 
   // Transform browser Y-axis to real world.
   const tY = (y: number) => HEIGHT - y;
 
-  type dataType = {
+  type PointType = {
     x: number;
     y: number;
   };
 
-  const data1: dataType[] = [];
-  // const data2: dataType[] = [];
+  const data1: PointType[] = [];
+  // const data2: PointType[] = [];
 
   const epsilonDataInterval = CHART_WIDTH / epsilonData.length;
   const maxEpsilon = Math.max(...epsilonData);
@@ -80,9 +81,8 @@ export const PlotLine = ({
 
     prevY = newY;
   }
-  // console.log(data1, data);
 
-  const draw: drawType = (ctx) => {
+  const draw: DrawType = (ctx) => {
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
     ctx.fillStyle = "gray";
     ctx.beginPath();
@@ -101,28 +101,19 @@ export const PlotLine = ({
 
     // Draw Ox tick marks.
     for (let x = chartX0; x <= chartX0 + CHART_WIDTH; x += INTERVAL_X) {
-      // ctx.moveTo(x, tY(chartY0) - TICK_MARKS_HEIGHT / 2);
-      // ctx.lineTo(x, tY(chartY0) + TICK_MARKS_HEIGHT / 2);
       ctx.moveTo(x, tY(chartY0) - TICK_MARKS_HEIGHT / 2);
       ctx.lineTo(x, tY(chartY0 + CHART_HEIGHT));
     }
 
     // Draw Oy tick marks.
     for (let y = chartY0; y <= chartY0 + CHART_HEIGHT; y += INTERVAL_Y) {
-      // ctx.moveTo(chartX0 - TICK_MARKS_HEIGHT / 2, tY(y));
-      // ctx.lineTo(chartX0 + TICK_MARKS_HEIGHT / 2, tY(y));
       ctx.moveTo(chartX0 - TICK_MARKS_HEIGHT / 2, tY(y));
       ctx.lineTo(chartX0 + CHART_WIDTH, tY(y));
     }
     ctx.stroke();
-    // set line color
-
-    // ctx.stroke();
-    // ctx.arc(50, 100, 40 * Math.sin(frameCount * 0.025) ** 2, 0, 3 * Math.PI);
-    // ctx.fill();
 
     // Draw tick marks numbers.
-    ctx.font = "10pt Roboto bold";
+    ctx.font = "10pt Inter bold";
     ctx.fillStyle = "gray";
     ctx.textBaseline = "middle";
 
@@ -163,31 +154,19 @@ export const PlotLine = ({
     const srcPositionY = 0;
     drawCircle(
       ctx,
-      srcPositionX,
-      srcPositionY,
+      x0 + srcPositionX,
+      tY(y0 + srcPositionY * scaleY),
       "blue",
-      1,
-      1,
       epsilonScale,
       srcRadius,
       true
     );
-    // drawLine(ctx, data2, 'red', 2);
+
   };
-
-  // const transformContext = (ctx: CanvasRenderingContext2D) => {
-
-  //  // move context to center of canvas
-  //  ctx.translate(chartX0, chartY0 + this.height);
-
-  //  // invert the y scale so that that increments
-  //  // as you move upwards
-  //  context.scale(1, -1);
-  // };
 
   const drawLine = (
     ctx: CanvasRenderingContext2D,
-    data: dataType[],
+    data: PointType[],
     color = "black",
     width = 3,
     scaleX: number,
@@ -195,7 +174,6 @@ export const PlotLine = ({
     isDashedLine = false
   ) => {
     ctx.save();
-    //  transformContext();
     ctx.lineWidth = width;
     if (isDashedLine) {
       ctx.setLineDash([2]);
@@ -212,49 +190,13 @@ export const PlotLine = ({
       ctx.lineTo(chartX0 + point.x * scaleX, tY(y0 + point.y * scaleY));
       ctx.stroke();
       ctx.closePath();
-
-      // Draw dot segment.
-      // ctx.beginPath();
-      // ctx.arc(chartX0+point.x * scaleX, tY(chartY0+point.y * scaleY), pointRadius, 0, 2 * Math.PI, false);
-      // ctx.fill();
-      // ctx.closePath();
-
-      // position for next segment
       ctx.beginPath();
-      // console.log(y0, chartY0);
       ctx.moveTo(chartX0 + point.x * scaleX, tY(y0 + point.y * scaleY));
       ctx.closePath();
     }
     ctx.restore();
   };
 
-  const drawCircle = (
-    ctx: CanvasRenderingContext2D,
-    x: number,
-    y: number,
-    color = "black",
-    width = 3,
-    scaleX: number,
-    scaleY: number,
-    radius = 20,
-    isDashedLine = false
-  ) => {
-    // ctx.save();
-    //  transformContext();
-    ctx.lineWidth = width;
-    if (isDashedLine) {
-      ctx.setLineDash([2]);
-    }
-    ctx.strokeStyle = color;
-    ctx.fillStyle = color;
-    ctx.globalAlpha = 0.3;
-    // ctx.beginPath();
-    // ctx.moveTo(x0 + data[0].x * scaleX, tY(y0 + data[0].y * scaleY));
-
-    ctx.arc(x0 + x * scaleX, tY(y0 + y * scaleY), radius, 0, 2 * Math.PI);
-    // ctx.restore();
-    ctx.fill();
-  };
 
   return (
     <Canvas draw={draw} width={WIDTH} height={HEIGHT} />
@@ -262,11 +204,11 @@ export const PlotLine = ({
 };
 
 
-const Canvas = ({ rest, draw, width, height }: ICanvasProps): JSX.Element => {
+const Canvas = ({ draw, width, height, ...props }: ICanvasProps): JSX.Element => {
   const canvasRef = useCanvas(draw, width, height);
 
   return (
-    <canvas ref={canvasRef} {...rest} />
+    <canvas ref={canvasRef} {...props} />
   );
 };
 
