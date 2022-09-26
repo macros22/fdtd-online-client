@@ -1,33 +1,21 @@
-import { DetailedHTMLProps, HTMLAttributes } from "react";
+import React from "react";
 import { useAppDispatch, useAppSelector } from "store/hooks";
-// import { selectsimulationDimension} from 'app/reducers/labTypeSlice';
 import {
   selectMaterialMatrix,
   selectMaterialMatrixCountCol,
   selectMaterialMatrixCountRow,
   selectMaterials,
 } from "store/reducers/material-matrix.reducer";
-// import { drawType } from "components/molecules/Canvas/useCanvas";
-import React from "react";
-import { SimulationDimension } from "libs/types/types";
-
 import { colors } from "../../colors";
 import { drawType } from "components/plot-line/useCanvas";
+import { IPreviewMatrixProps } from "./PreviewMatrixEditor.props";
 
-export interface PreviewMatrixProps
-  extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
-  simulationDimension: SimulationDimension;
-  materialMatrix: number[][];
-  srcPositionRelativeX: number;
-  srcPositionRelativeY: number;
-}
-
-const PreviewMatrix: React.FC<PreviewMatrixProps> = ({
+export const PreviewMatrix = ({
   simulationDimension,
   materialMatrix,
   srcPositionRelativeX,
   srcPositionRelativeY,
-}) => {
+}: IPreviewMatrixProps): JSX.Element => {
   // Matrix sizes.
   const [width, setWidth] = React.useState(100);
   const [height, setHeight] = React.useState(100);
@@ -155,11 +143,9 @@ const PreviewMatrix: React.FC<PreviewMatrixProps> = ({
     <>
       <canvas
         // onClick={ handleMouseClick }
-        style={{borderRadius: "5px"}}
+        style={{ borderRadius: "5px" }}
         ref={canvasRef}
       />
     </>
   );
 };
-
-export default PreviewMatrix;

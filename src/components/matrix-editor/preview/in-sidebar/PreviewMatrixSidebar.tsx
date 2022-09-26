@@ -6,20 +6,18 @@ import {
   setCurrentMaterialMatrix,
   setMaterialMatrixSize,
 } from "store/reducers/material-matrix.reducer";
-import MatrixEditor from "../../editor/EditorModal";
-import PreviewMatrix from "../in-editor/PreviewMatrixEditor";
 import { selectCurrentSimulationDimension } from "store/reducers/app-config.reducer";
 import { SimulationDimension } from "libs/types/types";
-import { Button } from "components";
+import { Button, EditorModal } from "components";
 import { IPreviewMatrixSidebarProps } from "./PreviewMatrixSidebar.interface";
+import { PreviewMatrix } from "../in-editor/PreviewMatrixEditor";
 
-
-export const PreviewMatrixSidebar: React.FC<IPreviewMatrixSidebarProps> = ({
+export const PreviewMatrixSidebar = ({
   isModalOpen,
   setIsModalOpen,
   srcPositionRelativeX,
   srcPositionRelativeY,
-}) => {
+}: IPreviewMatrixSidebarProps): JSX.Element => {
   const dispatch = useAppDispatch();
 
   const currentSimulationDimension = useAppSelector(
@@ -49,11 +47,11 @@ export const PreviewMatrixSidebar: React.FC<IPreviewMatrixSidebarProps> = ({
         className={styles.triggerMatrixBtn}
         onClick={() => setIsModalOpen(true)}
       >
-        Edit material
+        Edit materials
       </Button>
 
       {isModalOpen && (
-        <MatrixEditor
+        <EditorModal
           setIsModalOpen={setIsModalOpen}
           srcPositionRelativeX={srcPositionRelativeX}
           srcPositionRelativeY={srcPositionRelativeY}

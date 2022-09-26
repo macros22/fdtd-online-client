@@ -1,10 +1,7 @@
 import { DetailedHTMLProps, HTMLAttributes } from "react";
 
-export interface HeatMapProps
-  extends DetailedHTMLProps<
-    HTMLAttributes<HTMLCanvasElement>,
-    HTMLCanvasElement
-  > {
+export interface IHeatMapProps
+  extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
   minVal: number;
   maxVal: number;
   dataX: number[];

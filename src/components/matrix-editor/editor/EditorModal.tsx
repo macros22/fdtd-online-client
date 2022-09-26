@@ -2,12 +2,10 @@
 
 import * as React from "react";
 import styles from "./EditorModal.module.scss";
-import { EditorModalProps } from "./EditorModal.props";
+import { IEditorModalProps } from "./EditorModal.props";
 import { ButtonGroup, Divider, Modal, NumberInput, WithLabel } from "components";
 import { useAppDispatch, useAppSelector } from "store/hooks";
 import { SimulationDimension } from "libs/types/types";
-
-import EditorCanvas from "../matrix-editor/MatrixEditor";
 import {
   ConfigMaterial,
   selectConfigMaterialSet,
@@ -21,18 +19,19 @@ import {
   updateMaterialMu,
   updateMaterialSigma,
 } from "store/reducers/material-matrix.reducer";
-import PreviewMatrix from "../preview/in-editor/PreviewMatrixEditor";
 import { selectCurrentSimulationDimension } from "store/reducers/app-config.reducer";
 import { colors } from "../colors";
+import { EditorCanvas } from "../matrix-editor/EditorCanvas";
+import { PreviewMatrix } from "../preview/in-editor/PreviewMatrixEditor";
 
 const gridSizes1D = [5, 50, 100, 200];
 const gridSizes2D = [11, 55, 110, 220];
 
-const MatrixEditor: React.FC<EditorModalProps> = ({
+export const EditorModal = ({
   setIsModalOpen,
   srcPositionRelativeX,
   srcPositionRelativeY,
-}) => {
+}: IEditorModalProps): JSX.Element => {
   const [currentMatrixSizeIndex, setCurrentMatrixSizeIndex] = React.useState(1);
 
   const dispatch = useAppDispatch();
@@ -247,5 +246,3 @@ const MatrixEditor: React.FC<EditorModalProps> = ({
     </>
   );
 };
-
-export default MatrixEditor;

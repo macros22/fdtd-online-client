@@ -1,13 +1,13 @@
-import { defaultGradient } from "libs/utils/default-gradient";
 import React from "react";
-import { ColorBarProps } from "./ColorBar.props";
+import { defaultGradient } from "libs/utils/default-gradient";
+import { IColorBarProps } from "./ColorBar.props";
 
-const ColorBar: React.FC<ColorBarProps> = ({
+export const ColorBar = ({
   gradientWidth,
   gradientHeight,
   maxVal = 0.4,
   minVal = -0.4,
-}) => {
+}: IColorBarProps): JSX.Element => {
   const canvasRef = React.useRef<HTMLCanvasElement | null>(null);
 
   const init = () => {
@@ -41,7 +41,7 @@ const ColorBar: React.FC<ColorBarProps> = ({
         // Draw Oy tick marks numbers.
         const INTERVAL_Y = height / 20;
         ctx.textAlign = "right";
-        ctx.font = "12pt Roboto bold";
+        ctx.font = "12pt Inter bold";
         ctx.fillStyle = "#4a4a4a";
 
         // ctx.textBaseline = 'middle';
@@ -62,10 +62,6 @@ const ColorBar: React.FC<ColorBarProps> = ({
   }, [gradientWidth, gradientHeight]);
 
   return (
-    <React.Fragment>
-      <canvas ref={canvasRef} />
-    </React.Fragment>
+    <canvas ref={canvasRef} />
   );
 };
-
-export default ColorBar;

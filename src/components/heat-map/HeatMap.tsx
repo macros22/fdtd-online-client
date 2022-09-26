@@ -1,8 +1,8 @@
 import React from "react";
 import { HeatMapBuilder } from "./heatmap.class";
-import { HeatMapProps } from "./HeatMap.props";
+import { IHeatMapProps } from "./HeatMap.props";
 
-const HeatMap: React.FC<HeatMapProps> = ({
+export const HeatMap = ({
   minVal = -1,
   maxVal = 1,
   dataX = [],
@@ -13,7 +13,7 @@ const HeatMap: React.FC<HeatMapProps> = ({
   srcPositionRelativeX = 0,
   srcPositionRelativeY = 0,
   withOptions = false,
-}) => {
+}: IHeatMapProps): JSX.Element => {
   const canvasRef = React.useRef<HTMLCanvasElement | null>(null);
   const canvasBrushRef = React.useRef<HTMLCanvasElement | null>(null);
   const canvasGradientRef = React.useRef<HTMLCanvasElement | null>(null);
@@ -91,7 +91,7 @@ const HeatMap: React.FC<HeatMapProps> = ({
   };
 
   return (
-    <>
+    <div>
       <canvas style={{ display: "none" }} ref={canvasBrushRef} />
       <canvas style={{ display: "none" }} ref={canvasGradientRef} />
       <canvas ref={canvasRef} />
@@ -121,8 +121,6 @@ const HeatMap: React.FC<HeatMapProps> = ({
           />
         </div>
       )}
-    </>
+    </div>
   );
 };
-
-export default HeatMap;

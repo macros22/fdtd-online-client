@@ -1,3 +1,4 @@
+import React from "react";
 import { useAppDispatch, useAppSelector } from "store/hooks";
 import {
   selectCurrentMaterialMatrixConfigInSet,
@@ -7,25 +8,17 @@ import {
   selectMaterials,
   updateMaterialMatrix,
 } from "store/reducers/material-matrix.reducer";
-import React from "react";
 import { colors } from "../colors";
 import { drawType } from "components/plot-line/useCanvas";
+import { IEditorCanvasProps } from "./EditorCanvas.props";
 
-type EditorCanvasProps = {
-  width: number;
-  height: number;
-  currentMaterial: number;
-  srcPositionRelativeX: number;
-  srcPositionRelativeY: number;
-};
-
-const EditorCanvas: React.FC<EditorCanvasProps> = ({
+export const EditorCanvas = ({
   width,
   height,
   currentMaterial,
   srcPositionRelativeX,
   srcPositionRelativeY,
-}) => {
+}: IEditorCanvasProps): JSX.Element => {
   // Matrix sizes.
   //   const width = 400;
   //   const height = 400;
@@ -217,5 +210,3 @@ const EditorCanvas: React.FC<EditorCanvasProps> = ({
     </>
   );
 };
-
-export default EditorCanvas;
