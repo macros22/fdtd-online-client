@@ -1,6 +1,5 @@
 import { DetailedHTMLProps, HTMLAttributes } from "react";
 import { DataChartType } from "libs/types/lab1";
-import { DrawType } from "./PlotLine.interface";
 
 export interface IPlotLineProps extends DetailedHTMLProps<HTMLAttributes<HTMLCanvasElement>, HTMLCanvasElement> {
   data: DataChartType;
@@ -15,9 +14,4 @@ export interface IPlotLineProps extends DetailedHTMLProps<HTMLAttributes<HTMLCan
 }
 
 
-export interface ICanvasProps extends DetailedHTMLProps<HTMLAttributes<HTMLCanvasElement>, HTMLCanvasElement> {
-  draw: DrawType;
-  width: number;
-  height: number;
-}
 

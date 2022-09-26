@@ -1,13 +1,8 @@
-import { drawCircle } from "libs/utils/canvas-draw";
 import React from "react";
+import { Canvas } from "components";
+import { drawCircle } from "libs/utils/canvas-draw";
 import { DrawType } from "./PlotLine.interface";
-import { ICanvasProps, IPlotLineProps } from "./PlotLine.props";
-import { useCanvas } from "./useCanvas";
-
-// https://medium.com/@pdx.lucasm/canvas-with-react-js-32e133c05258
-
-// Line chart tutorial.
-// https://www.c-sharpcorner.com/UploadFile/18ddf7/html5-line-graph-using-canvas/
+import { IPlotLineProps } from "./PlotLine.props";
 
 export const PlotLine = ({
   data,
@@ -129,9 +124,6 @@ export const PlotLine = ({
     }
     ctx.restore();
 
-    // console.log('sum', y0+chartY0);
-    // console.log('sumstr', y0+chartY0+"");
-
     // Draw Oy tick marks numbers.
     ctx.textAlign = "right";
     for (let y = chartY0; y <= chartY0 + CHART_HEIGHT; y += INTERVAL_Y * 2) {
@@ -197,18 +189,7 @@ export const PlotLine = ({
     ctx.restore();
   };
 
-
   return (
     <Canvas draw={draw} width={WIDTH} height={HEIGHT} />
   );
 };
-
-
-const Canvas = ({ draw, width, height, ...props }: ICanvasProps): JSX.Element => {
-  const canvasRef = useCanvas(draw, width, height);
-
-  return (
-    <canvas ref={canvasRef} {...props} />
-  );
-};
-

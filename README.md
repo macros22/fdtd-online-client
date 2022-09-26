@@ -29,3 +29,8 @@
 # How to style arrows number input:
 - https://snipp.ru/html-css/input-type-number
 - https://codepen.io/komarovdesign/pen/PPRbgb
+
+
+# Line chart tutorial.
+- https://medium.com/@pdx.lucasm/canvas-with-react-js-32e133c05258
+- https://www.c-sharpcorner.com/UploadFile/18ddf7/html5-line-graph-using-canvas/

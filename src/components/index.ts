@@ -15,3 +15,4 @@ export { default as Theory } from "./page-components/theory/Theory";
 export * from "./ui/select/select/Select";
 export * from "./ui/select/option/Option";
 export * from "./ui/modal/Modal";
+export * from "./canvas/Canvas";
