@@ -9,7 +9,7 @@ import {
   selectMaterialMatrixCountRow,
   selectMaterials,
   updateMaterialMatrix,
-} from "store/reducers/material-matrix.reducer";
+} from "store/slices/material-matrix.slice";
 import { colors } from "../colors";
 import { IEditorCanvasProps } from "./EditorCanvas.props";
 

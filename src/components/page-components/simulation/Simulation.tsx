@@ -6,7 +6,6 @@ import {
   STEP_NUMBER_NAME,
   WAVE_LENGTH_NAME,
 } from "libs/names/lab2.name";
-
 import styles from "./Simulation.module.scss";
 import {
   HeatMap,
@@ -22,42 +21,21 @@ import {
   InputRange,
   Divider,
 } from "components";
-
-import { DataType, SimulationDimension } from "libs/types/types";
-
+import { DataType, MessageToBackend, PointType, SimulationDimension } from "libs/types/types";
 import { displayedData } from "libs/utils/displayed-data";
 import { SERVER_URL as SERVER_URL } from "libs/constants/url";
 import { useAppSelector } from "store/hooks";
-
-// import PreviewMatrixSidebar from "components/molecules/matrixEditor/PreviewMatrixSidebar";
 import { DataChartType } from "libs/types/lab1";
 import {
   selectMaterialMatrix,
   selectMaterials,
-} from "store/reducers/material-matrix.reducer";
+} from "store/slices/material-matrix.slice";
 import { ISimulationProps } from "./Simulation.props";
 import {
   MaterialForBackend,
   transformMaterialForBackend,
 } from "libs/utils/transform-materials-array";
 import { PreviewMatrixSidebar } from "components/matrix-ditor/preview/in-sidebar/PreviewMatrixSidebar";
-
-type SourcePosition = {
-  x: number;
-  y: number;
-};
-
-export type EventType = "start" | "pause" | "continue" | "close";
-
-export type MessageToBackend = {
-  event: EventType;
-  type: SimulationDimension;
-  dataToReturn: number;
-  condition: [number, number];
-  materialMatrix: number[][];
-  materials: MaterialForBackend[];
-  srcPositionRelative: SourcePosition[];
-};
 
 export const Simulation = ({
   currentSimulationDimension,
@@ -114,8 +92,10 @@ export const Simulation = ({
   }, [currentSimulationDimension]);
 
   const [lambda, setLambda] = React.useState<number>(3);
+
   // For 2D.
   const [beamsize, setBeamsize] = React.useState<number>(8);
+
   // For 1D.
   const [tau, setTau] = React.useState<number>(3);
 
@@ -147,7 +127,6 @@ export const Simulation = ({
 
   const [srcPositionRelativeY, setSourcePositionRelativeY] =
     React.useState(0.4);
-  // const matrix = useAppSelector(selectEpsilonMatrix);
 
   // For 2D.
   const [maxVal, setMaxVal] = React.useState(0.04);

@@ -1,5 +1,6 @@
 import React from "react";
-import { HeatMapBuilder } from "./heatmap.class";
+import { defaultData } from "./data";
+import { HeatMapBuilder } from "./heatmap-builder";
 import { IHeatMapProps } from "./HeatMap.props";
 
 export const HeatMap = ({
@@ -18,7 +19,6 @@ export const HeatMap = ({
   const canvasBrushRef = React.useRef<HTMLCanvasElement | null>(null);
   const canvasGradientRef = React.useRef<HTMLCanvasElement | null>(null);
 
-  // let radiusInitial = width / 120 + 0.1;
   const radiusInitial = 2.6;
   let blurInitial = radiusInitial * 1.4 + 0.1;
   blurInitial = 0.1;
@@ -44,11 +44,16 @@ export const HeatMap = ({
       let data: [number[], number[], number[]] = [[], [], []];
 
       if (dataVal.length == 0) {
-        for (let i = 0; i < 3e3; ++i) {
+        for (let i = 0; i < 8e3; ++i) {
           data[0].push(Math.random() * width);
           data[1].push(Math.random() * height);
-          data[2].push(Math.random() * 0.3);
+          data[2].push(Math.random() * 0.2);
         }
+        // for (let i = 0; i < defaultData.length; ++i) {
+        //   data[0].push(defaultData[i][0]);
+        //   data[1].push(defaultData[i][1]);
+        //   data[2].push(defaultData[i][2]);
+        // }
       } else {
         data = [dataX, dataY, dataVal];
       }

@@ -1,3 +1,5 @@
+import { MaterialForBackend } from "libs/utils/transform-materials-array";
+
 export type DataType = {
   dataX: number[];
   dataY: number[];
@@ -23,4 +25,16 @@ export enum ContentType {
 export type PointType = {
   x: number;
   y: number;
+};
+
+export type EventType = "start" | "pause" | "continue" | "close";
+
+export type MessageToBackend = {
+  event: EventType;
+  type: SimulationDimension;
+  dataToReturn: number;
+  condition: [number, number];
+  materialMatrix: number[][];
+  materials: MaterialForBackend[];
+  srcPositionRelative: PointType[];
 };

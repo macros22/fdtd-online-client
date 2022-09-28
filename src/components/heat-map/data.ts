@@ -1,4 +1,4 @@
-import { Point } from "./heatmap.class";
+import { Point } from "./heatmap-builder";
 
 export const data2: Point[] = [
   [78, 120, 10],
@@ -10,7 +10,7 @@ export const data2: Point[] = [
 
 export const defaultMax = 15;
 export const defaultMin = 0;
-export const defaultData: Point[] = [
+export const defaultData = [
   [38, 20, 2],
   [38, 690, 3],
   [48, 30, 1],

@@ -13,6 +13,6 @@ export * from "./ui/button-group/ButtonGroup";
 export * from "./ui/divider/Divider";
 export { default as Theory } from "./page-components/theory/Theory";
 export * from "./ui/select/select/Select";
-export * from "./ui/select/option/Option";
+export * from "./ui/select/select-option/SelectOption";
 export * from "./ui/modal/Modal";
 export * from "./canvas/Canvas";

@@ -16,7 +16,7 @@ import {
 } from "redux-persist";
 
 import createWebStorage from "redux-persist/lib/storage/createWebStorage";
-import materialMatrixReducer from "./reducers/material-matrix.reducer";
+import materialMatrixReducer from "./slices/material-matrix.slice";
 
 const createNoopStorage = () => {
   return {
@@ -39,7 +39,7 @@ const storage =
 
 // import storage from 'redux-persist/lib/storage' // defaults to localStorage for web
 
-import appConfigReducer from "./reducers/app-config.reducer";
+import appConfigReducer from "./slices/app-config.slice";
 
 const rootReducer = combineReducers({
   appConfig: appConfigReducer,

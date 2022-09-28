@@ -6,7 +6,7 @@ import {
   selectMaterialMatrixCountCol,
   selectMaterialMatrixCountRow,
   selectMaterials,
-} from "store/reducers/material-matrix.reducer";
+} from "store/slices/material-matrix.slice";
 import { colors } from "../../colors";
 import { IPreviewMatrixProps } from "./PreviewMatrixEditor.props";
 

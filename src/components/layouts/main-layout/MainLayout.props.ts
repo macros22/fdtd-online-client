@@ -1,4 +1,4 @@
-export interface MainLayoutProps {
+export interface IMainLayoutProps {
   children?: React.ReactNode;
   title?: string;
   description?: string;

@@ -18,8 +18,8 @@ import {
   updateMaterialEps,
   updateMaterialMu,
   updateMaterialSigma,
-} from "store/reducers/material-matrix.reducer";
-import { selectCurrentSimulationDimension } from "store/reducers/app-config.reducer";
+} from "store/slices/material-matrix.slice";
+import { selectCurrentSimulationDimension } from "store/slices/app-config.slice";
 import { colors } from "../colors";
 import { EditorCanvas } from "../editor-canvas/EditorCanvas";
 import { PreviewMatrix } from "../preview/in-editor/PreviewMatrixEditor";

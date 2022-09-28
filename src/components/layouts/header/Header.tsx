@@ -11,11 +11,7 @@ import {
   selectCurrentContentType,
   selectCurrentSimulationDimension,
   setContentType,
-} from "store/reducers/app-config.reducer";
-export type Props = {
-  open: boolean;
-  setOpen: (v: boolean) => void;
-};
+} from "store/slices/app-config.slice";
 
 const postNames = [
   "one-dimension",
@@ -25,9 +21,9 @@ const postNames = [
   "border",
 ];
 
-// props: Props
-export const Header = () => {
-  const LOGO_TEXT = "FDTD";
+const LOGO_TEXT = "FDTD";
+
+export const Header = () => {  
   const currentContentType = useAppSelector(selectCurrentContentType);
   const currentSimDimension = useAppSelector(selectCurrentSimulationDimension);
 

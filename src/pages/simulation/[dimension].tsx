@@ -1,7 +1,7 @@
 import React from "react";
 import { ContentType, SimulationDimension } from "libs/types/types";
 import { useAppDispatch } from "store/hooks";
-import { setSimulationDimension } from "store/reducers/app-config.reducer";
+import { setSimulationDimension } from "store/slices/app-config.slice";
 import { GetStaticPaths, GetStaticProps, GetStaticPropsContext } from "next";
 import { ParsedUrlQuery } from "querystring";
 import { MainLayout } from "components/layouts/main-layout/MainLayout";

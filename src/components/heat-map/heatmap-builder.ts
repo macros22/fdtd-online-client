@@ -50,7 +50,7 @@ export class HeatMapBuilder {
     0.25: "orange",
     0.45: "yellow",
     0.55: "green",
-    0.75: "blu",
+    0.75: "blue",
     1: "violet",
   };
 

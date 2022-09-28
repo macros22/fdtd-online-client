@@ -1,5 +1,5 @@
+import { useOnClickOutside } from "libs/hooks";
 import React, { useState, useRef } from "react";
-import useOnClickOutside from "libs/hooks/use-on-click-outside";
 import styles from "./Select.module.scss";
 import { ISelectProps } from "./Select.props";
 

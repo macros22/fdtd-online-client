@@ -5,8 +5,8 @@ import {
   selectMaterialMatrix,
   setCurrentMaterialMatrix,
   setMaterialMatrixSize,
-} from "store/reducers/material-matrix.reducer";
-import { selectCurrentSimulationDimension } from "store/reducers/app-config.reducer";
+} from "store/slices/material-matrix.slice";
+import { selectCurrentSimulationDimension } from "store/slices/app-config.slice";
 import { SimulationDimension } from "libs/types/types";
 import { Button, EditorModal } from "components";
 import { IPreviewMatrixSidebarProps } from "./PreviewMatrixSidebar.interface";
