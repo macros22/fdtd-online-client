@@ -454,8 +454,8 @@ export const Simulation = ({
                     minX={minX}
                     maxY={maxY}
                     maxX={maxX}
-                    WIDTH={plotWidth}
-                    HEIGHT={plotHeight}
+                    canvasWidth={plotWidth}
+                    canvasHeight={plotHeight}
                     epsilonData={materialMatrix[0].map(
                       (materialId) =>
                         materials.find((material) => material.id === materialId)

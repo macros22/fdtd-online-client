@@ -7,8 +7,8 @@ export interface IPlotLineProps extends DetailedHTMLProps<HTMLAttributes<HTMLCan
   maxY: number;
   minX: number;
   minY: number;
-  WIDTH: number;
-  HEIGHT: number;
+  canvasWidth: number;
+  canvasHeight: number;
   epsilonData: number[];
   srcPositionRelative: number;
 }

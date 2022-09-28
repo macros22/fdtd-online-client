@@ -1,3 +1,5 @@
+import { PointType } from "libs/types/types";
+
 export const drawCircle = (
     ctx: CanvasRenderingContext2D,
     x: number,
@@ -34,4 +36,32 @@ export const drawRect = (
     ctx.fill();
   };
   
+  export const drawLine = (
+    ctx: CanvasRenderingContext2D,
+    data: PointType[],
+    color = "black",
+    width = 3,
+    isDashedLine = false
+  ) => {
+    ctx.save();
+    ctx.lineWidth = width;
+    if (isDashedLine) {
+      ctx.setLineDash([2]);
+    }
+    ctx.strokeStyle = color;
+    ctx.fillStyle = color;
+    ctx.beginPath();
+    ctx.moveTo(data[0].x, data[0].y);
 
+    for (let n = 0; n < data.length; n++) {
+      const point = data[n];
+      // Draw line segment.
+      ctx.lineTo(point.x, point.y);
+      ctx.stroke();
+      ctx.closePath();
+      ctx.beginPath();
+      ctx.moveTo(point.x, point.y);
+      ctx.closePath();
+    }
+    ctx.restore();
+  };

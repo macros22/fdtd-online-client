@@ -1,78 +1,69 @@
 import React from "react";
 import { Canvas } from "components";
-import { drawCircle } from "libs/utils/canvas-draw";
+import { drawCircle, drawLine } from "libs/utils/canvas-draw";
 import { DrawType } from "./PlotLine.interface";
 import { IPlotLineProps } from "./PlotLine.props";
+import { PointType } from "libs/types/types";
 
 export const PlotLine = ({
-  data,
+  data: dataLine,
   maxX,
   maxY,
   minX,
   minY,
-  WIDTH,
-  HEIGHT,
+  canvasWidth,
+  canvasHeight,
   epsilonData,
   srcPositionRelative,
 }: IPlotLineProps) => {
-  const PADDING = 5;
+
+  const padding = 5;
 
   const deltaX = minX >= 0 ? maxX : maxX - minX;
-  // const deltaY = minY >= 0 ? maxY : maxY - minY;
   const deltaY = Math.max(Math.abs(minY), Math.abs(maxY)) * 2;
-  // const deltaY = 3.6;
 
-  // const scaleX = WIDTH / deltaX;
-  // const scaleY = HEIGHT / deltaY;
-  // const pointRadius = 5;
+  const intervalX = 30;
+  const intervalY = 20;
 
-  const INTERVAL_X = 30;
-  const INTERVAL_Y = 20;
+  const chartWidth = canvasWidth - padding * 8;
+  const chartHeight = canvasHeight - padding * 6;
 
-  const CHART_WIDTH = WIDTH - PADDING * 8;
-  const CHART_HEIGHT = HEIGHT - PADDING * 6;
-
-  const scaleX = CHART_WIDTH / deltaX;
-  const scaleY = CHART_HEIGHT / deltaY;
+  const scaleX = chartWidth / deltaX;
+  const scaleY = chartHeight / deltaY;
 
   const TICK_MARKS_HEIGHT = 6;
 
-  const chartX0 = WIDTH - CHART_WIDTH;
-  const chartY0 = HEIGHT - CHART_HEIGHT;
+  const chartX0 = canvasWidth - chartWidth;
+  const chartY0 = canvasHeight - chartHeight;
 
   const x0 = chartX0;
   const y0 = chartY0 - (0 - deltaY / 2) * scaleY;
 
-  // Transform browser Y-axis to real world.
-  const tY = (y: number) => HEIGHT - y;
+  // Transform browser Y-axis to 180 degrees.
+  const tY = (y: number) => canvasHeight - y;
 
-  type PointType = {
-    x: number;
-    y: number;
-  };
+  // Fill epsilon line data.
+  const epsilonLine: PointType[] = [];
 
-  const data1: PointType[] = [];
-  // const data2: PointType[] = [];
-
-  const epsilonDataInterval = CHART_WIDTH / epsilonData.length;
+  const epsilonDataInterval = chartWidth / epsilonData.length;
   const maxEpsilon = Math.max(...epsilonData);
   const minEpsilon = Math.min(...epsilonData);
-  const epsilonScale = CHART_HEIGHT / 2 / maxEpsilon;
+  const epsilonScale = chartHeight / (2 * maxEpsilon);
 
   let prevY = 0;
 
-  for (let i = 0; i * epsilonDataInterval <= CHART_WIDTH; ++i) {
+  for (let i = 0; i * epsilonDataInterval <= chartWidth; ++i) {
     const newX = i * epsilonDataInterval;
     const newY = epsilonData[i] - minEpsilon;
 
     // Make meander epsilon line profile.
     if (i > 0) {
       if (newY !== prevY) {
-        data1.push({ x: newX, y: prevY });
+        epsilonLine.push({ x: newX, y: prevY });
       }
     }
 
-    data1.push({ x: newX, y: newY });
+    epsilonLine.push({ x: newX, y: newY });
 
     prevY = newY;
   }
@@ -84,26 +75,28 @@ export const PlotLine = ({
 
     // Draw x axis.
     ctx.moveTo(chartX0, tY(chartY0));
-    ctx.lineTo(chartX0 + CHART_WIDTH, tY(chartY0));
+    ctx.lineTo(chartX0 + chartWidth, tY(chartY0));
 
     // Draw y axis.
     ctx.moveTo(chartX0, tY(chartY0));
-    ctx.lineTo(chartX0, tY(chartY0 + CHART_HEIGHT));
+    ctx.lineTo(chartX0, tY(chartY0 + chartHeight));
 
+
+    // Draw tick marks.
     ctx.setLineDash([2]);
     ctx.lineWidth = 1;
     ctx.strokeStyle = "rgba(0,0,0,0.1)";
 
-    // Draw Ox tick marks.
-    for (let x = chartX0; x <= chartX0 + CHART_WIDTH; x += INTERVAL_X) {
+    // Draw X tick marks.
+    for (let x = chartX0; x <= chartX0 + chartWidth; x += intervalX) {
       ctx.moveTo(x, tY(chartY0) - TICK_MARKS_HEIGHT / 2);
-      ctx.lineTo(x, tY(chartY0 + CHART_HEIGHT));
+      ctx.lineTo(x, tY(chartY0 + chartHeight));
     }
 
-    // Draw Oy tick marks.
-    for (let y = chartY0; y <= chartY0 + CHART_HEIGHT; y += INTERVAL_Y) {
+    // Draw Y tick marks.
+    for (let y = chartY0; y <= chartY0 + chartHeight; y += intervalY) {
       ctx.moveTo(chartX0 - TICK_MARKS_HEIGHT / 2, tY(y));
-      ctx.lineTo(chartX0 + CHART_WIDTH, tY(y));
+      ctx.lineTo(chartX0 + chartWidth, tY(y));
     }
     ctx.stroke();
 
@@ -112,24 +105,23 @@ export const PlotLine = ({
     ctx.fillStyle = "gray";
     ctx.textBaseline = "middle";
 
-    // Draw Ox tick marks numbers.
+    // Draw X tick marks numbers.
     ctx.textAlign = "center";
-    for (let x = chartX0; x < chartX0 + CHART_WIDTH; x += INTERVAL_X * 2) {
-      const label = String(Math.round(x - chartX0).toFixed());
-      // const label2 = data[0].x;
+    for (let x = chartX0; x < chartX0 + chartWidth; x += intervalX * 2) {
+      const label = Math.round(x - chartX0).toFixed().toString();
       ctx.save();
-      ctx.translate(x, tY(chartY0 - PADDING * 3));
+      ctx.translate(x, tY(chartY0 - padding * 3));
       ctx.fillText(label, 0, 0);
       ctx.restore();
     }
     ctx.restore();
 
-    // Draw Oy tick marks numbers.
+    // Draw Y tick marks numbers.
     ctx.textAlign = "right";
-    for (let y = chartY0; y <= chartY0 + CHART_HEIGHT; y += INTERVAL_Y * 2) {
-      const label = ((y0 + y) / scaleY).toFixed(2) + "";
+    for (let y = chartY0; y <= chartY0 + chartHeight; y += intervalY * 2) {
+      const label = ((y0 + y) / scaleY).toFixed(2).toString();
       ctx.save();
-      ctx.translate(chartX0 - PADDING * 2, tY(y));
+      ctx.translate(chartX0 - padding * 2, tY(y));
       ctx.fillText(label, 0, 0);
       ctx.restore();
     }
@@ -137,12 +129,25 @@ export const PlotLine = ({
 
     ctx.setLineDash([]);
 
-    // console.log(data)
-    if (data[0]) drawLine(ctx, data, "red", 2, scaleX, scaleY);
-    drawLine(ctx, data1, "blue", 1, 1, epsilonScale, true);
+    // Draw data line.
+    if (dataLine.length) {
+      const dataLineScaled = dataLine.map(p => ({
+        x: chartX0 + p.x * scaleX,
+        y: tY(y0 + p.y * scaleY)
+      }))
+      drawLine(ctx, dataLineScaled, "red", 2)
+    };
 
-    const srcRadius = 10;
-    const srcPositionX = srcPositionRelative * CHART_WIDTH;
+    // Draw epsilon line.
+    const epsilonLineScaled = epsilonLine.map(p => ({
+      x: chartX0 + p.x,
+      y: tY(y0 + p.y * epsilonScale)
+    }))
+    drawLine(ctx, epsilonLineScaled, "blue", 1, true);
+
+    // Draw source point.
+    const srcRadius = 8;
+    const srcPositionX = srcPositionRelative * chartWidth;
     const srcPositionY = 0;
     drawCircle(
       ctx,
@@ -156,40 +161,7 @@ export const PlotLine = ({
 
   };
 
-  const drawLine = (
-    ctx: CanvasRenderingContext2D,
-    data: PointType[],
-    color = "black",
-    width = 3,
-    scaleX: number,
-    scaleY: number,
-    isDashedLine = false
-  ) => {
-    ctx.save();
-    ctx.lineWidth = width;
-    if (isDashedLine) {
-      ctx.setLineDash([2]);
-    }
-    ctx.strokeStyle = color;
-    ctx.fillStyle = color;
-    ctx.beginPath();
-    ctx.moveTo(x0 + data[0].x * scaleX, tY(y0 + data[0].y * scaleY));
-
-    for (let n = 0; n < data.length; n++) {
-      const point = data[n];
-
-      // Draw line segment.
-      ctx.lineTo(chartX0 + point.x * scaleX, tY(y0 + point.y * scaleY));
-      ctx.stroke();
-      ctx.closePath();
-      ctx.beginPath();
-      ctx.moveTo(chartX0 + point.x * scaleX, tY(y0 + point.y * scaleY));
-      ctx.closePath();
-    }
-    ctx.restore();
-  };
-
   return (
-    <Canvas draw={draw} width={WIDTH} height={HEIGHT} />
+    <Canvas draw={draw} width={canvasWidth} height={canvasHeight} />
   );
 };

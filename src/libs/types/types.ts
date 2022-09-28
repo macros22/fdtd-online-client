@@ -18,3 +18,9 @@ export enum ContentType {
   THEORY = "THEORY",
   SIMULATION = "SIMULATION",
 }
+
+
+export type PointType = {
+  x: number;
+  y: number;
+};

@@ -1,3 +1,5 @@
+# TODO: Select component
+- https://github.com/WebDevSimplified/react-select/blob/main/src/Select.tsx
 
 # Eslint + stylelint:
 
