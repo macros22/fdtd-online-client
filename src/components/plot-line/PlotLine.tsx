@@ -16,7 +16,6 @@ export const PlotLine = ({
   epsilonData,
   srcPositionRelative,
 }: IPlotLineProps) => {
-
   const padding = 5;
 
   const deltaX = minX >= 0 ? maxX : maxX - minX;
@@ -31,7 +30,7 @@ export const PlotLine = ({
   const scaleX = chartWidth / deltaX;
   const scaleY = chartHeight / deltaY;
 
-  const TICK_MARKS_HEIGHT = 6;
+  const tickMarksLength = 6;
 
   const chartX0 = canvasWidth - chartWidth;
   const chartY0 = canvasHeight - chartHeight;
@@ -81,7 +80,6 @@ export const PlotLine = ({
     ctx.moveTo(chartX0, tY(chartY0));
     ctx.lineTo(chartX0, tY(chartY0 + chartHeight));
 
-
     // Draw tick marks.
     ctx.setLineDash([2]);
     ctx.lineWidth = 1;
@@ -89,13 +87,13 @@ export const PlotLine = ({
 
     // Draw X tick marks.
     for (let x = chartX0; x <= chartX0 + chartWidth; x += intervalX) {
-      ctx.moveTo(x, tY(chartY0) - TICK_MARKS_HEIGHT / 2);
+      ctx.moveTo(x, tY(chartY0) - tickMarksLength / 2);
       ctx.lineTo(x, tY(chartY0 + chartHeight));
     }
 
     // Draw Y tick marks.
     for (let y = chartY0; y <= chartY0 + chartHeight; y += intervalY) {
-      ctx.moveTo(chartX0 - TICK_MARKS_HEIGHT / 2, tY(y));
+      ctx.moveTo(chartX0 - tickMarksLength / 2, tY(y));
       ctx.lineTo(chartX0 + chartWidth, tY(y));
     }
     ctx.stroke();
@@ -158,7 +156,6 @@ export const PlotLine = ({
       srcRadius,
       true
     );
-
   };
 
   return (
