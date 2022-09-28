@@ -1,13 +1,13 @@
 import { DrawType } from "components/plot-line/PlotLine.interface";
+import { drawCircle, drawRect } from "libs/utils/canvas-draw";
 import React from "react";
-import { useAppDispatch, useAppSelector } from "store/hooks";
+import { useAppSelector } from "store/hooks";
 import {
-  selectMaterialMatrix,
   selectMaterialMatrixCountCol,
   selectMaterialMatrixCountRow,
   selectMaterials,
 } from "store/slices/material-matrix.slice";
-import { colors } from "../../colors";
+import { colors } from "../../constants";
 import { IPreviewMatrixProps } from "./PreviewMatrixEditor.props";
 
 export const PreviewMatrix = ({
@@ -30,7 +30,7 @@ export const PreviewMatrix = ({
   let rectHeight = height / countRow;
 
   const draw: DrawType = (ctx: CanvasRenderingContext2D) => {
-    drawRect(ctx, 0, 0, colors[0], width, height);
+    drawRect(ctx, 0, 0, width, height, colors[0]);
     drawMatrix(ctx, materialMatrix);
     drawCircle(
       ctx,
@@ -46,7 +46,7 @@ export const PreviewMatrix = ({
 
       // Make square shape.
       canvas.style.width = "100%";
-      canvas.style.height = canvas.offsetWidth + "";
+      canvas.style.height = canvas.offsetWidth.toString();
 
       const newWidth = canvas.offsetWidth || 100;
 
@@ -82,45 +82,9 @@ export const PreviewMatrix = ({
     srcPositionRelativeY,
   ]);
 
-  const drawRect = (
-    ctx: CanvasRenderingContext2D,
-    x: number,
-    y: number,
-    color = "black",
-    width: number,
-    height: number
-  ) => {
-    ctx.beginPath();
-    ctx.fillStyle = color;
-    ctx.rect(x, y, width, height);
-    ctx.fill();
-  };
-
-  const drawCircle = (
-    ctx: CanvasRenderingContext2D,
-    x: number,
-    y: number,
-    color = "black",
-    scaleX = 1,
-    scaleY = 1,
-    radius = 10
-  ) => {
-    // ctx.lineWidth = width;
-    // ctx.strokeStyle = color;
-    ctx.fillStyle = color;
-    ctx.strokeStyle = color;
-    // ctx.globalAlpha = 0.3;
-    ctx.beginPath();
-
-    ctx.arc(x * scaleX, height - y * scaleY, radius, 0, 2 * Math.PI);
-    ctx.fill();
-    // ctx.closePath();
-  };
-
   const drawMatrix = (ctx: CanvasRenderingContext2D, matrix: number[][]) => {
     for (let i = 0; i < countRow; i++) {
       for (let j = 0; j < countCol; j++) {
-        // console.log(i)
         const colorIndex = materials.findIndex(
           (material) => material.id == matrix[i][j]
         );
@@ -130,9 +94,9 @@ export const PreviewMatrix = ({
             ctx,
             j * rectWidth,
             i * rectHeight,
-            materials[colorIndex].color,
             rectWidth,
-            rectHeight
+            rectHeight,
+            materials[colorIndex].color,
           );
         }
       }
@@ -140,12 +104,6 @@ export const PreviewMatrix = ({
   };
 
   return (
-    <>
-      <canvas
-        // onClick={ handleMouseClick }
-        style={{ borderRadius: "5px" }}
-        ref={canvasRef}
-      />
-    </>
+    <canvas ref={canvasRef} />
   );
 };

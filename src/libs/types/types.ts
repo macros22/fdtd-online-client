@@ -22,7 +22,7 @@ export enum ContentType {
 }
 
 
-export type PointType = {
+export interface IPoint {
   x: number;
   y: number;
 };
@@ -36,5 +36,5 @@ export type MessageToBackend = {
   condition: [number, number];
   materialMatrix: number[][];
   materials: MaterialForBackend[];
-  srcPositionRelative: PointType[];
+  srcPositionRelative: IPoint[];
 };

@@ -10,7 +10,7 @@ import {
   selectMaterials,
   updateMaterialMatrix,
 } from "store/slices/material-matrix.slice";
-import { colors } from "../colors";
+import { colors } from "../constants";
 import { IEditorCanvasProps } from "./EditorCanvas.props";
 
 const initialFocusedCoords = { i: 0, j: 0 };

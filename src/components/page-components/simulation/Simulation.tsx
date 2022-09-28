@@ -21,7 +21,7 @@ import {
   InputRange,
   Divider,
 } from "components";
-import { DataType, MessageToBackend, PointType, SimulationDimension } from "libs/types/types";
+import { DataType, MessageToBackend, SimulationDimension } from "libs/types/types";
 import { displayedData } from "libs/utils/displayed-data";
 import { SERVER_URL as SERVER_URL } from "libs/constants/url";
 import { useAppSelector } from "store/hooks";
@@ -35,7 +35,7 @@ import {
   MaterialForBackend,
   transformMaterialForBackend,
 } from "libs/utils/transform-materials-array";
-import { PreviewMatrixSidebar } from "components/matrix-ditor/preview/in-sidebar/PreviewMatrixSidebar";
+import { PreviewMatrixSidebar } from "components/matrix-editor/preview/in-sidebar/PreviewMatrixSidebar";
 
 export const Simulation = ({
   currentSimulationDimension,

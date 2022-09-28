@@ -3,7 +3,7 @@ import { Canvas } from "components";
 import { drawCircle, drawLine } from "libs/utils/canvas-draw";
 import { DrawType } from "./PlotLine.interface";
 import { IPlotLineProps } from "./PlotLine.props";
-import { PointType } from "libs/types/types";
+import { IPoint } from "libs/types/types";
 
 export const PlotLine = ({
   data: dataLine,
@@ -42,7 +42,7 @@ export const PlotLine = ({
   const tY = (y: number) => canvasHeight - y;
 
   // Fill epsilon line data.
-  const epsilonLine: PointType[] = [];
+  const epsilonLine: IPoint[] = [];
 
   const epsilonDataInterval = chartWidth / epsilonData.length;
   const maxEpsilon = Math.max(...epsilonData);

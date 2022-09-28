@@ -1,5 +1,4 @@
 // https://codesandbox.io/s/blov5kowy?file=/index.js:0-1633
-
 import * as React from "react";
 import styles from "./EditorModal.module.scss";
 import { IEditorModalProps } from "./EditorModal.props";
@@ -20,12 +19,9 @@ import {
   updateMaterialSigma,
 } from "store/slices/material-matrix.slice";
 import { selectCurrentSimulationDimension } from "store/slices/app-config.slice";
-import { colors } from "../colors";
+import { colors, gridSizes1D, gridSizes2D } from "../constants";
 import { EditorCanvas } from "../editor-canvas/EditorCanvas";
 import { PreviewMatrix } from "../preview/in-editor/PreviewMatrixEditor";
-
-const gridSizes1D = [5, 50, 100, 200];
-const gridSizes2D = [11, 55, 110, 220];
 
 export const EditorModal = ({
   setIsModalOpen,
@@ -68,10 +64,8 @@ export const EditorModal = ({
   );
 
   return (
-    <>
       <Modal onClose={() => setIsModalOpen(false)}>
         <div className={styles.nonScrollableContent}>
-          {/* <p>This short title <b>IS NOT</b> scrollable</p> */}
           <h2 className={styles.matrixPickerTitle}>Matrix picker</h2>
           <h2 className={styles.editorTitle}>Editor</h2>
           <h2 className={styles.materialPickerTitle}>Material picker</h2>
@@ -107,8 +101,6 @@ export const EditorModal = ({
               </div>
             </div>
             <div className={styles.editor}>
-              {/* Editor start */}
-
               <EditorCanvas
                 width={400}
                 height={400}
@@ -116,8 +108,7 @@ export const EditorModal = ({
                 srcPositionRelativeX={srcPositionRelativeX}
                 srcPositionRelativeY={srcPositionRelativeY}
               />
-              {/* Editor end */}
-
+    
               <div className={styles.buttons}>
                 <WithLabel labelText="Choose matrix size:">
                   <ButtonGroup activeButton={currentMatrixSizeIndex}>
@@ -243,6 +234,5 @@ export const EditorModal = ({
           </div>
         </div>
       </Modal>
-    </>
   );
 };

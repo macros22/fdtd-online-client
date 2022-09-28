@@ -11,21 +11,6 @@ export interface ISimulationPageProps extends Record<string, unknown> {
   currentSimulationDimension: SimulationDimension;
 }
 
-const SimulationPage: React.FC<ISimulationPageProps> = ({
-  currentSimulationDimension,
-}) => {
-  const dispatch = useAppDispatch();
-  dispatch(setSimulationDimension(currentSimulationDimension));
-
-  return (
-    <MainLayout>
-      <Simulation currentSimulationDimension={currentSimulationDimension} />
-    </MainLayout>
-  );
-};
-
-export default SimulationPage;
-
 export const getStaticPaths: GetStaticPaths = async () => {
   const paths: {
     params: {
@@ -71,3 +56,19 @@ export const getStaticProps: GetStaticProps<ISimulationPageProps> = async ({
     notFound: true,
   };
 };
+
+
+const SimulationPage = ({
+  currentSimulationDimension,
+}: ISimulationPageProps): JSX.Element => {
+  const dispatch = useAppDispatch();
+  dispatch(setSimulationDimension(currentSimulationDimension));
+
+  return (
+    <MainLayout>
+      <Simulation currentSimulationDimension={currentSimulationDimension} />
+    </MainLayout>
+  );
+};
+
+export default SimulationPage;

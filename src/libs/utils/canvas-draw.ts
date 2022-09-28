@@ -1,4 +1,4 @@
-import { PointType } from "libs/types/types";
+import { IPoint } from "libs/types/types";
 
 export const drawCircle = (
     ctx: CanvasRenderingContext2D,
@@ -6,7 +6,7 @@ export const drawCircle = (
     y: number,
     color = "black",
     width = 3,
-    radius = 20,
+    radius = 5,
     isDashedLine = false
 ) => {
     ctx.lineWidth = width;
@@ -38,7 +38,7 @@ export const drawRect = (
   
   export const drawLine = (
     ctx: CanvasRenderingContext2D,
-    data: PointType[],
+    data: IPoint[],
     color = "black",
     width = 3,
     isDashedLine = false
