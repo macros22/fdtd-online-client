@@ -21,7 +21,7 @@ import {
 } from "store/reducers/material-matrix.reducer";
 import { selectCurrentSimulationDimension } from "store/reducers/app-config.reducer";
 import { colors } from "../colors";
-import { EditorCanvas } from "../matrix-editor/EditorCanvas";
+import { EditorCanvas } from "../editor-canvas/EditorCanvas";
 import { PreviewMatrix } from "../preview/in-editor/PreviewMatrixEditor";
 
 const gridSizes1D = [5, 50, 100, 200];

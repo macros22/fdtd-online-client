@@ -11,7 +11,9 @@ import {
   updateMaterialMatrix,
 } from "store/reducers/material-matrix.reducer";
 import { colors } from "../colors";
-import { IEditorCanvasProps } from "./MatrixEditor.props";
+import { IEditorCanvasProps } from "./EditorCanvas.props";
+
+const initialFocusedCoords = { i: 0, j: 0 };
 
 export const EditorCanvas = ({
   width,
@@ -20,10 +22,6 @@ export const EditorCanvas = ({
   srcPositionRelativeX,
   srcPositionRelativeY,
 }: IEditorCanvasProps): JSX.Element => {
-  // Matrix sizes.
-  //   const width = 400;
-  //   const height = 400;
-
   const dispatch = useAppDispatch();
 
   const countRow = useAppSelector(selectMaterialMatrixCountRow);
@@ -34,18 +32,13 @@ export const EditorCanvas = ({
   );
   const materials = useAppSelector(selectMaterials);
 
-  //   const countRow = 20;
-  //   const countCol = 20;
-
   const canvasRef = React.useRef<HTMLCanvasElement | null>(null);
   const [mousePressed, setMousePressed] = React.useState(false);
 
-  const initialFocusedCoords = { i: 0, j: 0 };
-
   const [focusedCoord, setFocusedCoord] = React.useState(initialFocusedCoords);
 
-  const rectwidth = width / countCol;
-  const rectheight = height / countRow;
+  const rectWidth = width / countCol;
+  const rectHeight = height / countRow;
 
   // Handlers.
   const handleMouseClick = () => {
@@ -82,11 +75,12 @@ export const EditorCanvas = ({
       e.target as Element
     ).getBoundingClientRect();
 
-    const x = pageX - gridX - rectwidth / 2;
-    const y = pageY - gridY - rectheight / 2;
+    const x = pageX - gridX - rectWidth / 2;
+    const y = pageY - gridY - rectHeight / 2;
 
     const newFocusedCol = Math.round((countCol * x) / width);
     const newFocusedRow = Math.round((countRow * y) / height);
+
     setFocusedCoord({
       j: newFocusedCol,
       i: newFocusedRow,
@@ -103,29 +97,6 @@ export const EditorCanvas = ({
     }
   };
 
-  const draw: DrawType = (ctx: CanvasRenderingContext2D) => {
-    drawRect(ctx, 0, 0, width, height, colors[0]);
-    drawMatrix(ctx, materialMatrix);
-    drawCircle(
-      ctx,
-      srcPositionRelativeX * width,
-      height - srcPositionRelativeY * height,
-      "blue"
-    );
-
-    if (!mousePressed) {
-      drawRect(
-        ctx,
-        focusedCoord.j * rectwidth,
-        focusedCoord.i * rectheight,
-        rectwidth,
-        rectheight,
-        "green",
-      );
-    }
-  };
-
-
   React.useEffect(() => {
     const canvas: HTMLCanvasElement | null = canvasRef.current;
 
@@ -140,7 +111,27 @@ export const EditorCanvas = ({
     }
   }, [focusedCoord.i, focusedCoord.j, currentMaterialMatrixConfigInSet]);
 
+  const draw: DrawType = (ctx: CanvasRenderingContext2D) => {
+    drawRect(ctx, 0, 0, width, height, colors[0]);
+    drawMatrix(ctx, materialMatrix);
+    drawCircle(
+      ctx,
+      srcPositionRelativeX * width,
+      height - srcPositionRelativeY * height,
+      "blue"
+    );
 
+    if (!mousePressed) {
+      drawRect(
+        ctx,
+        focusedCoord.j * rectWidth,
+        focusedCoord.i * rectHeight,
+        rectWidth,
+        rectHeight,
+        "green",
+      );
+    }
+  };
 
   const drawMatrix = (ctx: CanvasRenderingContext2D, matrix: number[][]) => {
     for (let i = 0; i < countRow; ++i) {
@@ -152,10 +143,10 @@ export const EditorCanvas = ({
         if (colorIndex > 0) {
           drawRect(
             ctx,
-            j * rectwidth,
-            i * rectheight,
-            rectwidth,
-            rectheight,
+            j * rectWidth,
+            i * rectHeight,
+            rectWidth,
+            rectHeight,
             materials[colorIndex].color,
           );
         }
@@ -164,14 +155,12 @@ export const EditorCanvas = ({
   };
 
   return (
-    <>
-      <canvas
-        onClick={handleMouseClick}
-        onMouseDown={handleMouseDown}
-        onMouseMove={handleMouseMove}
-        onMouseUp={handleMouseUp}
-        ref={canvasRef}
-      />
-    </>
+    <canvas
+      onClick={handleMouseClick}
+      onMouseDown={handleMouseDown}
+      onMouseMove={handleMouseMove}
+      onMouseUp={handleMouseUp}
+      ref={canvasRef}
+    />
   );
 };

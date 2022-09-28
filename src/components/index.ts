@@ -4,7 +4,7 @@ export * from "./ui/with-label/WithLabel";
 export * from "./ui/sidebar/Sidebar";
 export * from "./ui/number-input/NumberInput";
 export * from "./ui/paper/Paper";
-export * from "./matrix-editor/editor/EditorModal";
+export * from "./matrix-ditor/editor/EditorModal";
 export * from "./color-bar/ColorBar";
 export * from "./plot-line/PlotLine";
 export * from "./ui/tag/Tag";

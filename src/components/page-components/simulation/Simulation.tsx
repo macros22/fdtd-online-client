@@ -40,7 +40,7 @@ import {
   MaterialForBackend,
   transformMaterialForBackend,
 } from "libs/utils/transform-materials-array";
-import { PreviewMatrixSidebar } from "components/matrix-editor/preview/in-sidebar/PreviewMatrixSidebar";
+import { PreviewMatrixSidebar } from "components/matrix-ditor/preview/in-sidebar/PreviewMatrixSidebar";
 
 type SourcePosition = {
   x: number;
