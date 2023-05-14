@@ -13,7 +13,7 @@ export const HeatMap = ({
   height,
   srcPositionRelativeX = 0,
   srcPositionRelativeY = 0,
-  withOptions = false,
+  withOptions = true,
 }: IHeatMapProps): JSX.Element => {
   const canvasRef = React.useRef<HTMLCanvasElement | null>(null);
   const canvasBrushRef = React.useRef<HTMLCanvasElement | null>(null);
@@ -21,7 +21,8 @@ export const HeatMap = ({
 
   const radiusInitial = 2.6;
   let blurInitial = radiusInitial * 1.4 + 0.1;
-  blurInitial = 0.1;
+  // blurInitial = 0.1;
+  blurInitial = 0.01;
 
   const [radius, setRadius] = React.useState<number>(radiusInitial);
   const [blur, setBlur] = React.useState<number>(blurInitial);
@@ -44,10 +45,15 @@ export const HeatMap = ({
       let data: [number[], number[], number[]] = [[], [], []];
 
       if (dataVal.length == 0) {
-        for (let i = 0; i < 8e3; ++i) {
+        // for (let i = 0; i < 8e3; ++i) {
+        //   data[0].push(Math.random() * width);
+        //   data[1].push(Math.random() * height);
+        //   data[2].push(Math.random() * 0.2);
+        // }
+        for (let i = 0; i < 100000; ++i) {
           data[0].push(Math.random() * width);
           data[1].push(Math.random() * height);
-          data[2].push(Math.random() * 0.2);
+          data[2].push(Math.random() * 0.1);
         }
         // for (let i = 0; i < defaultData.length; ++i) {
         //   data[0].push(defaultData[i][0]);
@@ -58,16 +64,21 @@ export const HeatMap = ({
         data = [dataX, dataY, dataVal];
       }
 
+      // const gridSizeFromBackend = 220;
       const gridSizeFromBackend = 220;
-
+      // console.log(width/gridSizeFromBackend-0.7)
+      console.log("width",width)
+      console.log("dataVal.length",dataVal.length)
       const heatMap = new HeatMapBuilder(canvas, canvasBrush, canvasGradient)
         .newData(...data)
         .min(minVal)
         .max(maxVal)
-        .radius(radius, blur)
+        // .radius(radius, blur)
+        // .radius((width/gridSizeFromBackend)*0.92, blur)
         .realGridSize(gridSizeFromBackend)
         .setSourcePosition(srcPositionRelativeX, srcPositionRelativeY)
-        .draw();
+        // .draw();
+        .drawNew(canvas);
 
       setHeatMap(heatMap);
     }

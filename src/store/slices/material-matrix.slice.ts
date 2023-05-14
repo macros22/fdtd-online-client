@@ -263,13 +263,16 @@ const initialState: IMaterialMatrixState = {
   currentMaterialMatrixConfigInSet,
 };
 
-interface UpdateEpslonMatrix {
-  // Row index.
-  i: number;
-  // Column index.
-  j: number;
+export type MaterialShape = "rect" | "circle";
+interface UpdateMatrixWithLine {
+  x1: number;
+  y1: number;
+  x2: number;
+  y2: number;
 
   newMaterialId: number;
+
+  width?: number;
 }
 
 interface UpdateMaterialName {
@@ -342,9 +345,96 @@ export const materialMatrixSlice = createSlice({
       state,
       action: PayloadAction<UpdateEpslonMatrix>
     ) => {
-      if (state.materialMatrix[action.payload.i]) {
-        state.materialMatrix[action.payload.i][action.payload.j] =
-          action.payload.newMaterialId;
+      const {
+        i,
+        j,
+        newMaterialId,
+        width = 1,
+        height = 1,
+        materialShape = "circle",
+      } = action.payload;
+
+      if (state.materialMatrix[i]) {
+        const maxI = Math.floor(
+          i + width / 2 <= state.countRow ? i + width / 2 : state.countRow
+        );
+        const maxJ = Math.floor(
+          j + height / 2 <= state.countCol ? j + height / 2 : state.countCol
+        );
+
+        const minI = Math.floor(i - width / 2 >= 0 ? i - width / 2 : 0);
+        const minJ = Math.floor(j - height / 2 >= 0 ? j - height / 2 : 0);
+
+        if (materialShape == "rect") {
+          for (let i = minI; i < maxI; i += 1) {
+            for (let j = minJ; j < maxJ; j += 1) {
+              state.materialMatrix[i][j] = newMaterialId;
+            }
+          }
+        }
+
+        if (materialShape == "circle") {
+          const radiusA = width / 2;
+          const radiusB = height / 2;
+          const centerX = i;
+          const centerY = j;
+
+          const checkPointInsideOval = (x: number, y: number) => {
+            const p =
+              Math.pow(x - centerX, 2) / Math.pow(radiusA, 2) +
+              Math.pow(y - centerY, 2) / Math.pow(radiusB, 2);
+
+            // p > 1 outside esllipse
+            // p = 1 on esllipse
+            // p < 1 inside esllipse
+            return p <= 1;
+          };
+
+          for (let i = minI; i < maxI; i += 1) {
+            for (let j = minJ; j < maxJ; j += 1) {
+              if (checkPointInsideOval(i, j)) {
+                state.materialMatrix[i][j] = newMaterialId;
+              }
+            }
+          }
+        }
+      }
+      // else {
+
+      //     state.materialMatrix[i][j] = newMaterialId;
+      //   }
+      // }
+    },
+
+    updateMaterialMatrixWithLine: (
+      state,
+      action: PayloadAction<UpdateMatrixWithLine>
+    ) => {
+      const { x1, y1, x2, y2, newMaterialId, width = 1 } = action.payload;
+
+      const distOfLineDefinedBy2PointsAndPoint = (
+        // x1: number =,
+        // y1: number,
+        // x2: number,
+        // y2: number,
+        x3: number,
+        y3: number
+      ) => {
+        return (
+          Math.abs((y2 - y1) * x3 - (x2 - x1) * y3 + x2 * y1 - y2 * x1) /
+          Math.sqrt(Math.pow(y2 - y1, 2) + Math.pow(x2 - x1, 2))
+        );
+      };
+
+      state.materialMatrix[x1][y1] = newMaterialId;
+      state.materialMatrix[x2][y2] = newMaterialId;
+
+      for (let i = 0; i < state.countRow; i += 1) {
+        for (let j = 0; j < state.countCol; j += 1) {
+          if (distOfLineDefinedBy2PointsAndPoint(i, j) <= width / 2) {
+            state.materialMatrix[i][j] = newMaterialId;
+          }
+        }
       }
     },
 
@@ -389,6 +479,7 @@ export const {
   updateMaterialSigma,
   setCurrentMaterialMatrix,
   setMaterialMatrixSize,
+  updateMaterialMatrixWithLine,
 } = materialMatrixSlice.actions;
 
 export const selectMaterialMatrix = (state: AppState) =>

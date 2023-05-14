@@ -1,6 +1,6 @@
 import { DrawType } from "components/plot-line/PlotLine.interface";
 import { drawCircle, drawRect } from "libs/utils/canvas-draw";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "store/hooks";
 import {
   selectCurrentMaterialMatrixConfigInSet,
@@ -40,6 +40,44 @@ export const EditorCanvas = ({
   const rectWidth = width / countCol;
   const rectHeight = height / countRow;
 
+  
+  const [shapeX, setShapeX] = useState(10);
+  const [shapeY, setShapeY] = useState(30);
+  const [shapeWidth, setShapeWidth] = useState(20);
+  const [shapeHeight, setShapeHeight] = useState(30);
+
+  useEffect(() => {
+    // for (let i = shapeX; i <= shapeX + shapeWidth; i += 1) {
+    //   for (let j = shapeY; j <= shapeY + shapeHeight; j += 1) {
+    //     const newI = Math.round((countCol * i) / width);
+    //     const newJ = Math.round((countRow * j) / height);
+    //     dispatch(
+    //       updateMaterialMatrix({
+    //         i: newI,
+    //         j: newJ,
+    //         newMaterialId: materials[currentMaterial].id,
+    //       })
+    //     );
+    //   }
+    // }
+   
+  }, []);
+
+  // const updateMatrixWithRect = () => {
+  //   const newI = Math.round((countCol * shapeX) / width);
+  //   const newJ = Math.round((countRow * shapeY) / height);
+  //   dispatch(
+  //     updateMaterialMatrix({
+  //       i: newI,
+  //       j: newJ,
+  //       newMaterialId: materials[currentMaterial].id,
+  //       width: shapeWidth,
+  //       height: shapeHeight,
+  //     })
+  //   );
+  // }
+
+
   // Handlers.
   const handleMouseClick = () => {
     const newJ = focusedCoord.j;
@@ -50,6 +88,8 @@ export const EditorCanvas = ({
         i: newI,
         j: newJ,
         newMaterialId: materials[currentMaterial].id,
+        width: 5,
+        height: 5,
       })
     );
   };
@@ -92,6 +132,8 @@ export const EditorCanvas = ({
           i: newFocusedRow,
           j: newFocusedCol,
           newMaterialId: materials[currentMaterial].id,
+          width: 5,
+          height: 5,
         })
       );
     }
@@ -128,7 +170,7 @@ export const EditorCanvas = ({
         focusedCoord.i * rectHeight,
         rectWidth,
         rectHeight,
-        "green",
+        "green"
       );
     }
   };
@@ -147,7 +189,7 @@ export const EditorCanvas = ({
             i * rectHeight,
             rectWidth,
             rectHeight,
-            materials[colorIndex].color,
+            materials[colorIndex].color
           );
         }
       }

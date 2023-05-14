@@ -18,6 +18,10 @@ export const PlotLine = ({
 }: IPlotLineProps) => {
   const padding = 5;
 
+  // console.log("dataLine", dataLine);
+  // console.log("dataLine.length", dataLine.length);
+  // console.log(maxY);
+  // console.log(minY);
   const deltaX = minX >= 0 ? maxX : maxX - minX;
   const deltaY = Math.max(Math.abs(minY), Math.abs(maxY)) * 2;
 

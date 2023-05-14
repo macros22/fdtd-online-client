@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   CONTINUE_NAME,
   BEAMSIZE_NAME,
@@ -21,7 +21,11 @@ import {
   InputRange,
   Divider,
 } from "components";
-import { DataType, MessageToBackend, SimulationDimension } from "libs/types/types";
+import {
+  DataType,
+  MessageToBackend,
+  SimulationDimension,
+} from "libs/types/types";
 import { displayedData } from "libs/utils/displayed-data";
 import { SERVER_URL as SERVER_URL } from "libs/constants/url";
 import { useAppSelector } from "store/hooks";
@@ -37,13 +41,38 @@ import {
 } from "libs/utils/transform-materials-array";
 import { PreviewMatrixSidebar } from "components/matrix-editor/preview/in-sidebar/PreviewMatrixSidebar";
 
+// import Plotly from "plotly.js";
+// import createPlotlyComponent from "react-plotly.js/factory";
+// const Plot = createPlotlyComponent(Plotly);
+
+import dynamic from "next/dynamic";
+
+const DynamicPlot = dynamic(import("./Plotly"), {
+  ssr: false,
+});
+
+const getInitialDetectorData = () => {
+  return Array.from(Array(220).keys()).map((i) => ({ x: i, y: 0 }));
+};
+
 export const Simulation = ({
   currentSimulationDimension,
 }: ISimulationProps): JSX.Element => {
+  /// plotly
+  // const data = [
+  //   {
+  //     x: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+  //     y: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+  //     mode: "lines",
+  //   },
+  // ];
+  // const layout = { title: "Chart Title" };
+  ////
+
   const materialMatrix = useAppSelector(selectMaterialMatrix);
   const materials = useAppSelector(selectMaterials);
 
-  const [isMatrixEditorOpen, setIsMatrixEditorOpen] = React.useState(false);
+  const [isMatrixEditorOpen, setIsMatrixEditorOpen] = React.useState(true);
 
   const [isWSocketConnected, setIsWSocketConnected] =
     React.useState<boolean>(false);
@@ -100,7 +129,7 @@ export const Simulation = ({
   const [tau, setTau] = React.useState<number>(3);
 
   const [step, setStep] = React.useState<number>(0);
-  console.log(typeof setStep);
+  // console.log(typeof setStep);
   const [simulation, setSimulation] = React.useState<boolean>(false);
   const [pause, setPause] = React.useState<boolean>(false);
 
@@ -118,9 +147,14 @@ export const Simulation = ({
     step: 0,
     max: 0.0001,
     min: -0.0001,
+    // max: 1,
+    // min: -1,
   };
 
   const [allData2D, setAllData2D] = React.useState<DataType>(initAllData2D);
+  const [detectorData, setDetectorData] = useState<DataChartType>(() =>
+    getInitialDetectorData()
+  );
 
   const [srcPositionRelativeX, setSourcePositionRelativeX] =
     React.useState(0.4);
@@ -129,14 +163,14 @@ export const Simulation = ({
     React.useState(0.4);
 
   // For 2D.
-  const [maxVal, setMaxVal] = React.useState(0.04);
-  const [minVal, setMinVal] = React.useState(-0.04);
+  const [maxVal, setMaxVal] = React.useState(0.01);
+  const [minVal, setMinVal] = React.useState(-0.01);
 
   // For 1D
   const [minX, setMinX] = React.useState<number>(0);
   const [maxX, setMaxX] = React.useState<number>(0.1);
-  const [minY, setMinY] = React.useState<number>(-0.2);
-  const [maxY, setMaxY] = React.useState<number>(0.2);
+  const [minY, setMinY] = React.useState<number>(-0.0002);
+  const [maxY, setMaxY] = React.useState<number>(0.0002);
 
   const data1DChart: DataChartType = [];
   for (let i = 0; i < plotWidth * 0.9; i += 10) {
@@ -159,6 +193,7 @@ export const Simulation = ({
 
       socket.onmessage = (event: any) => {
         const data = JSON.parse(event.data);
+        // console.log(data);
         setStep(data.step || 0);
 
         if (currentSimulationDimension == SimulationDimension.SIMULATION_1D) {
@@ -200,16 +235,15 @@ export const Simulation = ({
       socket.onclose = (event) => {
         console.log("Socket closed");
         if (event.wasClean) {
-
           `Websocket: [close] Connection closed cleanly, code=${event.code} reason=${event.reason}`;
         } else {
           // e.g. server process killed or network down
           // event.code is usually 1006 in this case
           console.log("Websocket:[close] Connection died");
         }
-        setTimeout(() => {
-          connectWS();
-        }, 5000);
+        // setTimeout(() => {
+        //   connectWS();
+        // }, 5000);
         setIsWSocketConnected(false);
       };
 
@@ -292,6 +326,35 @@ export const Simulation = ({
       socket.send(JSON.stringify(message));
     }
   };
+
+  const tmp = 130;
+  useEffect(() => {
+    const detectorValue =
+      allData2D.dataVal[tmp * allData2D.row + allData2D.col];
+    const newDetectorData = [...detectorData];
+
+    const start = tmp * allData2D.row;
+    const end = tmp * allData2D.row + allData2D.col;
+    // const arr = allData2D.dataVal.slice(start, end)
+
+    // console.log(arr)
+    // for (let i = 0; i <allData2D.col; i += 1) {
+
+    // }
+
+    // if (newDetectorData[step]) {
+      allData2D.dataVal
+        .slice(start, end)
+        .forEach((val, index) => (newDetectorData[index].y = val));
+
+      setDetectorData([...newDetectorData]);
+      // console.log(detectorValue);
+      // newDetectorData[step].y = detectorValue;
+      // setDetectorData([...newDetectorData]);
+    // }
+    // console.log(newDetectorData);
+    // console.log(detectorData);
+  }, [step]);
 
   React.useEffect(() => {
     connectWS();
@@ -400,6 +463,8 @@ export const Simulation = ({
               <span className={styles.subTitle}> structure</span>
             </span>
 
+            {/* <Plot data={data} layout={layout} /> */}
+            {/* <DynamicPlot /> */}
             {currentSimulationDimension == SimulationDimension.SIMULATION_2D ? (
               <div className={styles.graph2D}>
                 <Paper>
@@ -423,6 +488,26 @@ export const Simulation = ({
                     minVal={minVal}
                   />
                 </Paper>
+                <div className={styles.graph1D}>
+                  <Paper>
+                    <PlotLine
+                      data={detectorData}
+                      minY={minVal}
+                      minX={0}
+                      maxY={maxVal}
+                      maxX={220}
+                      canvasWidth={750}
+                      canvasHeight={400}
+                      epsilonData={materialMatrix[0].map(
+                        (materialId) =>
+                          materials.find(
+                            (material) => material.id === materialId
+                          )?.eps || 1
+                      )} //!!!!!!!!!!!
+                      srcPositionRelative={srcPositionRelativeX}
+                    />
+                  </Paper>
+                </div>
               </div>
             ) : (
               <div className={styles.graph1D}>
@@ -505,4 +590,3 @@ export const Simulation = ({
     </>
   );
 };
-
