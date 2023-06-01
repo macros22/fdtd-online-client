@@ -18,6 +18,7 @@ export const InputRange = ({
         step={"0.01"}
         value={value}
         onChange={(event) => setValue(Number(event.target.value) || 0)}
+        // onChange={(event) => setValue(Number(event.target.value) || 0)}
         className={styles.slider}
         id="customRange"
         {...props}

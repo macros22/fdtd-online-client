@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "store/hooks";
 import {
   selectCurrentMaterialMatrixConfigInSet,
+  selectLineDetector,
   selectMaterialMatrix,
   selectMaterialMatrixCountCol,
   selectMaterialMatrixCountRow,
@@ -32,6 +33,9 @@ export const EditorCanvas = ({
   );
   const materials = useAppSelector(selectMaterials);
 
+  const lineDetector = useAppSelector(selectLineDetector);
+  const detectorLineXCoord = Math.floor(lineDetector.relativeCoord * countCol);
+
   const canvasRef = React.useRef<HTMLCanvasElement | null>(null);
   const [mousePressed, setMousePressed] = React.useState(false);
 
@@ -40,7 +44,6 @@ export const EditorCanvas = ({
   const rectWidth = width / countCol;
   const rectHeight = height / countRow;
 
-  
   const [shapeX, setShapeX] = useState(10);
   const [shapeY, setShapeY] = useState(30);
   const [shapeWidth, setShapeWidth] = useState(20);
@@ -60,7 +63,6 @@ export const EditorCanvas = ({
     //     );
     //   }
     // }
-   
   }, []);
 
   // const updateMatrixWithRect = () => {
@@ -76,7 +78,6 @@ export const EditorCanvas = ({
   //     })
   //   );
   // }
-
 
   // Handlers.
   const handleMouseClick = () => {
@@ -190,6 +191,17 @@ export const EditorCanvas = ({
             rectWidth,
             rectHeight,
             materials[colorIndex].color
+          );
+        }
+
+        if (j == detectorLineXCoord) {
+          drawRect(
+            ctx,
+            j * rectWidth,
+            i * rectHeight,
+            5,
+            rectHeight,
+            "rgba(0,0,0,0.1)"
           );
         }
       }

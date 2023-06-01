@@ -142,8 +142,8 @@ export const EditorModal = ({
           </div>
           <div className={styles.editor}>
             <EditorCanvas
-              width={400}
-              height={400}
+              width={500}
+              height={500}
               currentMaterial={currentMaterial}
               srcPositionRelativeX={srcPositionRelativeX}
               srcPositionRelativeY={srcPositionRelativeY}

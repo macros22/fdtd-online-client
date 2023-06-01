@@ -3,6 +3,7 @@ import { drawCircle, drawRect } from "libs/utils/canvas-draw";
 import React from "react";
 import { useAppSelector } from "store/hooks";
 import {
+  selectLineDetector,
   selectMaterialMatrixCountCol,
   selectMaterialMatrixCountRow,
   selectMaterials,
@@ -24,6 +25,9 @@ export const PreviewMatrix = ({
   const countCol = useAppSelector(selectMaterialMatrixCountCol);
   const materials = useAppSelector(selectMaterials);
 
+  const lineDetector = useAppSelector(selectLineDetector);
+  const detectorLineXCoord = Math.floor(lineDetector.relativeCoord * countCol);
+
   const canvasRef = React.useRef<HTMLCanvasElement | null>(null);
 
   let rectWidth = width / countCol;
@@ -35,7 +39,7 @@ export const PreviewMatrix = ({
     drawCircle(
       ctx,
       srcPositionRelativeX * width,
-      srcPositionRelativeY * height,
+      (1 - srcPositionRelativeY) * height,
       colors[1]
     );
   };
@@ -77,6 +81,7 @@ export const PreviewMatrix = ({
   }, [
     simulationDimension,
     materialMatrix,
+    detectorLineXCoord,
     width,
     srcPositionRelativeX,
     srcPositionRelativeY,
@@ -96,14 +101,23 @@ export const PreviewMatrix = ({
             i * rectHeight,
             rectWidth,
             rectHeight,
-            materials[colorIndex].color,
+            materials[colorIndex].color
+          );
+        }
+
+        if (j == detectorLineXCoord) {
+          drawRect(
+            ctx,
+            j * rectWidth,
+            i * rectHeight,
+            5,
+            rectHeight,
+            "rgba(0,0,0,0.1)"
           );
         }
       }
     }
   };
 
-  return (
-    <canvas ref={canvasRef} />
-  );
+  return <canvas ref={canvasRef} />;
 };

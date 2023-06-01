@@ -28,11 +28,13 @@ import {
 } from "libs/types/types";
 import { displayedData } from "libs/utils/displayed-data";
 import { SERVER_URL as SERVER_URL } from "libs/constants/url";
-import { useAppSelector } from "store/hooks";
+import { useAppDispatch, useAppSelector } from "store/hooks";
 import { DataChartType } from "libs/types/lab1";
 import {
+  selectLineDetector,
   selectMaterialMatrix,
   selectMaterials,
+  updateLineDetector,
 } from "store/slices/material-matrix.slice";
 import { ISimulationProps } from "./Simulation.props";
 import {
@@ -41,16 +43,6 @@ import {
 } from "libs/utils/transform-materials-array";
 import { PreviewMatrixSidebar } from "components/matrix-editor/preview/in-sidebar/PreviewMatrixSidebar";
 
-// import Plotly from "plotly.js";
-// import createPlotlyComponent from "react-plotly.js/factory";
-// const Plot = createPlotlyComponent(Plotly);
-
-import dynamic from "next/dynamic";
-
-const DynamicPlot = dynamic(import("./Plotly"), {
-  ssr: false,
-});
-
 const getInitialDetectorData = () => {
   return Array.from(Array(220).keys()).map((i) => ({ x: i, y: 0 }));
 };
@@ -58,17 +50,7 @@ const getInitialDetectorData = () => {
 export const Simulation = ({
   currentSimulationDimension,
 }: ISimulationProps): JSX.Element => {
-  /// plotly
-  // const data = [
-  //   {
-  //     x: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-  //     y: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-  //     mode: "lines",
-  //   },
-  // ];
-  // const layout = { title: "Chart Title" };
-  ////
-
+  const lineDetector = useAppSelector(selectLineDetector);
   const materialMatrix = useAppSelector(selectMaterialMatrix);
   const materials = useAppSelector(selectMaterials);
 
@@ -157,14 +139,14 @@ export const Simulation = ({
   );
 
   const [srcPositionRelativeX, setSourcePositionRelativeX] =
-    React.useState(0.4);
+    React.useState(0.1);
 
   const [srcPositionRelativeY, setSourcePositionRelativeY] =
-    React.useState(0.4);
+    React.useState(0.5);
 
   // For 2D.
-  const [maxVal, setMaxVal] = React.useState(0.01);
-  const [minVal, setMinVal] = React.useState(-0.01);
+  const [maxVal, setMaxVal] = React.useState(0.0001);
+  const [minVal, setMinVal] = React.useState(-0.0001);
 
   // For 1D
   const [minX, setMinX] = React.useState<number>(0);
@@ -219,6 +201,7 @@ export const Simulation = ({
           // setMinY(minYServer);
           setAllData1D(tmpdata2DChart);
         } else {
+          console.log(data.max);
           if (data.step > 5 && data.max > maxVal) {
             setMaxVal(data.max);
           }
@@ -327,33 +310,37 @@ export const Simulation = ({
     }
   };
 
-  const tmp = 130;
   useEffect(() => {
-    const detectorValue =
-      allData2D.dataVal[tmp * allData2D.row + allData2D.col];
-    const newDetectorData = [...detectorData];
+    //if vertical line detector
+    if (lineDetector.direction === "vertical") {
+      const detectorLineX = Math.floor(
+        lineDetector.relativeCoord * allData2D.col
+      );
+      const newDetectorData = [...detectorData];
 
-    const start = tmp * allData2D.row;
-    const end = tmp * allData2D.row + allData2D.col;
-    // const arr = allData2D.dataVal.slice(start, end)
+      const start = detectorLineX * allData2D.row;
+      const end = detectorLineX * allData2D.row + allData2D.col;
 
-    // console.log(arr)
-    // for (let i = 0; i <allData2D.col; i += 1) {
-
-    // }
-
-    // if (newDetectorData[step]) {
       allData2D.dataVal
         .slice(start, end)
         .forEach((val, index) => (newDetectorData[index].y = val));
 
       setDetectorData([...newDetectorData]);
-      // console.log(detectorValue);
-      // newDetectorData[step].y = detectorValue;
+    } else {
+      // const detectorLineY = Math.floor(
+      //   lineDetector.relativeCoord * allData2D.row
+      // );
+      // const newDetectorData = [...detectorData];
+
+      // const start = detectorLineY * allData2D.row;
+      // const end = detectorLineX * allData2D.row + allData2D.col;
+
+      // allData2D.dataVal
+      //   .slice(start, end)
+      //   .forEach((val, index) => (newDetectorData[index].y = val));
+
       // setDetectorData([...newDetectorData]);
-    // }
-    // console.log(newDetectorData);
-    // console.log(detectorData);
+    }
   }, [step]);
 
   React.useEffect(() => {
@@ -369,6 +356,10 @@ export const Simulation = ({
 
   // Handlers.
   const clickStartPauseContinueBtnHandler = () => {
+    //remove later
+    // setMaxVal(0.00001);
+    // setMinVal(-0.00001);
+
     if (!simulation) {
       startDataReceiving();
       setSimulation(true);
@@ -393,6 +384,16 @@ export const Simulation = ({
   // : React.FormEvent<HTMLInputElement>
   const clickStopBtnHandler = (e: React.MouseEvent) => {
     stopSimulation();
+  };
+
+  const dispatch = useAppDispatch();
+
+  const setLineDetectorPosition = (relativeCoord: number) => {
+    dispatch(updateLineDetector({ relativeCoord }));
+  };
+
+  const setLineDetectorDirection = (direction: "horizontal" | "vertical") => {
+    dispatch(updateLineDetector({ direction }));
   };
 
   return (
@@ -450,8 +451,43 @@ export const Simulation = ({
               setIsModalOpen={setIsMatrixEditorOpen}
               srcPositionRelativeX={srcPositionRelativeX}
               srcPositionRelativeY={srcPositionRelativeY}
+              // srcPositionRelativeX={0.9}
+              // srcPositionRelativeY={0.1}
             />
           </WithLabel>
+
+          {currentSimulationDimension === SimulationDimension.SIMULATION_2D && (
+            <>
+              <Divider className={styles.divider} />
+              <WithLabel
+                labelText={`Detector position (${lineDetector.relativeCoord})`}
+              >
+                <InputRange
+                  value={lineDetector.relativeCoord}
+                  setValue={setLineDetectorPosition}
+                />
+              </WithLabel>
+              <WithLabel labelText="Detector direction:">
+                <ButtonGroup
+                  activeButton={lineDetector.direction == "vertical" ? 0 : 1}
+                >
+                  {["vertical", "horizontal"].map((item) => {
+                    return (
+                      <button
+                        key={item}
+                        onClick={() => {
+                          setLineDetectorDirection(item);
+                        }}
+                      >
+                        {item}
+                      </button>
+                    );
+                  })}
+                </ButtonGroup>
+              </WithLabel>
+              <Divider className={styles.divider} />
+            </>
+          )}
         </Sidebar>
 
         <div className={styles.content}>
@@ -476,8 +512,10 @@ export const Simulation = ({
                     dataX={allData2D.dataX}
                     dataY={allData2D.dataY}
                     dataVal={allData2D.dataVal}
-                    srcPositionRelativeX={srcPositionRelativeX}
-                    srcPositionRelativeY={srcPositionRelativeY}
+                    // srcPositionRelativeX={srcPositionRelativeX}
+                    // srcPositionRelativeY={srcPositionRelativeY}
+                    srcPositionRelativeX={0.9}
+                    srcPositionRelativeY={0.1}
                   />
                 </Paper>
                 <Paper>
@@ -528,6 +566,8 @@ export const Simulation = ({
                     srcPositionRelative={srcPositionRelativeX}
                   />
                 </Paper>
+                <Paper>Reflectance: 0.04</Paper>
+                <Paper>Transmittence: 0.96</Paper>
               </div>
             )}
           </div>

@@ -149,6 +149,11 @@ export interface IMaterialMatrixState {
   // Set of functions, that fill material matrix.
   configMaterialSet: ConfigMaterial[];
 
+  lineDetector: {
+    relativeCoord: number;
+    direction: "vertical" | "horizontal";
+  };
+
   currentMaterialMatrixConfigInSet: number;
 }
 
@@ -221,7 +226,7 @@ const materials = [
     color: "#fafafa",
   },
   {
-    name: "Material 2",
+    name: "Material 1",
     id: 1,
     eps: 2.3,
     mu: 1,
@@ -229,20 +234,12 @@ const materials = [
     color: "tomato",
   },
   {
-    name: "Argentum",
+    name: "Material 2",
     id: 2,
     eps: 40.6,
     mu: 1,
     sigma: 0.02,
     color: "#1a52aa",
-  },
-  {
-    name: "Aurum",
-    id: 3,
-    eps: 10.9,
-    mu: 3,
-    sigma: 0.01,
-    color: "#1b21cc",
   },
 ];
 
@@ -261,6 +258,11 @@ const initialState: IMaterialMatrixState = {
     configMaterialSet[currentMaterialMatrixConfigInSet].materialMatrix,
   configMaterialSet,
   currentMaterialMatrixConfigInSet,
+
+  lineDetector: {
+    relativeCoord: 0.7,
+    direction: "vertical",
+  },
 };
 
 export type MaterialShape = "rect" | "circle";
@@ -349,10 +351,13 @@ export const materialMatrixSlice = createSlice({
         i,
         j,
         newMaterialId,
-        width = 1,
-        height = 1,
+        width2 = 1,
+        height2 = 1,
         materialShape = "circle",
+        // materialShape = "rect",
       } = action.payload;
+      let width = 100;
+        let height = 100;
 
       if (state.materialMatrix[i]) {
         const maxI = Math.floor(
@@ -468,6 +473,24 @@ export const materialMatrixSlice = createSlice({
       );
       state.materials[materialIndex].sigma = action.payload.newSigma;
     },
+
+    updateLineDetector: (
+      state,
+      action: PayloadAction<{
+        relativeCoord?: number;
+        direction?: "horizontal" | "vertical";
+      }>
+    ) => {
+      const { relativeCoord, direction } = action.payload;
+
+      if (relativeCoord && relativeCoord >= 0 && relativeCoord <= 1) {
+        state.lineDetector.relativeCoord = relativeCoord;
+      }
+
+      if (direction) {
+        state.lineDetector.direction = direction;
+      }
+    },
   },
 });
 
@@ -480,6 +503,7 @@ export const {
   setCurrentMaterialMatrix,
   setMaterialMatrixSize,
   updateMaterialMatrixWithLine,
+  updateLineDetector,
 } = materialMatrixSlice.actions;
 
 export const selectMaterialMatrix = (state: AppState) =>
@@ -499,5 +523,8 @@ export const selectMaterialMatrixCountCol = (state: AppState) =>
 
 export const selectMaterials = (state: AppState) =>
   state.materialMatrix.materials;
+
+export const selectLineDetector = (state: AppState) =>
+  state.materialMatrix.lineDetector;
 
 export default materialMatrixSlice.reducer;

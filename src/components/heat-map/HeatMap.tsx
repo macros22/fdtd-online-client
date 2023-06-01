@@ -13,7 +13,7 @@ export const HeatMap = ({
   height,
   srcPositionRelativeX = 0,
   srcPositionRelativeY = 0,
-  withOptions = true,
+  withOptions = false,
 }: IHeatMapProps): JSX.Element => {
   const canvasRef = React.useRef<HTMLCanvasElement | null>(null);
   const canvasBrushRef = React.useRef<HTMLCanvasElement | null>(null);
@@ -67,8 +67,8 @@ export const HeatMap = ({
       // const gridSizeFromBackend = 220;
       const gridSizeFromBackend = 220;
       // console.log(width/gridSizeFromBackend-0.7)
-      console.log("width",width)
-      console.log("dataVal.length",dataVal.length)
+      // console.log("width", width);
+      // console.log("dataVal.length", dataVal.length);
       const heatMap = new HeatMapBuilder(canvas, canvasBrush, canvasGradient)
         .newData(...data)
         .min(minVal)

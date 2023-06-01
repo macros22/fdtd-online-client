@@ -21,7 +21,7 @@ const postNames = [
   "border",
 ];
 
-const LOGO_TEXT = "FDTD";
+const LOGO_TEXT = "Nanophotonics with FDTD";
 
 export const Header = () => {  
   const currentContentType = useAppSelector(selectCurrentContentType);
