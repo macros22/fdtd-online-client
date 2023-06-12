@@ -38,10 +38,12 @@
 
 .sidebarLeft {
   grid-area: sidebarLeft;
+  border-right: 1px solid lightgray;
 }
 
 .sidebarRight {
   grid-area: sidebarRight;
+  border-left: 1px solid lightgray;
 }
 
 .content {
@@ -56,8 +58,12 @@
 }
 
 .graph2D {
-  display: inline-grid;
-  grid-template-columns: auto auto;
+  // display: inline-grid;
+  // grid-template-columns: auto auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  height: max-content;
 }
 
 .workArea {

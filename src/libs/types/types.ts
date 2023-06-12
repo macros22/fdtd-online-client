@@ -21,20 +21,24 @@ export enum ContentType {
   SIMULATION = "SIMULATION",
 }
 
-
 export interface IPoint {
   x: number;
   y: number;
-};
+}
 
 export type EventType = "start" | "pause" | "continue" | "close";
 
+type SimulationType = SimulationDimension | "2D_TFSF";
+
+export type SourceType = "sin" | "gaussian";
+
 export type MessageToBackend = {
   event: EventType;
-  type: SimulationDimension;
+  type: SimulationType;
   dataToReturn: number;
   condition: [number, number];
   materialMatrix: number[][];
   materials: MaterialForBackend[];
   srcPositionRelative: IPoint[];
+  srcType: number;
 };

@@ -9,8 +9,10 @@ export const useCanvas = (draw: DrawType, width: number, height: number) => {
       const canvas = canvasRef.current;
       const context: CanvasRenderingContext2D | null = canvas.getContext("2d");
 
+      console.log('AA', width)
       canvas.setAttribute("width", width.toString());
-      canvas.setAttribute("height", height.toString());
+      canvas.setAttribute("height", (height).toString());
+      canvas.setAttribute("height", (height+60).toString());
 
       if (context) {
         draw(context);

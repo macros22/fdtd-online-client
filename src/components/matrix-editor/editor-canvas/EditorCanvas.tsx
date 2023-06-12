@@ -1,5 +1,5 @@
 import { DrawType } from "components/plot-line/PlotLine.interface";
-import { drawCircle, drawRect } from "libs/utils/canvas-draw";
+import { drawCircle, drawRect, drawStar } from "libs/utils/canvas-draw";
 import React, { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "store/hooks";
 import {
@@ -157,12 +157,11 @@ export const EditorCanvas = ({
   const draw: DrawType = (ctx: CanvasRenderingContext2D) => {
     drawRect(ctx, 0, 0, width, height, colors[0]);
     drawMatrix(ctx, materialMatrix);
-    drawCircle(
+    drawStar({
       ctx,
-      srcPositionRelativeX * width,
-      height - srcPositionRelativeY * height,
-      "blue"
-    );
+      cx: srcPositionRelativeX * width,
+      cy: height - srcPositionRelativeY * height,
+    });
 
     if (!mousePressed) {
       drawRect(

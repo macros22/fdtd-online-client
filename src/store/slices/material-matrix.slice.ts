@@ -353,11 +353,11 @@ export const materialMatrixSlice = createSlice({
         newMaterialId,
         width2 = 1,
         height2 = 1,
-        materialShape = "circle",
-        // materialShape = "rect",
+        // materialShape = "circle",
+        materialShape = "rect",
       } = action.payload;
-      let width = 100;
-        let height = 100;
+      let width = 1;
+        let height = 2;
 
       if (state.materialMatrix[i]) {
         const maxI = Math.floor(

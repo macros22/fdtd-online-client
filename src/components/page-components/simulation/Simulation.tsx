@@ -25,6 +25,7 @@ import {
   DataType,
   MessageToBackend,
   SimulationDimension,
+  SourceType,
 } from "libs/types/types";
 import { displayedData } from "libs/utils/displayed-data";
 import { SERVER_URL as SERVER_URL } from "libs/constants/url";
@@ -50,11 +51,14 @@ const getInitialDetectorData = () => {
 export const Simulation = ({
   currentSimulationDimension,
 }: ISimulationProps): JSX.Element => {
+  const [isTFSFMode, setIsisTFSFMode] = useState(false);
   const lineDetector = useAppSelector(selectLineDetector);
   const materialMatrix = useAppSelector(selectMaterialMatrix);
   const materials = useAppSelector(selectMaterials);
 
-  const [isMatrixEditorOpen, setIsMatrixEditorOpen] = React.useState(true);
+  // const [isMatrixEditorOpen, setIsMatrixEditorOpen] = React.useState(true);
+  const [isMatrixEditorOpen, setIsMatrixEditorOpen] = useState(false);
+  const [srcType, setSrcType] = useState<SourceType>("sin");
 
   const [isWSocketConnected, setIsWSocketConnected] =
     React.useState<boolean>(false);
@@ -133,20 +137,19 @@ export const Simulation = ({
     // min: -1,
   };
 
-  const [allData2D, setAllData2D] = React.useState<DataType>(initAllData2D);
+  const [allData2D, setAllData2D] = useState<DataType>(initAllData2D);
   const [detectorData, setDetectorData] = useState<DataChartType>(() =>
     getInitialDetectorData()
   );
 
-  const [srcPositionRelativeX, setSourcePositionRelativeX] =
-    React.useState(0.1);
+  const [srcPositionRelativeX, setSourcePositionRelativeX] = useState(0.1);
 
   const [srcPositionRelativeY, setSourcePositionRelativeY] =
     React.useState(0.5);
 
   // For 2D.
-  const [maxVal, setMaxVal] = React.useState(0.0001);
-  const [minVal, setMinVal] = React.useState(-0.0001);
+  const [maxVal, setMaxVal] = React.useState(0.00000001);
+  const [minVal, setMinVal] = React.useState(-0.0000001);
 
   // For 1D
   const [minX, setMinX] = React.useState<number>(0);
@@ -169,6 +172,7 @@ export const Simulation = ({
     const socket = new WebSocket(SERVER_URL);
     if (socket) {
       console.log("[open] Connection established");
+
       socket.onopen = () => {
         setIsWSocketConnected(true);
       };
@@ -201,12 +205,27 @@ export const Simulation = ({
           // setMinY(minYServer);
           setAllData1D(tmpdata2DChart);
         } else {
-          console.log(data.max);
+          // console.log(data.max);
+          // const newBiggest =
+          //   data.max > Math.abs(data.min) ? data.max : Math.abs(data.min);
+          // if (newBiggest > maxVal) {
+          //   setMaxVal(newBiggest);
+          //   setMinVal(newBiggest * -1);
+          // }
+
           if (data.step > 5 && data.max > maxVal) {
             setMaxVal(data.max);
+
+            // if (data.max > Math.abs(data.min)) {
+            //   setMinVal(data.max * -1);
+            // }
           }
           if (data.step > 5 && data.min < minVal) {
             setMinVal(data.min);
+
+            // if (Math.abs(data.min) > data.max) {
+            //   setMaxVal(data.min * -1);
+            // }
           }
 
           setAllData2D(data);
@@ -251,18 +270,20 @@ export const Simulation = ({
         materialMatrix,
         materials: transformMaterialForBackend(materials),
         srcPositionRelative: [{ x: srcPositionRelativeX, y: 0 }],
+        srcType: srcType == "sin" ? 1 : 2,
       };
     } else {
       message = {
         event: "start",
-        type: SimulationDimension.SIMULATION_2D,
-        dataToReturn: currentDisplayingData,
+        type: isTFSFMode ? "2D_TFSF" : SimulationDimension.SIMULATION_2D,
+        dataToReturn: currentDisplayingData + 1,
         condition: [lambda, beamsize],
         materialMatrix,
         materials: transformMaterialForBackend(materials),
         srcPositionRelative: [
           { x: srcPositionRelativeX, y: 1 - srcPositionRelativeY },
         ],
+        srcType: srcType == "sin" ? 1 : 2,
       };
     }
     if (socket) {
@@ -327,23 +348,26 @@ export const Simulation = ({
 
       setDetectorData([...newDetectorData]);
     } else {
-      // const detectorLineY = Math.floor(
-      //   lineDetector.relativeCoord * allData2D.row
-      // );
-      // const newDetectorData = [...detectorData];
+      const start = Math.floor(lineDetector.relativeCoord * allData2D.col);
+      const newDetectorData = [...detectorData];
 
-      // const start = detectorLineY * allData2D.row;
-      // const end = detectorLineX * allData2D.row + allData2D.col;
+      for (
+        let i = start, jj = 0;
+        i < allData2D.dataVal.length;
+        i += allData2D.row, jj++
+      ) {
+        newDetectorData[jj].y = allData2D.dataVal[i];
+      }
 
-      // allData2D.dataVal
-      //   .slice(start, end)
-      //   .forEach((val, index) => (newDetectorData[index].y = val));
-
-      // setDetectorData([...newDetectorData]);
+      setDetectorData([...newDetectorData]);
     }
-  }, [step]);
+  }, [step, lineDetector.relativeCoord, lineDetector.direction]);
 
-  React.useEffect(() => {
+  useEffect(() => {
+    console.log(minY, maxY);
+  }, [minY, maxY]);
+
+  useEffect(() => {
     connectWS();
     return () => {
       if (socket !== null) {
@@ -394,6 +418,10 @@ export const Simulation = ({
 
   const setLineDetectorDirection = (direction: "horizontal" | "vertical") => {
     dispatch(updateLineDetector({ direction }));
+  };
+
+  const onChangeTFSFMode = () => {
+    setIsisTFSFMode((x) => !x);
   };
 
   return (
@@ -496,19 +524,19 @@ export const Simulation = ({
               <Tag color="primary" size="lg" className={styles.title}>
                 {displayedData[currentDisplayingData].name}
               </Tag>
-              <span className={styles.subTitle}> structure</span>
+              {/* <span className={styles.subTitle}> structure</span> */}
             </span>
 
-            {/* <Plot data={data} layout={layout} /> */}
-            {/* <DynamicPlot /> */}
             {currentSimulationDimension == SimulationDimension.SIMULATION_2D ? (
               <div className={styles.graph2D}>
-                <Paper>
+                <Paper style={{ marginBottom: "64px" }}>
                   <HeatMap
                     width={plotWidth}
                     height={plotHeight}
                     minVal={maxVal}
                     maxVal={minVal}
+                    // minVal={0.02}
+                    // maxVal={-0.04}
                     dataX={allData2D.dataX}
                     dataY={allData2D.dataY}
                     dataVal={allData2D.dataVal}
@@ -522,8 +550,9 @@ export const Simulation = ({
                   <ColorBar
                     gradientHeight={plotHeight}
                     gradientWidth={plotHeight * 0.03}
-                    maxVal={maxVal}
-                    minVal={minVal}
+                    max={maxVal}
+                    min={minVal}
+                    units="V/m"
                   />
                 </Paper>
                 <div className={styles.graph1D}>
@@ -536,13 +565,6 @@ export const Simulation = ({
                       maxX={220}
                       canvasWidth={750}
                       canvasHeight={400}
-                      epsilonData={materialMatrix[0].map(
-                        (materialId) =>
-                          materials.find(
-                            (material) => material.id === materialId
-                          )?.eps || 1
-                      )} //!!!!!!!!!!!
-                      srcPositionRelative={srcPositionRelativeX}
                     />
                   </Paper>
                 </div>
@@ -593,6 +615,25 @@ export const Simulation = ({
                 </ButtonGroup>
               </WithLabel>
               <Divider className={styles.divider} />
+              <WithLabel labelText="Source type:">
+                <ButtonGroup activeButton={srcType == "sin" ? 0 : 1}>
+                  <button
+                    onClick={() => {
+                      setSrcType("sin");
+                    }}
+                  >
+                    sinus
+                  </button>
+                  <button
+                    onClick={() => {
+                      setSrcType("gaussian");
+                    }}
+                  >
+                    gaussian
+                  </button>
+                </ButtonGroup>
+              </WithLabel>
+              <Divider className={styles.divider} />
             </>
           )}
 
@@ -625,6 +666,37 @@ export const Simulation = ({
               {isWSocketConnected + ""}
             </Tag>
           </WithLabel>
+
+          <Divider className={styles.divider} />
+
+          <WithLabel labelText="TFDF mode:">
+            <ButtonGroup activeButton={isTFSFMode ? 0 : 1}>
+              <button
+                onClick={() => {
+                  setIsisTFSFMode(true);
+                }}
+              >
+                ON
+              </button>
+              <button
+                onClick={() => {
+                  setIsisTFSFMode(false);
+                }}
+              >
+                OFF
+              </button>
+            </ButtonGroup>
+          </WithLabel>
+          <Divider className={styles.divider} />
+
+          {/* <label>
+            TFSF mode
+            <input
+              type="checkbox"
+              checked={isTFSFMode}
+              onChange={onChangeTFSFMode}
+            />
+          </label> */}
         </Sidebar>
       </div>
     </>

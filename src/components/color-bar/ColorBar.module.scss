@@ -1,0 +1,16 @@
+.wrapper {
+    position: relative;
+}
+
+.label {
+    font-weight: 600;
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin: auto;
+    bottom: -50px;
+    padding: 8px;
+    background-color: transparent;
+    border: 1px solid lightgray;
+    width: fit-content;
+}

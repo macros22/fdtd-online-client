@@ -1,7 +1,11 @@
 import { DetailedHTMLProps, HTMLAttributes } from "react";
 import { DataChartType } from "libs/types/lab1";
 
-export interface IPlotLineProps extends DetailedHTMLProps<HTMLAttributes<HTMLCanvasElement>, HTMLCanvasElement> {
+export interface IPlotLineProps
+  extends DetailedHTMLProps<
+    HTMLAttributes<HTMLCanvasElement>,
+    HTMLCanvasElement
+  > {
   data: DataChartType;
   maxX: number;
   maxY: number;
@@ -9,9 +13,6 @@ export interface IPlotLineProps extends DetailedHTMLProps<HTMLAttributes<HTMLCan
   minY: number;
   canvasWidth: number;
   canvasHeight: number;
-  epsilonData: number[];
-  srcPositionRelative: number;
+  epsilonData?: number[];
+  srcPositionRelative?: number;
 }
-
-
-

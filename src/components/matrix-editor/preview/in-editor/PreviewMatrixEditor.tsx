@@ -1,5 +1,5 @@
 import { DrawType } from "components/plot-line/PlotLine.interface";
-import { drawCircle, drawRect } from "libs/utils/canvas-draw";
+import { drawCircle, drawRect, drawStar } from "libs/utils/canvas-draw";
 import React from "react";
 import { useAppSelector } from "store/hooks";
 import {
@@ -26,7 +26,10 @@ export const PreviewMatrix = ({
   const materials = useAppSelector(selectMaterials);
 
   const lineDetector = useAppSelector(selectLineDetector);
-  const detectorLineXCoord = Math.floor(lineDetector.relativeCoord * countCol);
+  const detectorLineCoord = Math.floor(
+    lineDetector.relativeCoord *
+      (lineDetector.direction === "vertical" ? countCol : countRow)
+  );
 
   const canvasRef = React.useRef<HTMLCanvasElement | null>(null);
 
@@ -42,6 +45,11 @@ export const PreviewMatrix = ({
       (1 - srcPositionRelativeY) * height,
       colors[1]
     );
+    drawStar({
+      ctx,
+      cx: srcPositionRelativeX * width,
+      cy: (1 - srcPositionRelativeY) * height,
+    });
   };
 
   const resizeCanvas = () => {
@@ -81,10 +89,11 @@ export const PreviewMatrix = ({
   }, [
     simulationDimension,
     materialMatrix,
-    detectorLineXCoord,
+    detectorLineCoord,
     width,
     srcPositionRelativeX,
     srcPositionRelativeY,
+    lineDetector.direction
   ]);
 
   const drawMatrix = (ctx: CanvasRenderingContext2D, matrix: number[][]) => {
@@ -105,15 +114,28 @@ export const PreviewMatrix = ({
           );
         }
 
-        if (j == detectorLineXCoord) {
-          drawRect(
-            ctx,
-            j * rectWidth,
-            i * rectHeight,
-            5,
-            rectHeight,
-            "rgba(0,0,0,0.1)"
-          );
+        if (lineDetector.direction === "vertical") {
+          if (j == detectorLineCoord) {
+            drawRect(
+              ctx,
+              j * rectWidth,
+              i * rectHeight,
+              5,
+              rectHeight,
+              "rgba(0,0,0,0.1)"
+            );
+          }
+        } else {
+          if (i == detectorLineCoord) {
+            drawRect(
+              ctx,
+              j * rectWidth,
+              i * rectHeight,
+              rectWidth,
+              5,
+              "rgba(0,0,0,0.1)"
+            );
+          }
         }
       }
     }

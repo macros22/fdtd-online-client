@@ -1,43 +1,72 @@
 import React from "react";
 import { Canvas } from "components";
-import { drawCircle, drawLine } from "libs/utils/canvas-draw";
+import styles from "./PlotLine.module.scss";
+import {
+  applyLineStyle,
+  drawAxis,
+  drawCircle,
+  drawLine,
+  drawPlotMarksX,
+  drawPlotMarksY,
+  drawStar,
+  drawTickMarksNumbers,
+} from "libs/utils/canvas-draw";
 import { DrawType } from "./PlotLine.interface";
 import { IPlotLineProps } from "./PlotLine.props";
 import { IPoint } from "libs/types/types";
 
 export const PlotLine = ({
-  data: dataLine,
-  maxX,
-  maxY,
-  minX,
-  minY,
+  // data: dataLine,
+  data = [
+    {
+      x: 0,
+      y: -1,
+    },
+    {
+      x: 50,
+      y: 1,
+    },
+    {
+      x: 100,
+      y: -1,
+    },
+  ],
+  maxX = 100,
+  maxY = 1,
+  minX = 0,
+  minY = -1,
   canvasWidth,
   canvasHeight,
   epsilonData,
   srcPositionRelative,
-}: IPlotLineProps) => {
+}: Partial<IPlotLineProps>) => {
   const padding = 5;
-
+  const dataLine = data;
   // console.log("dataLine", dataLine);
   // console.log("dataLine.length", dataLine.length);
-  // console.log(maxY);
-  // console.log(minY);
+
   const deltaX = minX >= 0 ? maxX : maxX - minX;
   const deltaY = Math.max(Math.abs(minY), Math.abs(maxY)) * 2;
 
   const intervalX = 30;
   const intervalY = 20;
 
-  const chartWidth = canvasWidth - padding * 8;
-  const chartHeight = canvasHeight - padding * 6;
+  const chartWidth = canvasWidth - padding * 15;
+  const chartHeight = canvasHeight + padding * 3;
+  // const chartWidth = canvasWidth;
+  // const chartHeight = canvasHeight;
+
+  const intervalYLabel = ((maxY - minY) * intervalY) / chartHeight;
+  const intervalXLabel = ((maxX - minX) * intervalX) / chartWidth;
 
   const scaleX = chartWidth / deltaX;
   const scaleY = chartHeight / deltaY;
 
   const tickMarksLength = 6;
 
+  const TOP_SHIFT = 10;
   const chartX0 = canvasWidth - chartWidth;
-  const chartY0 = canvasHeight - chartHeight;
+  const chartY0 = canvasHeight - chartHeight - TOP_SHIFT;
 
   const x0 = chartX0;
   const y0 = chartY0 - (0 - deltaY / 2) * scaleY;
@@ -48,121 +77,131 @@ export const PlotLine = ({
   // Fill epsilon line data.
   const epsilonLine: IPoint[] = [];
 
-  const epsilonDataInterval = chartWidth / epsilonData.length;
-  const maxEpsilon = Math.max(...epsilonData);
-  const minEpsilon = Math.min(...epsilonData);
-  const epsilonScale = chartHeight / (2 * maxEpsilon);
+  let epsilonScale = 1;
+  if (epsilonData) {
+    const epsilonDataInterval = chartWidth / epsilonData.length;
+    const maxEpsilon = Math.max(...epsilonData);
+    const minEpsilon = Math.min(...epsilonData);
+    epsilonScale = chartHeight / (2 * maxEpsilon);
 
-  let prevY = 0;
+    let prevY = 0;
 
-  for (let i = 0; i * epsilonDataInterval <= chartWidth; ++i) {
-    const newX = i * epsilonDataInterval;
-    const newY = epsilonData[i] - minEpsilon;
+    for (let i = 0; i * epsilonDataInterval <= chartWidth; ++i) {
+      const newX = i * epsilonDataInterval;
+      const newY = epsilonData[i] - minEpsilon;
 
-    // Make meander epsilon line profile.
-    if (i > 0) {
-      if (newY !== prevY) {
-        epsilonLine.push({ x: newX, y: prevY });
+      // Make meander epsilon line profile.
+      if (i > 0) {
+        if (newY !== prevY) {
+          epsilonLine.push({ x: newX, y: prevY });
+        }
       }
+
+      epsilonLine.push({ x: newX, y: newY });
+
+      prevY = newY;
     }
-
-    epsilonLine.push({ x: newX, y: newY });
-
-    prevY = newY;
   }
 
   const draw: DrawType = (ctx) => {
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
     ctx.fillStyle = "gray";
-    ctx.beginPath();
+    // ctx.beginPath();
 
-    // Draw x axis.
-    ctx.moveTo(chartX0, tY(chartY0));
-    ctx.lineTo(chartX0 + chartWidth, tY(chartY0));
+    drawAxis({ ctx, chartY0, chartX0, chartWidth, chartHeight, tY });
 
-    // Draw y axis.
-    ctx.moveTo(chartX0, tY(chartY0));
-    ctx.lineTo(chartX0, tY(chartY0 + chartHeight));
+    drawPlotMarksX({
+      ctx,
+      xStart: chartX0,
+      xEnd: chartX0 + chartWidth,
+      interval: intervalX,
+      chartY0: chartY0,
+      chartHeight: chartHeight,
+      markLength: tickMarksLength,
+      tY,
+    });
 
-    // Draw tick marks.
-    ctx.setLineDash([2]);
-    ctx.lineWidth = 1;
-    ctx.strokeStyle = "rgba(0,0,0,0.1)";
+    drawPlotMarksY({
+      ctx,
+      yStart: chartY0,
+      yEnd: chartY0 + chartHeight,
+      interval: intervalY,
+      chartX0,
+      chartWidth,
+      markLength: tickMarksLength,
+      tY,
+    });
 
-    // Draw X tick marks.
-    for (let x = chartX0; x <= chartX0 + chartWidth; x += intervalX) {
-      ctx.moveTo(x, tY(chartY0) - tickMarksLength / 2);
-      ctx.lineTo(x, tY(chartY0 + chartHeight));
-    }
+    drawTickMarksNumbers({
+      ctx,
+      chartY0,
+      chartX0,
+      chartWidth,
+      chartHeight,
+      tY,
+      padding,
+      intervalX,
+      intervalY,
+      y0,
+      scaleY,
+      maxYLabel: maxY,
+      minYLabel: minY,
+      intervalYLabel,
+      maxXLabel: maxX,
+      minXLabel: minX,
+      intervalXLabel,
+    });
 
-    // Draw Y tick marks.
-    for (let y = chartY0; y <= chartY0 + chartHeight; y += intervalY) {
-      ctx.moveTo(chartX0 - tickMarksLength / 2, tY(y));
-      ctx.lineTo(chartX0 + chartWidth, tY(y));
-    }
-    ctx.stroke();
-
-    // Draw tick marks numbers.
-    ctx.font = "10pt Inter bold";
-    ctx.fillStyle = "gray";
-    ctx.textBaseline = "middle";
-
-    // Draw X tick marks numbers.
-    ctx.textAlign = "center";
-    for (let x = chartX0; x < chartX0 + chartWidth; x += intervalX * 2) {
-      const label = Math.round(x - chartX0).toFixed().toString();
-      ctx.save();
-      ctx.translate(x, tY(chartY0 - padding * 3));
-      ctx.fillText(label, 0, 0);
-      ctx.restore();
-    }
-    ctx.restore();
-
-    // Draw Y tick marks numbers.
-    ctx.textAlign = "right";
-    for (let y = chartY0; y <= chartY0 + chartHeight; y += intervalY * 2) {
-      const label = ((y0 + y) / scaleY).toFixed(2).toString();
-      ctx.save();
-      ctx.translate(chartX0 - padding * 2, tY(y));
-      ctx.fillText(label, 0, 0);
-      ctx.restore();
-    }
     ctx.restore();
 
     ctx.setLineDash([]);
 
     // Draw data line.
     if (dataLine.length) {
-      const dataLineScaled = dataLine.map(p => ({
+      const dataLineScaled = dataLine.map((p) => ({
         x: chartX0 + p.x * scaleX,
-        y: tY(y0 + p.y * scaleY)
-      }))
-      drawLine(ctx, dataLineScaled, "red", 2)
-    };
+        y: tY(y0 + p.y * scaleY),
+      }));
+      drawLine(ctx, dataLineScaled, "red", 2);
+    }
 
-    // Draw epsilon line.
-    const epsilonLineScaled = epsilonLine.map(p => ({
-      x: chartX0 + p.x,
-      y: tY(y0 + p.y * epsilonScale)
-    }))
-    drawLine(ctx, epsilonLineScaled, "blue", 1, true);
+    if (epsilonData) {
+      // Draw epsilon line.
+      const epsilonLineScaled = epsilonLine.map((p) => ({
+        x: chartX0 + p.x,
+        y: tY(y0 + p.y * epsilonScale),
+      }));
+      drawLine(ctx, epsilonLineScaled, "blue", 1, true);
+    }
 
-    // Draw source point.
-    const srcRadius = 8;
-    const srcPositionX = srcPositionRelative * chartWidth;
-    const srcPositionY = 0;
-    drawCircle(
-      ctx,
-      x0 + srcPositionX,
-      tY(y0 + srcPositionY * scaleY),
-      "blue",
-      epsilonScale,
-      srcRadius,
-      true
-    );
+    if (srcPositionRelative) {
+      // Draw source point.
+      const srcRadius = 8;
+      const srcPositionX = srcPositionRelative * chartWidth;
+      const srcPositionY = 0;
+
+      drawStar({
+        ctx,
+        cx: x0 + srcPositionX,
+        cy: tY(y0 + srcPositionY * scaleY),
+      });
+      // drawCircle(
+      //   ctx,
+
+      //   ,
+      //   "blue",
+      //   epsilonScale,
+      //   srcRadius,
+      //   true
+      // );
+    }
   };
 
   return (
-    <Canvas draw={draw} width={canvasWidth} height={canvasHeight} />
+    <div className={styles.wrapper}>
+      <div className={styles.labelY}>Ex</div>
+      <div className={styles.labelX}>x</div>
+      <Canvas draw={draw} width={canvasWidth} height={canvasHeight} />
+    </div>
   );
 };

@@ -7,22 +7,17 @@ export type DisplayedDataType = {
 export const displayedData: DisplayedDataType = [
   {
     title: "Ez. Electric field",
-    name: "Ez",
-    type: "Ez",
+    name: "Hz",
+    type: "Hz",
   },
   {
     title: "Hy. Magnetic field",
-    name: "Hy",
-    type: "Hy",
+    name: "Ex",
+    type: "Ex",
   },
   {
     title: "Hx. Electric field",
-    name: "Hx",
-    type: "Hx",
-  },
-  {
-    title: "Energy",
-    name: "w",
-    type: "Energy",
+    name: "Ey",
+    type: "Ey",
   },
 ];

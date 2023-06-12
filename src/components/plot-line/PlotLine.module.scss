@@ -1,0 +1,29 @@
+.wrapper {
+    position: relative;
+}
+
+.labelY {
+    font-weight: 600;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    left: -50px;
+    padding: 8px;
+    background-color: transparent;
+    border: 1px solid lightgray;
+    height: fit-content;
+}
+
+.labelX {
+    font-weight: 600;
+    position: absolute;
+    right: 0;
+    bottom: -60px;
+    margin: auto;
+    left: 0;
+    padding: 8px;
+    background-color: transparent;
+    border: 1px solid lightgray;
+    width: fit-content;
+}

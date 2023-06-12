@@ -1,4 +1,5 @@
 import { color } from "html2canvas/dist/types/css/types/color";
+import { drawAxis, drawTickMarksNumbers } from "libs/utils/canvas-draw";
 import { defaultGradient } from "libs/utils/default-gradient";
 
 export type Point = [number, number, number];
@@ -44,9 +45,9 @@ export class HeatMapBuilder {
   defaultRadius = 25;
 
   defaultGradient: { [key: string]: string } = defaultGradient || {
-    0: 'red',
-    0.5: 'white',
-    1: 'blue',
+    0: "red",
+    0.5: "white",
+    1: "blue",
     // 0.0: "red",
     // 0.25: "orange",
     // 0.45: "yellow",
@@ -214,8 +215,193 @@ export class HeatMapBuilder {
     return this;
   }
 
-  drawNew(canvas): this {
+  drawNew2(canvas: HTMLCanvasElement): this {
+    // if (!this._circle) this.radius(this.defaultRadius);
+    if (!this.grad) this.gradient(this.defaultGradient);
 
+    // const ctx = this.ctx;
+
+    if (this.ctx) {
+      // this.ctx.clearRect(0, 0, this.width, this.height);
+      // In case we draw again, reset all to defaults
+      this.ctx.setTransform(1, 0, 0, 1, 0, 0);
+      this.ctx.globalCompositeOperation = "source-over";
+
+      const img = this.ctx.createImageData(this.width, this.height);
+      // wrap it inside an Uint32Array so that we can work on it faster
+
+      // const arrayBuffer = new ArrayBuffer(WIDTH * HEIGHT * 4);
+      const pixels = new Uint8ClampedArray(img.data.buffer);
+      // const pixels = new Uint32Array(img.data.buffer);
+      // we could have worked directly with the Uint8 version
+      // but our loop would have needed to iterate 4 pixels every time
+
+      // just to draw a radial-gradient
+      const rad = (this.width * Math.random()) / 5;
+
+      // for (let x = 0; x < this._realGridSize; x++) {
+      //   for (let y = 0; y < this._realGridSize; y++) {
+      //     // make a radial-gradient
+      // const dist = Math.min(Math.hypot(rad - x, rad - y), rad);
+      // const color = 0xff * ((rad - dist) / rad) + 0xff000000;
+      // pixels[y * this.width + x] = color;
+      //   }
+      // }
+      // const scaleX = this.width / this._realGridSize;
+      // const scaleY = this.height / this._realGridSize;
+
+      const minOpacity = 0.15;
+      for (let i = 0, len = this.dataVal.length; i < len; i++) {
+        const p = this.dataVal[i] + Math.abs(this._min);
+        const alpha = Math.min(
+          Math.max(p / Math.abs(this._max - this._min), minOpacity),
+          1
+        );
+        // const color = `rgba(255, 255, 255, ${alpha})`;
+        // const color = `rgb(255, 255, 220)`;
+
+        const dist = Math.min(
+          Math.hypot(rad - this.dataX[i], rad - this.dataY[i]),
+          rad
+        );
+        // const color = 0xff * ((rad - dist) / rad) + 0xff000000;
+
+        // const color = -0xff * alpha + 0xff000000;
+        // const color = RGBAToHexA(140,140,140,alpha) + 0xff000000
+        // console.log(color)
+        // pixels[] = color;
+        const k = Math.ceil(this.dataY[i] * this.width + this.dataX[i]) * 4;
+        pixels[k] = 0; // red
+        pixels[k + 1] = 0; // green
+        pixels[k + 2] = 0; // blue
+        pixels[k + 3] = Math.floor(255 * alpha); // alpha
+      }
+
+      // here we are still at 50x50 pixels
+      // const colored = this.ctx.getImageData(0, 0, this.width, this.height);
+      this.colorize(pixels, this.grad);
+
+      // const padding = 60;
+      // const paddingX = padding*6;
+      const paddingX = 60;
+      const paddingY = 30;
+      // const chartY0 = padding*6;
+      // const chartX0 = paddingX*5;
+      const chartWidth = this.width - paddingX;
+      const chartHeight = this.height - paddingY;
+      this.ctx.putImageData(img, 0, 0);
+      // this.ctx.putImageData(colored, 0, 0);
+
+      // in case we had transparency, this composite mode will ensure
+      // that only what we draw after is kept on the canvas
+      this.ctx.globalCompositeOperation = "copy";
+      // remove anti-aliasing for drawImage
+      this.ctx.imageSmoothingEnabled = false;
+
+      const scaleX = chartWidth / this._realGridSize;
+      const scaleY = chartHeight / this._realGridSize;
+
+      this.ctx.scale(
+        // this.width / this._realGridSize,
+        // this.height / this._realGridSize
+        // chartWidth / this._realGridSize,
+        // chartHeight / this._realGridSize
+        scaleX, scaleY
+      );
+
+      
+
+      // this.ctx.scale(
+      //   chartWidth / this.width,
+      //   chartHeight / this.height
+      //   // chartWidth / this._realGridSize,
+      //   //  / this._realGridSize
+      // );
+
+      // draw the canvas over itself
+      this.ctx.drawImage(
+        canvas,
+        0,
+        0,
+        this.width,
+        this.height,
+        // 0,
+        paddingX/scaleX,
+        // paddingY*0.4,
+        // 0,
+        0,
+        // chartWidth,
+        // chartHeight
+        this.width,
+        this.height
+      );
+
+      // this.ctx.restore();
+      this.ctx.globalCompositeOperation = "color-burn";
+      // console.log(chartWidth / this._realGridSize, "asdasd");
+
+      // this.ctx.scale(
+      //   this.width / this._realGridSize,
+      //   this.height / this._realGridSize
+      //   // 3,
+      //   // 1.1
+      // );
+
+      const tY = (y: number) => this.height - y;
+
+      const chartX0 = paddingX;
+      const chartY0 = paddingY;
+
+      this.ctx.scale(
+        // this.width / this._realGridSize,
+        // this.height / this._realGridSize
+        1/scaleX,
+        1/scaleY
+        // 1/(chartWidth / this._realGridSize),
+        // 1/(chartHeight / this._realGridSize)
+      );
+
+      drawAxis({
+        ctx: this.ctx,
+        chartY0,
+        chartX0,
+        chartWidth,
+        chartHeight,
+        tY,
+      });
+
+      // const chartHeight = this.height;
+      const deltaY = 220;
+      // const scaleY = chartHeight / deltaY;
+      // const y0 = chartY0 - (0 - deltaY / 2) * scaleY;
+      const y0 = chartY0;
+
+      // console.log("y0: ", y0)
+
+      drawTickMarksNumbers({
+        ctx: this.ctx,
+        chartY0,
+        chartX0,
+        chartWidth,
+        chartHeight,
+        tY,
+        padding: 10/scaleX,
+        intervalX: 15,
+        intervalY: 20,
+        y0,
+        scaleY,
+        maxYLabel: this._realGridSize,
+        minYLabel: 0,
+      intervalYLabel: 10,
+      maxXLabel: this._realGridSize,
+      minXLabel: 0,
+      intervalXLabel: 20,
+      });
+    }
+    return this;
+  }
+
+  drawNew(canvas): this {
     // if (!this._circle) this.radius(this.defaultRadius);
     if (!this.grad) this.gradient(this.defaultGradient);
 
@@ -268,10 +454,10 @@ export class HeatMapBuilder {
         // console.log(color)
         // pixels[] = color;
         const k = (this.dataY[i] * this.width + this.dataX[i]) * 4;
-        pixels[k  ] = 0;   // red
-        pixels[k+1] = 0;   // green
-        pixels[k+2] = 0;   // blue
-        pixels[k+3] = Math.floor(255*alpha); // alpha
+        pixels[k] = 0; // red
+        pixels[k + 1] = 0; // green
+        pixels[k + 2] = 0; // blue
+        pixels[k + 3] = Math.floor(255 * alpha); // alpha
       }
 
       // here we are still at 50x50 pixels
@@ -284,7 +470,10 @@ export class HeatMapBuilder {
       this.ctx.globalCompositeOperation = "copy";
       // remove anti-aliasing for drawImage
       this.ctx.imageSmoothingEnabled = false;
-      this.ctx.scale(this.width/this._realGridSize, this.height/this._realGridSize);
+      this.ctx.scale(
+        this.width / this._realGridSize,
+        this.height / this._realGridSize
+      );
       // draw the canvas over itself
       this.ctx.drawImage(canvas, 0, 0);
     }

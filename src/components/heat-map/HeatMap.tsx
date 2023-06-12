@@ -39,21 +39,45 @@ export const HeatMap = ({
       const canvasBrush = canvasBrushRef.current;
       const canvasGradient = canvasGradientRef.current;
 
+      const gridSizeFromBackend = 220;
+
       canvas.width = width;
       canvas.height = height;
 
+      // canvas.width = gridSizeFromBackend;
+      // canvas.height = gridSizeFromBackend;
+
       let data: [number[], number[], number[]] = [[], [], []];
 
+      // console.log(width);
+
       if (dataVal.length == 0) {
+        // if (true) {
         // for (let i = 0; i < 8e3; ++i) {
         //   data[0].push(Math.random() * width);
         //   data[1].push(Math.random() * height);
         //   data[2].push(Math.random() * 0.2);
         // }
-        for (let i = 0; i < 100000; ++i) {
-          data[0].push(Math.random() * width);
-          data[1].push(Math.random() * height);
-          data[2].push(Math.random() * 0.1);
+        const coef = 0.9;
+        const coef2 = 0.1;
+        for (let i = 0; i < 3e5; ++i) {
+          data[0].push(
+            Math.ceil(
+              gridSizeFromBackend * coef +
+                Math.random() * gridSizeFromBackend * coef2
+            )
+          );
+          data[0].push(Math.ceil(Math.random() * gridSizeFromBackend * coef2));
+
+          data[1].push(
+            Math.ceil(
+              gridSizeFromBackend * coef +
+                Math.random() * gridSizeFromBackend * coef2
+            )
+          );
+          data[1].push(Math.ceil(Math.random() * gridSizeFromBackend * coef2));
+          data[2].push(Math.random() * 2 - 1);
+          data[2].push(Math.random() * 2 - 1);
         }
         // for (let i = 0; i < defaultData.length; ++i) {
         //   data[0].push(defaultData[i][0]);
@@ -64,8 +88,19 @@ export const HeatMap = ({
         data = [dataX, dataY, dataVal];
       }
 
+      // console.log(data);
+
       // const gridSizeFromBackend = 220;
-      const gridSizeFromBackend = 220;
+
+      // const scaleX = width / gridSizeFromBackend;
+      // const scaleY = height / gridSizeFromBackend;
+      // const trData = [[], [], []] as [[number], [number], [number]];
+      // for (let i = 0; i <= data[0].length; ++i) {
+      //   trData[0][i] = Math.ceil(data[0][i] * scaleX);
+      //   trData[1][i] = Math.ceil(data[1][i] * scaleY);
+      //   trData[2][i] = data[2][i];
+      // }
+
       // console.log(width/gridSizeFromBackend-0.7)
       // console.log("width", width);
       // console.log("dataVal.length", dataVal.length);
@@ -73,12 +108,15 @@ export const HeatMap = ({
         .newData(...data)
         .min(minVal)
         .max(maxVal)
+        .min(-1)
+        .max(1)
         // .radius(radius, blur)
         // .radius((width/gridSizeFromBackend)*0.92, blur)
         .realGridSize(gridSizeFromBackend)
         .setSourcePosition(srcPositionRelativeX, srcPositionRelativeY)
         // .draw();
-        .drawNew(canvas);
+        // .drawNew(canvas);
+        .drawNew2(canvas);
 
       setHeatMap(heatMap);
     }
@@ -88,13 +126,13 @@ export const HeatMap = ({
     init();
   }, [dataVal, width, height]);
 
-  React.useEffect(() => {
-    if (heatMap) {
-      heatMap
-        .setSourcePosition(srcPositionRelativeX, srcPositionRelativeY)
-        .draw();
-    }
-  }, [srcPositionRelativeX, srcPositionRelativeY]);
+  // React.useEffect(() => {
+  //   if (heatMap) {
+  //     heatMap
+  //       .setSourcePosition(srcPositionRelativeX, srcPositionRelativeY)
+  //       .draw();
+  //   }
+  // }, [srcPositionRelativeX, srcPositionRelativeY]);
 
   const radiusHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setRadius(+e.target.value);
@@ -110,6 +148,7 @@ export const HeatMap = ({
     <div>
       <canvas style={{ display: "none" }} ref={canvasBrushRef} />
       <canvas style={{ display: "none" }} ref={canvasGradientRef} />
+      {/* <canvas width={60} height={height} /> */}
       <canvas ref={canvasRef} />
 
       {withOptions && (
